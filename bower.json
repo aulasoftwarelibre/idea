@@ -1,0 +1,15 @@
+{
+  "name": "greco",
+  "authors": [
+    "Juanra <jarote27@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "dependencies": {
+    "semantic": "semantic-ui#~2.2.13"
+  }
+}

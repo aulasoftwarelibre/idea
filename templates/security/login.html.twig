@@ -1,0 +1,58 @@
+{% extends '/security/base.html.twig' %}
+
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style type="text/css">
+        body {
+            background-color: #DADADA;
+        }
+        body > .grid {
+            height: 100%;
+        }
+        .image {
+            margin-top: -100px;
+        }
+        .column {
+            max-width: 450px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+            <h2 class="ui teal image header">
+                <div class="content">
+                    Iniciar sesión en {{ project_name | default('Universidad de Córdoba') }}
+                </div>
+            </h2>
+            <form class="ui large form">
+                <div class="ui stacked segment">
+                    <p>Seleccione su proveedor de identidad entre los disponibles:</p>
+                    {% for source in ssp_auth_sources() %}
+                        {% set item = ssp_auth_source(source) %}
+                        <a class="ui fluid large labeled icon button" href="{{ path('ssp_guard_connect', {'authSource': source}) }}">
+                            <i class="ui sign in icon"></i> {{ item.title }}
+                        </a>
+                    {% endfor %}
+                </div>
+
+                {% block error %}
+                    {% if error %}
+                        <div class="ui negative icon message">
+                            <i class="ban icon"></i>
+                            <div class="content">
+                                <div class="header">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                <p style="text-align: left;">Esta aplicación require que sea de dado de alta previamente, contacte con el administrador de la aplicación.</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+
+            </form>
+        </div>
+    </div>
+{% endblock %}

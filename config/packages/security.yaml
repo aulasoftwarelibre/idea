@@ -1,0 +1,52 @@
+services:
+    uco.admin.authenticator:
+        class: 'App\Security\UcoAuthenticator'
+        arguments: [ '@router', '@ssp.guard.registry', 'ecosp']
+
+    uco.user.provider:
+        class: 'App\Security\User\UcoUserProvider'
+        arguments: ['@fos_user.user_provider.username']
+        public: true
+
+security:
+    access_decision_manager:
+        strategy: 'unanimous'
+
+    encoders:
+        Greco\Organization\Domain\User\Model\User: 'bcrypt'
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_SONATA_ADMIN
+        ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH
+
+
+    # https://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        uco_user_provider:
+            id: 'uco.user.provider'
+
+    firewalls:
+        dev:
+            pattern:  '^/(_(profiler|wdt)|css|images|js)/'
+            security: false
+        main:
+            pattern: '^/'
+            guard:
+                provider: 'uco_user_provider'
+                authenticators:
+                    - 'uco.admin.authenticator'
+            form_login:
+                always_use_default_target_path: false
+                target_path_parameter:          '_target_path'
+            logout:
+                path: '/logout'
+                target: '/'
+            anonymous:   true
+            switch_user: true
+
+    access_control:
+        - { path: '^/login$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
+        - { path: '^/connect', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
+        - { path: '^/check', role: 'ROLE_USER' }
+        - { path: '^/admin', role: 'ROLE_SONATA_ADMIN' }
+        - { path: '^/api', role: 'ROLE_USER' }

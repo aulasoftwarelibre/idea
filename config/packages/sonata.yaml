@@ -1,0 +1,74 @@
+sonata_admin:
+    templates:
+        # default global templates
+        layout:  '/backend/standard_layout.html.twig'
+sonata_block:
+    default_contexts: ['cms']
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   ['admin']
+        sonata.admin.block.search_result:
+            contexts:   ['admin']
+        # Your other blocks
+        sonata.block.service.text:
+        sonata.block.service.inactive:
+
+sonata_formatter:
+    default_formatter: text
+    formatters:
+        markdown:
+            service: sonata.formatter.text.markdown
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig #keep this commented unless you are using media bundle.
+
+
+        text:
+            service: sonata.formatter.text.text
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        rawhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        richhtml:
+            service: sonata.formatter.text.raw
+            extensions:
+                - sonata.formatter.twig.control_flow
+                - sonata.formatter.twig.gist
+        #        - sonata.media.formatter.twig
+
+
+        twig:
+            service: sonata.formatter.text.twigengine
+            extensions: [] # Twig formatter cannot have extensions
+
+sonata_user:
+    security_acl: false
+    manager_type: 'orm' # can be orm or mongodb
+#    admin:
+#        user:
+#            class:    'Greco\Organization\Presentation\Sonata\Admin\UserAdmin'
+    class:
+        user:         'App\Entity\User'
+        group:         'App\Entity\Group'
+    impersonating:
+        route: sonata_admin_dashboard
+
+
+services:
+    eco.admin.idea:
+        class: App\Admin\IdeaAdmin
+        arguments: [~, App\Entity\Idea, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.idea }
