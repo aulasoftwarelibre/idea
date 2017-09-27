@@ -18,7 +18,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 /**
  * Class Vote.
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\VoteRepository")
  * @ORM\Table()
  */
 class Vote

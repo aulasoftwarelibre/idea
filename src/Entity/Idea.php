@@ -239,9 +239,9 @@ class Idea
     }
 
     /**
-     * @return Vote[]
+     * @return ArrayCollection|Vote[]
      */
-    public function getVotes(): array
+    public function getVotes(): ArrayCollection
     {
         return $this->votes;
     }

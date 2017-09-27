@@ -33,6 +33,10 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Idea']
 
+    App\Repository\VoteRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Vote']
+
     # KnpMenuBundle
     App\Menu\Builder:
         arguments: ['@knp_menu.factory']
