@@ -9,11 +9,8 @@ services:
         public: true
 
 security:
-    access_decision_manager:
-        strategy: 'unanimous'
-
     encoders:
-        Greco\Organization\Domain\User\Model\User: 'bcrypt'
+        App\Entity\User: 'bcrypt'
 
     role_hierarchy:
         ROLE_ADMIN:       ROLE_SONATA_ADMIN

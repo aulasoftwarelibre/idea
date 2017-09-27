@@ -2,7 +2,9 @@
 /**
  * This file is part of the ceo.
  *
+ * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  * (c) Sergio Gómez <sergio@uco.es>
+ * (c) Omar Sotillo <i32sofro@uco.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -32,6 +34,9 @@ class IdeaAdmin extends AbstractAdmin
             ])
             ->add('owner', null, [
                 'placeholder' => 'Seleccione un usuario',
+            ])
+            ->add('group', null, [
+                'placeholder' => 'Seleccione un grupo',
             ])
         ;
     }
