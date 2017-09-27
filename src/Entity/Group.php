@@ -17,7 +17,7 @@ use Sonata\UserBundle\Entity\BaseGroup;
 /**
  * Class Group.
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="GroupRepository")
  * @ORM\Table(name="fos_group")
  */
 class Group extends BaseGroup
@@ -32,19 +32,9 @@ class Group extends BaseGroup
 
     /**
      * @var Idea[]
-     * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $ideas;
-
-    /**
-     * Group constructor.
-     */
-    public function __construct()
-    {
-        parent::__construct();
-
-        $this->ideas = new ArrayCollection();
-    }
 
     /**
      * @return Idea[]
