@@ -2,15 +2,15 @@
 /**
  * This file is part of the ceo.
  *
+ * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  * (c) Sergio Gómez <sergio@uco.es>
+ * (c) Omar Sotillo <i32sofro@uco.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
 
-
 namespace App\Menu;
-
 
 use Knp\Menu\ItemInterface;
 use Knp\Menu\Renderer\ListRenderer;
@@ -19,7 +19,7 @@ class SemanticMenuRenderer extends ListRenderer
 {
     protected function renderList(ItemInterface $item, array $attributes, array $options)
     {
-        /**
+        /*
          * Return an empty string if any of the following are true:
          *   a) The menu has no children eligible to be displayed
          *   b) The depth is 0
@@ -95,7 +95,7 @@ class SemanticMenuRenderer extends ListRenderer
 
         if ($item->hasChildren()) {
             // renders the embedded ul
-            $childrenClass = (array)$item->getChildrenAttribute('class');
+            $childrenClass = (array) $item->getChildrenAttribute('class');
             $childrenClass[] = 'menu_level_'.$item->getLevel();
 
             $childrenAttributes = $item->getChildrenAttributes();
@@ -112,7 +112,7 @@ class SemanticMenuRenderer extends ListRenderer
 
     /**
      * Renders the link in a a tag with link attributes or
-     * the label in a span tag with label attributes
+     * the label in a span tag with label attributes.
      *
      * Tests if item has a an uri and if not tests if it's
      * the current item and if the text has to be rendered
@@ -141,7 +141,10 @@ class SemanticMenuRenderer extends ListRenderer
 
     protected function renderIconElement(ItemInterface $item, array $options)
     {
-        if (!$item->getExtra('icon')) return '';
+        if (!$item->getExtra('icon')) {
+            return '';
+        }
+
         return sprintf('<i class="icon %s"></i> ', $item->getExtra('icon'));
     }
 }

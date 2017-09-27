@@ -2,7 +2,9 @@
 /**
  * This file is part of the ceo.
  *
+ * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  * (c) Sergio Gómez <sergio@uco.es>
+ * (c) Omar Sotillo <i32sofro@uco.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -37,9 +39,10 @@ class Comment extends BaseComment implements SignedCommentInterface
     protected $thread;
 
     /**
-     * Author of the comment
+     * Author of the comment.
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     *
      * @var User
      */
     protected $author;
