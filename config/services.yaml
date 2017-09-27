@@ -20,7 +20,7 @@ services:
         resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/{Admin,Entity,Migrations,Repository,Tests}'
+        exclude: '../src/{Admin,Command,Entity,Migrations,Repository,Tests}'
 
     # controllers are imported separately to make sure they
     # have the tag that allows actions to type-hint services
@@ -28,6 +28,12 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
+    # DoctrineBundle
+    App\Repository\IdeaRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Idea']
+
+    # KnpMenuBundle
     App\Menu\Builder:
         arguments: ['@knp_menu.factory']
         public: true
@@ -43,3 +49,10 @@ services:
         public: true
         tags:
             - { name: 'knp_menu.renderer', alias: 'semantic'}
+
+    # TacticianBundle
+    App\Handler\:
+        resource: '../src/Handler/'
+        public: true
+        tags:
+            - { name: 'tactician.handler', auto: true }
