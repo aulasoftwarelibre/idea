@@ -87,6 +87,14 @@ class Idea
      */
     private $votes;
 
+    // FIXME nullable=false?
+    /**
+     * @var Group
+     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="ideas")
+     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    private $group;
+
     /**
      * Idea constructor.
      */
@@ -207,6 +215,27 @@ class Idea
 
         return $this;
     }
+
+    /**
+     * @return Group
+     */
+    public function getGroup(): ?Group
+    {
+        return $this->group;
+    }
+
+    /**
+     * @param Group $group
+     *
+     * @return Idea
+     */
+    public function setGroup(Group $group): Idea
+    {
+        $this->group = $group;
+
+        return $this;
+    }
+
 
     /**
      * @return Vote[]

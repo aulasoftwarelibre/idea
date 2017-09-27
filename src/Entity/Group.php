@@ -10,6 +10,7 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\UserBundle\Entity\BaseGroup;
 
@@ -28,4 +29,46 @@ class Group extends BaseGroup
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var Idea[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $ideas;
+
+    /**
+     * Group constructor.
+     */
+    public function __construct()
+    {
+        parent::__construct();
+
+        $this->ideas = new ArrayCollection();
+    }
+
+    /**
+     * @return Idea[]
+     */
+    public function getIdeas(): array
+    {
+        return $this->ideas;
+    }
+
+    /**
+     * @param Idea $idea
+     * @return Group
+     */
+    public function addIdea(Idea $idea): self
+    {
+        $this->ideas[] = $idea;
+        return $this;
+    }
+
+    /**
+     * @param Idea $idea
+     */
+    public function removeIdea(Idea $idea)
+    {
+        $this->ideas->removeElement($idea);
+    }
 }
