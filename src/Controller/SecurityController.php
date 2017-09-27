@@ -10,11 +10,15 @@
 
 namespace App\Controller;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\TwigBundle\TwigEngine;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController
 {
+    /**
+     * @Route("/login", name="login")
+     */
     public function login(AuthenticationUtils $authenticationUtils, TwigEngine $engine)
     {
         $exception = $authenticationUtils->getLastAuthenticationError();
@@ -24,6 +28,9 @@ class SecurityController
         ]);
     }
 
+    /**
+     * @Route("/logout", name="logout")
+     */
     public function logout()
     {
         throw new \RuntimeException('La ruta /logout debe estar activa en el cortafuegos.');

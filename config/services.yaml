@@ -27,3 +27,19 @@ services:
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
+
+    App\Menu\Builder:
+        arguments: ['@knp_menu.factory']
+        public: true
+        tags:
+            - { name: 'knp_menu.menu_builder', method: 'followingMenu', alias: 'followingMenu'}
+            - { name: 'knp_menu.menu_builder', method: 'mainMenu', alias: 'mainMenu'}
+
+    App\Menu\SemanticMenuRenderer:
+        arguments:
+            - '@knp_menu.matcher'
+            - '%knp_menu.renderer.list.options%'
+            - '%kernel.charset%'
+        public: true
+        tags:
+            - { name: 'knp_menu.renderer', alias: 'semantic'}

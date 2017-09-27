@@ -1,11 +1,3 @@
-login:
-    path: /login
-    defaults: { _controller: 'App\Controller\SecurityController::login' }
-
-logout:
-    path: /logout
-    defaults: { _controller: 'App\Controller\SecurityController::logout' }
-
 ssp_bundle:
     resource: '@SSPGuardBundle/Resources/config/routing/connect.xml'
 

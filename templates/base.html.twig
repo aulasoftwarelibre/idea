@@ -1,25 +1,121 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<head>
+    <!-- Standard Meta -->
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 
-        <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon.png') }}?v=2">
-        <link rel="icon" sizes="32x32" href="{{ asset('favicon.ico') }}?v=2">
-        <link rel="icon" sizes="256x256" href="{{ asset('favicon.png') }}?v=2">
+    <!-- Site Properities -->
+    <title>{% block title %}{% endblock %}</title>
 
-        {% block stylesheets %}
-            <link rel="stylesheet" href="{{ asset('components/semantic/dist/semantic.min.css') }}">
+    {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('components/semantic/dist/semantic.min.css') }}"/>
+        <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}"/>
+    {% endblock %}
+</head>
+
+
+<body>
+<!-- Following Menu -->
+<div class="ui large top fixed hidden menu">
+    <div class="ui container">
+        {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
+
+        <div class="right menu">
+            <div class="item">
+                {% if is_granted('ROLE_ADMIN') %}
+                    <a class="ui green button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
+                {% endif %}
+            </div>
+            <div class="item">
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <a class="ui red button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
+                {% else %}
+                    <a class="ui primary button" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sidebar Menu -->
+<div class="ui vertical inverted sidebar menu">
+    {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
+    {% if is_granted('ROLE_ADMIN') %}
+        <a class="item" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
+    {% endif %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        <a class="item" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
+    {% else %}
+        <a class="item" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
+    {% endif %}
+</div>
+
+<!-- Page Contents -->
+<div class="pusher">
+    <div class="ui inverted vertical masthead center aligned segment">
+        <div class="ui container">
+            <div id="topmenu" class="ui large secondary inverted pointing menu">
+                <a class="toc item">
+                    <i class="sidebar icon"></i>
+                </a>
+
+                {{ knp_menu_render('mainMenu', {'nodiv': false}, 'semantic') }}
+
+                <div class="right item">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <a class="ui inverted button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
+                    {% endif %}
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <a class="ui inverted button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
+                    {% else %}
+                        <a class="ui inverted button" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        {% block jumbo %}
+
         {% endblock %}
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}
-            <script src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
-            <script src="{{ asset('components/semantic/dist/semantic.min.js') }}"></script>
-        {% endblock %}
-    </body>
+
+    </div>
+
+    <div class="full height">
+
+        <div class="ui vertical stripe segment">
+
+            <div class="ui text container">
+                {% block flash_messages %}
+                    {% for type, flashMessages in app.session.flashbag.all() %}
+                        {% for flashMessage in flashMessages %}
+                            <div class="ui {{ type }} floating message">
+                                {{- flashMessage -}}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                {% endblock flash_messages %}
+
+                {% block body %}{% endblock %}
+            </div>
+        </div>
+    </div>
+
+    <div class="ui inverted vertical footer segment">
+        <div class="ui container">
+            <p>Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a> en colaboración con el CEEPS.</p>
+        </div>
+    </div>
+
+</div>
+</body>
+
+
+{% block javascripts %}
+    <script type="application/javascript" src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('components/semantic/dist/semantic.min.js') }}"></script>
+    <script type="application/javascript" src="{{ asset('assets/script/script.js') }}"></script>
+{% endblock %}
+
 </html>
