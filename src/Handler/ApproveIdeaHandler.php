@@ -34,8 +34,7 @@ class ApproveIdeaHandler
     public function handle(ApproveIdeaCommand $command)
     {
         $idea = $command->getIdea();
-
-        // TODO: Approve idea
+        $idea->setApproved(true);
 
         $this->repository->add($idea);
     }

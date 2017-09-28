@@ -34,8 +34,7 @@ class RejectIdeaHandler
     public function handle(RejectIdeaCommand $command)
     {
         $idea = $command->getIdea();
-
-        // TODO: Reject idea
+        $idea->setApproved(false);
 
         $this->repository->add($idea);
     }
