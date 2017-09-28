@@ -47,3 +47,4 @@ security:
         - { path: '^/check', role: 'ROLE_USER' }
         - { path: '^/admin', role: 'ROLE_SONATA_ADMIN' }
         - { path: '^/api', role: 'ROLE_USER' }
+        - { path: '^/', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }

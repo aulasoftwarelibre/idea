@@ -11,18 +11,38 @@
 
 namespace App\Controller;
 
+use App\Command\GetIdeasByPageQuery;
+use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\Response;
 
 class HomepageController extends Controller
 {
     /**
-     * @Route("/", name="homepage")
+     * @var CommandBus
      */
-    public function __invoke(UrlGeneratorInterface $generator)
+    private $bus;
+
+    public function __construct(CommandBus $bus)
     {
+        $this->bus = $bus;
+    }
+
+    /**
+     * @Route("/", defaults={"page": "1"}, name="homepage")
+     * @Route("/page/{page}", requirements={"page": "[1-9]\d*"}, name="homepage_paginated")
+     */
+    public function __invoke(int $page): Response
+    {
+        $ideas = $this->bus->handle(
+            new GetIdeasByPageQuery(
+                $page
+            )
+        );
+
         return $this->render('frontend/homepage.html.twig', [
+            'ideas' => $ideas,
         ]);
     }
 }

@@ -1,4 +1,21 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
+    {% for idea in ideas %}
+        <article class="idea">
+            <h2>
+                {{ idea.title }}
+            </h2>
+
+            {{ idea.description }}
+        </article>
+    {% else %}
+        <div>No hay ideas :(</div>
+    {% endfor %}
+
+    {% if ideas.haveToPaginate %}
+        <div class="navigation text-center">
+            {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'homepage_paginated'}) }}
+        </div>
+    {% endif %}
 {% endblock %}

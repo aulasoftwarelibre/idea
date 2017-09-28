@@ -27,7 +27,6 @@ class IdeaRepository extends CeoRepository
             ->createQuery('
                 SELECT i
                 FROM App:Idea i
-                ORDER BY i.createdAt DESC
             ');
 
         return $this->createPaginator($query, $page);

@@ -8,6 +8,8 @@ tactician:
              - tactician.middleware.doctrine
              - tactician.middleware.command_handler
     security:
+        App\Command\GetIdeasByPageQuery:
+            - 'IS_AUTHENTICATED_ANONYMOUSLY'
         App\Command\ApproveIdeaCommand:
             - 'ROLE_ADMIN'
         App\Command\RejectIdeaCommand:
