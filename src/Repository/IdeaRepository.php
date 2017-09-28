@@ -11,10 +11,15 @@
 
 namespace App\Repository;
 
+use App\Entity\Group;
 use Pagerfanta\Pagerfanta;
 
 class IdeaRepository extends CeoRepository
 {
+    /**
+     * @param int $page
+     * @return Pagerfanta
+     */
     public function findLatest(int $page = 1): Pagerfanta
     {
         $query = $this->getEntityManager()
@@ -22,8 +27,25 @@ class IdeaRepository extends CeoRepository
                 SELECT i
                 FROM App:Idea i
                 ORDER BY i.createdAt DESC
-            ')
-        ;
+            ');
+
+        return $this->createPaginator($query, $page);
+    }
+
+    /**
+     * @param Group $group
+     * @param int $page
+     * @return Pagerfanta
+     */
+    public function findByGroup(Group $group, int $page = 2): Pagerfanta
+    {
+        $em = $this->getEntityManager();
+        $query = $em->createQuery(
+            "SELECT i
+            FROM App:Idea i
+            WHERE i.group = :groupId
+            ORDER BY i.createdAt DESC"
+        )->setParameter('groupId', $group);
 
         return $this->createPaginator($query, $page);
     }
