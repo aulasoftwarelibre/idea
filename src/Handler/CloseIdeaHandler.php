@@ -34,7 +34,8 @@ class CloseIdeaHandler
     public function handle(CloseIdeaCommand $command)
     {
         $idea = $command->getIdea();
-        $idea->setClosed(true);
+        $isClosed = $command->isClosed();
+        $idea->setClosed($isClosed);
 
         $this->repository->add($idea);
     }

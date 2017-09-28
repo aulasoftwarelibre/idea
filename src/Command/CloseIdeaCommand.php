@@ -19,15 +19,21 @@ final class CloseIdeaCommand
      * @var Idea
      */
     private $idea;
+    /**
+     * @var bool
+     */
+    private $closed;
 
     /**
      * CloseIdeaCommand constructor.
      *
      * @param Idea $idea
+     * @param bool $closed
      */
-    public function __construct(Idea $idea)
+    public function __construct(Idea $idea, bool $closed = true)
     {
         $this->idea = $idea;
+        $this->closed = $closed;
     }
 
     /**
@@ -36,5 +42,13 @@ final class CloseIdeaCommand
     public function getIdea(): Idea
     {
         return $this->idea;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isClosed(): bool
+    {
+        return $this->closed;
     }
 }
