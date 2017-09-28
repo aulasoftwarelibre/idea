@@ -55,6 +55,12 @@ class Idea
     private $closed;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $approved;
+
+    /**
      * @var string
      * @ORM\Column(length=255, unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true)
@@ -88,7 +94,6 @@ class Idea
      */
     private $votes;
 
-    // FIXME nullable=false?
     /**
      * @var Group
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="ideas")
@@ -103,6 +108,7 @@ class Idea
     {
         $this->votes = new ArrayCollection();
         $this->closed = false;
+        $this->approved = false;
     }
 
     /**
@@ -172,6 +178,27 @@ class Idea
 
         return $this;
     }
+
+    /**
+     * @return bool
+     */
+    public function isApproved(): bool
+    {
+        return $this->approved;
+    }
+
+    /**
+     * @param bool $approved
+     *
+     * @return Idea
+     */
+    public function setApproved(bool $approved): Idea
+    {
+        $this->approved = $approved;
+
+        return $this;
+    }
+
 
     /**
      * @return string

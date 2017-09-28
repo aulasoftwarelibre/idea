@@ -17,6 +17,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class IdeaAdmin extends AbstractAdmin
 {
@@ -30,6 +31,13 @@ class IdeaAdmin extends AbstractAdmin
                 'attr' => ['rows' => 20],
             ])
             ->add('closed', null, [
+            ])
+            ->add('approved',ChoiceType::class,[
+                'label' => 'Is approved',
+                'choices'  => array(
+                    'Yes' => true,
+                    'No' => false,
+                ),
             ])
             ->add('owner', null, [
                 'placeholder' => 'Seleccione un usuario',
@@ -47,6 +55,9 @@ class IdeaAdmin extends AbstractAdmin
                 'route' => ['name' => 'show'],
             ])
             ->add('closed', null, [
+                'editable' => true,
+            ])
+            ->add('approved', null, [
                 'editable' => true,
             ])
             ->add('createdAt', null, [
