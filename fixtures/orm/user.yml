@@ -1,0 +1,13 @@
+\App\Entity\User:
+    user (template):
+        password: 'disabled'
+        enabled: true
+        groups: ['@group_asl']
+        roles: ['ROLE_USER']
+    admin_{admin} (extends user):
+        username: '<current()>\@uco.es'
+        email: '<current()>\@uco.es'
+        roles: ['ROLE_ADMIN']
+    user_{1..10} (extends user):
+        username (unique): '<bothify("x#2?????")>'
+        email: '$username\@uco.es'

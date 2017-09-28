@@ -1,0 +1,7 @@
+\App\Entity\Idea:
+    idea_{1..30}:
+        title: '<sentence()>'
+        description: '<paragraphs(3, true)>'
+        closed: false
+        owner: '@user_*'
+        group: '@group_asl'
