@@ -1,21 +1,36 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    {% for idea in ideas %}
-        <article class="idea">
-            <h2>
-                {{ idea.title }}
-            </h2>
-
-            {{ idea.description }}
-        </article>
-    {% else %}
-        <div>No hay ideas :(</div>
-    {% endfor %}
+    <div class="ui one column grid">
+        <column>
+            {% for idea in ideas %}
+            <div class="ui fluid card">
+                <div class="content">
+                    <div class="header">
+                        {{ idea.title }}
+                    </div>
+                    <div class="description">
+                        {{ idea.description }}
+                    </div>
+                </div>
+                <div class="extra content">
+                    <a>
+                        <i class="users icon"></i>
+                        {{ idea.votes | length }} Votos
+                    </a>
+                </div>
+            </div>
+            {% else %}
+            <div>No hay ideas :(</div>
+            {% endfor %}
+        </column>
+    </div>
 
     {% if ideas.haveToPaginate %}
-        <div class="navigation text-center">
-            {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'homepage_paginated'}) }}
+        <div class="ui basic center aligned segment">
+            <div class="ui pagination menu">
+                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'homepage_paginated'}) }}
+            </div>
         </div>
     {% endif %}
 {% endblock %}
