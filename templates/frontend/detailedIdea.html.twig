@@ -1,0 +1,28 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="ui one column grid">
+        <column>
+                <div class="ui fluid card">
+                    <div class="content">
+                        <div class="header">
+                            {{ idea.title }}
+                        </div>
+                        <div class="description">
+                            {{ idea.description }}
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <a>
+                            <i class="users icon"></i>
+                            {{ idea.votes | length }} Votos
+                        </a>
+                    </div>
+                </div>
+        </column>
+    </div>
+
+    <div class="ui comments">
+    {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id }%}
+    </div>
+{% endblock %}
