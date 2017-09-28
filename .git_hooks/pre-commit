@@ -29,10 +29,6 @@ fi
 
 if $HAS_JSHINT; then
     git status --porcelain | grep -e '^\s*[AM]\(.*\).js$' | cut -c 3- | while read line; do gulp jshint --filter=${line}; done;
-else
-    echo ""
-    echo "Please run 'npm install' to run 'gulp jshint'."
-    echo ""
 fi
 
 echo "CEO pre commit hook finish"
