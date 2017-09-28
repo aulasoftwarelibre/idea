@@ -12,6 +12,7 @@
 namespace App\Handler;
 
 use App\Command\RejectIdeaCommand;
+use App\Entity\Idea;
 use App\Repository\IdeaRepository;
 
 class RejectIdeaHandler
@@ -34,7 +35,12 @@ class RejectIdeaHandler
     public function handle(RejectIdeaCommand $command)
     {
         $idea = $command->getIdea();
-        $idea->setApproved(false);
+
+        if ($idea->isClosed()) {
+            return;
+        }
+
+        $idea->setState(Idea::STATE_REJECTED);
 
         $this->repository->add($idea);
     }

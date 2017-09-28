@@ -12,6 +12,7 @@
 namespace App\Handler;
 
 use App\Command\ApproveIdeaCommand;
+use App\Entity\Idea;
 use App\Repository\IdeaRepository;
 
 class ApproveIdeaHandler
@@ -34,7 +35,12 @@ class ApproveIdeaHandler
     public function handle(ApproveIdeaCommand $command)
     {
         $idea = $command->getIdea();
-        $idea->setApproved(true);
+
+        if ($idea->isClosed()) {
+            return;
+        }
+
+        $idea->setState(Idea::STATE_APPROVED);
 
         $this->repository->add($idea);
     }
