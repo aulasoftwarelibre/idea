@@ -2,7 +2,7 @@
 
 namespace App\Console;
 
-use App\Command\ApproveIdeaCommand;
+use App\Command\RejectIdeaCommand;
 use App\Entity\Idea;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -10,21 +10,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
-class ApproveIdeaConsole extends ContainerAwareCommand
+class RejectIdeaConsole extends ContainerAwareCommand
 {
     protected function configure()
     {
         $this
-            ->setName('ceo:idea:approve')
-            ->setDescription('Approves an idea')
+            ->setName('ceo:idea:reject')
+            ->setDescription('Rejects an idea')
             ->addArgument('ideaId', InputArgument::REQUIRED, 'Idea id');
     }
 
-    /**
-     * @param InputInterface $input
-     * @param OutputInterface $output
-     * @return int
-     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $ideaId = $input->getArgument('ideaId');
@@ -50,11 +45,13 @@ class ApproveIdeaConsole extends ContainerAwareCommand
         }
 
         $bus->handle(
-            new ApproveIdeaCommand(
+            new RejectIdeaCommand(
                 $idea
             )
         );
 
         $output->writeln('Idea aprobada.');
     }
+
+
 }

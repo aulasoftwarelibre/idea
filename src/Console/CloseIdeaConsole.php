@@ -36,7 +36,7 @@ class CloseIdeaConsole extends ContainerAwareCommand
         $bus = $this->getContainer()->get('tactician.commandbus.default');
 
         $user = $this->getContainer()->get('uco.user.provider')
-            ->loadUserByUsername('cc0gobas@uco.es');
+            ->loadUserByUsername('i32sofro@uco.es');
         $token = new UsernamePasswordToken(
             $user,
             null,
