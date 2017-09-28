@@ -1,10 +1,9 @@
 <?php
-/**
- * This file is part of the ceo.
+
+/*
+ * This file is part of the ceo project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
- * (c) Sergio Gómez <sergio@uco.es>
- * (c) Omar Sotillo <i32sofro@uco.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -56,6 +55,16 @@ class User extends BaseUser
     }
 
     /**
+     * @param User $user
+     *
+     * @return bool
+     */
+    public function equalsTo(User $user)
+    {
+        return $this->getId() === $user->getId();
+    }
+
+    /**
      * @return Idea[]
      */
     public function getIdeas(): array
@@ -98,6 +107,7 @@ class User extends BaseUser
      */
     public function addVote(Vote $vote): self
     {
+        $vote->setUser($this);
         $this->votes[] = $vote;
 
         return $this;

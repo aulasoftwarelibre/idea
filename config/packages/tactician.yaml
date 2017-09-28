@@ -4,5 +4,11 @@ tactician:
             middleware:
              - tactician.middleware.locking
              - tactician.middleware.security
+             - tactician.middleware.validator
              - tactician.middleware.doctrine
              - tactician.middleware.command_handler
+    security:
+        App\Command\ApproveIdeaCommand:
+            - 'ROLE_ADMIN'
+        App\Command\RejectIdeaCommand:
+            - 'ROLE_ADMIN'
