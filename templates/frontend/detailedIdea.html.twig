@@ -1,28 +1,48 @@
 {% extends "base.html.twig" %}
+{% macro ribbon(state) %}
+    {% if state == 'proposed' %}
+        <a class="ui yellow right ribbon label">{{ state | trans }}</a>
+    {% elseif state == 'approved' %}
+        <a class="ui green right ribbon label">{{ state | trans }}</a>
+    {% else %}
+        <a class="ui red right ribbon label">{{ state | trans }}</a>
+    {% endif %}
+{% endmacro %}
+
+{% import _self as widgets %}
 
 {% block body %}
-    <div class="ui one column grid">
-        <column>
+    <div class="ui grid">
+            <div class="two wide column">
+                <div class="ui statistic">
+                    <div class="value">
+                        {{ idea.votes | length }}
+                    </div>
+                    <div class="label">
+                        Votos
+                    </div>
+                </div>
+            </div>
+            <div class="fourteen wide column">
                 <div class="ui fluid card">
                     <div class="content">
+                        {{ widgets.ribbon(idea.state) }}
                         <div class="header">
                             {{ idea.title }}
                         </div>
                         <div class="description">
-                            {{ idea.description }}
+                            {{ idea.description | truncate(200) }}
                         </div>
                     </div>
                     <div class="extra content">
-                        <a>
-                            <i class="users icon"></i>
-                            {{ idea.votes | length }} Votos
-                        </a>
+                        <i class="comment icon"></i>
+                        3 comentarios
                     </div>
                 </div>
-        </column>
+            </div>
     </div>
 
     <div class="ui comments">
-    {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id }%}
+        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}
     </div>
 {% endblock %}

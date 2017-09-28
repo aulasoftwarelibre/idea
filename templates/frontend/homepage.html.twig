@@ -29,9 +29,9 @@
             <div class="ui fluid card">
                 <div class="content">
                     {{ widgets.ribbon(idea.state) }}
-                    <div class="header">
+                    <a  href="{{ path('idea_show', {'ideaId': idea.id}) }}" class="header">
                         {{ idea.title }}
-                    </div>
+                    </a>
                     <div class="description">
                         {{ idea.description | truncate(200) }}
                     </div>
