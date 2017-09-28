@@ -11,6 +11,7 @@
 
 namespace App\Admin;
 
+use App\Entity\Idea;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -32,12 +33,8 @@ class IdeaAdmin extends AbstractAdmin
             ])
             ->add('closed', null, [
             ])
-            ->add('approved',ChoiceType::class,[
-                'label' => 'Is approved',
-                'choices'  => array(
-                    'Yes' => true,
-                    'No' => false,
-                ),
+            ->add('state', ChoiceType::class, [
+                'choices' => Idea::getStates(),
             ])
             ->add('owner', null, [
                 'placeholder' => 'Seleccione un usuario',
@@ -57,8 +54,7 @@ class IdeaAdmin extends AbstractAdmin
             ->add('closed', null, [
                 'editable' => true,
             ])
-            ->add('approved', null, [
-                'editable' => true,
+            ->add('state', null, [
             ])
             ->add('createdAt', null, [
             ])
@@ -84,9 +80,19 @@ class IdeaAdmin extends AbstractAdmin
             ->add('description', null, [
                 'safe' => true,
             ])
+            ->add('owner', null, [
+                'route' => ['name' => 'show'],
+            ])
+            ->add('group', null, [
+                'route' => ['name' => 'show'],
+            ])
             ->add('closed', null, [
             ])
+            ->add('state', null, [
+            ])
             ->add('createdAt', null, [
+            ])
+            ->add('updatedAt', null, [
             ])
         ;
     }

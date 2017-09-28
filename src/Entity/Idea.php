@@ -24,6 +24,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Idea
 {
+    const STATE_PROPOSED = 'proposed';
+    const STATE_REJECTED = 'rejected';
+    const STATE_APPROVED = 'approved';
+
     /**
      * @var int
      * @ORM\Id()
@@ -55,10 +59,11 @@ class Idea
     private $closed;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
+     * @var string
+     * @ORM\Column(length=32)
+     * @Assert\Choice(callback="getStates")
      */
-    private $approved;
+    private $state;
 
     /**
      * @var string
@@ -101,6 +106,15 @@ class Idea
      */
     private $group;
 
+    public static function getStates(): array
+    {
+        return [
+            'Propuesta' => static::STATE_PROPOSED,
+            'Rechazada' => static::STATE_REJECTED,
+            'Aceptada' => static::STATE_APPROVED,
+        ];
+    }
+
     /**
      * Idea constructor.
      */
@@ -108,7 +122,15 @@ class Idea
     {
         $this->votes = new ArrayCollection();
         $this->closed = false;
-        $this->approved = false;
+        $this->state = static::STATE_PROPOSED;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return $this->title ?? '';
     }
 
     /**
@@ -180,25 +202,24 @@ class Idea
     }
 
     /**
-     * @return bool
+     * @return string
      */
-    public function isApproved(): bool
+    public function getState(): string
     {
-        return $this->approved;
+        return $this->state;
     }
 
     /**
-     * @param bool $approved
+     * @param string $state
      *
      * @return Idea
      */
-    public function setApproved(bool $approved): Idea
+    public function setState(string $state): Idea
     {
-        $this->approved = $approved;
+        $this->state = $state;
 
         return $this;
     }
-
 
     /**
      * @return string
@@ -217,11 +238,35 @@ class Idea
     }
 
     /**
+     * @param \DateTime $createdAt
+     *
+     * @return Idea
+     */
+    public function setCreatedAt(\DateTime $createdAt): Idea
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    /**
      * @return \DateTime
      */
     public function getUpdatedAt(): \DateTime
     {
         return $this->updatedAt;
+    }
+
+    /**
+     * @param \DateTime $updatedAt
+     *
+     * @return Idea
+     */
+    public function setUpdatedAt(\DateTime $updatedAt): Idea
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
     }
 
     /**
