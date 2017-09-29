@@ -32,6 +32,9 @@
                     <a  href="{{ path('idea_show', {'ideaId': idea.id}) }}" class="header">
                         {{ idea.title }}
                     </a>
+                    <div class="meta">
+                        Enviado {{ idea.createdAt | time_diff }} por {{ idea.owner }} a {{ idea.group }}
+                    </div>
                     <div class="description">
                         {{ idea.description | truncate(200) }}
                     </div>

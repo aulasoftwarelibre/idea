@@ -26,7 +26,8 @@ class IdeaRepository extends CeoRepository
         $query = $this->getEntityManager()
             ->createQuery('
                 SELECT i
-                FROM App:Idea i
+                FROM App:Idea i 
+                ORDER BY i.createdAt DESC
             ');
 
         return $this->createPaginator($query, $page);

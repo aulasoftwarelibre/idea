@@ -44,7 +44,7 @@ abstract class CeoRepository extends EntityRepository
      */
     protected function createPaginator(Query $query, int $page): Pagerfanta
     {
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($query));
+        $paginator = new Pagerfanta(new DoctrineORMAdapter($query, false));
         $paginator->setMaxPerPage(self::NUM_ITEMS);
         $paginator->setCurrentPage($page);
 
