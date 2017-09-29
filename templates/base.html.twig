@@ -56,6 +56,7 @@
 <div class="pusher">
     <div class="ui inverted vertical masthead center aligned segment">
         <div class="ui container">
+
             <div id="topmenu" class="ui large secondary inverted pointing menu">
                 <a class="toc item">
                     <i class="sidebar icon"></i>
@@ -84,22 +85,36 @@
 
     <div class="full height">
 
-        <div class="ui vertical stripe segment">
+        <div class="ui main container">
+            <div id="main" class="ui vertical stripe segment" style="max-width: 800px;">
 
-            <div class="ui text container">
-                {% block flash_messages %}
-                    {% for type, flashMessages in app.session.flashbag.all() %}
-                        {% for flashMessage in flashMessages %}
-                            <div class="ui {{ type }} floating message">
-                                {{- flashMessage -}}
-                            </div>
+                <div class="ui right dividing rail">
+                    <div class="ui vertical stripe sticky" style="left: 1000px">
+                        <div class="ui header">Grupos</div>
+                        <div class="ui list">
+                            <div class="item">Aula de Software Libre</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui text container">
+                    {% block flash_messages %}
+                        {% for type, flashMessages in app.session.flashbag.all() %}
+                            {% for flashMessage in flashMessages %}
+                                <div class="ui {{ type }} floating message">
+                                    {{- flashMessage -}}
+                                </div>
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                {% endblock flash_messages %}
+                    {% endblock flash_messages %}
 
-                {% block body %}{% endblock %}
+                    {% block body %}{% endblock %}
+
+                </div>
+
             </div>
         </div>
+
     </div>
 
     <div class="ui inverted vertical footer segment">
@@ -116,6 +131,14 @@
     <script type="application/javascript" src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
     <script type="application/javascript" src="{{ asset('components/semantic/dist/semantic.min.js') }}"></script>
     <script type="application/javascript" src="{{ asset('assets/script/script.js') }}"></script>
+
+    <script>
+        $('.ui.sticky')
+            .sticky({
+                context: '#main'
+            })
+        ;
+    </script>
 {% endblock %}
 
 </html>
