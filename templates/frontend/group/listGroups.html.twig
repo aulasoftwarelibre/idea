@@ -1,0 +1,14 @@
+<div class="ui right dividing rail">
+    <div class="ui vertical stripe sticky" style="left: 1000px">
+        <div class="ui header">Grupos</div>
+        <div class="ui list">
+            {% for group in groups %}
+                <div class="item">
+                    <a href="{{ path('ideasByGroup',{'group': group.id}) }}">
+                        {{ group.name }}
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>

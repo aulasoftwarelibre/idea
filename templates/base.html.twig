@@ -88,15 +88,9 @@
 
         <div class="ui main container">
             <div id="main" class="ui vertical stripe segment" style="max-width: 800px;">
-
-                <div class="ui right dividing rail">
-                    <div class="ui vertical stripe sticky" style="left: 1000px">
-                        <div class="ui header">Grupos</div>
-                        <div class="ui list">
-                            <a href="{{ path('ideasByGroup', {'group': 1}) }}" class="item">Aula de Software Libre</a>
-                        </div>
-                    </div>
-                </div>
+                {{ render(controller(
+                'App\\Controller\\GroupController:listGroupsAction'
+                )) }}
 
                 <div class="ui text container">
                     {% block flash_messages %}
