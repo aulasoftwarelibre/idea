@@ -10,17 +10,26 @@
 
 {% import _self as widgets %}
 
-<div class="two wide column">
-    <div class="ui statistic">
-        <div class="value">
-            {{ idea.votes | length }}
-        </div>
-        <div class="label">
-            Votos
+<div class="three wide column">
+    <div class="ui center aligned basic segment">
+        <div class="ui card">
+            <div class="content">
+                <div class="ui statistic">
+                    <div class="value">
+                        {{ idea.votes | length }}
+                    </div>
+                    <div class="label">
+                        Votos
+                    </div>
+                </div>
+            </div>
+            <button class="fluid ui bottom icon attached button">
+                <i class="plus icon"></i>
+            </button>
         </div>
     </div>
 </div>
-<div class="fourteen wide column">
+<div class="thirteen wide column">
     <div class="ui fluid card">
         <div class="content">
             {{ widgets.ribbon(idea.state) }}
