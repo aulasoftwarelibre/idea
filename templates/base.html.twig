@@ -88,7 +88,34 @@
 
         <div class="ui main container">
             <div id="main" class="ui vertical stripe segment" style="max-width: 800px;">
-                {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}
+
+                <div class="ui right dividing rail">
+                    <div class="ui vertical stripe sticky" style="left: 1000px">
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <div class="ui card">
+                                <div class="content">
+                                    <img class="right floated mini ui image" src="{{ gravatar(app.user.email) }}">
+                                    <div class="header">
+                                        Hola, {{ app.user.firstname  }}
+                                    </div>
+                                    <div class="meta">
+
+                                    </div>
+                                    <div class="description">
+                                        {{ app.user.degree }}
+                                    </div>
+                                </div>
+                                <a class="ui bottom attached button" href="{{ path('profile_edit') }}">
+                                    <i class="edit icon"></i>
+                                    Editar perfil
+                                </a>
+                            </div>
+                        {% endif %}
+
+                        {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}
+                    </div>
+                </div>
+
 
                 {% block flash_messages %}
                     {% for type, flashMessages in app.session.flashbag.all() %}

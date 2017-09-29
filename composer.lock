@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "8af526c5539f6be98d8b24b939194d65",
+    "content-hash": "74d75d82375ca353f6d10eb271478bbf",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -1474,6 +1474,56 @@
             "time": "2017-07-02T09:46:37+00:00"
         },
         {
+            "name": "harmony-project/ui-bundle",
+            "version": "1.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/harmony-project/ui-bundle.git",
+                "reference": "6e4d421864df822e862ecdf0fd282ec39a3f8257"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/harmony-project/ui-bundle/zipball/6e4d421864df822e862ecdf0fd282ec39a3f8257",
+                "reference": "6e4d421864df822e862ecdf0fd282ec39a3f8257",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0",
+                "symfony/http-kernel": "~3.0|~4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.0"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Harmony\\Bundle\\UiBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Tim Goudriaan",
+                    "homepage": "http://codedmonkey.com"
+                }
+            ],
+            "description": "Integrates Semantic UI 2 into the Symfony framework",
+            "homepage": "http://harmony-project.io",
+            "keywords": [
+                "semantic-ui",
+                "symfony"
+            ],
+            "time": "2017-08-06T14:52:03+00:00"
+        },
+        {
             "name": "jdorn/sql-formatter",
             "version": "v1.2.17",
             "source": {
@@ -2240,6 +2290,69 @@
                 "markdown"
             ],
             "time": "2016-10-29T18:58:20+00:00"
+        },
+        {
+            "name": "ornicar/gravatar-bundle",
+            "version": "1.1.4",
+            "target-dir": "Ornicar/GravatarBundle",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/henrikbjorn/GravatarBundle.git",
+                "reference": "1a35eefa0ec358fe3c547f5f962ed3c67ae743f6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/henrikbjorn/GravatarBundle/zipball/1a35eefa0ec358fe3c547f5f962ed3c67ae743f6",
+                "reference": "1a35eefa0ec358fe3c547f5f962ed3c67ae743f6",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "symfony/framework-bundle": "~3.0|~2.0"
+            },
+            "conflict": {
+                "twig/twig": "<1.12"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "~2.7",
+                "twig/extensions": "1.0.*"
+            },
+            "suggest": {
+                "twig/twig": "For gravatar twig extension usage"
+            },
+            "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-0": {
+                    "Ornicar\\GravatarBundle\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Thibault Duplessis",
+                    "email": "thibault.duplessis@gmail.com"
+                },
+                {
+                    "name": "Henrik Bjørnskov",
+                    "email": "henrik@bjrnskov.dk"
+                }
+            ],
+            "description": "This bundles provides a Gravatar API various utilities to work with it in templates",
+            "keywords": [
+                "Symfony2",
+                "gravatar",
+                "templating",
+                "twig"
+            ],
+            "time": "2016-02-09T14:23:53+00:00"
         },
         {
             "name": "pagerfanta/pagerfanta",

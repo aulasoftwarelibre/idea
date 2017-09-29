@@ -15,6 +15,10 @@ services:
         public: false
 
     # DoctrineBundle
+    App\Repository\DegreeRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Degree']
+
     App\Repository\IdeaRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Idea']
@@ -26,6 +30,10 @@ services:
     App\Repository\ThreadRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Thread']
+
+    App\Repository\UserRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\User']
 
     App\Repository\VoteRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']

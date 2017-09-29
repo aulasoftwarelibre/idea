@@ -1,0 +1,76 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    <h2 class="ui header">Editar perfil
+
+    <div class="ui divider"></div>
+
+    <div class="ui grid">
+        <div class="two column">
+            {{ form_start(form, {method: 'POST', action: path('profile_update')}) }}
+            {{ form_widget(form) }}
+
+            <div class="ui divider"></div>
+
+            {#<button class="ui button" type="submit">Enviar</button>#}
+
+            <div class="ui submit button">Guardar</div>
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>
+        $('select')
+            .dropdown({ fullTextSearch: true })
+        ;
+        $.fn.form.settings.rules.isStudent = function(value) {
+            var collective = $('.ui.form').form('get value', 'profile[collective]');
+
+            return collective !== 'student' || value;
+        };
+
+        $('.ui.form')
+            .form({
+                on: 'blur',
+                inline : true,
+                fields: {
+                    profile_firstname: {
+                        identifier: 'profile_firstname',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica tu nombre'
+                        }]
+                    },
+                    profile_lastname: {
+                        identifier: 'profile_lastname',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica tus apellidos'
+                        }]
+                    },
+                    profile_collective: {
+                        identifier: 'profile_collective',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica tu colectivo'
+                        }]
+                    },
+                    profile_degree: {
+                        identifier: 'profile_degree',
+                        depends: 'profile_collective',
+                        rules: [{
+                            type: 'isStudent',
+                            prompt: 'Si eres alumno indica tus estudios'
+                        }]
+                    }
+                }
+            })
+        ;
+    </script>
+{% endblock %}
