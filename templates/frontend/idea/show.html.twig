@@ -1,15 +1,4 @@
 {% extends "base.html.twig" %}
-{% macro ribbon(state) %}
-    {% if state == 'proposed' %}
-        <a class="ui yellow right ribbon label">{{ state | trans }}</a>
-    {% elseif state == 'approved' %}
-        <a class="ui green right ribbon label">{{ state | trans }}</a>
-    {% else %}
-        <a class="ui red right ribbon label">{{ state | trans }}</a>
-    {% endif %}
-{% endmacro %}
-
-{% import _self as widgets %}
 
 {% block body %}
     <div class="ui grid">
