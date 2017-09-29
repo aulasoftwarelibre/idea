@@ -1,0 +1,5 @@
+idea_num_comments: '%count% comentario|%count% comentarios'
+
+rejected: 'Rechazada'
+proposed: 'Nueva'
+approved: 'Aprobada'
