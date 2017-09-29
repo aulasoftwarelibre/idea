@@ -12,7 +12,7 @@
     {% if ideas.haveToPaginate %}
         <div class="ui basic center aligned segment">
             <div class="ui pagination menu">
-                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'ideasByGroup_paginated'}) }}
+                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'ideasByGroup_paginated', routeParams: {'group': group_id}}) }}
             </div>
         </div>
     {% endif %}

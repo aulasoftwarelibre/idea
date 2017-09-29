@@ -41,6 +41,7 @@ class IdeasByGroupController extends Controller
 
         return $this->render('frontend/idea/ideasByGroup.html.twig', [
             'ideas' => $ideas,
+            'group_id' => $group->getId(),
         ]);
     }
 }
