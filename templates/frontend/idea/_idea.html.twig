@@ -23,9 +23,21 @@
                     </div>
                 </div>
             </div>
-            <button class="fluid ui bottom icon attached button">
-                <i class="plus icon"></i>
+            {% if is_voted(idea) %}
+            <button class="ui animated fluid bottom attached green button">
+                <div class="visible content"><i class="users icon"></i></div>
+                <div class="hidden content">
+                    SALIR
+                </div>
             </button>
+            {% else %}
+            <button class="ui animated fluid bottom attached button">
+                <div class="visible content"><i class="plus icon"></i></div>
+                <div class="hidden content">
+                    UNIRTE
+                </div>
+            </button>
+            {% endif %}
         </div>
     </div>
 </div>
