@@ -35,9 +35,7 @@ class GetIdeasByGroupHandler
     public function handle(GetIdeasByGroupQuery $query): Pagerfanta
     {
         $page = $query->getPage();
-
-        $user = $query->getUser();
-        $group = $user->getGroup();
+        $group = $query->getGroup();
 
         return $this->repository->findByGroup($group, $page);
     }

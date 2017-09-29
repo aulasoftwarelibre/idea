@@ -39,7 +39,7 @@ class IdeaRepository extends CeoRepository
      *
      * @return Pagerfanta
      */
-    public function findByGroup(Group $group, int $page = 2): Pagerfanta
+    public function findByGroup(Group $group, int $page = 1): Pagerfanta
     {
         $em = $this->getEntityManager();
         $query = $em->createQuery(

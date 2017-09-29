@@ -11,18 +11,18 @@
 
 namespace App\Command;
 
-use App\Entity\User;
+use App\Entity\Group;
 
 class GetIdeasByGroupQuery
 {
     private $page;
 
-    private $user;
+    private $group;
 
-    public function __construct(int $page, User $user)
+    public function __construct(int $page = 1, Group $group)
     {
         $this->page = $page;
-        $this->user = $user;
+        $this->group = $group;
     }
 
     /**
@@ -44,16 +44,16 @@ class GetIdeasByGroupQuery
     /**
      * @return mixed
      */
-    public function getUser()
+    public function getGroup()
     {
-        return $this->user;
+        return $this->group;
     }
 
     /**
-     * @param mixed $user
+     * @param mixed $group
      */
-    public function setUser($user)
+    public function setGroup($group)
     {
-        $this->user = $user;
+        $this->group = $group;
     }
 }
