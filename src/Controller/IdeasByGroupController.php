@@ -1,9 +1,12 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: omarsotillo
- * Date: 29/09/17
- * Time: 13:20
+
+/*
+ * This file is part of the ceo project.
+ *
+ * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 
 namespace App\Controller;
@@ -31,8 +34,7 @@ class IdeasByGroupController extends Controller
     public function __invoke(Group $group, int $page): Response
     {
         $ideas = $this->bus->handle(
-            new GetIdeasByGroupQuery
-            (
+            new GetIdeasByGroupQuery(
                 $page, $group
             )
         );
@@ -40,8 +42,5 @@ class IdeasByGroupController extends Controller
         return $this->render('frontend/idea/ideasByGroup.html.twig', [
             'ideas' => $ideas,
         ]);
-
     }
-
-
 }

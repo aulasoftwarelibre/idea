@@ -19,7 +19,7 @@ class GetIdeasByGroupQuery
 
     private $group;
 
-    public function __construct(int $page = 1, Group $group)
+    public function __construct(int $page, Group $group)
     {
         $this->page = $page;
         $this->group = $group;
