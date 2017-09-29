@@ -11,13 +11,15 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Sonata\UserBundle\Entity\BaseGroup;
 
 /**
  * Class Group.
  *
- * @ORM\Entity()
+ * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
  */
 class Group extends BaseGroup
@@ -31,10 +33,24 @@ class Group extends BaseGroup
     protected $id;
 
     /**
+     * @var string
+     * @ORM\Column(length=255, unique=true)
+     * @Gedmo\Slug(fields={"name"}, unique=true)
+     */
+    private $slug;
+
+    /**
      * @var Idea[]
      * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $ideas;
+
+    public function __construct($name, array $roles = [])
+    {
+        parent::__construct($name, $roles);
+
+        $this->ideas = new ArrayCollection();
+    }
 
     /**
      * @return Idea[]
@@ -62,5 +78,13 @@ class Group extends BaseGroup
     public function removeIdea(Idea $idea)
     {
         $this->ideas->removeElement($idea);
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug(): string
+    {
+        return $this->slug;
     }
 }

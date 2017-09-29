@@ -11,10 +11,10 @@
 {% import _self as widgets %}
 
 <div class="three wide column">
-    <div class="ui center aligned basic segment">
+    <div class="ui center aligned basic segment counter">
         <div class="ui card">
             <div class="content">
-                <div class="ui statistic">
+                <div class="ui small statistic">
                     <div class="value">
                         {{ idea.votes | length }}
                     </div>
@@ -45,7 +45,7 @@
     <div class="ui fluid card">
         <div class="content">
             {{ widgets.ribbon(idea.state) }}
-            <a  href="{{ path('idea_show', {'id': idea.id}) }}" class="header">
+            <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
                 {{ idea.title }}
             </a>
             <div class="meta">

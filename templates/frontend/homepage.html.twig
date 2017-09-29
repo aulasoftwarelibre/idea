@@ -1,19 +1,5 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="ui grid">
-        {% for idea in ideas %}
-            {% include('/frontend/idea/_idea.html.twig') %}
-        {% else %}
-        <div>No hay ideas :(</div>
-        {% endfor %}
-    </div>
-
-    {% if ideas.haveToPaginate %}
-        <div class="ui basic center aligned segment">
-            <div class="ui pagination menu">
-                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'homepage_paginated'}) }}
-            </div>
-        </div>
-    {% endif %}
+    {% include '/frontend/idea/list.html.twig' with {'ideas': ideas, 'page_route': 'homepage_paginated'} %}
 {% endblock %}

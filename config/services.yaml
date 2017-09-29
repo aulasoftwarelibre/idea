@@ -19,6 +19,10 @@ services:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Idea']
 
+    App\Repository\GroupRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Group']
+
     App\Repository\ThreadRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Thread']

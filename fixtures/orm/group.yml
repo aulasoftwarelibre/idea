@@ -1,3 +1,5 @@
 \App\Entity\Group:
     group_asl:
         __construct: ['Aula de Software Libre']
+    group_ceeps:
+        __construct: ['CEEPS']

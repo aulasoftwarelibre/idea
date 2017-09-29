@@ -11,16 +11,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Group;
+use App\Repository\GroupRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class GroupController extends Controller
 {
-    public function listGroupsAction()
+    public function listGroupsAction(GroupRepository $repository)
     {
-        $groups = $this->getDoctrine()->getRepository(Group::class)->findAll();
+        $groups = $repository->findBy([], ['name' => 'ASC']);
 
-        return $this->render('frontend/group/listGroups.html.twig', [
+        return $this->render('frontend/group/_groups.twig', [
             'groups' => $groups, ]);
     }
 }

@@ -4,7 +4,7 @@
         description: '<paragraphs(3, true)>'
         closed: '<boolean(10)>'
         owner: '@user_*'
-        group: '@group_asl'
+        group: '@group_*'
         state: '<randomElement(["proposed", "rejected", "approved"])>'
         createdAt: '<dateTimeBetween("-1 month")>'
         updatedAt: '@self->createdAt'

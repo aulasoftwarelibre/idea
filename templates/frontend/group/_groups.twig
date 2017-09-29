@@ -4,7 +4,7 @@
         <div class="ui list">
             {% for group in groups %}
                 <div class="item">
-                    <a href="{{ path('ideasByGroup',{'group': group.id}) }}">
+                    <a href="{{ path('idea_group_index',{'slug': group.slug}) }}">
                         {{ group.name }}
                     </a>
                 </div>
