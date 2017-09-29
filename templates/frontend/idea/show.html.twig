@@ -42,5 +42,22 @@
             </div>
     </div>
 
-    {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}
+    <div class="ui divider"></div>
+
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}
+    {% else %}
+        <div class="ui floating icon message">
+            <i class="add user icon"></i>
+            <div class="content">
+                <div class="header">
+                    ¿Quieres participar?
+                </div>
+                <p>
+                    <a href="{{ path('login') }}">Inicia sesión</a> para dejar un comentario.
+                </p>
+            </div>
+        </div>
+
+    {% endif %}
 {% endblock %}
