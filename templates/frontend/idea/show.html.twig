@@ -42,7 +42,5 @@
             </div>
     </div>
 
-    <div class="ui comments">
-        {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}
-    </div>
+    {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}
 {% endblock %}
