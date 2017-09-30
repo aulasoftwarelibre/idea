@@ -12,8 +12,10 @@
 namespace App\Controller;
 
 use App\Command\AddIdeaCommand;
+use App\Command\AddVoteCommand;
 use App\Command\GetIdeasByGroupQuery;
 use App\Command\GetIdeasByPageQuery;
+use App\Command\RemoveVoteCommand;
 use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
@@ -100,6 +102,42 @@ class IdeaController extends Controller
             'form' => $form->createView(),
             'idea' => $idea,
         ]);
+    }
+
+    /**
+     * @Route("/{slug}/join", name="idea_join")
+     * @Method({"POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function joinAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new AddVoteCommand(
+                $idea,
+                $this->getUser()
+            )
+        );
+        $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+    }
+
+    /**
+     * @Route("/{slug}/leave", name="idea_leave")
+     * @Method({"POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function leaveAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new RemoveVoteCommand(
+                $idea,
+                $this->getUser()
+            )
+        );
+        $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
     }
 
     /**

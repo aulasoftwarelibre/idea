@@ -10,6 +10,10 @@ tactician:
     security:
         App\Command\AddIdeaCommand:
             - 'IS_AUTHENTICATED_FULLY'
+        App\Command\AddVoteCommand:
+            - 'IS_AUTHENTICATED_FULLY'
+        App\Command\RemoveVoteCommand:
+            - 'IS_AUTHENTICATED_FULLY'
         App\Command\GetIdeasByPageQuery:
             - 'IS_AUTHENTICATED_ANONYMOUSLY'
         App\Command\GetIdeasByGroupQuery:

@@ -32,19 +32,23 @@
                 EDITAR
             </a>
             {% elseif is_voted(idea) %}
+            <form action="{{ path('idea_leave', {slug: idea.slug}) }}" method="POST">
             <button class="ui animated fluid bottom attached green button">
                 <div class="visible content"><i class="users icon"></i></div>
                 <div class="hidden content">
                     SALIR
                 </div>
             </button>
+            </form>
             {% else %}
-            <button class="ui animated fluid bottom attached button">
-                <div class="visible content"><i class="plus icon"></i></div>
-                <div class="hidden content">
-                    UNIRTE
-                </div>
-            </button>
+            <form action="{{ path('idea_join', {slug: idea.slug}) }}" method="POST">
+                <button type="submit" class="ui animated fluid bottom attached button">
+                    <div class="visible content"><i class="plus icon"></i></div>
+                    <div class="hidden content">
+                        UNIRTE
+                    </div>
+                </button>
+            </form>
             {% endif %}
         </div>
     </div>
