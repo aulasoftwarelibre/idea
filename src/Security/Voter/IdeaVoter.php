@@ -23,7 +23,7 @@ class IdeaVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [static::OWNER, static::EDIT])) {
+        if (!in_array($attribute, [static::OWNER, static::EDIT], true)) {
             return false;
         }
 
@@ -38,6 +38,11 @@ class IdeaVoter extends Voter
     {
         /** @var User $user */
         $user = $token->getUser();
+
+        if (!$user instanceof User) {
+            return false;
+        }
+
         /** @var Idea $idea */
         $idea = $subject;
 
