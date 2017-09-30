@@ -13,4 +13,18 @@ namespace App\Repository;
 
 class UserRepository extends CeoRepository
 {
+    public function getProfile(int $userId)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT o, g, d
+                FROM App:User o
+                LEFT JOIN o.groups g
+                LEFT JOIN o.degree d
+                WHERE o.id = :id
+            ')
+            ->setParameter('id', $userId)
+            ->getOneOrNullResult()
+            ;
+    }
 }

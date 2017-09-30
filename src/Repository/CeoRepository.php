@@ -18,7 +18,7 @@ use Pagerfanta\Pagerfanta;
 
 abstract class CeoRepository extends EntityRepository
 {
-    const NUM_ITEMS = 10;
+    const NUM_ITEMS = 5;
 
     /**
      * @param $object
