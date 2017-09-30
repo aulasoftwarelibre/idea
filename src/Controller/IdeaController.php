@@ -11,13 +11,19 @@
 
 namespace App\Controller;
 
+use App\Command\AddIdeaCommand;
 use App\Command\GetIdeasByGroupQuery;
 use App\Command\GetIdeasByPageQuery;
+use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
+use App\Form\Type\IdeaType;
 use League\Tactician\CommandBus;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -36,11 +42,73 @@ class IdeaController extends Controller
     }
 
     /**
+     * @Route("/new", name="idea_new")
+     * @Method({"GET", "POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function newAction(Request $request)
+    {
+        $form = $this->createForm(IdeaType::class, new Idea());
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $idea = $this->bus->handle(
+                new AddIdeaCommand(
+                    $form->getData()->getTitle(),
+                    $form->getData()->getDescription(),
+                    $this->getUser(),
+                    $form->getData()->getGroup()
+                )
+            );
+
+            $this->addFlash('positive', 'Idea creada con éxito');
+
+            return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        }
+
+        return $this->render('frontend/idea/new.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/{slug}/edit", name="idea_edit")
+     * @Method({"GET", "POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('IDEA_OWNER', idea)")
+     */
+    public function editAction(Idea $idea, Request $request)
+    {
+        $form = $this->createForm(IdeaType::class, $idea);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $idea = $this->bus->handle(
+                new UpdateIdeaCommand(
+                    $idea,
+                    $form->getData()->getTitle(),
+                    $form->getData()->getDescription(),
+                    $form->getData()->getGroup()
+                )
+            );
+
+            $this->addFlash('positive', 'Idea actualizada con éxito');
+
+            return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        }
+
+        return $this->render('frontend/idea/edit.html.twig', [
+            'form' => $form->createView(),
+            'idea' => $idea,
+        ]);
+    }
+
+    /**
      * @Route("/{slug}", name="idea_show")
      */
     public function showAction(Idea $idea)
     {
         return $this->render('frontend/idea/show.html.twig', [
+            'complete' => true,
             'idea' => $idea,
         ]);
     }

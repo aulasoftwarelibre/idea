@@ -8,6 +8,8 @@ tactician:
              - tactician.middleware.doctrine
              - tactician.middleware.command_handler
     security:
+        App\Command\AddIdeaCommand:
+            - 'IS_AUTHENTICATED_FULLY'
         App\Command\GetIdeasByPageQuery:
             - 'IS_AUTHENTICATED_ANONYMOUSLY'
         App\Command\GetIdeasByGroupQuery:

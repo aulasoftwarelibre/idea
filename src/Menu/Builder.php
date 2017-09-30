@@ -42,6 +42,7 @@ class Builder
         $menu->addChild('Inicio', ['route' => 'homepage'])->setExtra('icon', 'home');
 
         if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $menu->addChild('Añadir idea', ['route' => 'idea_new'])->setExtra('icon', 'add');
         }
 
         return $menu;
@@ -54,6 +55,7 @@ class Builder
         $menu->addChild('Inicio', ['route' => 'homepage'])->setExtra('icon', 'home');
 
         if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+            $menu->addChild('Añadir idea', ['route' => 'idea_new'])->setExtra('icon', 'add');
         }
 
         return $menu;

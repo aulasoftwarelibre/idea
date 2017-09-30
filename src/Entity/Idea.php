@@ -49,6 +49,7 @@ class Idea
     /**
      * @var string
      * @ORM\Column(type="text")
+     * @Assert\Length(min="10")
      * @Assert\NotBlank()
      */
     private $description;
@@ -69,7 +70,7 @@ class Idea
     /**
      * @var string
      * @ORM\Column(length=255, unique=true)
-     * @Gedmo\Slug(fields={"title"}, unique=true)
+     * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
      */
     private $slug;
 

@@ -12,13 +12,14 @@
 namespace App\Security\Voter;
 
 use App\Command\CloseIdeaCommand;
+use App\Command\UpdateIdeaCommand;
 use App\Entity\Idea;
 use App\Entity\User;
 use App\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class CloseIdeaVoter extends Voter
+class OwnerIdeaCommandVoter extends Voter
 {
     const HANDLE = 'handle';
     /**
@@ -36,13 +37,19 @@ class CloseIdeaVoter extends Voter
 
     protected function supports($attribute, $subject)
     {
-        if (!$subject instanceof CloseIdeaCommand) {
+        if (static::HANDLE !== $attribute) {
             return false;
         }
 
-        return in_array($attribute, [
-            static::HANDLE,
-        ], true);
+        if ($subject instanceof CloseIdeaCommand) {
+            return true;
+        }
+
+        if ($subject instanceof UpdateIdeaCommand) {
+            return true;
+        }
+
+        return false;
     }
 
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
@@ -56,19 +63,8 @@ class CloseIdeaVoter extends Voter
         /** @var Idea $idea */
         $idea = $subject->getIdea();
 
-        switch ($attribute) {
-            case self::HANDLE:
-                return $this->canHandle($idea, $user);
-        }
-
-        throw new \LogicException('This code should not be reached');
-    }
-
-    private function canHandle(Idea $idea, User $user)
-    {
-        return
-            $idea->getOwner()->getId() === $user->getId()
-            || in_array('ROLE_ADMIN', $user->getRoles(), true)
-        ;
+        return $user->equalsTo($idea->getOwner())
+            || $user->hasRole('ROLE_ADMIN')
+            ;
     }
 }

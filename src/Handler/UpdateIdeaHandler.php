@@ -11,44 +11,32 @@
 
 namespace App\Handler;
 
-use App\Command\AddIdeaCommand;
-use App\Entity\Idea;
-use App\Entity\Vote;
+use App\Command\UpdateIdeaCommand;
 use App\Repository\IdeaRepository;
 
-class AddIdeaHandler
+class UpdateIdeaHandler
 {
     /**
      * @var IdeaRepository
      */
     private $repository;
 
-    /**
-     * AddIdeaHandler constructor.
-     */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function handle(AddIdeaCommand $command)
+    public function handle(UpdateIdeaCommand $command)
     {
+        $idea = $command->getIdea();
         $title = $command->getTitle();
         $description = $command->getDescription();
-        $user = $command->getUser();
         $group = $command->getGroup();
 
-        $vote = new Vote();
-        $vote->setUser($user);
-
-        $idea = new Idea();
         $idea
             ->setTitle($title)
             ->setDescription($description)
-            ->setOwner($user)
-            ->setGroup($group)
-            ->addVote($vote)
-        ;
+            ->setGroup($group);
 
         $this->repository->add($idea);
 

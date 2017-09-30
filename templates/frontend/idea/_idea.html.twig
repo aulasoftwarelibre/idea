@@ -23,7 +23,11 @@
                     </div>
                 </div>
             </div>
-            {% if is_voted(idea) %}
+            {% if idea.closed %}
+            <div class="ui fluid bottom attached red button">
+                CERRADA
+            </div>
+            {% elseif is_voted(idea) %}
             <button class="ui animated fluid bottom attached green button">
                 <div class="visible content"><i class="users icon"></i></div>
                 <div class="hidden content">
@@ -52,7 +56,11 @@
                 Enviado {{ idea.createdAt | time_diff }} por {{ idea.owner }} a {{ idea.group }}
             </div>
             <div class="description">
-                {{ idea.description | truncate(200) }}
+                {% if complete is defined %}
+                    {{ idea.description | raw }}
+                {% else %}
+                    {{ idea.description | striptags | truncate(200) }}
+                {% endif %}
             </div>
         </div>
         <div class="extra content">
