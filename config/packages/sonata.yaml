@@ -61,9 +61,9 @@ sonata_formatter:
 sonata_user:
     security_acl: false
     manager_type: 'orm' # can be orm or mongodb
-#    admin:
-#        user:
-#            class:    'Greco\Organization\Presentation\Sonata\Admin\UserAdmin'
+    admin:
+        user:
+            class:    'App\Admin\UserAdmin'
     class:
         user:         'App\Entity\User'
         group:         'App\Entity\Group'
@@ -72,6 +72,11 @@ sonata_user:
 
 
 services:
+    eco.admin.degree:
+        class: App\Admin\DegreeAdmin
+        arguments: [~, App\Entity\Degree, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.degree }
     eco.admin.idea:
         class: App\Admin\IdeaAdmin
         arguments: [~, App\Entity\Idea, ~]

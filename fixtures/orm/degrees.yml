@@ -1,0 +1,67 @@
+App\Entity\Degree:
+    degree_1:
+        name: Grado en Administración y Dirección de Empresas
+    degree_2:
+        name: Grado en Biología
+    degree_3:
+        name: Grado en Bioquímica
+    degree_4:
+        name: Grado en Ciencias Ambientales
+    degree_5:
+        name: Grado en Cine y Cultura
+    degree_6:
+        name: Grado en Derecho
+    degree_7:
+        name: Grado en Educación Infantil
+    degree_8:
+        name: Grado en Educación Infantil (Itinerario Bilingüe)
+    degree_9:
+        name: Grado en Educación Primaria
+    degree_10:
+        name: Grado en Educación Primaria (Itinerario Bilingüe)
+    degree_11:
+        name: Grado en Educación Social
+    degree_12:
+        name: Grado en Enfermería
+    degree_13:
+        name: Grado en Estudios Ingleses
+    degree_14:
+        name: Grado en Filología Hispánica
+    degree_15:
+        name: Grado en Fisica
+    degree_16:
+        name: Grado en Fisioterapia
+    degree_17:
+        name: Grado en Gestión Cultural
+    degree_18:
+        name: Grado en Historia
+    degree_19:
+        name: Grado en Historia del Arte
+    degree_20:
+        name: Grado en Ingeniería Agroalimentaria y del Medio Rural
+    degree_21:
+        name: Grado en Ingeniería Civil
+    degree_22:
+        name: Grado en Ingeniería Eléctrica
+    degree_23:
+        name: Grado en Ingeniería Electrónica Industrial
+    degree_24:
+        name: Grado en Ingeniería Forestal
+    degree_25:
+        name: Grado en Ingeniería Informática
+    degree_26:
+        name: Grado en Ingeniería Mecánica
+    degree_27:
+        name: Grado en Ingeniería en Recursos Energéticos y Mineros
+    degree_28:
+        name: Grado en Medicina
+    degree_29:
+        name: Grado en Química
+    degree_30:
+        name: Grado en Relaciones Laborales y Recursos Humanos
+    degree_31:
+        name: Grado en Traducción e Interpretación
+    degree_32:
+        name: Grado en Turismo
+    degree_33:
+        name: Grado en Veterinaria

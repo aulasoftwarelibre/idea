@@ -4,6 +4,7 @@
         enabled: true
         groups: ['@group_asl']
         roles: ['ROLE_USER']
+        firstname: <>
     user_admin (extends user):
         username: 'admin@uco.es'
         email: 'admin@uco.es'

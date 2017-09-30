@@ -25,10 +25,8 @@ class IdeaRepository extends CeoRepository
     {
         $query = $this->getEntityManager()
             ->createQuery('
-                SELECT i, v, u, g, o
+                SELECT i, g, o
                 FROM App:Idea i
-                LEFT JOIN i.votes v
-                LEFT JOIN v.user u
                 LEFT JOIN i.group g
                 LEFT JOIN i.owner o
                 ORDER BY i.createdAt DESC
@@ -47,10 +45,8 @@ class IdeaRepository extends CeoRepository
     {
         $query = $this->getEntityManager()
             ->createQuery('
-                SELECT i, v, u, g, o
+                SELECT i, g, o
                 FROM App:Idea i
-                LEFT JOIN i.votes v
-                LEFT JOIN v.user u
                 LEFT JOIN i.group g
                 LEFT JOIN i.owner o
                 WHERE i.group = :groupId
