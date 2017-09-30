@@ -58,6 +58,11 @@ class Vote
      */
     private $idea;
 
+    public function __toString()
+    {
+        return $this->getUser()->getUsername();
+    }
+
     /**
      * @return int
      */

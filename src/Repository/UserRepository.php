@@ -13,6 +13,21 @@ namespace App\Repository;
 
 class UserRepository extends CeoRepository
 {
+    public function getChoices()
+    {
+        $users = $this->createQueryBuilder('o')
+            ->select('o.id as id, o.username as username')
+            ->getQuery()
+            ->getArrayResult();
+
+        $result = [];
+        foreach ($users as $user) {
+            $result[$user['username']] = $user['id'];
+        }
+
+        return $result;
+    }
+
     public function getProfile(int $userId)
     {
         return $this->getEntityManager()
