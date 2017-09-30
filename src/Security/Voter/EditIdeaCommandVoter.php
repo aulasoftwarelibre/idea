@@ -19,7 +19,7 @@ use App\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class OwnerIdeaCommandVoter extends Voter
+class EditIdeaCommandVoter extends Voter
 {
     const HANDLE = 'handle';
     /**

@@ -74,7 +74,7 @@ class IdeaController extends Controller
     /**
      * @Route("/{slug}/edit", name="idea_edit")
      * @Method({"GET", "POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('IDEA_OWNER', idea)")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', idea)")
      */
     public function editAction(Idea $idea, Request $request)
     {

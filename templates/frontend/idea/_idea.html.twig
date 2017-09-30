@@ -27,6 +27,10 @@
             <div class="ui fluid bottom attached red button">
                 CERRADA
             </div>
+            {% elseif is_granted('OWNER', idea) %}
+            <a class="ui fluid bottom attached green button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
+                EDITAR
+            </a>
             {% elseif is_voted(idea) %}
             <button class="ui animated fluid bottom attached green button">
                 <div class="visible content"><i class="users icon"></i></div>
