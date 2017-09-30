@@ -92,24 +92,7 @@
                 <div class="ui right dividing rail">
                     <div class="ui vertical stripe sticky" style="left: 1000px">
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            <div class="ui card">
-                                <div class="content">
-                                    <img class="right floated mini ui image" src="{{ gravatar(app.user.email) }}">
-                                    <div class="header">
-                                        Hola, {{ app.user.firstname  }}
-                                    </div>
-                                    <div class="meta">
-
-                                    </div>
-                                    <div class="description">
-                                        {{ app.user.degree }}
-                                    </div>
-                                </div>
-                                <a class="ui bottom attached button" href="{{ path('profile_edit') }}">
-                                    <i class="edit icon"></i>
-                                    Editar perfil
-                                </a>
-                            </div>
+                            {{ render(controller('App\\Controller\\ProfileController:showCard')) }}
                         {% endif %}
 
                         {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}
@@ -138,7 +121,10 @@
 
     <div class="ui inverted vertical footer segment">
         <div class="ui container">
-            <p>Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a> en colaboración con el CEEPS.</p>
+            <p>
+                Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a>.
+                Hospedado por el <a href="https://consejo-eps.uco.es/">CEEPS</a>.
+            </p>
         </div>
     </div>
 

@@ -1,0 +1,18 @@
+<div class="ui card">
+    <div class="content">
+        <img class="right floated mini ui image" src="{{ gravatar(profile.email) }}">
+        <div class="header">
+            Hola, {{ profile.firstname  }}
+        </div>
+        <div class="meta">
+
+        </div>
+        <div class="description">
+            {{ profile.degree }}
+        </div>
+    </div>
+    <a class="ui bottom attached button" href="{{ path('profile_edit') }}">
+        <i class="edit icon"></i>
+        Editar perfil
+    </a>
+</div>

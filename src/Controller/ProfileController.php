@@ -11,7 +11,9 @@
 
 namespace App\Controller;
 
+use App\Entity\User;
 use App\Form\Type\ProfileType;
+use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -23,6 +25,16 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ProfileController extends Controller
 {
+    /**
+     * @var UserRepository
+     */
+    private $repository;
+
+    public function __construct(UserRepository $repository)
+    {
+        $this->repository = $repository;
+    }
+
     /**
      * @Route("/", name="profile_edit")
      * @Method("GET")
@@ -63,6 +75,17 @@ class ProfileController extends Controller
 
         return $this->render('/frontend/profile/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    public function showCard()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $profile = $this->repository->getProfile($user->getId());
+
+        return $this->render('/frontend/profile/_card.html.twig', [
+            'profile' => $profile,
         ]);
     }
 }
