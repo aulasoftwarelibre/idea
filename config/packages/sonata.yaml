@@ -2,6 +2,11 @@ sonata_admin:
     templates:
         # default global templates
         layout:  '/backend/standard_layout.html.twig'
+    title: CEO
+    title_logo: 'assets/images/ceo.png'
+    options:
+        title_mode: 'single_image'
+
 sonata_block:
     default_contexts: ['cms']
     blocks:
