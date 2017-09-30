@@ -31,6 +31,7 @@
         {% block fos_comment_comment_new_form %}
             <form class="ui reply form fos_comment_comment_new_form" action="{{ url('fos_comment_post_thread_comments', url_parameters) }}" data-parent="{{ parent.id|default() }}" method="POST">
 
+                <div class="field">
                 {% block fos_comment_form_fields %}
                     <div class="fos_comment_form_errors">
                     {{ form_errors(form) }}
@@ -40,11 +41,12 @@
 
                     {{ form_rest(form) }}
                 {% endblock %}
+                </div>
 
-                <blo class="fos_comment_submit">
+                <div class="fos_comment_submit">
                     {% block fos_comment_form_submit %}
                         {% if parent is not null %}
-                            <input type="button" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_reply_cancel{% endtrans %}" class="fos_comment_comment_reply_cancel" />
+                            <input type="button" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_reply_cancel{% endtrans %}" class="ui negative button fos_comment_comment_reply_cancel" />
                         {% endif %}
                         <button type="submit" value="{% trans from 'FOSCommentBundle' %}fos_comment_comment_new_submit{% endtrans %}" class="ui blue labeled submit icon button">
                             <i class="icon edit"></i> Añadir comentario

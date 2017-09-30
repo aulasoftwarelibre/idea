@@ -1,0 +1,35 @@
+{#
+
+ This file is part of the FOSCommentBundle package.
+
+ (c) FriendsOfSymfony <http://friendsofsymfony.github.com/>
+
+ This source file is subject to the MIT license that is bundled
+ with this source code in the file LICENSE.
+
+#}
+
+<div class="fos_comment_comment_form_holder">
+    <form class="ui reply form fos_comment_comment_edit_form" action="{{ url('fos_comment_put_thread_comments', {'id': comment.thread.id, 'commentId': comment.id}) }}" method="POST">
+
+        <div class="field">
+        {% block fos_comment_form_fields %}
+            {{ form_errors(form) }}
+            {{ form_errors(form.body) }}
+            {{ form_widget(form.body) }}
+            {{ form_widget(form._token) }}
+        {% endblock %}
+        </div>
+
+        <div class="fos_comment_submit">
+            <button type="button" class="ui negative button fos_comment_comment_edit_cancel">{% trans from 'FOSCommentBundle' %}fos_comment_comment_edit_cancel{% endtrans %}</button>
+            {% block fos_comment_form_submit %}
+                <button class="ui blue labeled submit icon button" type="submit">
+                    <i class="icon edit"></i> {% trans from 'FOSCommentBundle' %}fos_comment_comment_edit_submit{% endtrans %}
+                </button>
+            {% endblock %}
+        </div>
+
+        <input type="hidden" name="_method" value="PUT">
+    </form>
+</div>
