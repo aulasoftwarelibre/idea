@@ -38,3 +38,10 @@
 
     {% endif %}
 {% endblock %}
+
+{% block side_menu %}
+    {{ parent() }}
+
+    {% include "/frontend/idea/_admin.html.twig" %}
+{% endblock %}
+

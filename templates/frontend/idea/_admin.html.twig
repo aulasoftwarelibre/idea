@@ -1,0 +1,29 @@
+{% if is_granted('ROLE_ADMIN') %}
+    <div class="ui divider"></div>
+
+    <div class="ui vertical fluid menu">
+        <div class="header item">Administrar</div>
+        {% if idea.closed %}
+            <a class="item open idea" data-slug="{{ idea.slug }}">
+                Abrir idea
+            </a>
+        {% else %}
+            <a class="item close idea" data-slug="{{ idea.slug }}">
+                Cerrar idea
+            </a>
+        {% endif %}
+        {% if idea.state != constant('App\\Entity\\Idea::STATE_APPROVED') %}
+            <a class="class item approve idea">
+                Aprobar idea
+            </a>
+        {% endif %}
+        {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
+            <a class="class item reject idea">
+                Rechazar idea
+            </a>
+        {% endif %}
+            <a class="item" href="{{ path('admin_app_idea_edit', {id: idea.id}) }}">
+                Editar idea
+            </a>
+    </div>
+{% endif %}

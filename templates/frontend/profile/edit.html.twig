@@ -2,13 +2,25 @@
 
 {% block body %}
 
+    {% if app.user.collective is empty %}
+    <div class="ui floating warning icon message">
+        <i class="exclamation icon"></i>
+        <div class="content">
+          <div class="header">
+            Debes registrarte antes de seguir.
+          </div>
+          Completa el siguiente formulario.
+        </div>
+    </div>
+    {% endif %}
+
     <h2 class="ui header">Editar perfil
 
     <div class="ui divider"></div>
 
     <div class="ui grid">
         <div class="two column">
-            {{ form_start(form, {method: 'POST', action: path('profile_update')}) }}
+            {{ form_start(form, {method: 'POST', action: path('profile_edit')}) }}
             {{ form_widget(form) }}
 
             <div class="ui divider"></div>
@@ -29,10 +41,10 @@
         $('select')
             .dropdown({ fullTextSearch: true })
         ;
-        $.fn.form.settings.rules.isStudent = function(value) {
+        $.fn.form.settings.rules.collective = function(value, required) {
             var collective = $('.ui.form').form('get value', 'profile[collective]');
 
-            return collective !== 'student' || value;
+            return collective !== required || value;
         };
 
         $('.ui.form')
@@ -65,8 +77,16 @@
                         identifier: 'profile_degree',
                         depends: 'profile_collective',
                         rules: [{
-                            type: 'isStudent',
+                            type: 'collective[student]',
                             prompt: 'Si eres alumno indica tus estudios'
+                        }]
+                    },
+                    profile_year: {
+                        identifier: 'profile_year',
+                        depends: 'profile_collective',
+                        rules: [{
+                            type: 'collective[student]',
+                            prompt: 'Indica el año de ingreso a tus estudios actuales'
                         }]
                     }
                 }

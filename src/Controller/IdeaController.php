@@ -13,8 +13,11 @@ namespace App\Controller;
 
 use App\Command\AddIdeaCommand;
 use App\Command\AddVoteCommand;
+use App\Command\ApproveIdeaCommand;
+use App\Command\CloseIdeaCommand;
 use App\Command\GetIdeasByGroupQuery;
 use App\Command\GetIdeasByPageQuery;
+use App\Command\RejectIdeaCommand;
 use App\Command\RemoveVoteCommand;
 use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
@@ -105,7 +108,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/join", name="idea_join")
+     * @Route("/{slug}/join", name="idea_join", options={"expose"=true})
      * @Method({"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
@@ -123,7 +126,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/leave", name="idea_leave")
+     * @Route("/{slug}/leave", name="idea_leave", options={"expose"=true})
      * @Method({"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
@@ -136,6 +139,76 @@ class IdeaController extends Controller
             )
         );
         $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+    }
+
+    /**
+     * @Route("/{slug}/open", name="idea_open", options={"expose"=true})
+     * @Method({"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function openAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new CloseIdeaCommand(
+                $idea,
+                false
+            )
+        );
+        $this->addFlash('positive', 'La idea se ha abierto correctamente.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+    }
+
+    /**
+     * @Route("/{slug}/close", name="idea_close", options={"expose"=true})
+     * @Method({"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function closeAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new CloseIdeaCommand(
+                $idea,
+                true
+            )
+        );
+        $this->addFlash('positive', 'La idea se ha cerrado correctamente.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+    }
+
+    /**
+     * @Route("/{slug}/approve", name="idea_approve", options={"expose"=true})
+     * @Method({"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function approveAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new ApproveIdeaCommand(
+                $idea
+            )
+        );
+        $this->addFlash('positive', 'La idea se ha aprobado correctamente.');
+
+        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+    }
+
+    /**
+     * @Route("/{slug}/reject", name="idea_reject", options={"expose"=true})
+     * @Method({"POST"})
+     * @Security("is_granted('ROLE_ADMIN')")
+     */
+    public function rejectAction(Idea $idea, Request $request)
+    {
+        $this->bus->handle(
+            new RejectIdeaCommand(
+                $idea
+            )
+        );
+        $this->addFlash('positive', 'La idea se ha rechazado correctamente.');
 
         return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
     }

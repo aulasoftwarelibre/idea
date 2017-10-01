@@ -91,11 +91,13 @@
 
                 <div class="ui right dividing rail">
                     <div class="ui vertical stripe sticky" style="left: 1000px">
+                        {% block side_menu %}
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {{ render(controller('App\\Controller\\ProfileController:showCard')) }}
                         {% endif %}
 
                         {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}
+                        {% endblock %}
                     </div>
                 </div>
 
@@ -135,15 +137,58 @@
 {% block javascripts %}
     <script type="application/javascript" src="{{ asset('components/jquery/dist/jquery.min.js') }}"></script>
     <script type="application/javascript" src="{{ asset('components/semantic/dist/semantic.min.js') }}"></script>
+    <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
+    <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
     <script type="application/javascript" src="{{ asset('assets/script/script.js') }}"></script>
 
     <script>
-        $('.ui.sticky')
-            .sticky({
-                context: '#main'
+
+        $(document).ready(function () {
+            $('.ui.sticky')
+                .sticky({
+                    context: '#main'
+                })
+            ;
+
+            $("a.close.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_close', {slug: slug}), {})
+
+                location.reload()
             })
-        ;
+            $("a.open.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_open', {slug: slug}), {})
+
+                location.reload()
+            })
+            $("a.approve.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_approve', {slug: slug}), {})
+
+                location.reload()
+            })
+            $("a.reject.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_reject', {slug: slug}), {})
+
+                location.reload()
+            })
+            $("a.join.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_join', {slug: slug}), {})
+
+                location.reload()
+            })
+            $("a.leave.idea").click(function (action) {
+                var slug = $(this).data('slug')
+                $.post(Routing.generate('idea_leave', {slug: slug}), {})
+
+                location.reload()
+            })
+        })
     </script>
+
 {% endblock %}
 
 </html>

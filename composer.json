@@ -4,6 +4,7 @@
     "require": {
         "php": "^7.1.3",
         "friendsofsymfony/comment-bundle": "3.0.x-dev",
+        "friendsofsymfony/jsrouting-bundle": "^1.6",
         "harmony-project/ui-bundle": "^1.1",
         "league/tactician-bundle": "dev-feature/auto-mapping-commands",
         "league/tactician-doctrine": "^1.1",
