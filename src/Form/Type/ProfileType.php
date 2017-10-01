@@ -26,20 +26,25 @@ class ProfileType extends AbstractType
     {
         $builder
             ->add('firstname', null, [
+                'label' => 'Nombre',
                 'required' => true,
             ])
             ->add('lastname', null, [
+                'label' => 'Apellidos',
                 'required' => true,
             ])
             ->add('biography', TextareaType::class, [
+                'label' => 'Biografía',
                 'required' => false,
             ])
             ->add('collective', ChoiceType::class, [
+                'label' => 'Colectivo',
                 'required' => true,
                 'placeholder' => 'Selecciona tu colectivo',
                 'choices' => User::getCollectives(),
             ])
             ->add('degree', EntityType::class, [
+                'label' => 'Estudios',
                 'class' => Degree::class,
                 'placeholder' => 'Selecciona tus estudios',
                 'attr' => [
@@ -47,6 +52,7 @@ class ProfileType extends AbstractType
                 ],
             ])
             ->add('year', null, [
+                'label' => 'Año de ingreso',
             ])
         ;
     }

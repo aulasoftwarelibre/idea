@@ -4,22 +4,23 @@
     <div class="ui grid">
         {% include('/frontend/idea/_idea.html.twig') %}
 
-        <div class="three wide column">
-            Participantes:
-        </div>
-        <div class="thirteen wide column">
-            {% for vote in idea.votes %}
-                {% set user = vote.user %}
-                <a class="ui basic image label">
-                    <img src="{{ gravatar(user.email) }}">
-                    {{ user.username }}
-                </a>
-            {% endfor %}
+        <div class="row">
+            <div class="three wide column">
+                Participantes:
+            </div>
+            <div class="thirteen wide column">
+                {% for vote in idea.votes %}
+                    {% set user = vote.user %}
+                    <a class="ui basic image label">
+                        <img src="{{ gravatar(user.email) }}">
+                        {{ user.username }}
+                    </a>
+                {% endfor %}
+            </div>
         </div>
     </div>
 
-    <div class="ui divider"></div>
-
+    <div class="ui divider" id="comments"></div>
 
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         {% include 'FOSCommentBundle:Thread:async.html.twig' with {'id': idea.id } %}

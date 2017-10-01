@@ -13,6 +13,8 @@ sonata_admin:
                 label_catalogue: 'messages'
                 icon: '<i class="fa fa-database"></i>'
                 items:
+                    - route: 'homepage'
+                      label: 'Página principal'
                     - 'eco.admin.idea'
                     - 'eco.admin.degree'
             app.admin.user:
