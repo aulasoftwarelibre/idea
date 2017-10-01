@@ -45,7 +45,7 @@ class UcoUserProvider implements UserProviderInterface
         } catch (UsernameNotFoundException $e) {
             $user = new User();
             $user->setUsername($username)
-                ->setEmail($email)
+                ->setEmail($username.'@uco.es')
                 ->setPassword('disabled')
                 ->setEnabled(true)
             ;
