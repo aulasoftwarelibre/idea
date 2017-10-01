@@ -36,6 +36,7 @@ class IdeaAdmin extends AbstractAdmin
             ])
             ->add('description', SimpleFormatterType::class, [
                 'format' => 'richhtml',
+                'ckeditor_context' => 'simple_toolbar',
                 'attr' => ['rows' => 20],
             ])
             ->add('closed', null, [
