@@ -56,3 +56,15 @@ show.label_state: Estado
 show.label_title: Título
 show.label_updated_at: Fecha actualización
 show.label_votes: Votos
+
+
+
+http_error.name: Error %status_code%
+http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.
+http_error.suggestion: Intentar recargar esta página dentro de unos minutos o <a href="%url%">vuelve a la portada del sitio</a>.
+http_error_403.description: No tienes permiso para acceder a este recurso.
+http_error_403.suggestion: Solicita a los administradores de este sitio que te concedan permiso para acceder al recurso solicitado.
+http_error_404.description: No hemos podido encontrar la página solicitada.
+http_error_404.suggestion: Comprueba que la dirección de la página está bien escrita o <a href="%url%">vuelve a la portada del sitio</a>.
+http_error_500.description: Se ha producido un error grave en el servidor.
+http_error_500.suggestion: Intentar recargar esta página dentro de unos minutos o <a href="%url%">vuelve a la portada del sitio</a>.
