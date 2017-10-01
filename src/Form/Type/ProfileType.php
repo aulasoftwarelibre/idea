@@ -19,6 +19,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProfileType extends AbstractType
 {
@@ -32,6 +33,16 @@ class ProfileType extends AbstractType
             ->add('lastname', null, [
                 'label' => 'Apellidos',
                 'required' => true,
+            ])
+            ->add('imageFile', VichImageType::class, [
+                'label' => 'Imagen de perfil',
+                'required' => false,
+                'allow_delete' => true,
+                'delete_label' => '¿Borrar?',
+                'download_label' => 'Descargar',
+                'download_uri' => true,
+                'image_uri' => true,
+                'imagine_pattern' => 'squared_thumbnail',
             ])
             ->add('biography', TextareaType::class, [
                 'label' => 'Biografía',

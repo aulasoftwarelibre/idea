@@ -12,7 +12,11 @@
                 {% for vote in idea.votes %}
                     {% set user = vote.user %}
                     <a class="ui basic image label">
-                        <img src="{{ gravatar(user.email) }}">
+                        {% if user.image.name is not empty %}
+                            <img src="{{ vich_uploader_asset(user, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+                        {% else %}
+                            <img src="{{ asset('assets/images/default.png') | imagine_filter('squared_thumbnail') }}">
+                        {% endif %}
                         {{ user.username }}
                     </a>
                 {% endfor %}

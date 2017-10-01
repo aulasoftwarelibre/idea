@@ -1,6 +1,10 @@
 <div class="ui card">
     <div class="content">
-        <img class="right floated mini ui image" src="{{ gravatar(profile.email) }}">
+        {% if profile.image.name is not empty %}
+        <img class="right floated mini ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+        {% else %}
+        <img class="right floated mini ui image" src="{{ asset('assets/images/default.png') | imagine_filter('squared_thumbnail') }}">
+        {% endif %}
         <div class="header">
             Hola, {{ profile.username  }}
         </div>
