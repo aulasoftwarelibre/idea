@@ -287,6 +287,7 @@ class Idea
     public function setOwner(User $owner): Idea
     {
         $this->owner = $owner;
+        $this->addVote(Vote::create($this, $owner));
 
         return $this;
     }
@@ -327,7 +328,14 @@ class Idea
     public function addVote(Vote $vote): Idea
     {
         $vote->setIdea($this);
-        $this->votes[] = $vote;
+
+        $found = $this->votes->filter(function (Vote $item) use ($vote) {
+            return $item->getUser()->equalsTo($vote->getUser());
+        });
+
+        if ($found->isEmpty()) {
+            $this->votes[] = $vote;
+        }
 
         return $this;
     }

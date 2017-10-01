@@ -46,7 +46,7 @@ class ProfileType extends AbstractType
                     'class' => 'ui search dropdown',
                 ],
             ])
-            ->add('area', null, [
+            ->add('year', null, [
             ])
         ;
     }

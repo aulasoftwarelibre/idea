@@ -58,7 +58,25 @@ class Vote
      */
     private $idea;
 
-    public function __toString()
+    /**
+     * @param Idea $idea
+     * @param User $user
+     *
+     * @return Vote
+     */
+    public static function create(Idea $idea, User $user): self
+    {
+        $vote = new self();
+        $vote->setIdea($idea);
+        $vote->setUser($user);
+
+        return $vote;
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
     {
         return $this->getUser()->getUsername();
     }

@@ -36,17 +36,19 @@ class UcoUserProvider implements UserProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadUserByUsername($username)
+    public function loadUserByUsername($email)
     {
+        list($username) = explode('@', $email);
         try {
             /** @var User $user */
             $user = $this->userProvider->loadUserByUsername($username);
         } catch (UsernameNotFoundException $e) {
             $user = new User();
             $user->setUsername($username)
-                ->setEmail($username)
+                ->setEmail($email)
                 ->setPassword('disabled')
-                ->setEnabled(true);
+                ->setEnabled(true)
+            ;
         }
 
         return $user;

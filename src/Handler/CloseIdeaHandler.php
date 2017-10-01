@@ -12,23 +12,31 @@
 namespace App\Handler;
 
 use App\Command\CloseIdeaCommand;
+use App\Entity\Thread;
 use App\Repository\IdeaRepository;
+use App\Repository\ThreadRepository;
 
 class CloseIdeaHandler
 {
     /**
      * @var IdeaRepository
      */
-    private $repository;
+    private $ideaRepository;
+    /**
+     * @var ThreadRepository
+     */
+    private $threadRepository;
 
     /**
      * CloseIdeaHandler constructor.
      *
-     * @param IdeaRepository $repository
+     * @param IdeaRepository   $ideaRepository
+     * @param ThreadRepository $threadRepository
      */
-    public function __construct(IdeaRepository $repository)
+    public function __construct(IdeaRepository $ideaRepository, ThreadRepository $threadRepository)
     {
-        $this->repository = $repository;
+        $this->ideaRepository = $ideaRepository;
+        $this->threadRepository = $threadRepository;
     }
 
     public function handle(CloseIdeaCommand $command)
@@ -37,6 +45,12 @@ class CloseIdeaHandler
         $isClosed = $command->isClosed();
         $idea->setClosed($isClosed);
 
-        $this->repository->add($idea);
+        $this->ideaRepository->add($idea);
+
+        /** @var Thread $thread */
+        $thread = $this->threadRepository->find($idea->getId());
+        $thread->setCommentable(!$isClosed);
+
+        $this->threadRepository->add($thread);
     }
 }

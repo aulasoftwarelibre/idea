@@ -37,32 +37,17 @@ class ProfileController extends Controller
 
     /**
      * @Route("/", name="profile_edit")
-     * @Method("GET")
+     * @Method({"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function editAction()
-    {
-        $user = $this->getUser();
-        $form = $this->createForm(ProfileType::class, $user);
-
-        return $this->render('/frontend/profile/edit.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
-
-    /**
-     * @Route("/", name="profile_update")
-     * @Method("POST")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     */
-    public function updateAction(Request $request)
+    public function editAction(Request $request)
     {
         $user = $this->getUser();
         $form = $this->createForm(ProfileType::class, $user);
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->get('doctrine.orm.default_entity_manager');
 
             $manager->persist($user);

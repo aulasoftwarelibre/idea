@@ -13,6 +13,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use FOS\RestBundle\Validator\Constraints\Regex;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -46,18 +47,18 @@ class User extends BaseUser
     protected $collective;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=255, nullable=true)
-     * @Assert\Length(max="255")
-     */
-    protected $area;
-
-    /**
      * @var Degree|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Degree")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     private $degree;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=4, nullable=true)
+     * @Regex("/\d{4}/")
+     */
+    private $year;
 
     /**
      * @var Idea[]
@@ -121,26 +122,6 @@ class User extends BaseUser
     public function setCollective(?string $collective): User
     {
         $this->collective = $collective;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getArea()
-    {
-        return $this->area;
-    }
-
-    /**
-     * @param null|string $area
-     *
-     * @return User
-     */
-    public function setArea($area)
-    {
-        $this->area = $area;
 
         return $this;
     }
@@ -218,6 +199,26 @@ class User extends BaseUser
     public function setDegree(?Degree $degree): User
     {
         $this->degree = $degree;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getYear(): ?string
+    {
+        return $this->year;
+    }
+
+    /**
+     * @param string|null $year
+     *
+     * @return User
+     */
+    public function setYear(?string $year): User
+    {
+        $this->year = $year;
 
         return $this;
     }
