@@ -6,6 +6,22 @@ sonata_admin:
     title_logo: 'assets/images/ceo.png'
     options:
         title_mode: 'single_image'
+    dashboard:
+        groups:
+            app.admin.resources:
+                label: 'group.resources'
+                label_catalogue: 'messages'
+                icon: '<i class="fa fa-database"></i>'
+                items:
+                    - 'eco.admin.idea'
+                    - 'eco.admin.degree'
+            app.admin.user:
+                label: 'sonata_user'
+                label_catalogue: 'SonataUserBundle'
+                icon: '<i class="fa fa-users"></i>'
+                items:
+                    - 'sonata.user.admin.user'
+                    - 'sonata.user.admin.group'
 
 sonata_block:
     default_contexts: ['cms']
@@ -77,8 +93,12 @@ services:
         arguments: [~, App\Entity\Degree, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: menu.degree }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
     eco.admin.idea:
         class: App\Admin\IdeaAdmin
         arguments: [~, App\Entity\Idea, ~]
         tags:
             - { name: sonata.admin, manager_type: orm, label: menu.idea }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]

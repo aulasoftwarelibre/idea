@@ -4,13 +4,16 @@
         enabled: true
         groups: ['@group_asl']
         roles: ['ROLE_USER']
-        firstname: <>
+        firstname: '<firstName()>'
+        lastname: '<lastName()>'
     user_admin (extends user):
-        username: 'admin@uco.es'
+        username: 'admin'
         email: 'admin@uco.es'
         roles: ['ROLE_ADMIN']
         collective: 'staff'
     user_{1..10} (extends user):
         username (unique): '<bothify("x#2?????")>'
         email: '$username\@uco.es'
-        collective: '<randomElement(["student", "teacher", "staff", "external"])>'
+        collective: 'student'
+        degree: '@degree_*'
+        year: '<year()>'

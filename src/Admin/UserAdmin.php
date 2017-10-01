@@ -11,11 +11,13 @@
 
 namespace App\Admin;
 
+use App\Entity\User;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\UserBundle\Admin\Model\UserAdmin as BaseUserAdmin;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserAdmin extends BaseUserAdmin
 {
@@ -46,7 +48,11 @@ class UserAdmin extends BaseUserAdmin
         $formMapper
             ->tab('User')
                 ->with('Profile')
+                    ->add('collective', ChoiceType::class, [
+                        'choices' => User::getCollectives(),
+                    ])
                     ->add('degree')
+                    ->add('year')
                 ->end()
             ->end()
         ;

@@ -65,3 +65,123 @@ App\Entity\Degree:
         name: Grado en Turismo
     degree_33:
         name: Grado en Veterinaria
+    degree_34:
+        name: Doble Máster en Ingeniería Agronómica e Hidráulica Ambiental (Especialidad Gestión Integral de Cuencas)
+    degree_35:
+        name: Doble Máster en Ingeniería Agronómica e Ingeniería y Gestión de la Cadena Agroalimentaria
+    degree_36:
+        name: Doble Máster en Ingeniería Agronómica y Estrategias para el Desarrollo Rural y Territorial
+    degree_37:
+        name: Doble Máster en Ingeniería Agronómica y Producción, Protección y Mejora Vegetal
+    degree_38:
+        name: Doble Máster en Ingeniería Agronómica y Representación y Diseño en Ingeniería y Arquitectura
+    degree_39:
+        name: Doble Máster en Ingeniería de Montes e Hidráulica Ambiental (Especialidad Gestión Integral de Cuencas)
+    degree_40:
+        name: Doble Máster en Ingeniería de Montes e Incendios Forestales, Ciencia y Gestión Integral (Interuniversitario - UCO/ULE/UDL)
+    degree_41:
+        name: Doble Máster en Ingeniería de Montes y Estrategias para el Desarrollo Rural y Territorial
+    degree_42:
+        name: Doble Máster en Ingeniería de Montes y Geomática, Teledetección y Modelos Espaciales Aplicado a la Gestión Forestal
+    degree_43:
+        name: Doble Máster en Ingeniería de Montes y Representación y Diseño en Ingeniería y Arquitectura
+    degree_44:
+        name: Doble Máster en Profesorado de Enseñanza Secundaria Obligatoria y Bachillerato, Formación Profesional y Enseñanza de Idiomas y Estudios Ingleses Avanzados
+    degree_45:
+        name: Doble Máster en Profesorado de Enseñanza Secundaria Obligatoria y Bachillerato, Formación Profesional y Enseñanza de Idiomas y Química
+    degree_46:
+        name: Doble Máster en Profesorado de Enseñanza Secundaria Obligatoria y Bachillerato, Formación Profesional y Enseñanza de Idiomas y Representación y Diseño en Ingeniería y Arquitectura
+    degree_47:
+        name: Máster en Abogacía
+    degree_48:
+        name: Máster en Administración y Dirección de Empresas (MBA)
+    degree_49:
+        name: Máster en Agroalimentación (Interuniversitario - UCO/UCA)
+    degree_50:
+        name: 'Máster en Agroecología: un Enfoque para la Sustentabilidad Rural (Interuniversitario - UCO/UNIA/UPO)'
+    degree_51:
+        name: Máster en Asesoría Jurídica de Empresas
+    degree_52:
+        name: Máster en Biotecnología
+    degree_53:
+        name: 'Máster en Cambio Global: Recursos Naturales y Sostenibilidad'
+    degree_54:
+        name: Máster en Cinematografía
+    degree_55:
+        name: Máster en Comercio Exterior e Internacionalización de Empresas
+    degree_56:
+        name: Máster en Cultura de Paz. Conflictos, Educación y Derechos Humanos (Interuniversitario - UCO/UGR/UCA/UMA)
+    degree_57:
+        name: Máster en Educación Ambiental (Interuniversitario - UCA/UCO/UGR/UAL/UPO/UHU/UMA)
+    degree_58:
+        name: Máster en Educación Inclusiva
+    degree_59:
+        name: Máster en Electroquímica. Ciencia y Tecnología (Interuniversitario - UCO/UAB/UAM/UA/UB/UBU/UMU/UVEG/UPCT)
+    degree_60:
+        name: Máster en Energías Renovables Distribuidas
+    degree_61:
+        name: 'Máster en Español: Lengua, Literatura, Historia o Enseñanza'
+    degree_62:
+        name: 'Máster en Especialización en Educación: Juego, Juguetes, Segundas Lenguas e Intercultura (PETaL) (Interuniversitario Internacional UCO-IPL-MU)'
+    degree_63:
+        name: Máster en Estrategias para el Desarrollo Rural y Territorial
+    degree_64:
+        name: Máster en Estudios Ingleses Avanzados (Lingüística Cognitiva/Literatura) y Educación Bilingüe
+    degree_65:
+        name: Máster en Geomática, Teledetección y Modelos Espaciales Aplicados a la Gestión Forestal
+    degree_66:
+        name: Máster en Gestión del Patrimonio Desde el Municipio
+    degree_67:
+        name: Máster en Hidráulica Ambiental (Interuniversitario - UCO/UGR/UMA)
+    degree_68:
+        name: Máster en Incendios Forestales, Ciencia y Gestión Integral (Interuniversitario - UCO/ULE/UDL)
+    degree_69:
+        name: Máster en Ingeniería Agronómica
+    degree_70:
+        name: Máster en Ingeniería de Minas
+    degree_71:
+        name: Máster en Ingeniería de Montes
+    degree_72:
+        name: Máster en Ingeniería Industrial
+    degree_73:
+        name: Máster en Ingeniería Informática
+    degree_74:
+        name: Máster en Ingeniería y Gestión de la Cadena Agroalimentaria
+    degree_75:
+        name: Máster en Investigación Biomédica Traslacional
+    degree_76:
+        name: Máster en Medicina, Sanidad y Mejora Animal
+    degree_77:
+        name: Máster en Nutrición Humana
+    degree_78:
+        name: Máster en Olivicultura y Elaiotecnia
+    degree_79:
+        name: Máster en Plasma, Láser y Tecnologías de Superficie (Interuniversitario - UCO/UPM)
+    degree_80:
+        name: Máster en Prevención de Riesgos Laborales
+    degree_81:
+        name: Máster en Producción, Protección y Mejora Vegetal
+    degree_82:
+        name: Máster en Profesorado de Enseñanza Secundaria Obligatoria y Bachillerato, Formación Profesional y Enseñanza de Idiomas
+    degree_83:
+        name: Máster en Psicología Aplicada a la Educación y el Bienestar Social
+    degree_84:
+        name: Máster en Psicología General Sanitaria
+    degree_85:
+        name: Máster en Química (Interuniversitario - UCO/UAL/UCA/UHU/UJA/UMA)
+    degree_86:
+        name: Máster en Representación y Diseño en Ingeniería y Arquitectura (Interuniversitario - UCO/UAL/UMA)
+    degree_87:
+        name: Máster en Tecnología del Agua en Ingeniería Civil
+    degree_88:
+        name: Máster en Traducción Especializada (Inglés / Francés / Alemán - Español)
+    degree_89:
+        name: Máster Universitario en Biotecnología por la Universidad de Córdoba y Laurea Magistrale en Biotecnologie per l'Ambiente e la Salute por la Universidad de Ferrara (Italia)
+    degree_90:
+        name: Máster Universitario en Comercio Exterior e Internacionalización de Empresas por la Universidad de Córdoba y Máster Administration et Echanges Internationaux por la Universidad Paris-Est Créteil Val de Marne (Francia)
+    degree_91:
+        name: Máster Universitario en Comercio Exterior e Internacionalización de Empresas por la Universidad de Córdoba y Máster Europäisches Management de la Universidad Técnica de Ciencias Aplicadas Wildau (Alemania)
+    degree_92:
+        name: Máster Universitario en Gestión del Patrimonio desde el Municipio por la Universidad de Córdoba y Máster en Turismo Responsable y Desarrollo Humano por la Universidad de Abdelmaleck Essaädi de Tetuán (Marruecos)
+    degree_93:
+        name: Otros estudios

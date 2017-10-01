@@ -1,0 +1,12 @@
+form.label_degree: Grado
+form.label_collective: Colectivo
+
+filter.label_degree: Grado
+filter.label_collective: Colectivo
+
+list.label__action: Acción
+list.label_degree: Grado
+list.label_collective: Colectivo
+
+show.label_degree: Grado
+show.label_collective: Colectivo

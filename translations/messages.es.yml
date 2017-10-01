@@ -1,5 +1,58 @@
-idea_num_comments: '%count% comentario|%count% comentarios'
-
-rejected: 'Rechazada'
-proposed: 'Nueva'
 approved: 'Aprobada'
+group.resources: Recursos
+idea_num_comments: '%count% comentario|%count% comentarios'
+menu.degree: Grados
+menu.idea: Ideas
+proposed: 'Nueva'
+rejected: 'Rechazada'
+
+breadcrumb.link_degree_list: Lista de grados
+breadcrumb.link_idea_list: Lista de ideas
+
+list.label__action: Acción
+list.label_closed: Cerrado
+list.label_created_at: Fecha creación
+list.label_description: Descripción
+list.label_group: Grupo
+list.label_name: Nombre
+list.label_owner: Propietario
+list.label_state: Estado
+list.label_title: Título
+list.label_updated_at: Fecha actualización
+list.label_votes: Votos
+
+filter.label__action: Acción
+filter.label_closed: Cerrado
+filter.label_created_at: Fecha creación
+filter.label_description: Descripción
+filter.label_group: Grupo
+filter.label_name: Nombre
+filter.label_owner: Propietario
+filter.label_state: Estado
+filter.label_title: Título
+filter.label_updated_at: Fecha actualización
+filter.label_votes: Votos
+
+form.label__action: Acción
+form.label_closed: Cerrado
+form.label_created_at: Fecha creación
+form.label_description: Descripción
+form.label_group: Grupo
+form.label_name: Nombre
+form.label_owner: Propietario
+form.label_state: Estado
+form.label_title: Título
+form.label_updated_at: Fecha actualización
+form.label_votes: Votos
+
+show.label__action: Acción
+show.label_closed: Cerrado
+show.label_created_at: Fecha creación
+show.label_description: Descripción
+show.label_group: Grupo
+show.label_name: Nombre
+show.label_owner: Propietario
+show.label_state: Estado
+show.label_title: Título
+show.label_updated_at: Fecha actualización
+show.label_votes: Votos
