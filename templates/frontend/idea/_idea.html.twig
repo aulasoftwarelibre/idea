@@ -24,7 +24,14 @@
                         </div>
                     </div>
                 </div>
-                {% if idea.closed %}
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="ui animated fluid bottom attached small button" href="{{ path('login') }}">
+                    <div class="visible content"><i class="plus icon"></i></div>
+                    <div class="hidden content">
+                        CONECTAR
+                    </div>
+                </a>
+                {% elseif idea.closed %}
                 <div class="ui fluid bottom attached red small button">
                     CERRADA
                 </div>
