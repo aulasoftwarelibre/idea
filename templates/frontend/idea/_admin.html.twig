@@ -13,12 +13,12 @@
             </a>
         {% endif %}
         {% if idea.state != constant('App\\Entity\\Idea::STATE_APPROVED') %}
-            <a class="class item approve idea">
+            <a class="class item approve idea" data-slug="{{ idea.slug }}">
                 Aprobar idea
             </a>
         {% endif %}
         {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
-            <a class="class item reject idea">
+            <a class="class item reject idea" data-slug="{{ idea.slug }}">
                 Rechazar idea
             </a>
         {% endif %}
