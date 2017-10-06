@@ -1,6 +1,7 @@
 approved: 'Aprobada'
 group.resources: Recursos
 idea_num_comments: '%count% comentario|%count% comentarios'
+idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
 menu.degree: Grados
 menu.idea: Ideas
 proposed: 'Nueva'
@@ -20,6 +21,7 @@ list.label_state: Estado
 list.label_title: Título
 list.label_updated_at: Fecha actualización
 list.label_votes: Votos
+list.label_num_seats: Límite
 
 filter.label__action: Acción
 filter.label_closed: Cerrado
@@ -32,6 +34,7 @@ filter.label_state: Estado
 filter.label_title: Título
 filter.label_updated_at: Fecha actualización
 filter.label_votes: Votos
+filter.label_num_seats: Límite
 
 form.label__action: Acción
 form.label_closed: Cerrado
@@ -44,6 +47,7 @@ form.label_state: Estado
 form.label_title: Título
 form.label_updated_at: Fecha actualización
 form.label_votes: Votos
+form.label_num_seats: Límite
 
 show.label__action: Acción
 show.label_closed: Cerrado
@@ -56,6 +60,7 @@ show.label_state: Estado
 show.label_title: Título
 show.label_updated_at: Fecha actualización
 show.label_votes: Votos
+show.label_num_seats: Límite
 
 
 

@@ -13,6 +13,7 @@ namespace App\Handler;
 
 use App\Command\AddVoteCommand;
 use App\Entity\Vote;
+use App\Exception\NoMoreSeatsLeftException;
 use App\Repository\IdeaRepository;
 use App\Repository\VoteRepository;
 
@@ -33,6 +34,7 @@ class AddVoteHandler
         $idea = $command->getIdea();
         $user = $command->getUser();
 
+        /** @var Vote $vote */
         $vote = $this->repository->findOneBy([
             'user' => $user,
             'idea' => $idea,
@@ -40,6 +42,13 @@ class AddVoteHandler
 
         if ($vote instanceof Vote) {
             return;
+        }
+
+        $count = $idea->getVotes()->count();
+        $numSeats = $idea->getNumSeats();
+
+        if ($numSeats > 0 && $count >= $numSeats) {
+            throw new NoMoreSeatsLeftException();
         }
 
         $vote = new Vote();
