@@ -2,26 +2,27 @@ approved: 'Aprobada'
 group.resources: Recursos
 idea_num_comments: '%count% comentario|%count% comentarios'
 idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
-menu.degree: Grados
-menu.idea: Ideas
 proposed: 'Nueva'
 rejected: 'Rechazada'
 
+breadcrumb.link_activity_list: Lista de actividades
 breadcrumb.link_degree_list: Lista de grados
 breadcrumb.link_idea_list: Lista de ideas
+breadcrumb.link_participation_list: Lista de participantes
+breadcrumb.link_participation_create: Crear participante
 
-list.label__action: Acción
-list.label_closed: Cerrado
-list.label_created_at: Fecha creación
-list.label_description: Descripción
-list.label_group: Grupo
-list.label_name: Nombre
-list.label_owner: Propietario
-list.label_state: Estado
-list.label_title: Título
-list.label_updated_at: Fecha actualización
-list.label_votes: Votos
-list.label_num_seats: Límite
+menu.activity: Actividades
+menu.degree: Grados
+menu.idea: Ideas
+menu.participation: Participantes
+
+attendee: Asistente
+organizer: Organizador
+presenter: Ponente
+staff: PAS
+student: Estudiante
+teacher: Profesor
+
 
 filter.label__action: Acción
 filter.label_closed: Cerrado
@@ -35,6 +36,13 @@ filter.label_title: Título
 filter.label_updated_at: Fecha actualización
 filter.label_votes: Votos
 filter.label_num_seats: Límite
+filter.label_occurred_on: Fecha de celebración
+filter.label_duration: Duración
+filter.label_academic_year: Año académico
+filter.label_user: Usuario
+filter.label_user_fullname: Nombre completo
+filter.label_role: Rol
+filter.label_is_reported: Informe
 
 form.label__action: Acción
 form.label_closed: Cerrado
@@ -48,6 +56,33 @@ form.label_title: Título
 form.label_updated_at: Fecha actualización
 form.label_votes: Votos
 form.label_num_seats: Límite
+form.label_occurred_on: Fecha de celebración
+form.label_duration: Duración
+form.label_academic_year: Año académico
+form.label_user: Usuario
+form.label_user_fullname: Nombre completo
+form.label_role: Rol
+form.label_is_reported: Informe
+
+list.label__action: Acción
+list.label_closed: Cerrado
+list.label_created_at: Fecha creación
+list.label_description: Descripción
+list.label_group: Grupo
+list.label_name: Nombre
+list.label_owner: Propietario
+list.label_state: Estado
+list.label_title: Título
+list.label_updated_at: Fecha actualización
+list.label_votes: Votos
+list.label_num_seats: Límite
+list.label_occurred_on: Fecha de celebración
+list.label_duration: Duración
+list.label_academic_year: Año académico
+list.label_user: Usuario
+list.label_user_fullname: Nombre completo
+list.label_role: Rol
+list.label_is_reported: Informe
 
 show.label__action: Acción
 show.label_closed: Cerrado
@@ -61,8 +96,13 @@ show.label_title: Título
 show.label_updated_at: Fecha actualización
 show.label_votes: Votos
 show.label_num_seats: Límite
-
-
+show.label_occurred_on: Fecha de celebración
+show.label_duration: Duración
+show.label_academic_year: Año académico
+show.label_user: Usuario
+show.label_user_fullname: Nombre completo
+show.label_role: Rol
+show.label_is_reported: Informe
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.

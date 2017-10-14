@@ -15,6 +15,10 @@ services:
         public: false
 
     # DoctrineBundle
+    App\Repository\ActivityRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Activity']
+
     App\Repository\DegreeRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Degree']
@@ -26,6 +30,10 @@ services:
     App\Repository\GroupRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
         arguments: ['App\Entity\Group']
+
+    App\Repository\ParticipationRepository:
+        factory: ['@doctrine.orm.default_entity_manager', 'getRepository']
+        arguments: ['App\Entity\Participation']
 
     App\Repository\ThreadRepository:
         factory: ['@doctrine.orm.default_entity_manager', 'getRepository']

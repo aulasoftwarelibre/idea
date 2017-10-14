@@ -51,6 +51,7 @@ class UserAdmin extends BaseUserAdmin
                     ->add('collective', ChoiceType::class, [
                         'choices' => User::getCollectives(),
                     ])
+                    ->add('nic')
                     ->add('degree')
                     ->add('year')
                 ->end()
@@ -89,6 +90,12 @@ class UserAdmin extends BaseUserAdmin
             ->add('lastname', null, [
                 'show_filter' => true,
             ])
+            ->add('username', null, [
+                'show_filter' => true,
+            ])
+            ->add('nic', null, [
+                'show_filter' => true,
+            ])
         ;
     }
 
@@ -108,7 +115,10 @@ class UserAdmin extends BaseUserAdmin
             ->with('Profile')
                 ->add('firstname')
                 ->add('lastname')
-                ->add('phone')
+                ->add('nic')
+                ->add('collective')
+                ->add('degree')
+                ->add('year')
             ->end()
         ;
     }

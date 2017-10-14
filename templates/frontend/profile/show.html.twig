@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="ui equal width left aligned padded grid stackable">
+
+    <div class="sixteen wide tablet sixteen wide computer column profileheader row no-padding">
+        <div class="column  left floated">
+            <div class="ui items">
+                <div class="item">
+                    <a class="ui small circular image">
+                        {% if profile.image.name is not empty %}
+                            <img class="right floated mini ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+                        {% else %}
+                            <img class="right floated mini ui image" src="{{ asset('assets/images/default.png') | imagine_filter('squared_thumbnail') }}">
+                        {% endif %}
+                    </a>
+                    <div class="middle aligned content">
+                        <div class="header">
+                            {{ profile.fullname }}
+                        </div>
+                        <div class="meta">
+                            {{ profile.collective | trans }}
+                            {% if profile.degree is defined %}
+                                - {{ profile.degree }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui menu fluid no-radius borderless stackable" style="margin-top:0">
+        <div class="right menu">
+            <a class="item">
+                <div class="ui mini statistic">
+                    <div class="value">
+                        {{ hours }}
+                    </div>
+                    <div class="label">
+                        Horas
+                    </div>
+                </div>
+            </a>
+            <a class="item">
+                <div class="ui mini statistic">
+                    <div class="value">
+                        {{ activities }}
+                    </div>
+                    <div class="label">
+                        Actividades
+                    </div>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        {% for academic_year, participations in academic_years %}
+        <h2 class="ui sub header">Curso {{ academic_year }}</h2>
+        <table class="ui celled table fluid">
+            <thead>
+            <tr>
+                <th>Título de la actividad</th>
+                <th>Rol</th>
+                <th>Verificada</th>
+                <th>Duración</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for participation in participations %}
+            <tr>
+                <td>{{ participation.title }}</td>
+                <td>{{ participation.role | trans }}</td>
+                <td>
+                {% if participation.isReported %}
+                    <span class="ui label green">Sí</span>
+                {% else %}
+                    <span class="ui label red">No</span>
+                {% endif %}
+                </td>
+                <td>{{ participation.duration }} horas</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <table class="ui celled table fluid">
+            <thead>
+            <tr>
+                <th>Aún no tienes registrada ninguna actividad.</th>
+            </tr>
+            </thead>
+        </table>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
+
