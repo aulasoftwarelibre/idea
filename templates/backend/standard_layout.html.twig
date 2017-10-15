@@ -1,5 +1,16 @@
 {% extends 'SonataAdminBundle::standard_layout.html.twig' %}
 
+{% block side_bar_before_nav %}
+    <ul class="sidebar-menu tree" data-widget="tree">
+        <li>
+            <a href="{{ path('homepage') }}">
+                <i class="fa fa-home"></i>
+                <span>Página principal</span>
+            </a>
+        </li>
+    </ul>
+{% endblock %}
+
 {% block meta_tags %}
     {{ parent() }}
     <link rel="apple-touch-icon-precomposed" href="{{ asset('apple-touch-icon.png') }}?v=2">

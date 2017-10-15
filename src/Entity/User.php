@@ -12,6 +12,7 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\RestBundle\Validator\Constraints\Regex;
 use Sonata\UserBundle\Entity\BaseUser;
@@ -49,7 +50,7 @@ class User extends BaseUser
      * @Assert\Choice(callback="getCollectives")
      * @Assert\NotBlank()
      */
-    protected $collective;
+    private $collective;
 
     /**
      * @var Degree|null
@@ -64,6 +65,18 @@ class User extends BaseUser
      * @Regex("/\d{4}/")
      */
     private $year;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=32, unique=true, nullable=true)
+     */
+    private $nic;
+
+    /**
+     * @var Participation[]
+     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     */
+    private $participations;
 
     /**
      * @var Idea[]
@@ -99,7 +112,21 @@ class User extends BaseUser
 
         $this->ideas = new ArrayCollection();
         $this->votes = new ArrayCollection();
+        $this->participations = new ArrayCollection();
         $this->image = new EmbeddedFile();
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString(): string
+    {
+        return sprintf(
+            '%s %s [%s]',
+            $this->getFirstname(),
+            $this->getLastname(),
+            $this->getUsername()
+        );
     }
 
     /**
@@ -288,5 +315,54 @@ class User extends BaseUser
     public function getImage(): EmbeddedFile
     {
         return $this->image;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getNic(): ?string
+    {
+        return $this->nic;
+    }
+
+    /**
+     * @param string|null $nic
+     *
+     * @return User
+     */
+    public function setNic(?string $nic): User
+    {
+        $this->nic = $nic;
+
+        return $this;
+    }
+
+    /**
+     * @return Participation[]|Collection
+     */
+    public function getParticipations(): Collection
+    {
+        return $this->participations;
+    }
+
+    /**
+     * @param Participation $participation
+     *
+     * @return User
+     */
+    public function addParticipation(Participation $participation): User
+    {
+        $participation->setUser($this);
+        $this->participations[] = $participation;
+
+        return $this;
+    }
+
+    /**
+     * @param Participation $participation
+     */
+    public function removeParticipation(Participation $participation)
+    {
+        $this->participations->removeElement($participation);
     }
 }
