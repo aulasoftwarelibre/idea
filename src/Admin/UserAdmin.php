@@ -90,9 +90,6 @@ class UserAdmin extends BaseUserAdmin
             ->add('lastname', null, [
                 'show_filter' => true,
             ])
-            ->add('username', null, [
-                'show_filter' => true,
-            ])
             ->add('nic', null, [
                 'show_filter' => true,
             ])
