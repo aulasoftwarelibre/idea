@@ -34,13 +34,13 @@
     "require-dev": {
         "doctrine/data-fixtures": "^1.2",
         "friendsofphp/php-cs-fixer": "^2.4",
-        "hautelook/alice-bundle": "^2.0@beta",
+        "hautelook/alice-bundle": "^2.0@rc",
         "nelmio/alice": "^3.0",
         "symfony/debug-bundle": "^3.3",
         "symfony/debug-pack": "^1.0",
         "symfony/dotenv": "^3.3",
         "symfony/web-server-bundle": "^3.3",
-        "theofidry/alice-data-fixtures": "^1.0@beta"
+        "theofidry/alice-data-fixtures": "^1.0@rc"
     },
     "config": {
         "preferred-install": {
