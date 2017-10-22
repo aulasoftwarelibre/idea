@@ -103,6 +103,7 @@ show.label_user: Usuario
 show.label_user_fullname: Nombre completo
 show.label_role: Rol
 show.label_is_reported: Informe
+show.label_participations: Participaciones
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.

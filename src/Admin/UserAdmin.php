@@ -21,6 +21,12 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserAdmin extends BaseUserAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     /**
      * {@inheritdoc}
      */
@@ -84,6 +90,13 @@ class UserAdmin extends BaseUserAdmin
         parent::configureDatagridFilters($filterMapper);
 
         $filterMapper
+            ->remove('username')
+        ;
+
+        $filterMapper
+            ->add('username', null, [
+                'show_filter' => true,
+            ])
             ->add('firstname', null, [
                 'show_filter' => true,
             ])
@@ -116,6 +129,11 @@ class UserAdmin extends BaseUserAdmin
                 ->add('collective')
                 ->add('degree')
                 ->add('year')
+            ->end()
+            ->with('Activities')
+                ->add('participations', null, [
+                    'template' => '/backend/User/show_participation.html.twig',
+                ])
             ->end()
         ;
     }
