@@ -69,17 +69,25 @@ class ActivityAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show)
     {
         $show
-            ->add('title', null, [
-            ])
-            ->add('occurredOn', null, [
-                'format' => 'd/M/y',
-            ])
-            ->add('duration', null, [
-            ])
-            ->add('createdAt', null, [
-            ])
-            ->add('updatedAt', null, [
-            ])
+            ->with('Activities')
+                ->add('title', null, [
+                ])
+                ->add('occurredOn', null, [
+                    'format' => 'd/M/y',
+                ])
+                ->add('duration', null, [
+                ])
+                ->add('createdAt', null, [
+                ])
+                ->add('updatedAt', null, [
+                ])
+            ->end()
+            ->with('Users')
+                ->add('participations', null, [
+                    'template' => '/backend/Activity/show_participation.html.twig',
+                ])
+            ->end()
+
         ;
     }
 

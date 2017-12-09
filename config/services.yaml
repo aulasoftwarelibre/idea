@@ -83,4 +83,4 @@ services:
         resource: '../src/Handler/'
         public: true
         tags:
-            - { name: 'tactician.handler', auto: true }
+            - { name: 'tactician.handler', typehints: true }

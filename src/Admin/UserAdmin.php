@@ -21,10 +21,16 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserAdmin extends BaseUserAdmin
 {
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'createdAt',
+    ];
+
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -62,7 +68,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 
@@ -79,11 +85,18 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $filterMapper)
+    protected function configureDatagridFilters(DatagridMapper $filterMapper): void
     {
         parent::configureDatagridFilters($filterMapper);
 
         $filterMapper
+            ->remove('username')
+        ;
+
+        $filterMapper
+            ->add('username', null, [
+                'show_filter' => true,
+            ])
             ->add('firstname', null, [
                 'show_filter' => true,
             ])
@@ -99,7 +112,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('General')
@@ -116,6 +129,11 @@ class UserAdmin extends BaseUserAdmin
                 ->add('collective')
                 ->add('degree')
                 ->add('year')
+            ->end()
+            ->with('Activities')
+                ->add('participations', null, [
+                    'template' => '/backend/User/show_participation.html.twig',
+                ])
             ->end()
         ;
     }
