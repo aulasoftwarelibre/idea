@@ -24,7 +24,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureFormFields(FormMapper $formMapper)
+    protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
 
@@ -62,7 +62,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureListFields(ListMapper $listMapper)
+    protected function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
 
@@ -79,7 +79,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureDatagridFilters(DatagridMapper $filterMapper)
+    protected function configureDatagridFilters(DatagridMapper $filterMapper): void
     {
         parent::configureDatagridFilters($filterMapper);
 
@@ -99,7 +99,7 @@ class UserAdmin extends BaseUserAdmin
     /**
      * {@inheritdoc}
      */
-    protected function configureShowFields(ShowMapper $showMapper)
+    protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
             ->with('General')
