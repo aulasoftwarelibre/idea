@@ -84,3 +84,10 @@ services:
         public: true
         tags:
             - { name: 'tactician.handler', typehints: true }
+
+    App\Services\Telegram\TelegramService:
+        arguments: [ '201502341:AAFCXPiU5JCs62v0FImH2_uk_tsKKJr7shc' ]
+        autowiring_type: Telegram\Bot\Api
+        calls:
+            - ['setTacticianBus', ['@tactician.commandbus.default'] ]
+
