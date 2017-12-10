@@ -22,6 +22,7 @@ use App\Command\RemoveVoteCommand;
 use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
+use App\Event\IdeaWasCreatedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\Form\Type\IdeaType;
 use League\Tactician\CommandBus;
@@ -68,6 +69,12 @@ class IdeaController extends Controller
             );
 
             $this->addFlash('positive', 'Idea creada con éxito');
+
+            $this->get('event_dispatcher')->dispatch(IdeaWasCreatedEvent::class,
+                new IdeaWasCreatedEvent(
+                    $idea
+                )
+            );
 
             return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
         }
