@@ -2,6 +2,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: 'es'
+    router.request_context.host: '%env(ROUTER_REQUEST_CONTEXT_HOST)%'
+    router.request_context.scheme: 'https'
+    router.request_context.base_url: '%env(ROUTER_REQUEST_CONTEXT_BASE_URL)%'
 
 services:
     # default configuration for services in *this* file
@@ -53,7 +56,7 @@ services:
             - { name: 'tactician.handler', typehints: true }
 
     App\Services\Telegram\TelegramService:
-        arguments: [ '201502341:AAFCXPiU5JCs62v0FImH2_uk_tsKKJr7shc' ]
+        arguments: [ '%env(TELEGRAM_BOT_API)%' ]
         autowiring_type: Telegram\Bot\Api
         calls:
             - ['setTacticianBus', ['@tactician.commandbus.default'] ]
