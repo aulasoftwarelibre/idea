@@ -11,14 +11,23 @@
 
 namespace App\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
-abstract class CeoRepository extends EntityRepository
+abstract class CeoRepository extends ServiceEntityRepository
 {
     const NUM_ITEMS = 5;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        $entityName = mb_substr(get_class($this), 15, -10);
+        $entityClass = "App\\Entity\\{$entityName}";
+
+        parent::__construct($registry, $entityClass);
+    }
 
     /**
      * @param $object

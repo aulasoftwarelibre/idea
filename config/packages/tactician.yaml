@@ -3,22 +3,6 @@ tactician:
         default:
             middleware:
              - tactician.middleware.locking
-             - tactician.middleware.security
              - tactician.middleware.validator
              - tactician.middleware.doctrine
              - tactician.middleware.command_handler
-    security:
-        App\Command\AddIdeaCommand:
-            - 'IS_AUTHENTICATED_FULLY'
-        App\Command\AddVoteCommand:
-            - 'IS_AUTHENTICATED_FULLY'
-        App\Command\RemoveVoteCommand:
-            - 'IS_AUTHENTICATED_FULLY'
-        App\Command\GetIdeasByPageQuery:
-            - 'IS_AUTHENTICATED_ANONYMOUSLY'
-        App\Command\GetIdeasByGroupQuery:
-            - 'IS_AUTHENTICATED_ANONYMOUSLY'
-        App\Command\ApproveIdeaCommand:
-            - 'ROLE_ADMIN'
-        App\Command\RejectIdeaCommand:
-            - 'ROLE_ADMIN'
