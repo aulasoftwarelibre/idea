@@ -29,6 +29,8 @@ class Idea
     const STATE_REJECTED = 'rejected';
     const STATE_APPROVED = 'approved';
 
+    const LIMITLESS = 0;
+
     /**
      * @var int
      * @ORM\Id()
@@ -108,6 +110,13 @@ class Idea
      */
     private $group;
 
+    /**
+     * @var int
+     * @ORM\Column(type="integer", name="num_seats")
+     * @Assert\Range(min="0")
+     */
+    private $numSeats;
+
     public static function getStates(): array
     {
         return [
@@ -125,6 +134,7 @@ class Idea
         $this->votes = new ArrayCollection();
         $this->closed = false;
         $this->state = static::STATE_PROPOSED;
+        $this->numSeats = self::LIMITLESS;
     }
 
     /**
@@ -346,5 +356,25 @@ class Idea
     public function removeVote(Vote $vote)
     {
         $this->votes->removeElement($vote);
+    }
+
+    /**
+     * @return int
+     */
+    public function getNumSeats(): int
+    {
+        return $this->numSeats;
+    }
+
+    /**
+     * @param int $numSeats
+     *
+     * @return Idea
+     */
+    public function setNumSeats(int $numSeats): Idea
+    {
+        $this->numSeats = $numSeats;
+
+        return $this;
     }
 }

@@ -11,6 +11,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Participation;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
 use App\Repository\UserRepository;
@@ -36,7 +37,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/", name="profile_edit")
+     * @Route("/edit", name="profile_edit")
      * @Method({"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
@@ -60,6 +61,38 @@ class ProfileController extends Controller
 
         return $this->render('/frontend/profile/edit.html.twig', [
             'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/", name="profile_show")
+     * @Method("GET")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function showAction(Request $request)
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        /** @var User $profile */
+        $profile = $this->repository->getProfile($user->getId());
+
+        $academicYears = [];
+        $activities = 0;
+        $hours = 0;
+
+        $profile->getParticipations()->map(function (Participation $participation) use (&$academicYears, &$activities, &$hours) {
+            $academicYear = $participation->getActivity()->getAcademicYear();
+            $academicYears[$academicYear][] = $participation;
+
+            ++$activities;
+            $hours += $participation->getDuration();
+        });
+
+        return $this->render('/frontend/profile/show.html.twig', [
+            'profile' => $profile,
+            'academic_years' => $academicYears,
+            'activities' => $activities,
+            'hours' => $hours,
         ]);
     }
 

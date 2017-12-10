@@ -1,0 +1,27 @@
+{% extends '@SonataAdmin/CRUD/base_show_field.html.twig' %}
+
+{% block field_value %}
+    <table class="table compact">
+        <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Justificada</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for participation in value %}
+        {% set activity = participation.activity %}
+        <tr>
+            <td>{{ activity.title }}</td>
+            <td>
+                {% if participation.isReported %}
+                    <span class="label label-success">Sí</span>
+                {% else %}
+                    <span class="label label-danger">No</span>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

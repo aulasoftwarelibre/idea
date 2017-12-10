@@ -46,6 +46,10 @@
                         SALIR
                     </div>
                 </a>
+                {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
+                    <div class="ui fluid bottom attached red small button">
+                        SIN PLAZAS
+                    </div>
                 {% else %}
                 <a class="ui animated fluid bottom attached small button join idea" data-slug="{{ idea.slug }}">
                     <div class="visible content"><i class="plus icon"></i></div>
@@ -80,6 +84,13 @@
                     <i class="comment icon"></i>
                     {{ idea_count_comments(idea) }}
                 </a>
+                &nbsp;
+                {% if idea.numSeats > 0 %}
+                <span>
+                    <i class="add user icon"></i>
+                    {{ 'idea_num_seats' | transchoice(idea.numSeats, {'%count%': idea.numSeats}) }}
+                </span>
+                {% endif %}
             </div>
         </div>
     </div>

@@ -11,6 +11,8 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+
 class UserRepository extends CeoRepository
 {
     public function getChoices()
@@ -32,11 +34,14 @@ class UserRepository extends CeoRepository
     {
         return $this->getEntityManager()
             ->createQuery('
-                SELECT o, g, d
+                SELECT o, g, d, p, a
                 FROM App:User o
                 LEFT JOIN o.groups g
                 LEFT JOIN o.degree d
+                LEFT JOIN o.participations p
+                LEFT JOIN p.activity a
                 WHERE o.id = :id
+                ORDER BY a.occurredOn DESC
             ')
             ->setParameter('id', $userId)
             ->getOneOrNullResult()

@@ -50,6 +50,8 @@ class IdeaAdmin extends AbstractAdmin
             ->add('group', null, [
                 'placeholder' => 'Seleccione un grupo',
             ])
+            ->add('numSeats', null, [
+            ])
             ->add('votes', SonataVoteType::class, [
                 'multiple' => true,
                 'required' => false,

@@ -22,6 +22,8 @@ use App\Command\RemoveVoteCommand;
 use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
+use App\Event\IdeaWasCreatedEvent;
+use App\Exception\NoMoreSeatsLeftException;
 use App\Form\Type\IdeaType;
 use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -67,6 +69,12 @@ class IdeaController extends Controller
             );
 
             $this->addFlash('positive', 'Idea creada con éxito');
+
+            $this->get('event_dispatcher')->dispatch(IdeaWasCreatedEvent::class,
+                new IdeaWasCreatedEvent(
+                    $idea
+                )
+            );
 
             return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
         }
@@ -114,13 +122,17 @@ class IdeaController extends Controller
      */
     public function joinAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
-            new AddVoteCommand(
-                $idea,
-                $this->getUser()
-            )
-        );
-        $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
+        try {
+            $this->bus->handle(
+                new AddVoteCommand(
+                    $idea,
+                    $this->getUser()
+                )
+            );
+            $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
+        } catch (NoMoreSeatsLeftException $e) {
+            $this->addFlash('negative', 'No quedan plazas libres');
+        }
 
         return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
     }
