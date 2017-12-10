@@ -11,6 +11,8 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
+
 class UserRepository extends CeoRepository
 {
     public function getChoices()
