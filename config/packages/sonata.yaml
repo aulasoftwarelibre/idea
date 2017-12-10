@@ -16,6 +16,12 @@ sonata_admin:
                     - 'eco.admin.activity'
                     - 'eco.admin.idea'
                     - 'eco.admin.degree'
+            app.admin.messages:
+                label: 'group.messages'
+                label_catalogue: 'messages'
+                icon: '<i class="fa fa-telegram"></i>'
+                items:
+                    - 'eco.admin.telegram_chat'
             app.admin.user:
                 label: 'sonata_user'
                 label_catalogue: 'SonataUserBundle'
@@ -118,6 +124,12 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.participation }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+    eco.admin.telegram_chat:
+        class: App\Admin\TelegramChatAdmin
+        arguments: [ ~, App\Entity\TelegramChat, ~]
+        tags:
+            - { name:sonata.admin, manager_type: orm, label: menu.telegram_chat}
+
 
 twig:
     form_themes:

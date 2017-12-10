@@ -1,20 +1,25 @@
 approved: 'Aprobada'
-group.resources: Recursos
 idea_num_comments: '%count% comentario|%count% comentarios'
 idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
 proposed: 'Nueva'
 rejected: 'Rechazada'
+Action: Acción
 
 breadcrumb.link_activity_list: Lista de actividades
 breadcrumb.link_degree_list: Lista de grados
 breadcrumb.link_idea_list: Lista de ideas
 breadcrumb.link_participation_list: Lista de participantes
 breadcrumb.link_participation_create: Crear participante
+Telegram Chat List: Lista de chats de Telegram
+
+group.resources: Recursos
+group.messages: Telegram
 
 menu.activity: Actividades
 menu.degree: Grados
 menu.idea: Ideas
 menu.participation: Participantes
+menu.telegram_chat: Chats
 
 attendee: Asistente
 organizer: Organizador
@@ -23,6 +28,16 @@ staff: PAS
 student: Estudiante
 teacher: Profesor
 
+
+Id: Identificador
+Type: Tipo
+Title: Título
+Active: Activo
+Username: Nombre de usuario
+Channel: Canal
+Group: Grupo
+Supergroup: Supergrupo
+Private: Privado
 
 filter.label__action: Acción
 filter.label_closed: Cerrado
@@ -43,6 +58,7 @@ filter.label_user: Usuario
 filter.label_user_fullname: Nombre completo
 filter.label_role: Rol
 filter.label_is_reported: Informe
+filter.label_id: Id.
 
 form.label__action: Acción
 form.label_closed: Cerrado
@@ -63,8 +79,10 @@ form.label_user: Usuario
 form.label_user_fullname: Nombre completo
 form.label_role: Rol
 form.label_is_reported: Informe
+form.label_id: Id.
 
 list.label__action: Acción
+list.label_id: Id.
 list.label_closed: Cerrado
 list.label_created_at: Fecha creación
 list.label_description: Descripción
@@ -104,6 +122,7 @@ show.label_user_fullname: Nombre completo
 show.label_role: Rol
 show.label_is_reported: Informe
 show.label_participations: Participaciones
+show.label_id: Id.
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.
