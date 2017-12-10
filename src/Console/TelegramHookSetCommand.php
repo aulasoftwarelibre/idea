@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\RouterInterface;
 use Telegram\Bot\Api;
 use Telegram\Bot\Exceptions\TelegramSDKException;
@@ -48,7 +49,14 @@ class TelegramHookSetCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $io = new SymfonyStyle($input, $output);
+
         $certificate = $input->getOption('certificate');
+        if ($certificate && false === file_exists($certificate)) {
+            $io->error("El certificado no existe: {$certificate}");
+
+            return 1;
+        }
 
         $id = $this->telegram->getMe();
         $hookRoute = $this->router->generate('telegram_hook', [], RouterInterface::ABSOLUTE_URL);
@@ -57,10 +65,12 @@ class TelegramHookSetCommand extends Command
         $output->writeln("El hook del bot es: {$hookRoute}");
 
         try {
-            $result = $this->telegram->setWebhook([
-                'url' => $hookRoute,
-                'certificate' => 'var/cert/public.crt',
-            ]);
+            $data = [];
+            $data['url'] = $hookRoute;
+            if ($certificate) {
+                $data['certificate'] = $certificate;
+            }
+            $result = $this->telegram->setWebhook($data);
 
             $output->writeln((string) $result->getBody());
         } catch (TelegramSDKException $exception) {
