@@ -1,9 +1,11 @@
-{% macro ribbon(state) %}
-    {% if state == 'proposed' %}
+{% macro ribbon(idea) %}
+    {% set state = idea.state %}
+    {% set createdAt = idea.createdAt %}
+    {% if state == 'proposed' and date(createdAt) > date('-2 days') %}
         <span class="ui yellow right ribbon label">{{ state | trans }}</span>
     {% elseif state == 'approved' %}
         <span class="ui green right ribbon label">{{ state | trans }}</span>
-    {% else %}
+    {% elseif state == 'rejected' %}
         <span class="ui red right ribbon label">{{ state | trans }}</span>
     {% endif %}
 {% endmacro %}
@@ -64,7 +66,7 @@
     <div class="twelve wide mobile twelve wide tablet thirteen wide computer column">
         <div class="ui fluid card">
             <div class="content">
-                {{ widgets.ribbon(idea.state) }}
+                {{ widgets.ribbon(idea) }}
                 <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
                     {{ idea.title }}
                 </a>
