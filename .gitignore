@@ -14,5 +14,9 @@
 /phpunit.xml
 ###< symfony/phpunit-bridge ###
 /public/cache/
-/public/components/
 /public/images/
+
+###> symfony/webpack-encore-pack ###
+/node_modules/
+/public/build/
+###< symfony/webpack-encore-pack ###
