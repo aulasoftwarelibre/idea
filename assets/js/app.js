@@ -11,39 +11,45 @@ $(document).ready(function () {
 
     $("a.close.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_close', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_close', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
     $("a.open.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_open', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_open', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
     $("a.approve.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_approve', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_approve', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
     $("a.reject.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_reject', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_reject', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
     $("a.join.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_join', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_join', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
     $("a.leave.idea").click(function (action) {
         var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_leave', {slug: slug}), {});
-
-        location.reload()
+        $.post(Routing.generate('idea_leave', {slug: slug}), {})
+            .done(function () {
+                location.reload();
+            });
     });
 
     // fix menu when passed
