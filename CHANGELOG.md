@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.3.1] - Sat, 03 Feb 2018 19:59:39 +0100
+
+- Arreglado problema de las notificaciones
+
 ## [1.3.0] - Sat, 03 Feb 2018 19:08:12 +0100
 
 - Vinculación con telegram

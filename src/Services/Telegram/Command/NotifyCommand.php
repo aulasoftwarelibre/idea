@@ -23,21 +23,12 @@ class NotifyCommand extends Command
     {
         $message = $this->getUpdate()->getMessage();
 
-        $this->replyWithMessage([
-            'text' => 'Estas son las notificaciones que tienes activas',
-        ]);
-
-        $keyboard = $this->telegram->getTacticianBus()->handle(
-            new GetTelegramChatNotificationsQuery(
-                (string) $message->getChat()->getId()
-            )
-        );
-
         try {
-            $this->replyWithMessage([
-                'text' => 'Activa tus notificaciones',
-                'reply_markup' => $keyboard,
-            ]);
+            $this->telegram->getTacticianBus()->handle(
+                new GetTelegramChatNotificationsQuery(
+                    (string) $message->getChat()->getId()
+                )
+            );
         } catch (\Exception $e) {
             $this->replyWithMessage([
                 'text' => $e->getMessage(),
