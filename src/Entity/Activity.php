@@ -151,7 +151,7 @@ class Activity
      *
      * @return Activity
      */
-    public function setTitle(string $title): Activity
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -171,7 +171,7 @@ class Activity
      *
      * @return Activity
      */
-    public function setOccurredOn(\DateTime $occurredOn): Activity
+    public function setOccurredOn(\DateTime $occurredOn): self
     {
         $this->occurredOn = $occurredOn;
 
@@ -191,7 +191,7 @@ class Activity
      *
      * @return Activity
      */
-    public function setDuration(int $duration): Activity
+    public function setDuration(int $duration): self
     {
         $this->duration = $duration;
 
@@ -211,7 +211,7 @@ class Activity
      *
      * @return Activity
      */
-    public function addParticipation(Participation $participant): Activity
+    public function addParticipation(Participation $participant): self
     {
         $participant->setActivity($this);
         $this->participations[] = $participant;
@@ -240,7 +240,7 @@ class Activity
      *
      * @return Activity
      */
-    public function setAcademicYear(string $academicYear): Activity
+    public function setAcademicYear(string $academicYear): self
     {
         $this->academicYear = $academicYear;
 
