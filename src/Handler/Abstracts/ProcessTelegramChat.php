@@ -12,6 +12,7 @@
 namespace App\Handler\Abstracts;
 
 use App\Command\Abstracts\ProcessTelegramChatCommand;
+use App\Command\GetTelegramChatNotificationsQuery;
 use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
 use Symfony\Component\Translation\TranslatorInterface;
@@ -62,6 +63,32 @@ abstract class ProcessTelegramChat
         $this->telegram->editMessageReplyMarkup([
             'chat_id' => $command->getChatId(),
             'message_id' => $command->getMessageId(),
+            'reply_markup' => $keyboard,
+        ]);
+    }
+
+    /**
+     * @param GetTelegramChatNotificationsQuery $command
+     * @param TelegramChat                      $telegramChat
+     *
+     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
+     */
+    protected function sendMessage(GetTelegramChatNotificationsQuery $command, TelegramChat $telegramChat): void
+    {
+        $notifications = TelegramChat::getNotificationsTypes();
+        $buttons = [];
+
+        foreach ($notifications as $name => $notification) {
+            $buttons[] = $this->createButton($name, in_array($notification, $telegramChat->getNotifications(), true));
+        }
+
+        $keyboard = Keyboard::make([
+            'inline_keyboard' => [$buttons],
+        ]);
+
+        $this->telegram->sendMessage([
+            'text' => 'Selecciona las notificaciones',
+            'chat_id' => $command->getChatId(),
             'reply_markup' => $keyboard,
         ]);
     }

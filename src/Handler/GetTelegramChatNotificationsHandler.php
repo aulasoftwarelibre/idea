@@ -13,20 +13,10 @@ namespace App\Handler;
 
 use App\Command\GetTelegramChatNotificationsQuery;
 use App\Entity\TelegramChat;
-use App\Repository\TelegramChatRepository;
+use App\Handler\Abstracts\ProcessTelegramChat;
 
-class GetTelegramChatNotificationsHandler
+class GetTelegramChatNotificationsHandler extends ProcessTelegramChat
 {
-    /**
-     * @var TelegramChatRepository
-     */
-    private $repository;
-
-    public function __construct(TelegramChatRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     public function handle(GetTelegramChatNotificationsQuery $query)
     {
         $chatId = $query->getChatId();
@@ -36,6 +26,6 @@ class GetTelegramChatNotificationsHandler
             return new \LogicException('La cuenta no está vinculada a la plataforma de actividades.');
         }
 
-        return $telegramChat->getNotifications();
+        $this->sendMessage($query, $telegramChat);
     }
 }
