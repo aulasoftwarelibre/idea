@@ -13,6 +13,6 @@ namespace App\Event;
 
 use App\Event\Abstracts\AbstractIdeaEvent;
 
-final class IdeaWasCreatedEvent extends AbstractIdeaEvent
+final class IdeaWasApprovedEvent extends AbstractIdeaEvent
 {
 }

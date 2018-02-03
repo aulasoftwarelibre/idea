@@ -22,7 +22,9 @@ use App\Command\RemoveVoteCommand;
 use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
+use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasCreatedEvent;
+use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\Form\Type\IdeaType;
 use League\Tactician\CommandBus;
@@ -30,6 +32,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -42,10 +45,15 @@ class IdeaController extends Controller
      * @var CommandBus
      */
     private $bus;
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
-    public function __construct(CommandBus $bus)
+    public function __construct(CommandBus $bus, EventDispatcherInterface $eventDispatcher)
     {
         $this->bus = $bus;
+        $this->eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -70,7 +78,7 @@ class IdeaController extends Controller
 
             $this->addFlash('positive', 'Idea creada con éxito');
 
-            $this->get('event_dispatcher')->dispatch(IdeaWasCreatedEvent::class,
+            $this->eventDispatcher->dispatch(IdeaWasCreatedEvent::class,
                 new IdeaWasCreatedEvent(
                     $idea
                 )
@@ -129,7 +137,15 @@ class IdeaController extends Controller
                     $this->getUser()
                 )
             );
+
             $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
+
+            $this->eventDispatcher->dispatch(IdeaWasVotedEvent::class,
+                new IdeaWasVotedEvent(
+                    $idea,
+                    $this->getUser()
+                )
+            );
         } catch (NoMoreSeatsLeftException $e) {
             $this->addFlash('negative', 'No quedan plazas libres');
         }
@@ -204,6 +220,12 @@ class IdeaController extends Controller
             )
         );
         $this->addFlash('positive', 'La idea se ha aprobado correctamente.');
+
+        $this->get('event_dispatcher')->dispatch(IdeaWasApprovedEvent::class,
+            new IdeaWasApprovedEvent(
+                $idea
+            )
+        );
 
         return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
     }
