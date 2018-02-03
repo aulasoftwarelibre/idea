@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.2] - Sat, 03 Feb 2018 20:32:17 +0100
+
+- Arreglado problema de los mensajes que se envian al grupo.
+  Estaban intercambiados.
+
 ## [1.3.1] - Sat, 03 Feb 2018 19:59:39 +0100
 
 - Arreglado problema de las notificaciones

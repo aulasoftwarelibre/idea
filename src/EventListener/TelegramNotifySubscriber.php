@@ -38,8 +38,8 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            IdeaWasCreatedEvent::class => 'ideaWasCreated',
             IdeaWasApprovedEvent::class => 'ideaWasApproved',
+            IdeaWasCreatedEvent::class => 'ideaWasCreated',
         ];
     }
 
@@ -47,7 +47,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
     {
         $idea = $event->getIdea();
 
-        $message = $this->engine->render('telegram/idea_new.txt.twig', [
+        $message = $this->engine->render('telegram/idea_approved.txt.twig', [
             'idea' => $idea,
         ]);
 
@@ -62,7 +62,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
     {
         $idea = $event->getIdea();
 
-        $message = $this->engine->render('telegram/idea_approved.txt.twig', [
+        $message = $this->engine->render('telegram/idea_new.txt.twig', [
             'idea' => $idea,
         ]);
 
