@@ -11,25 +11,23 @@
 
 namespace App\Command;
 
-use Telegram\Bot\Objects\Message;
-
 class UnregisterUserChatCommand
 {
     /**
-     * @var Message
+     * @var string
      */
-    private $message;
+    private $chatId;
 
-    public function __construct(Message $message)
+    public function __construct(string $chatId)
     {
-        $this->message = $message;
+        $this->chatId = $chatId;
     }
 
     /**
-     * @return Message
+     * @return string
      */
-    public function getMessage(): Message
+    public function getChatId(): string
     {
-        return $this->message;
+        return $this->chatId;
     }
 }

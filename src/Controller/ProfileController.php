@@ -11,15 +11,22 @@
 
 namespace App\Controller;
 
+use App\Command\GenerateUserTelegramTokenCommand;
+use App\Command\UnregisterUserChatCommand;
 use App\Entity\Participation;
+use App\Entity\TelegramChat;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
 use App\Repository\UserRepository;
+use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Telegram\Bot\Api as Telegram;
 
 /**
  * @Route("/profile")
@@ -30,10 +37,20 @@ class ProfileController extends Controller
      * @var UserRepository
      */
     private $repository;
+    /**
+     * @var CommandBus
+     */
+    private $bus;
+    /**
+     * @var Telegram
+     */
+    private $telegram;
 
-    public function __construct(UserRepository $repository)
+    public function __construct(UserRepository $repository, CommandBus $bus, Telegram $telegram)
     {
         $this->repository = $repository;
+        $this->bus = $bus;
+        $this->telegram = $telegram;
     }
 
     /**
@@ -96,14 +113,68 @@ class ProfileController extends Controller
         ]);
     }
 
+    /**
+     * @Route("/telegram/disconnect", name="profile_telegram_disconnect", options={"expose" = true})
+     * @Method("POST")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function disconnectTelegramAction()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user->getTelegramChat() instanceof TelegramChat) {
+            return new JsonResponse(['error' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
+        }
+
+        $this->bus->handle(
+            new UnregisterUserChatCommand(
+                $user->getTelegramChat()->getId()
+            )
+        );
+
+        $this->addFlash('success', 'Has sido desconectado de Telegram.');
+
+        return new JsonResponse([], Response::HTTP_NO_CONTENT);
+    }
+
+    /**
+     * @Route("/telegram/status", name="profile_telegram_status", options={"expose" = true})
+     * @Method("GET")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     */
+    public function getTelegramStatusAction()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user->getTelegramChat() instanceof TelegramChat) {
+            return new JsonResponse([
+                'active' => false,
+            ]);
+        }
+
+        return new JsonResponse([
+            'active' => true,
+            'username' => $user->getTelegramChat()->getUsername(),
+        ]);
+    }
+
     public function showCard()
     {
         /** @var User $user */
         $user = $this->getUser();
         $profile = $this->repository->getProfile($user->getId());
+        $botname = $this->telegram->getMe()->getUsername();
+
+        $token = $this->bus->handle(
+            new GenerateUserTelegramTokenCommand(
+                $user->getId()
+            )
+        );
 
         return $this->render('/frontend/profile/_card.html.twig', [
             'profile' => $profile,
+            'token' => $token,
+            'botname' => $botname,
         ]);
     }
 }

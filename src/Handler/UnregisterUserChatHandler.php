@@ -35,16 +35,13 @@ class UnregisterUserChatHandler
 
     public function handle(UnregisterUserChatCommand $command)
     {
-        $message = $command->getMessage();
-        $chat = $message->getChat();
+        $chatId = $command->getChatId();
 
-        if (TelegramChat::PRIVATE !== $chat->getType()) {
+        $telegramChat = $this->repository->find($chatId);
+        if (!$telegramChat instanceof TelegramChat || TelegramChat::PRIVATE !== $telegramChat->getType()) {
             return;
         }
 
-        $telegramChat = $this->repository->find($chat->getId());
-        if ($telegramChat) {
-            $this->repository->remove($telegramChat);
-        }
+        $this->repository->remove($telegramChat);
     }
 }

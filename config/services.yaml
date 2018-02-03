@@ -55,9 +55,10 @@ services:
         tags:
             - { name: 'tactician.handler', typehints: true }
 
+    Telegram\Bot\Api: '@App\Services\Telegram\TelegramService'
+
     App\Services\Telegram\TelegramService:
         arguments: [ '%env(TELEGRAM_BOT_API)%' ]
-        autowiring_type: Telegram\Bot\Api
         calls:
             - ['setTacticianBus', ['@tactician.commandbus.default'] ]
 

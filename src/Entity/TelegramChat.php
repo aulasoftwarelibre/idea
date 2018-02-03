@@ -23,6 +23,9 @@ class TelegramChat
     const SUPERGROUP = 'supergroup';
     const CHANNEL = 'channel';
 
+    const NOTIFY_VOTES = 'notify.votes';
+    const NOTIFY_COMMENTS = 'notify.comments';
+
     /**
      * @var string
      * @ORM\Id
@@ -55,6 +58,18 @@ class TelegramChat
     private $active = false;
 
     /**
+     * @var User|null
+     * @ORM\OneToOne(targetEntity="User", mappedBy="telegramChat")
+     */
+    protected $user;
+
+    /**
+     * @var array
+     * @ORM\Column(type="json", nullable=true)
+     */
+    private $notifications;
+
+    /**
      * TelegramChat constructor.
      *
      * @param string $id
@@ -64,6 +79,7 @@ class TelegramChat
     {
         $this->id = $id;
         $this->type = $type;
+        $this->notifications = [];
     }
 
     /**
@@ -142,7 +158,79 @@ class TelegramChat
         return $this;
     }
 
-    public function __toString(): ?string
+    /**
+     * @return User|null
+     */
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param User|null $user
+     */
+    public function setUser(?User $user): void
+    {
+        $user->setTelegramChat($this);
+        $this->user = $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function getNotifications(): array
+    {
+        return $this->notifications;
+    }
+
+    /**
+     * @param string $notification
+     *
+     * @return bool
+     */
+    public function isEnabledNotification(string $notification): bool
+    {
+        return in_array($notification, $this->notifications, true);
+    }
+
+    /**
+     * @param string $notification
+     *
+     * @return TelegramChat
+     */
+    public function addNotification(string $notification): self
+    {
+        if (!in_array($notification, $this->notifications, true)) {
+            $this->notifications[] = $notification;
+        }
+
+        return $this;
+    }
+
+    public function removeNotification(string $notification)
+    {
+        $this->notifications = array_filter($this->notifications,
+            function ($item) use ($notification) {
+                return $notification !== $item;
+            })
+        ;
+    }
+
+    /**
+     * @return array
+     */
+    public static function getNotificationsTypes()
+    {
+        return [
+            'Comments' => self::NOTIFY_COMMENTS,
+            'Votes' => self::NOTIFY_VOTES,
+        ];
+    }
+
+    /**
+     * @return string
+     */
+    public function __toString()
     {
         return $this->getTitle() ?? $this->getUsername();
     }

@@ -116,3 +116,9 @@
         font-size: 1.4em!important;
     }
 }
+
+#telegram-username.hidden,
+#telegram-connect.hidden,
+#telegram-disconnect.hidden {
+    display: none;
+}

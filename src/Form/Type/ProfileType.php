@@ -12,6 +12,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Degree;
+use App\Entity\TelegramChat;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -40,8 +41,8 @@ class ProfileType extends AbstractType
                 'allow_delete' => true,
                 'delete_label' => '¿Borrar?',
                 'download_label' => 'Descargar',
-                'download_uri' => true,
-                'image_uri' => true,
+                'download_uri' => false,
+                'image_uri' => false,
                 'imagine_pattern' => 'squared_thumbnail',
             ])
             ->add('biography', TextareaType::class, [
@@ -56,6 +57,7 @@ class ProfileType extends AbstractType
             ])
             ->add('degree', EntityType::class, [
                 'label' => 'Estudios',
+                'required' => false,
                 'class' => Degree::class,
                 'placeholder' => 'Selecciona tus estudios',
                 'attr' => [
@@ -66,6 +68,16 @@ class ProfileType extends AbstractType
                 'label' => 'Año de ingreso',
             ])
         ;
+
+        /** @var User $profile */
+        $profile = $builder->getData();
+
+        if ($profile->getTelegramChat()) {
+            $builder
+                ->add('telegramChat', ProfileTelegramOptionsType::class, [
+                ])
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver)

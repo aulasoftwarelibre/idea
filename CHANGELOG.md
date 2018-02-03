@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.3.0] - Sat, 03 Feb 2018 19:08:12 +0100
+
+- Vinculación con telegram
+- Avisos de votos y comentarios
+
 ## [1.2.0] - Fri, 19 Jan 2018 16:34:50 +0100
 
 - Uso de encore

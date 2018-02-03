@@ -1,0 +1,9 @@
+{% extends "@SonataAdmin/CRUD/base_list_field.html.twig" %}
+
+{% block field %}
+    {% if object.type == 'private' %}
+        {{ object.username }}
+    {% else %}
+        {{ object.title }}
+    {% endif %}
+{% endblock %}
