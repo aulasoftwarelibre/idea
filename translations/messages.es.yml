@@ -133,3 +133,8 @@ http_error_404.description: No hemos podido encontrar la página solicitada.
 http_error_404.suggestion: Comprueba que la dirección de la página está bien escrita o <a href="%url%">vuelve a la portada del sitio</a>.
 http_error_500.description: Se ha producido un error grave en el servidor.
 http_error_500.suggestion: Intentar recargar esta página dentro de unos minutos o <a href="%url%">vuelve a la portada del sitio</a>.
+
+Disable Comments: Desactivar comentarios
+Enable Comments: Activar comentarios
+Disable Votes: Desactivar votos
+Enable Votes: Activar votos

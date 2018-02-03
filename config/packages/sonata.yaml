@@ -93,6 +93,10 @@ sonata_user:
     impersonating:
         route: sonata_admin_dashboard
 
+sonata_core:
+    form:
+        mapping:
+            enabled: false
 
 services:
     eco.admin.activity:
@@ -128,7 +132,7 @@ services:
         class: App\Admin\TelegramChatAdmin
         arguments: [ ~, App\Entity\TelegramChat, ~]
         tags:
-            - { name:sonata.admin, manager_type: orm, label: menu.telegram_chat}
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat }
 
 
 twig:
