@@ -19,10 +19,15 @@ class RegisterUserChatCommand
      * @var Message
      */
     private $message;
+    /**
+     * @var null|string
+     */
+    private $token;
 
-    public function __construct(Message $message)
+    public function __construct(Message $message, ?string $token)
     {
         $this->message = $message;
+        $this->token = $token;
     }
 
     /**
@@ -31,5 +36,13 @@ class RegisterUserChatCommand
     public function getMessage(): Message
     {
         return $this->message;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getToken(): ?string
+    {
+        return $this->token;
     }
 }

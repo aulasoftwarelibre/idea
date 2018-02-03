@@ -14,6 +14,7 @@ namespace App\Handler;
 use App\Command\RegisterUserChatCommand;
 use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
+use App\Repository\UserRepository;
 use App\Services\Telegram\TelegramService;
 
 class RegisterUserChatHandler
@@ -21,34 +22,50 @@ class RegisterUserChatHandler
     /**
      * @var TelegramChatRepository
      */
-    private $repository;
+    private $telegramChatRepository;
     /**
      * @var TelegramService
      */
     private $telegram;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
-    public function __construct(TelegramChatRepository $repository, TelegramService $telegram)
-    {
-        $this->repository = $repository;
+    public function __construct(
+        TelegramChatRepository $telegramChatRepository,
+        UserRepository $userRepository,
+        TelegramService $telegram
+    ) {
+        $this->telegramChatRepository = $telegramChatRepository;
         $this->telegram = $telegram;
+        $this->userRepository = $userRepository;
     }
 
     public function handle(RegisterUserChatCommand $command)
     {
         $message = $command->getMessage();
-        $chat = $message->getChat();
+        $token = $command->getToken();
 
+        $chat = $message->getChat();
         if (TelegramChat::PRIVATE !== $chat->getType()) {
-            return null;
+            return false;
         }
 
-        $telegramChat = $this->repository->find($chat->getId());
+        $user = $this->userRepository->findOneByValidToken($token);
+        if (!$user) {
+            return false;
+        }
+
+        $telegramChat = $this->telegramChatRepository->find($chat->getId());
         if (!$telegramChat) {
             $telegramChat = new TelegramChat($chat->getId(), $chat->getType());
-            $telegramChat->setUsername($chat->getUsername());
-
-            $this->repository->add($telegramChat);
         }
+
+        $telegramChat->setUsername($chat->getUsername());
+        $telegramChat->setUser($user);
+
+        $this->telegramChatRepository->add($telegramChat);
 
         return $telegramChat;
     }

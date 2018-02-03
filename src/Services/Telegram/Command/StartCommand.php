@@ -12,25 +12,48 @@
 namespace App\Services\Telegram\Command;
 
 use App\Command\RegisterUserChatCommand;
+use App\Entity\TelegramChat;
 use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
 {
     protected $name = 'start';
-    protected $description = 'Start command to get you started';
+    protected $description = 'Inicia la interacción con el bot.';
 
     public function handle($arguments)
     {
-        $this->replyWithMessage([
-            'text' => 'Este bot aún no interacciona con usuarios. ',
-        ]);
+        if (empty($arguments)) {
+            $this->replyWithMessage([
+                'text' => 'Este bot aún no interacciona con usuarios.',
+            ]);
+
+            return;
+        }
 
         $message = $this->getUpdate()->getMessage();
 
-        $this->telegram->getTacticianBus()->handle(
+        $valid = $this->telegram->getTacticianBus()->handle(
             new RegisterUserChatCommand(
-                $message
+                $message,
+                $arguments
             )
         );
+
+        if (!$valid instanceof TelegramChat) {
+            $this->replyWithMessage([
+                'text' => 'El token no es válido.',
+            ]);
+
+            return;
+        }
+
+        $this->replyWithMessage([
+            'text' => sprintf(
+                "Enhorabuena te has registrado con el usuario %s.\nEnvía /stop para desconectar",
+                $valid->getUser()->getUsername()
+            ),
+        ]);
+
+        $this->triggerCommand('notify');
     }
 }
