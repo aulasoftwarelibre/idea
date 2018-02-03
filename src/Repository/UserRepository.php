@@ -11,8 +11,6 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
-
 class UserRepository extends CeoRepository
 {
     public function getChoices()
@@ -44,6 +42,21 @@ class UserRepository extends CeoRepository
                 ORDER BY a.occurredOn DESC
             ')
             ->setParameter('id', $userId)
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findOneByValidToken(string $token)
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT u
+                FROM App:User u
+                WHERE u.telegramSecretToken = :token
+                      AND u.telegramSecretTokenExpiresAt > :now
+            ')
+            ->setParameter('token', $token)
+            ->setParameter('now', new \DateTime())
             ->getOneOrNullResult()
             ;
     }

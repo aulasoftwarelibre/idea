@@ -70,7 +70,7 @@ class Degree
      *
      * @return Degree
      */
-    public function setName(string $name): Degree
+    public function setName(string $name): self
     {
         $this->name = $name;
 

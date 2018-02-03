@@ -1,6 +1,7 @@
 global.$ = global.jQuery = require('jquery');
 
 require('semantic-ui-css');
+import Clipboard from 'clipboard';
 
 $(document).ready(function () {
     $('.ui.sticky')
@@ -51,7 +52,38 @@ $(document).ready(function () {
                 location.reload();
             });
     });
+    $("#telegram-connect").click(function (action) {
+        $('.ui.basic.modal')
+            .modal({
+                closable: false,
+                onVisible: function () {
+                    setTimeout(check_telegram_status, 1000)
+                }
+            })
+            .modal('show')
+        ;
+    });
+    function check_telegram_status() {
+        $.getJSON(Routing.generate('profile_telegram_status'), function (data) {
+            if (!data.active) {
+                setTimeout(check_telegram_status, 1000)
+                return
+            }
 
+            $('#telegram-connect').toggle('hidden');
+            $('#telegram-disconnect').toggle('hidden');
+            $('#telegram-username').toggle('hidden');
+            $('#telegram-username>div>span').text("@" + data.username);
+            $('.ui.basic.modal').modal('hide');
+        });
+    }
+
+    $("#telegram-disconnect").click(function (action) {
+        $.post(Routing.generate('profile_telegram_disconnect', {}), {})
+            .done(function () {
+                location.reload();
+            });
+    });
     // fix menu when passed
     $('.masthead')
         .visibility({
@@ -69,4 +101,22 @@ $(document).ready(function () {
     $('.ui.sidebar')
         .sidebar('attach events', '.toc.item')
     ;
+
+    const clipboard = new Clipboard('.clipboard');
+
+    clipboard
+        .on('success', function (e) {
+            $(e.trigger).attr('data-tooltip', 'Copiado');
+            e.clearSelection();
+            setTimeout(function () {
+                $(e.trigger).attr('data-tooltip', 'Copiar');
+            }, 2500)
+        })
+        .on('error', function (e) {
+            $(e.trigger).attr('data-tooltip', 'No funciona en Safari');
+            setTimeout(function () {
+                $(e.trigger).attr('data-tooltip', 'Copiar');
+            }, 2500)
+        })
+
 });

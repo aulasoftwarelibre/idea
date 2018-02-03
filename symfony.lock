@@ -17,11 +17,17 @@
     "irazasyed/telegram-bot-sdk": {
         "version": "v2.2.0"
     },
+    "league/event": {
+        "version": "2.1.2"
+    },
     "nesbot/carbon": {
         "version": "1.22.1"
     },
     "psr/http-message": {
         "version": "1.0.1"
+    },
+    "ramsey/uuid": {
+        "version": "3.7.3"
     },
     "symfony/maker-bundle": {
         "version": "1.0",

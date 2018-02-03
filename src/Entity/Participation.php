@@ -148,7 +148,7 @@ class Participation
      *
      * @return Participation
      */
-    public function setRole(string $role): Participation
+    public function setRole(string $role): self
     {
         $this->role = $role;
 
@@ -168,7 +168,7 @@ class Participation
      *
      * @return Participation
      */
-    public function setIsReported(bool $isReported): Participation
+    public function setIsReported(bool $isReported): self
     {
         $this->isReported = $isReported;
 
@@ -188,7 +188,7 @@ class Participation
      *
      * @return Participation
      */
-    public function setUser(User $user): Participation
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
@@ -208,7 +208,7 @@ class Participation
      *
      * @return Participation
      */
-    public function setActivity(Activity $activity): Participation
+    public function setActivity(Activity $activity): self
     {
         $this->activity = $activity;
 

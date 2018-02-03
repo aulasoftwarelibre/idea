@@ -117,6 +117,20 @@ class Idea
      */
     private $numSeats;
 
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
+     */
+    protected $startsAt;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=255, nullable=true)
+     * @Assert\Length(max="255")
+     */
+    protected $location;
+
     public static function getStates(): array
     {
         return [
@@ -166,7 +180,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setTitle(string $title): Idea
+    public function setTitle(string $title): self
     {
         $this->title = $title;
 
@@ -186,7 +200,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setDescription(string $description): Idea
+    public function setDescription(string $description): self
     {
         $this->description = $description;
 
@@ -206,7 +220,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setClosed(bool $closed): Idea
+    public function setClosed(bool $closed): self
     {
         $this->closed = $closed;
 
@@ -226,7 +240,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setState(string $state): Idea
+    public function setState(string $state): self
     {
         $this->state = $state;
 
@@ -254,7 +268,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setCreatedAt(\DateTime $createdAt): Idea
+    public function setCreatedAt(\DateTime $createdAt): self
     {
         $this->createdAt = $createdAt;
 
@@ -274,7 +288,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setUpdatedAt(\DateTime $updatedAt): Idea
+    public function setUpdatedAt(\DateTime $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
@@ -294,7 +308,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setOwner(User $owner): Idea
+    public function setOwner(User $owner): self
     {
         $this->owner = $owner;
         $this->addVote(Vote::create($this, $owner));
@@ -315,7 +329,7 @@ class Idea
      *
      * @return Idea
      */
-    public function setGroup(Group $group): Idea
+    public function setGroup(Group $group): self
     {
         $this->group = $group;
 
@@ -335,7 +349,7 @@ class Idea
      *
      * @return Idea
      */
-    public function addVote(Vote $vote): Idea
+    public function addVote(Vote $vote): self
     {
         $vote->setIdea($this);
 
@@ -371,9 +385,49 @@ class Idea
      *
      * @return Idea
      */
-    public function setNumSeats(int $numSeats): Idea
+    public function setNumSeats(int $numSeats): self
     {
         $this->numSeats = $numSeats;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getStartsAt(): ?\DateTime
+    {
+        return $this->startsAt;
+    }
+
+    /**
+     * @param \DateTime|null $startsAt
+     *
+     * @return Idea
+     */
+    public function setStartsAt(?\DateTime $startsAt): self
+    {
+        $this->startsAt = $startsAt;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getLocation(): ?string
+    {
+        return $this->location;
+    }
+
+    /**
+     * @param null|string $location
+     *
+     * @return Idea
+     */
+    public function setLocation(?string $location): self
+    {
+        $this->location = $location;
 
         return $this;
     }

@@ -14,7 +14,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use FOS\RestBundle\Validator\Constraints\Regex;
+use Ramsey\Uuid\Uuid;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -45,6 +45,25 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var TelegramChat|null
+     * @ORM\OneToOne(targetEntity="TelegramChat", inversedBy="user")
+     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    protected $telegramChat;
+
+    /**
+     * @var string|null
+     * @ORM\Column(length=100, nullable=true)
+     */
+    protected $telegramSecretToken;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    protected $telegramSecretTokenExpiresAt;
+
+    /**
      * @var string|null
      * @ORM\Column(length=32, nullable=true)
      * @Assert\Choice(callback="getCollectives")
@@ -62,7 +81,7 @@ class User extends BaseUser
     /**
      * @var string|null
      * @ORM\Column(length=4, nullable=true)
-     * @Regex("/\d{4}/")
+     * @Assert\Regex("/\d{4}/")
      */
     private $year;
 
@@ -134,9 +153,57 @@ class User extends BaseUser
      *
      * @return bool
      */
-    public function equalsTo(User $user)
+    public function equalsTo(self $user)
     {
         return $this->getId() === $user->getId();
+    }
+
+    /**
+     * @return TelegramChat|null
+     */
+    public function getTelegramChat(): ?TelegramChat
+    {
+        return $this->telegramChat;
+    }
+
+    /**
+     * @param TelegramChat|null $telegramChat
+     *
+     * @return User
+     */
+    public function setTelegramChat(?TelegramChat $telegramChat): self
+    {
+        $this->telegramChat = $telegramChat;
+        $this->telegramSecretToken = null;
+
+        return $this;
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getTelegramSecretToken(): ?string
+    {
+        return $this->telegramSecretToken;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getTelegramSecretTokenExpiresAt(): ?\DateTime
+    {
+        return $this->telegramSecretTokenExpiresAt;
+    }
+
+    /**
+     * Create new token.
+     */
+    public function generateNewSecretToken(): self
+    {
+        $this->telegramSecretToken = trim(base64_encode(Uuid::uuid4()->toString()), '=');
+        $this->telegramSecretTokenExpiresAt = new \DateTime('+10 minutes'); // 10 minutes
+
+        return $this;
     }
 
     /**
@@ -165,7 +232,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setCollective(?string $collective): User
+    public function setCollective(?string $collective): self
     {
         $this->collective = $collective;
 
@@ -242,7 +309,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setDegree(?Degree $degree): User
+    public function setDegree(?Degree $degree): self
     {
         $this->degree = $degree;
 
@@ -262,7 +329,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setYear(?string $year): User
+    public function setYear(?string $year): self
     {
         $this->year = $year;
 
@@ -302,7 +369,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setImage(EmbeddedFile $image): User
+    public function setImage(EmbeddedFile $image): self
     {
         $this->image = $image;
 
@@ -330,7 +397,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setNic(?string $nic): User
+    public function setNic(?string $nic): self
     {
         $this->nic = $nic;
 
@@ -350,7 +417,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function addParticipation(Participation $participation): User
+    public function addParticipation(Participation $participation): self
     {
         $participation->setUser($this);
         $this->participations[] = $participation;

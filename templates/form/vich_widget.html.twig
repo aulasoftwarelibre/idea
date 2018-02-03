@@ -1,0 +1,25 @@
+{% extends "@VichUploader/Form/fields.html.twig" %}
+
+{% block vich_image_widget %}
+    {% spaceless %}
+        <div class="ui grid">
+            <div class="two wide computer four wide mobile column">
+                {% if image_uri %}
+                    <img class="ui tiny image" src="{{ image_uri }}" alt="avatar" />
+                {% else %}
+                    <img class="ui tiny image" src="{{ asset('assets/images/default.png') | imagine_filter('squared_thumbnail') }}">
+                {% endif %}
+                {% if download_uri %}
+                    <a href="{{ download_uri }}">{{ translation_domain is same as(false) ? download_label : download_label|trans({}, translation_domain) }}</a>
+                {% endif %}
+            </div>
+            <div class="fourteen wide computer twelve wide mobile column">
+                {{ form_widget(form.file) }}
+                {% if form.delete is defined %}
+                    {{ form_row(form.delete) }}
+                {% endif %}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock %}
+

@@ -12,19 +12,19 @@
 namespace App\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\TwigBundle\TwigEngine;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController
+class SecurityController extends Controller
 {
     /**
      * @Route("/login", name="login")
      */
-    public function login(AuthenticationUtils $authenticationUtils, TwigEngine $engine)
+    public function login(AuthenticationUtils $authenticationUtils)
     {
         $exception = $authenticationUtils->getLastAuthenticationError();
 
-        return $engine->renderResponse('/security/login.html.twig', [
+        return $this->render('security/login.html.twig', [
             'error' => $exception,
         ]);
     }

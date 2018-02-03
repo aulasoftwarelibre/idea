@@ -48,4 +48,19 @@ class UcoAuthenticator extends SSPGuardAuthenticator
 
         return new RedirectResponse($targetPath);
     }
+
+    public function supports(Request $request)
+    {
+        $match = $this->router->match($request->getPathInfo());
+
+        if (
+            'ssp_guard_check' !== $match['_route']
+            || $this->authSourceId !== $match['authSource']
+        ) {
+            // skip authentication unless we're on this route
+            return false;
+        }
+
+        return true;
+    }
 }

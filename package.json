@@ -1,6 +1,7 @@
 {
     "devDependencies": {
         "@symfony/webpack-encore": "^0.17.0",
+        "clipboard": "^1.7.1",
         "jquery": "^3.2.1",
         "semantic-ui-css": "^2.2.12"
     },

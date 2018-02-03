@@ -12,5 +12,7 @@ framework:
     #fragments: ~
     php_errors:
         log: true
+    assets:
+        json_manifest_path: '%kernel.root_dir%/../public/build/manifest.json'
     templating:
         engines: ['twig']
