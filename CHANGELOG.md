@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.4.2] - Mon, 19 Feb 2018 19:13:27 +0100
+
+- Fallo al enviar el correo. No estaba en copia oculta 
+
 ## [1.4.1] - Mon, 19 Feb 2018 18:41:20 +0100
 
 - Actualización del esquema
