@@ -15,7 +15,7 @@ use App\Command\SendMessageToTelegramChatsCommand;
 use App\Event\IdeaWasCreatedEvent;
 use League\Tactician\CommandBus;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Templating\EngineInterface;
 
 class IdeaEventSubscriber implements EventSubscriberInterface
 {
@@ -24,14 +24,14 @@ class IdeaEventSubscriber implements EventSubscriberInterface
      */
     private $bus;
     /**
-     * @var RouterInterface
+     * @var EngineInterface
      */
-    private $router;
+    private $engine;
 
-    public function __construct(CommandBus $bus, RouterInterface $router)
+    public function __construct(CommandBus $bus, EngineInterface $engine)
     {
         $this->bus = $bus;
-        $this->router = $router;
+        $this->engine = $engine;
     }
 
     public static function getSubscribedEvents()
@@ -44,13 +44,10 @@ class IdeaEventSubscriber implements EventSubscriberInterface
     public function ideaWasCreated(IdeaWasCreatedEvent $event)
     {
         $idea = $event->getIdea();
-        $route = $this->router->generate('idea_show', ['slug' => $idea->getSlug()], RouterInterface::ABSOLUTE_URL);
 
-        $message = <<< EOF
-Se acaba de registrar una nueva idea en el portal del Aula.
-Título: {$idea->getTitle()}
-Más información: {$route}
-EOF;
+        $message = $this->engine->render('telegram/notify_new_idea_was_created.txt.twig', [
+            'idea' => $idea,
+        ]);
 
         $this->bus->handle(
             new SendMessageToTelegramChatsCommand(
