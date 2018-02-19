@@ -97,7 +97,8 @@ class VotersNotifySubscriber implements EventSubscriberInterface
 
         $message = (new \Swift_Message('[AulaSL] Comentario de organización'))
             ->setFrom($this->mailFrom)
-            ->setTo($toUsers)
+            ->setTo($this->mailFrom)
+            ->setBcc($toUsers)
             ->setBody(
                 $this->engine->render('mail/notify_new_author_comment.html.twig', [
                     'idea' => $idea,
