@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.4.0] - Mon, 19 Feb 2018 18:41:20 +0100
+
+- Se envía un correo cuando el creador de una idea crea un nuevo
+  comentario.
+
 ## [1.3.2] - Sat, 03 Feb 2018 20:32:17 +0100
 
 - Arreglado problema de los mensajes que se envian al grupo.
