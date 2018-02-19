@@ -1,4 +1,19 @@
 {
+    "composer/semver": {
+        "version": "1.4.2"
+    },
+    "friendsofphp/php-cs-fixer": {
+        "version": "2.2",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "2.2",
+            "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
+        }
+    },
+    "gecko-packages/gecko-php-unit": {
+        "version": "v3.1.1"
+    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -23,6 +38,9 @@
     "nesbot/carbon": {
         "version": "1.22.1"
     },
+    "php-cs-fixer/diff": {
+        "version": "v1.3.0"
+    },
     "psr/http-message": {
         "version": "1.0.1"
     },
@@ -37,6 +55,9 @@
             "version": "1.0",
             "ref": "fadbfe33303a76e25cb63401050439aa9b1a9c7f"
         }
+    },
+    "symfony/polyfill-php72": {
+        "version": "v1.7.0"
     },
     "symfony/webpack-encore-pack": {
         "version": "1.0",
