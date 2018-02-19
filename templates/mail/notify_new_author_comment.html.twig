@@ -1,0 +1,19 @@
+<p>
+    Recibes este correo porque estás suscrito a la siguiente actividad "{{ idea.title }}"
+    del "{{ idea.group.name }}". El autor de la actividad ha enviado el siguiente comentario:
+</p>
+
+<p>
+    <cite>
+    {{ comment.body | nl2br }}
+    </cite>
+</p>
+
+<p>
+    Más información: {{ url('idea_show', { 'slug': idea.slug }) }}
+</p>
+<hr>
+<p>
+    Por favor, no conteste a este mensaje. Es un mensaje enviado automáticamente por la plataforma de
+    actividades del Aula de Software Libre de la Universidad de Córdoba.
+</p>

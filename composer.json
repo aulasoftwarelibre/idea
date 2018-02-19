@@ -1,4 +1,6 @@
 {
+    "name": "aulasoftwarelibre/ceo",
+    "description": "Gestor de actividades",
     "type": "project",
     "license": "MIT",
     "require": {
@@ -37,6 +39,7 @@
     },
     "require-dev": {
         "doctrine/data-fixtures": "^1.2",
+        "friendsofphp/php-cs-fixer": "^2.10",
         "hautelook/alice-bundle": "^2.0",
         "nelmio/alice": "^3.0",
         "symfony/debug-bundle": "^3.3",
