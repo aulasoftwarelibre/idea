@@ -32,6 +32,10 @@ class TelegramChatAdmin extends AbstractAdmin
             ])
             ->add('title', null, [
                 'template' => '/backend/TelegramChat/type_field_list.html.twig',
+                'label' => 'list.label_name',
+            ])
+            ->add('user.username', null, [
+                'label' => 'list.label_user',
             ])
             ->add('active', null, [
                 'editable' => true,
