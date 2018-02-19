@@ -39,8 +39,11 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
      */
     private $ideaRepository;
 
-    public function __construct(CommandBus $bus, EngineInterface $engine, IdeaRepository $ideaRepository)
-    {
+    public function __construct(
+        CommandBus $bus,
+        EngineInterface $engine,
+        IdeaRepository $ideaRepository
+    ) {
         $this->bus = $bus;
         $this->engine = $engine;
         $this->ideaRepository = $ideaRepository;
