@@ -24,6 +24,7 @@
         "sonata-project/doctrine-orm-admin-bundle": "^3.0",
         "sonata-project/formatter-bundle": "^3.0",
         "sonata-project/user-bundle": "^4.0",
+        "spomky-labs/jose": "^7.0",
         "stof/doctrine-extensions-bundle": "^1.2",
         "symfony/asset": "^3.4",
         "symfony/flex": "^1.0",

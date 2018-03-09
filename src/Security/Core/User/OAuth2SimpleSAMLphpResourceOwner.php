@@ -12,6 +12,8 @@
 namespace App\Security\Core\User;
 
 use HWI\Bundle\OAuthBundle\OAuth\ResourceOwner\GenericOAuth2ResourceOwner;
+use Jose\Factory\JWKFactory;
+use Jose\Loader;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
@@ -32,6 +34,7 @@ class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
             'authorization_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/authorize.php',
             'access_token_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/access_token.php',
             'infos_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/userinfo.php',
+            'jwks_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/jwks.php',
 
             'use_bearer_authorization' => true,
             'scope' => 'openid profile email',
@@ -40,28 +43,18 @@ class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
 
     public function getUserInformation(array $accessToken, array $extraParameters = [])
     {
-        // from http://stackoverflow.com/a/28748285/624544
-        list(, $jwt) = explode('.', $accessToken['id_token'], 3);
-
-        // if the token was urlencoded, do some fixes to ensure that it is valid base64 encoded
-        $jwt = str_replace(['-', '_'], ['+', '/'], $jwt);
-
-        // complete token if needed
-        switch (mb_strlen($jwt) % 4) {
-            case 0:
-                break;
-
-            case 2:
-            case 3:
-                $jwt .= '=';
-                break;
-
-            default:
-                throw new \InvalidArgumentException('Invalid base64 format sent back');
-        }
+        $jwk_set = JWKFactory::createFromJKU($this->options['jwks_url']);
+        $loader = new Loader();
+        $jws = $loader->loadAndVerifySignatureUsingKeySet(
+            $accessToken['id_token'],
+            $jwk_set,
+            ['RS256'],
+            $signatureIndex
+        );
+        $jwt = $jws->getPayload();
 
         $response = parent::getUserInformation($accessToken, $extraParameters);
-        $response->setData(base64_decode($jwt, true));
+        $response->setData($jwt);
 
         return $response;
     }

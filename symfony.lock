@@ -1,9 +1,15 @@
 {
+    "beberlei/assert": {
+        "version": "v2.9.2"
+    },
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
     "composer/semver": {
         "version": "1.4.2"
+    },
+    "fgrosse/phpasn1": {
+        "version": "2.0.1"
     },
     "friendsofphp/php-cs-fixer": {
         "version": "2.2",
@@ -40,6 +46,9 @@
     },
     "league/tactician-logger": {
         "version": "v0.10.0"
+    },
+    "mdanter/ecc": {
+        "version": "v0.5.0"
     },
     "nesbot/carbon": {
         "version": "1.22.1"
@@ -91,6 +100,18 @@
     },
     "ramsey/uuid": {
         "version": "3.7.3"
+    },
+    "spomky-labs/aes-key-wrap": {
+        "version": "v3.0.3"
+    },
+    "spomky-labs/base64url": {
+        "version": "v1.0.2"
+    },
+    "spomky-labs/jose": {
+        "version": "v7.0.1"
+    },
+    "spomky-labs/php-aes-gcm": {
+        "version": "v1.2.0"
     },
     "symfony/maker-bundle": {
         "version": "1.0",
