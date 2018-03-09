@@ -1,4 +1,7 @@
 {
+    "clue/stream-filter": {
+        "version": "v1.4.0"
+    },
     "composer/semver": {
         "version": "1.4.2"
     },
@@ -11,9 +14,6 @@
             "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
         }
     },
-    "gecko-packages/gecko-php-unit": {
-        "version": "v3.1.1"
-    },
     "guzzlehttp/guzzle": {
         "version": "6.3.0"
     },
@@ -22,6 +22,9 @@
     },
     "guzzlehttp/psr7": {
         "version": "1.4.2"
+    },
+    "hwi/oauth-bundle": {
+        "version": "0.6.1"
     },
     "illuminate/contracts": {
         "version": "v5.5.17"
@@ -35,11 +38,53 @@
     "league/event": {
         "version": "2.1.2"
     },
+    "league/tactician-logger": {
+        "version": "v0.10.0"
+    },
     "nesbot/carbon": {
         "version": "1.22.1"
     },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
+    },
+    "php-http/cache-plugin": {
+        "version": "v1.5.0"
+    },
+    "php-http/client-common": {
+        "version": "1.7.0"
+    },
+    "php-http/discovery": {
+        "version": "1.4.0"
+    },
+    "php-http/guzzle6-adapter": {
+        "version": "v1.1.1"
+    },
+    "php-http/httplug": {
+        "version": "v1.1.0"
+    },
+    "php-http/httplug-bundle": {
+        "version": "1.6",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "1.6",
+            "ref": "4655962c64e2de96c418caf576c57215711c7877"
+        }
+    },
+    "php-http/logger-plugin": {
+        "version": "v1.0.0"
+    },
+    "php-http/message": {
+        "version": "1.6.0"
+    },
+    "php-http/message-factory": {
+        "version": "v1.0.2"
+    },
+    "php-http/promise": {
+        "version": "v1.0.0"
+    },
+    "php-http/stopwatch-plugin": {
+        "version": "1.1.0"
     },
     "psr/http-message": {
         "version": "1.0.1"

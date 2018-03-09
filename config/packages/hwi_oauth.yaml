@@ -1,0 +1,16 @@
+hwi_oauth:
+    firewall_names: ['main']
+    fosub:
+        properties:
+            ssp: 'ssp_id'
+    resource_owners:
+        ssp:
+            type: 'oauth2'
+            class: 'App\Security\Core\User\OAuth2SimpleSAMLphpResourceOwner'
+            client_id: '%env(CLIENT_ID)%'
+            client_secret: '%env(CLIENT_SECRET)%'
+
+services:
+    my.oauth_aware.user_provider.service:
+        class: 'App\Security\Core\User\OAuth2SimpleSAMLphpUserProvider'
+        arguments: [ '@fos_user.user_manager', { ssp: 'ssp_id' } ]

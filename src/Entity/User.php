@@ -45,6 +45,17 @@ class User extends BaseUser
     protected $id;
 
     /**
+     * @var string
+     * @ORM\Column(name="ssp_id", type="string", length=50, unique=true, nullable=true)
+     */
+    protected $ssp_id;
+
+    /**
+     * @var string
+     */
+    protected $sspAccessToken;
+
+    /**
      * @var TelegramChat|null
      * @ORM\OneToOne(targetEntity="TelegramChat", inversedBy="user")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
@@ -156,6 +167,47 @@ class User extends BaseUser
     public function equalsTo(self $user)
     {
         return $this->getId() === $user->getId();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSspId()
+    {
+        return $this->ssp_id;
+    }
+
+    /**
+     * @param string $ssp_id
+     *
+     * @return User
+     */
+    public function setSspId($ssp_id)
+    {
+        $this->ssp_id = $ssp_id;
+        $this->username = $ssp_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSspAccessToken()
+    {
+        return $this->sspAccessToken;
+    }
+
+    /**
+     * @param string $sspAccessToken
+     *
+     * @return User
+     */
+    public function setSspAccessToken($sspAccessToken)
+    {
+        $this->sspAccessToken = $sspAccessToken;
+
+        return $this;
     }
 
     /**
