@@ -4,13 +4,3 @@ fos_comment:
         model:
             comment: App\Entity\Comment
             thread: App\Entity\Thread
-    acl: true
-    service:
-        acl:
-            thread:  fos_comment.acl.thread.roles
-            comment: fos_comment.acl.comment.roles
-            vote:    fos_comment.acl.vote.roles
-        manager:
-            thread:  fos_comment.manager.thread.acl
-            comment: fos_comment.manager.comment.acl
-            vote:    fos_comment.manager.vote.acl
