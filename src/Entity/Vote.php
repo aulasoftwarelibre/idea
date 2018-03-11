@@ -78,7 +78,10 @@ class Vote
      */
     public function __toString(): string
     {
-        return $this->getUser()->getUsername();
+        /** @var User $user */
+        $user = $this->getUser();
+
+        return "{$user->getFullname()} [{$user->getUsername()}]";
     }
 
     /**
