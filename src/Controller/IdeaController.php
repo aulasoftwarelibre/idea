@@ -266,7 +266,8 @@ class IdeaController extends Controller
     {
         $ideas = $this->bus->handle(
             new GetIdeasByPageQuery(
-                $page
+                $page,
+                $this->isGranted('ROLE_ADMIN')
             )
         );
 

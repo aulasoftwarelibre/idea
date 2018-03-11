@@ -131,6 +131,12 @@ class Idea
      */
     protected $location;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $private;
+
     public static function getStates(): array
     {
         return [
@@ -147,6 +153,7 @@ class Idea
     {
         $this->votes = new ArrayCollection();
         $this->closed = false;
+        $this->private = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
     }
@@ -428,6 +435,26 @@ class Idea
     public function setLocation(?string $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPrivate(): bool
+    {
+        return $this->private;
+    }
+
+    /**
+     * @param bool $private
+     *
+     * @return Idea
+     */
+    public function setPrivate(bool $private): self
+    {
+        $this->private = $private;
 
         return $this;
     }

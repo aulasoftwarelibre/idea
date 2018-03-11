@@ -22,16 +22,19 @@ class IdeaRepository extends CeoRepository
      *
      * @return Pagerfanta
      */
-    public function findLatest(int $page = 1): Pagerfanta
+    public function findLatest(int $page, bool $showPrivates): Pagerfanta
     {
-        $query = $this->getEntityManager()
-            ->createQuery('
-                SELECT i, g, o
-                FROM App:Idea i
-                LEFT JOIN i.group g
-                LEFT JOIN i.owner o
-                ORDER BY i.createdAt DESC
-            ');
+        $qb = $this->createQueryBuilder('i')
+            ->leftJoin('i.group', 'g')
+            ->leftJoin('i.owner', 'o')
+            ->orderBy('i.createdAt', 'DESC');
+
+        if (false === $showPrivates) {
+            $qb->andWhere('i.private = :false')
+                ->setParameter('false', false);
+        }
+
+        $query = $qb->getQuery();
 
         return $this->createPaginator($query, $page);
     }

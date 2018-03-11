@@ -35,7 +35,8 @@ class GetIdeasByPageHandler
     public function handle(GetIdeasByPageQuery $query): Pagerfanta
     {
         $page = $query->getPage();
+        $showPrivates = $query->getShowPrivates();
 
-        return $this->repository->findLatest($page);
+        return $this->repository->findLatest($page, $showPrivates);
     }
 }

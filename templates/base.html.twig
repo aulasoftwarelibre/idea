@@ -98,6 +98,8 @@
                         {% block side_menu %}
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             {{ render(controller('App\\Controller\\ProfileController:showCard')) }}
+
+                            <div class="ui divider"></div>
                         {% endif %}
 
                         {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}

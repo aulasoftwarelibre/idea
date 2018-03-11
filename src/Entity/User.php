@@ -18,6 +18,8 @@ use Ramsey\Uuid\Uuid;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -29,7 +31,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="fos_user")
  * @Vich\Uploadable()
  */
-class User extends BaseUser
+class User extends BaseUser implements EquatableInterface
 {
     const STUDENT = 'student';
     const STAFF = 'staff';
@@ -483,5 +485,11 @@ class User extends BaseUser
     public function removeParticipation(Participation $participation)
     {
         $this->participations->removeElement($participation);
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user instanceof self
+            && $user->getId() === $this->getId();
     }
 }

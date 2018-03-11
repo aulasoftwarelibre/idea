@@ -59,6 +59,7 @@ filter.label_user_fullname: Nombre completo
 filter.label_role: Rol
 filter.label_is_reported: Informe
 filter.label_id: Id.
+filter.label_private: Privado
 
 form.label__action: Acción
 form.label_closed: Cerrado
@@ -80,6 +81,7 @@ form.label_user_fullname: Nombre completo
 form.label_role: Rol
 form.label_is_reported: Informe
 form.label_id: Id.
+form.label_private: Privado
 
 list.label__action: Acción
 list.label_id: Id.
@@ -101,6 +103,7 @@ list.label_user: Usuario
 list.label_user_fullname: Nombre completo
 list.label_role: Rol
 list.label_is_reported: Informe
+list.label_private: Privado
 
 show.label__action: Acción
 show.label_closed: Cerrado
@@ -123,6 +126,7 @@ show.label_role: Rol
 show.label_is_reported: Informe
 show.label_participations: Participaciones
 show.label_id: Id.
+show.label_private: Privado
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.

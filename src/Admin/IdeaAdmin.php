@@ -41,6 +41,8 @@ class IdeaAdmin extends AbstractAdmin
             ])
             ->add('closed', null, [
             ])
+            ->add('private', null, [
+            ])
             ->add('state', ChoiceType::class, [
                 'choices' => Idea::getStates(),
             ])
