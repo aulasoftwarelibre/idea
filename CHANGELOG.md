@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.6.0] - Sun, 11 Mar 2018 19:26:21 +0100
+
+- [Admin] Muestra nombre completo en los votos de una idea
+
 ## [1.5.0] - Sun, 11 Mar 2018 18:45:23 +0100
 
 - Cambio a login por OAuth2
