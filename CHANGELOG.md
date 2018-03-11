@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.5.0] - Sun, 11 Mar 2018 18:45:23 +0100
+
+- Cambio a login por OAuth2
+- Añadidas ideas privadas
+
 ## [1.4.2] - Mon, 19 Feb 2018 19:13:27 +0100
 
 - Fallo al enviar el correo. No estaba en copia oculta 

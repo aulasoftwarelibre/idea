@@ -1,6 +1,0 @@
-ssp_guard:
-    installation_path: '%env(SIMPLESAMLPHP_PATH)%'
-    auth_sources:
-        ecosp:
-            title: 'Universidad de Córdoba (IDP)'
-            user_id: 'uid'

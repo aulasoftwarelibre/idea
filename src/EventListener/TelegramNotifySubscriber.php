@@ -47,6 +47,10 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
     {
         $idea = $event->getIdea();
 
+        if ($idea->isPrivate()) {
+            return;
+        }
+
         $message = $this->engine->render('telegram/idea_approved.txt.twig', [
             'idea' => $idea,
         ]);
@@ -61,6 +65,10 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
     public function ideaWasCreated(IdeaWasCreatedEvent $event)
     {
         $idea = $event->getIdea();
+
+        if ($idea->isPrivate()) {
+            return;
+        }
 
         $message = $this->engine->render('telegram/idea_new.txt.twig', [
             'idea' => $idea,

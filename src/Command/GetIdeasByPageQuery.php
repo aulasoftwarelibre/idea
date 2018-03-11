@@ -17,13 +17,18 @@ class GetIdeasByPageQuery
      * @var int
      */
     private $page;
+    /**
+     * @var bool
+     */
+    private $showPrivates;
 
     /**
      * GetIdeaPageQuery constructor.
      */
-    public function __construct(int $page = 1)
+    public function __construct(int $page = 1, bool $showPrivates = false)
     {
         $this->page = $page;
+        $this->showPrivates = $showPrivates;
     }
 
     /**
@@ -32,5 +37,13 @@ class GetIdeasByPageQuery
     public function getPage(): int
     {
         return $this->page;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getShowPrivates(): bool
+    {
+        return $this->showPrivates;
     }
 }

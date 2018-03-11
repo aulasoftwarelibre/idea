@@ -1,6 +1,3 @@
-ssp_bundle:
-    resource: '@SSPGuardBundle/Resources/config/routing/connect.xml'
-
 sonata_user:
     resource: '@SonataUserBundle/Resources/config/routing/admin_security.xml'
     prefix: '/admin'

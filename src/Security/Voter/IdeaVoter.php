@@ -13,6 +13,7 @@ namespace App\Security\Voter;
 
 use App\Entity\Idea;
 use App\Entity\User;
+use App\Entity\Vote;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
@@ -20,10 +21,11 @@ class IdeaVoter extends Voter
 {
     const OWNER = 'OWNER';
     const EDIT = 'EDIT';
+    const SHOW = 'SHOW';
 
     protected function supports($attribute, $subject)
     {
-        if (!in_array($attribute, [static::OWNER, static::EDIT], true)) {
+        if (!in_array($attribute, [static::OWNER, static::EDIT, static::SHOW], true)) {
             return false;
         }
 
@@ -51,6 +53,8 @@ class IdeaVoter extends Voter
                 return $this->isOwner($user, $idea);
             case static::EDIT:
                 return $this->canEdit($user, $idea);
+            case static::SHOW:
+                return $this->canShow($user, $idea);
         }
 
         throw new \RuntimeException("This line shouldn't be reached");
@@ -66,5 +70,13 @@ class IdeaVoter extends Voter
         return $user->equalsTo($idea->getOwner())
             || $user->hasRole('ROLE_ADMIN')
             ;
+    }
+
+    private function canShow(User $user, Idea $idea)
+    {
+        return $user->hasRole('ROLE_ADMIN')
+            || $idea->getVotes()->exists(function (Vote $vote) use ($user) {
+                return $vote->getUser()->equalsTo($user);
+            });
     }
 }

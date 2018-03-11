@@ -18,6 +18,8 @@ use Ramsey\Uuid\Uuid;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -29,7 +31,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  * @ORM\Table(name="fos_user")
  * @Vich\Uploadable()
  */
-class User extends BaseUser
+class User extends BaseUser implements EquatableInterface
 {
     const STUDENT = 'student';
     const STAFF = 'staff';
@@ -43,6 +45,17 @@ class User extends BaseUser
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
+
+    /**
+     * @var string
+     * @ORM\Column(name="ssp_id", type="string", length=50, unique=true, nullable=true)
+     */
+    protected $ssp_id;
+
+    /**
+     * @var string
+     */
+    protected $sspAccessToken;
 
     /**
      * @var TelegramChat|null
@@ -156,6 +169,47 @@ class User extends BaseUser
     public function equalsTo(self $user)
     {
         return $this->getId() === $user->getId();
+    }
+
+    /**
+     * @return string
+     */
+    public function getSspId()
+    {
+        return $this->ssp_id;
+    }
+
+    /**
+     * @param string $ssp_id
+     *
+     * @return User
+     */
+    public function setSspId($ssp_id)
+    {
+        $this->ssp_id = $ssp_id;
+        $this->username = $ssp_id;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSspAccessToken()
+    {
+        return $this->sspAccessToken;
+    }
+
+    /**
+     * @param string $sspAccessToken
+     *
+     * @return User
+     */
+    public function setSspAccessToken($sspAccessToken)
+    {
+        $this->sspAccessToken = $sspAccessToken;
+
+        return $this;
     }
 
     /**
@@ -431,5 +485,11 @@ class User extends BaseUser
     public function removeParticipation(Participation $participation)
     {
         $this->participations->removeElement($participation);
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $user instanceof self
+            && $user->getId() === $this->getId();
     }
 }
