@@ -1,5 +1,10 @@
 # Changelog
 
+## [1.7.0] - Sun, 11 Mar 2018 22:52:14 +0100
+
+- [Comments] La versión 2.1.0 de FosCommentBundle vuelve a dar problemas con los permalinks.
+  Se vuelve a la versión 2.0.*
+
 ## [1.6.0] - Sun, 11 Mar 2018 19:26:21 +0100
 
 - [Admin] Muestra nombre completo en los votos de una idea
