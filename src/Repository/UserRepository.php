@@ -16,13 +16,14 @@ class UserRepository extends CeoRepository
     public function getChoices()
     {
         $users = $this->createQueryBuilder('o')
-            ->select('o.id as id, o.username as username')
+            ->select('o.id as id, o.username as username, o.firstname as firstname, o.lastname as lastname')
             ->getQuery()
             ->getArrayResult();
 
         $result = [];
         foreach ($users as $user) {
-            $result[$user['username']] = $user['id'];
+            $key = "{$user['firstname']} {$user['lastname']} - {$user['username']}";
+            $result[$key] = $user['id'];
         }
 
         return $result;
