@@ -100,7 +100,9 @@ list.label_occurred_on: Fecha de celebración
 list.label_duration: Duración
 list.label_academic_year: Año académico
 list.label_user: Usuario
+list.label_user_email: Correo
 list.label_user_fullname: Nombre completo
+list.label_user_nic: Id.
 list.label_role: Rol
 list.label_is_reported: Informe
 list.label_private: Privado
