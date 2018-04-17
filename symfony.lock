@@ -53,6 +53,9 @@
     "nesbot/carbon": {
         "version": "1.22.1"
     },
+    "nikic/php-parser": {
+        "version": "v4.0.1"
+    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
