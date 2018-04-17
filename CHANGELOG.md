@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.8.0] - Tue, 17 Apr 2018 08:10:16 +0200
+
+- Listado de asistentes y exportación de datos para poder generar los informes.
+
 ## [1.7.0] - Sun, 11 Mar 2018 22:52:14 +0100
 
 - [Comments] La versión 2.1.0 de FosCommentBundle vuelve a dar problemas con los permalinks.
