@@ -17,6 +17,7 @@
         "ornicar/gravatar-bundle": "^1.1",
         "php-http/guzzle6-adapter": "^1.1",
         "php-http/httplug-bundle": "^1.9",
+        "phpoffice/phpspreadsheet": "^1.2",
         "ramsey/uuid": "^3.7",
         "sensio/framework-extra-bundle": "^5.0",
         "sensiolabs/security-checker": "^4.1",
