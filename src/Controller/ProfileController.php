@@ -18,6 +18,7 @@ use App\Entity\TelegramChat;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
 use App\Repository\UserRepository;
+use App\Services\Telegram\TelegramCachedCalls;
 use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -26,7 +27,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Telegram\Bot\Api as Telegram;
 
 /**
  * @Route("/profile")
@@ -42,11 +42,11 @@ class ProfileController extends Controller
      */
     private $bus;
     /**
-     * @var Telegram
+     * @var TelegramCachedCalls
      */
     private $telegram;
 
-    public function __construct(UserRepository $repository, CommandBus $bus, Telegram $telegram)
+    public function __construct(UserRepository $repository, CommandBus $bus, TelegramCachedCalls $telegram)
     {
         $this->repository = $repository;
         $this->bus = $bus;
