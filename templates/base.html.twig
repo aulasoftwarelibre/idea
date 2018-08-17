@@ -22,28 +22,6 @@
 
 
 <body>
-<!-- Following Menu -->
-<div class="ui large top fixed hidden menu">
-    <div class="ui container">
-        {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
-
-        <div class="right menu">
-            <div class="item">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a class="ui green button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
-                {% endif %}
-            </div>
-            <div class="item">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="ui red button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
-                {% else %}
-                    <a class="ui primary button" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Sidebar Menu -->
 <div class="ui vertical inverted sidebar menu">
     {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
@@ -59,22 +37,24 @@
 
 <!-- Page Contents -->
 <div class="pusher">
-    <div class="ui inverted vertical masthead center aligned segment">
+    <div class="ui vertical masthead center aligned">
         <div class="ui container">
-
-            <div id="topmenu" class="ui large secondary inverted pointing menu">
+            <div class="ui large secondary pointing fixed menu">
                 <a class="toc item">
-                    <i class="sidebar icon"></i>
+                   <i class="sidebar icon"></i>
                 </a>
+                <a class="logo" href="{{ path('homepage') }}"></a>
 
                 {{ knp_menu_render('mainMenu', {'nodiv': false}, 'semantic') }}
 
-                <div class="right item">
+
+                <div class="right menu">
                     {% if is_granted('ROLE_ADMIN') %}
-                        <a class="ui inverted button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
+                        <a class="item" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
                     {% endif %}
+
                     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a class="ui inverted button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
+                        <a class="item" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
                     {% else %}
                         <a class="item" href="{{ path('hwi_oauth_connect') }}"><i class="sign in icon"></i> Conectar</a>
                     {% endif %}

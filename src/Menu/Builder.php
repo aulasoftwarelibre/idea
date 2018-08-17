@@ -41,11 +41,11 @@ class Builder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->setChildrenAttribute('class', 'ui large secondary inverted pointing menu');
-        $menu->addChild('Inicio', ['route' => 'homepage'])->setExtra('icon', 'home');
+        $menu->setChildrenAttribute('class', 'ui large secondary pointing menu');
+        $menu->addChild('Inicio', ['route' => 'idea_index']);
 
         if ($this->authorizationChecker->isGranted('ROLE_USER')) {
-            $menu->addChild('Añadir idea', ['route' => 'idea_new'])->setExtra('icon', 'add');
+            $menu->addChild('Añadir idea', ['route' => 'idea_new']);
         }
 
         return $menu;

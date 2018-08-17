@@ -2,98 +2,90 @@
     {% set state = idea.state %}
     {% set createdAt = idea.createdAt %}
     {% if state == 'proposed' and date(createdAt) > date('-2 days') %}
-        <span class="ui yellow right ribbon label">{{ state | trans }}</span>
+        <div class="ui fluid top attached yellow small button">{{ state | trans }}</div>
     {% elseif state == 'approved' %}
-        <span class="ui green right ribbon label">{{ state | trans }}</span>
+        <div class="ui fluid top attached green small button">{{ state | trans }}</div>
     {% elseif state == 'rejected' %}
-        <span class="ui red right ribbon label">{{ state | trans }}</span>
+        <div class="ui fluid top attached red small button">{{ state | trans }}</div>
+    {% else %}
+        <div class="ui fluid top attached gray small button">Pendiente</div>
     {% endif %}
 {% endmacro %}
 
 {% import _self as widgets %}
 
 <div class="row">
-    <div class="four wide mobile four wide tablet three wide computer column">
-        <div class="ui center aligned basic segment counter">
-            <div class="ui card vote">
-                <div class="content">
-                    <div class="ui small statistic">
-                        <div class="value">
-                            {{ idea.votes | length }}
-                        </div>
-                        <div class="label">
-                            Votos
-                        </div>
+
+    <div class="ui idea fluid card">
+        <div class="content">
+            <div class="ui vote basic compact floated left segment center aligned">
+                {{ widgets.ribbon(idea) }}
+                    <div class="ui tiny statistic">
+                        <div class="value">{{ idea.votes | length }}</div>
+                        <div class="label">votos</div>
                     </div>
-                </div>
                 {% if idea.closed %}
-                <div class="ui fluid bottom attached red small button">
-                    CERRADA
-                </div>
+                    <div class="ui fluid bottom attached red small button">
+                        CERRADA
+                    </div>
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a class="ui animated fluid bottom attached small button" href="{{ path('hwi_oauth_connect') }}">
-                    <div class="visible content"><i class="plus icon"></i></div>
-                    <div class="hidden content">
-                        CONECTAR
-                    </div>
-                </a>
+                        <div class="visible content"><i class="plus icon"></i></div>
+                        <div class="hidden content">
+                            CONECTAR
+                        </div>
+                    </a>
                 {% elseif is_granted('OWNER', idea) %}
-                <a class="ui fluid bottom attached green small button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
-                    EDITAR
-                </a>
+                    <a class="ui fluid bottom attached green small button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
+                        EDITAR
+                    </a>
                 {% elseif is_voted(idea) %}
-                <a class="ui animated fluid bottom attached green small button leave idea" data-slug="{{ idea.slug }}">
-                    <div class="visible content"><i class="users icon"></i></div>
-                    <div class="hidden content">
-                        SALIR
-                    </div>
-                </a>
+                    <a class="ui animated fluid bottom attached green small button leave idea" data-slug="{{ idea.slug }}">
+                        <div class="visible content"><i class="users icon"></i></div>
+                        <div class="hidden content">
+                            SALIR
+                        </div>
+                    </a>
                 {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
-                <div class="ui fluid bottom attached red small button">
-                    SIN PLAZAS
-                </div>
-                {% else %}
-                <a class="ui animated fluid bottom attached small button join idea" data-slug="{{ idea.slug }}">
-                    <div class="visible content"><i class="plus icon"></i></div>
-                    <div class="hidden content">
-                        UNIRTE
+                    <div class="ui fluid bottom attached red small button">
+                        SIN PLAZAS
                     </div>
-                </a>
+                {% else %}
+                    <a class="ui animated fluid bottom attached small button join idea" data-slug="{{ idea.slug }}">
+                        <div class="visible content"><i class="plus icon"></i></div>
+                        <div class="hidden content">
+                            UNIRTE
+                        </div>
+                    </a>
+                {% endif %}
+            </div>
+
+            <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
+                {{ idea.title }}
+            </a>
+            <div class="meta">
+                Enviado {{ idea.createdAt | time_diff }} por {{ idea.owner }} a {{ idea.group }}
+            </div>
+            <div class="description" style="clear: unset">
+                {% if complete is defined %}
+                    {{ idea.description | raw }}
+                {% else %}
+                    {{ idea.description | striptags | truncate(200) }}
                 {% endif %}
             </div>
         </div>
-    </div>
-    <div class="twelve wide mobile twelve wide tablet thirteen wide computer column">
-        <div class="ui fluid card">
-            <div class="content">
-                {{ widgets.ribbon(idea) }}
-                <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
-                    {{ idea.title }}
-                </a>
-                <div class="meta">
-                    Enviado {{ idea.createdAt | time_diff }} por {{ idea.owner }} a {{ idea.group }}
-                </div>
-                <div class="description">
-                    {% if complete is defined %}
-                        {{ idea.description | raw }}
-                    {% else %}
-                        {{ idea.description | striptags | truncate(200) }}
-                    {% endif %}
-                </div>
-            </div>
-            <div class="extra content">
-                <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">
-                    <i class="comment icon"></i>
-                    {{ idea_count_comments(idea) }}
-                </a>
-                &nbsp;
-                {% if idea.numSeats > 0 %}
+        <div class="extra content">
+            <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">
+                <i class="comment icon"></i>
+                {{ idea_count_comments(idea) }}
+            </a>
+            &nbsp;
+            {% if idea.numSeats > 0 %}
                 <span>
                     <i class="add user icon"></i>
                     {{ 'idea_num_seats' | transchoice(idea.numSeats, {'%count%': idea.numSeats}) }}
                 </span>
-                {% endif %}
-            </div>
+            {% endif %}
         </div>
     </div>
 </div>
