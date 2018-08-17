@@ -31,10 +31,10 @@ class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
         parent::configureOptions($resolver);
 
         $resolver->setDefaults([
-            'authorization_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/authorize.php',
-            'access_token_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/access_token.php',
-            'infos_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/userinfo.php',
-            'jwks_url' => 'https://identidad.uco.es/simplesaml/module.php/oauth2/jwks.php',
+            'authorization_url' => 'https://identidad.uco.es/simplesaml/module.php/oidc/authorize.php',
+            'access_token_url' => 'https://identidad.uco.es/simplesaml/module.php/oidc/access_token.php',
+            'infos_url' => 'https://identidad.uco.es/simplesaml/module.php/oidc/userinfo.php',
+            'jwks_url' => 'https://identidad.uco.es/simplesaml/module.php/oidc/jwks.php',
 
             'use_bearer_authorization' => true,
             'scope' => 'openid profile email',
