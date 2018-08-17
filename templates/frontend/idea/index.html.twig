@@ -11,9 +11,7 @@
 
     {% if ideas.haveToPaginate %}
         <div class="ui basic center aligned segment">
-            <div class="ui pagination menu">
-                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'idea_index_paginated'}) }}
-            </div>
+            {{ pagerfanta(ideas, 'semantic_ui_translated', {css_container_class: 'ui pagination menu', routeName: 'idea_index_paginated'}) }}
         </div>
     {% endif %}
 {% endblock %}
