@@ -31,7 +31,7 @@
                     CERRADA
                 </div>
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="ui animated fluid bottom attached small button" href="{{ path('login') }}">
+                    <a class="ui animated fluid bottom attached small button" href="{{ path('hwi_oauth_connect') }}">
                     <div class="visible content"><i class="plus icon"></i></div>
                     <div class="hidden content">
                         CONECTAR
