@@ -13,6 +13,7 @@ namespace App\Menu;
 
 use Knp\Menu\FactoryInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder
 {
@@ -28,8 +29,10 @@ class Builder
     /**
      * Builder constructor.
      */
-    public function __construct(FactoryInterface $factory, AuthorizationChecker $authorizationChecker)
-    {
+    public function __construct(
+        FactoryInterface $factory,
+        AuthorizationCheckerInterface $authorizationChecker
+    ) {
         $this->factory = $factory;
         $this->authorizationChecker = $authorizationChecker;
     }
