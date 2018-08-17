@@ -12,7 +12,6 @@
 namespace App\Repository;
 
 use App\Entity\Group;
-use App\Entity\Idea;
 use Pagerfanta\Pagerfanta;
 
 class IdeaRepository extends CeoRepository
