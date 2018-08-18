@@ -1,0 +1,60 @@
+<div class="right menu">
+    <div class="ui dropdown item" id="login">
+        <div class="text">
+            {% if profile.image.name is not empty %}
+                <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile')  }}">
+            {% else %}
+                <img class="avatar ui image" src="{{ asset('assets/images/default.png')  }}">
+            {% endif %}
+            {{ app.user.username }}
+        </div>
+        <i class="dropdown icon"></i>
+        <div class="menu">
+            <a class="item" href="{{ path('profile_edit') }}">
+                <i class="edit icon"></i>
+                Editar perfil
+            </a>
+            <a class="item" href="{{ path('profile_show') }}">
+                <i class="user icon"></i>
+                Ver curriculum
+            </a>
+            <a class="item {% if profile.telegramChat %}hidden{% endif %}" id="telegram-connect" href="tg://resolve?domain={{- botname -}}&start={{- token -}}">
+                <i class="telegram icon"></i>
+                Conectar con telegram
+            </a>
+            <a class="item {% if not profile.telegramChat %}hidden{% endif %}" id="telegram-disconnect">
+                <i class="telegram icon"></i>
+                Desconectar de telegram
+            </a>
+            <a class="item" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
+        </div>
+    </div>
+</div>
+
+{% block modal %}
+{% if token %}
+    <div class="ui basic modal">
+        <div class="ui icon header">
+            <i class="telegram icon"></i>
+            Conectar con Telegram
+        </div>
+        <div class="content">
+            <p>
+                Pulse sobre la acción /start de su chat de Telegram y pulse continuar.
+                De forma alternativa envíe el siguiente mensaje al bot @{{ botname }}
+            </p>
+
+            <div class="ui fluid input action">
+                <input id="telegram-command" type="text" value="/start {{ token }}" readonly="readonly" />
+                <button class="ui icon button clipboard" data-tooltip="Copiar" data-clipboard-target="#telegram-command"><i class="copy icon"></i></button>
+            </div>
+        </div>
+        <div class="actions">
+            <div class="ui green ok inverted button">
+                <i class="checkmark icon"></i>
+                Continuar
+            </div>
+        </div>
+    </div>
+{% endif %}
+{% endblock %}

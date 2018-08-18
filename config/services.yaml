@@ -30,30 +30,13 @@ services:
         resource: '../src/*'
         # you can exclude directories or files
         # but if a service is unused, it's removed anyway
-        exclude: '../src/{Admin,Command,Entity,Migrations,Tests}'
+        exclude: '../src/{Admin,Command,Entity,Menu,Migrations,Tests}'
 
     # controllers are imported separately to make sure they
     # have the tag that allows actions to type-hint services
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
-
-    # KnpMenuBundle
-    App\Menu\Builder:
-        arguments: ['@knp_menu.factory']
-        public: true
-        tags:
-            - { name: 'knp_menu.menu_builder', method: 'followingMenu', alias: 'followingMenu'}
-            - { name: 'knp_menu.menu_builder', method: 'mainMenu', alias: 'mainMenu'}
-
-    App\Menu\SemanticMenuRenderer:
-        arguments:
-            - '@knp_menu.matcher'
-            - '%knp_menu.renderer.list.options%'
-            - '%kernel.charset%'
-        public: true
-        tags:
-            - { name: 'knp_menu.renderer', alias: 'semantic'}
 
     # TacticianBundle
     App\Handler\:

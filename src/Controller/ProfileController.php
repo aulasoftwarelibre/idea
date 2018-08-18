@@ -21,12 +21,12 @@ use App\Repository\UserRepository;
 use App\Services\Telegram\TelegramCachedCalls;
 use League\Tactician\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/profile")
@@ -172,6 +172,26 @@ class ProfileController extends Controller
         );
 
         return $this->render('/frontend/profile/_card.html.twig', [
+            'profile' => $profile,
+            'token' => $token,
+            'botname' => $botname,
+        ]);
+    }
+
+    public function showMenu()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $profile = $this->repository->getProfile($user->getId());
+        $botname = $this->telegram->getMe()->getUsername();
+
+        $token = $this->bus->handle(
+            new GenerateUserTelegramTokenCommand(
+                $user->getId()
+            )
+        );
+
+        return $this->render('/frontend/profile/_menu.html.twig', [
             'profile' => $profile,
             'token' => $token,
             'botname' => $botname,

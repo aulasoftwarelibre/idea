@@ -17,11 +17,6 @@
     margin: 5px 10px 0 15px;
 }
 
-.ui.secondary.menu {
-    background-color: white;
-    padding: 0;
-}
-
 .hidden.menu {
     display: none;
 }
@@ -35,7 +30,11 @@
 }
 
 .ui.vertical.stripe {
-    padding: 5em 0em;
+    padding: 3.5em 0em 5em;
+}
+
+.ui.vertical.stripe h1 {
+    margin: 0;
 }
 
 .ui.vertical.stripe .button + h3,
@@ -64,7 +63,7 @@
     padding: 1em 0em;
 }
 
-.secondary.pointing.menu .toc.item {
+.top.main.menu .toc.item {
     display: none;
 }
 
@@ -93,15 +92,27 @@
     }
 }
 
-@media only screen and (max-width: 700px) {
-    .ui.fixed.menu {
-        display: none !important;
+#main {
+    margin-right: 318px;
+}
+
+@media only screen and (max-width: 992px) {
+    #main {
+        margin-right: unset;
     }
-    .secondary.pointing.menu .item,
-    .secondary.pointing.menu .menu {
+
+    #main > .right.rail {
         display: none;
     }
-    .secondary.pointing.menu .toc.item {
+}
+
+@media only screen and (max-width: 700px) {
+    .top.main.menu .item,
+    .top.main.menu .menu {
+        display: none;
+    }
+    #login,
+    .top.main.menu .toc.item {
         display: block;
     }
     .ui.card.vote {

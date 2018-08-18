@@ -2,13 +2,13 @@
     {% set state = idea.state %}
     {% set createdAt = idea.createdAt %}
     {% if state == 'proposed' and date(createdAt) > date('-2 days') %}
-        <div class="ui fluid top attached yellow small button">{{ state | trans }}</div>
+        <div class="ui fluid top attached yellow label">{{ 'new' | trans }}</div>
     {% elseif state == 'approved' %}
-        <div class="ui fluid top attached green small button">{{ state | trans }}</div>
+        <div class="ui fluid top attached green label">{{ state | trans }}</div>
     {% elseif state == 'rejected' %}
-        <div class="ui fluid top attached red small button">{{ state | trans }}</div>
+        <div class="ui fluid top attached red label">{{ state | trans }}</div>
     {% else %}
-        <div class="ui fluid top attached gray small button">Pendiente</div>
+        <div class="ui fluid top attached gray label">{{ state | trans }}</div>
     {% endif %}
 {% endmacro %}
 

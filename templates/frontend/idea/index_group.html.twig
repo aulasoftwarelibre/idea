@@ -1,10 +1,10 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <h2 class="ui header">
+    <h1 class="ui header">
         Actividades de Grupo
         <div class="sub header">{{ group.name }}</div>
-    </h2>
+    </h1>
 
     <div class="ui divider"></div>
 
@@ -14,13 +14,11 @@
         {% else %}
             <div>No hay ideas :(</div>
         {% endfor %}
-    </div>
 
-    {% if ideas.haveToPaginate %}
-        <div class="ui basic center aligned segment">
-            <div class="ui pagination menu">
-                {{ pagerfanta(ideas, 'semantic_ui_translated', {css_container_class: 'ui pagination menu', routeName: 'idea_group_index_paginated', routeParams: {'slug': group.slug}}) }}
-            </div>
+        <div class="centered aligned row">
+            {% if ideas.haveToPaginate %}
+                {{ pagerfanta(ideas, 'idea_main', {routeName: 'idea_group_index_paginated', routeParams: {'slug': group.slug}}) }}
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 {% endblock %}
