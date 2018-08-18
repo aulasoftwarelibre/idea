@@ -11,6 +11,7 @@ $(document).ready(function () {
     ;
 
     $("a.close.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_close', {slug: slug}), {})
             .done(function () {
@@ -18,6 +19,7 @@ $(document).ready(function () {
             });
     });
     $("a.open.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_open', {slug: slug}), {})
             .done(function () {
@@ -25,6 +27,7 @@ $(document).ready(function () {
             });
     });
     $("a.approve.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_approve', {slug: slug}), {})
             .done(function () {
@@ -32,6 +35,7 @@ $(document).ready(function () {
             });
     });
     $("a.reject.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_reject', {slug: slug}), {})
             .done(function () {
@@ -39,6 +43,7 @@ $(document).ready(function () {
             });
     });
     $("a.join.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_join', {slug: slug}), {})
             .done(function () {
@@ -46,6 +51,7 @@ $(document).ready(function () {
             });
     });
     $("a.leave.idea").click(function (action) {
+        $(this).addClass('loading');
         var slug = $(this).data('slug');
         $.post(Routing.generate('idea_leave', {slug: slug}), {})
             .done(function () {
