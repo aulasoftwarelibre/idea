@@ -10,6 +10,12 @@
         </div>
         <i class="dropdown icon"></i>
         <div class="menu">
+            {% if is_granted('ROLE_ADMIN') %}
+            <a class="item" href="{{ path('sonata_admin_dashboard') }}">
+                <i class="lock icon"></i>
+                Administrar
+            </a>
+            {% endif %}
             <a class="item" href="{{ path('profile_edit') }}">
                 <i class="edit icon"></i>
                 Editar perfil
