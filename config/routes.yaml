@@ -2,7 +2,10 @@
 #    path: /
 #    defaults: { _controller: 'App\Controller\DefaultController::index' }
 
-# first, run composer req annotations
-controllers:
-    resource: ../src/Controller/
-    type: annotation
+help:
+    path: /help
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template:  'frontend/static/help.html.twig'
+        maxAge:    86400
+        sharedAge: 86400

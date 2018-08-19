@@ -22,91 +22,42 @@
 
 
 <body>
-<!-- Following Menu -->
-<div class="ui large top fixed hidden menu">
-    <div class="ui container">
-        {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
-
-        <div class="right menu">
-            <div class="item">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a class="ui green button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
-                {% endif %}
-            </div>
-            <div class="item">
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="ui red button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
-                {% else %}
-                    <a class="ui primary button" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-</div>
-
 <!-- Sidebar Menu -->
-<div class="ui vertical inverted sidebar menu">
-    {{ knp_menu_render('followingMenu', {'nodiv': false}, 'semantic') }}
-    {% if is_granted('ROLE_ADMIN') %}
-        <a class="item" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
-    {% endif %}
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <a class="item" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
-    {% else %}
-        <a class="item" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
-    {% endif %}
+<div class="ui left vertical inverted menu sidebar">
+    {{ knp_menu_render('sidebarMenu', {'bare': true, 'dropdown': false}) }}
 </div>
 
 <!-- Page Contents -->
 <div class="pusher">
-    <div class="ui inverted vertical masthead center aligned segment">
+    <div class="ui vertical center aligned segment">
         <div class="ui container">
+            <div class="ui large top main fixed menu">
+                <a class="toc item"><i class="sidebar icon"></i></a>
+                <a class="logo" href="{{ path('homepage') }}"></a>
 
-            <div id="topmenu" class="ui large secondary inverted pointing menu">
-                <a class="toc item">
-                    <i class="sidebar icon"></i>
-                </a>
+                {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
 
-                {{ knp_menu_render('mainMenu', {'nodiv': false}, 'semantic') }}
-
-                <div class="right item">
-                    {% if is_granted('ROLE_ADMIN') %}
-                        <a class="ui inverted button" href="{{ path('sonata_admin_dashboard') }}"><i class="icon lock"></i> Administrar</a>
-                    {% endif %}
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        <a class="ui inverted button" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
-                    {% else %}
-                        <a class="ui inverted button" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
-                    {% endif %}
-                </div>
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
+                {% else %}
+                    <a class="floated right item" href="{{ path('hwi_oauth_connect') }}"><i class="sign in icon"></i> Conectar</a>
+                {% endif %}
             </div>
         </div>
-
-        {% block jumbo %}
-
-        {% endblock %}
-
+        {% block jumbo %}{% endblock %}
     </div>
 
     <div class="full height">
-
         <div class="ui main container">
-            <div id="main" class="ui vertical stripe segment" style="max-width: 800px;">
+            <div id="main" class="ui vertical stripe segment">
 
                 <div class="ui right dividing rail">
-                    <div class="ui vertical stripe sticky" style="left: 1000px">
+                    <div class="ui vertical stripe">
                         {% block side_menu %}
-                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                            {{ render(controller('App\\Controller\\ProfileController:showCard')) }}
-
-                            <div class="ui divider"></div>
-                        {% endif %}
-
-                        {{ render(controller('App\\Controller\\GroupController:listGroupsAction')) }}
+                        {{ render(controller('App\\Controller\\IdeaController::getMoreVotesPendingIdeas')) }}
                         {% endblock %}
                     </div>
                 </div>
-
 
                 {% block flash_messages %}
                     {% for type, flashMessages in app.session.flashbag.all() %}
@@ -118,9 +69,7 @@
                     {% endfor %}
                 {% endblock flash_messages %}
 
-                <div class="ui container">
-                    {% block body %}{% endblock %}
-                </div>
+                {% block body %}{% endblock %}
 
             </div>
         </div>
@@ -136,6 +85,7 @@
         </div>
     </div>
 
+    {% block modal %}{% endblock %}
 </div>
 </body>
 
@@ -143,6 +93,14 @@
     <script type="application/javascript" src="{{ asset('build/js/app.js') }}"></script>
     <script src="{{ asset('bundles/fosjsrouting/js/router.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
+
+    <script>
+        $('.dropdown')
+            .dropdown({
+                on: 'hover'
+            })
+        ;
+    </script>
 {% endblock %}
 
 </html>

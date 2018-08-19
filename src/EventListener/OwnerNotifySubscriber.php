@@ -11,23 +11,23 @@
 
 namespace App\EventListener;
 
-use App\Command\SendMessageToTelegramUserChatCommand;
 use App\Entity\Idea;
 use App\Entity\TelegramChat;
 use App\Entity\User;
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasVotedEvent;
+use App\Messenger\TelegramChat\SendMessageToTelegramUserChatCommand;
 use App\Repository\IdeaRepository;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Events;
-use League\Tactician\CommandBus;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 class OwnerNotifySubscriber implements EventSubscriberInterface
 {
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
     /**
@@ -40,7 +40,7 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
     private $ideaRepository;
 
     public function __construct(
-        CommandBus $bus,
+        MessageBusInterface $bus,
         EngineInterface $engine,
         IdeaRepository $ideaRepository
     ) {
@@ -88,7 +88,7 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
             'commenter' => $commenter,
         ]);
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramUserChatCommand(
                 $owner->getTelegramChat()->getId(),
                 $message
@@ -110,7 +110,7 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramUserChatCommand(
                 $owner->getTelegramChat()->getId(),
                 $message
@@ -134,7 +134,7 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
             'voter' => $voter,
         ]);
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramUserChatCommand(
                 $owner->getTelegramChat()->getId(),
                 $message

@@ -7,13 +7,11 @@
         {% else %}
         <div>No hay ideas :(</div>
         {% endfor %}
-    </div>
 
-    {% if ideas.haveToPaginate %}
-        <div class="ui basic center aligned segment">
-            <div class="ui pagination menu">
-                {{ pagerfanta(ideas, 'semantic_ui_translated', {routeName: 'idea_index_paginated'}) }}
-            </div>
+        <div class="centered aligned row">
+            {% if ideas.haveToPaginate %}
+                {{ pagerfanta(ideas, 'idea_main', { routeName: 'idea_index_paginated' }) }}
+            {% endif %}
         </div>
-    {% endif %}
+    </div>
 {% endblock %}

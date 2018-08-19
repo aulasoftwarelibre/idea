@@ -14,6 +14,8 @@ $finder = PhpCsFixer\Finder::create()
     ->exclude('var')
     ->exclude('public/bundles')
     ->exclude('public/build')
+    ->notPath('bin/console')
+    ->notPath('public/index.php')
 ;
 return PhpCsFixer\Config::create()
     ->setRiskyAllowed(true)

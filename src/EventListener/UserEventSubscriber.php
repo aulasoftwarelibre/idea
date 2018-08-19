@@ -18,8 +18,11 @@ use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
@@ -37,9 +40,9 @@ class UserEventSubscriber implements EventSubscriberInterface
     private $authorizationChecker;
 
     public function __construct(
-        Router $router,
-        TokenStorage $tokenStorage,
-        AuthorizationChecker $authorizationChecker
+        RouterInterface $router,
+        TokenStorageInterface $tokenStorage,
+        AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;

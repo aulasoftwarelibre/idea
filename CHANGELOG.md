@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0] - Sun, 19 Aug 2018 19:16:20 +0200
+
+- [Symfony] Actualizado a symfony 4.1
+- [Symfony] Migrado de Tactician a Messenger
+- [Templates] Mejorada la interfaz para móviles
+- Varios bugs solucionados
+
 ## [1.8.0] - Tue, 17 Apr 2018 08:10:16 +0200
 
 - Listado de asistentes y exportación de datos para poder generar los informes.

@@ -11,17 +11,17 @@
 
 namespace App\EventListener;
 
-use App\Command\SendMessageToTelegramChatsCommand;
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasCreatedEvent;
-use League\Tactician\CommandBus;
+use App\Messenger\TelegramChat\SendMessageToTelegramChatsCommand;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 class TelegramNotifySubscriber implements EventSubscriberInterface
 {
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
     /**
@@ -29,7 +29,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
      */
     private $engine;
 
-    public function __construct(CommandBus $bus, EngineInterface $engine)
+    public function __construct(MessageBusInterface $bus, EngineInterface $engine)
     {
         $this->bus = $bus;
         $this->engine = $engine;
@@ -55,7 +55,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramChatsCommand(
                 $message
             )
@@ -74,7 +74,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramChatsCommand(
                 $message
             )

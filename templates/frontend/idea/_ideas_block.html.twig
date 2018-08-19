@@ -1,0 +1,11 @@
+<div class="ui vertical fluid menu">
+    <div class="header item">{{ title }}</div>
+    {% for idea in ideas %}
+        <a class="item" href="{{ path('idea_show',{'slug': idea[0].slug}) }}">
+            {{ idea[0].title | truncate(25) }}
+            <div class="ui label">{{ idea['votes'] }}</div>
+        </a>
+    {% else %}
+        <a class="item">No hay ideas pendientes de aprobar.</a>
+    {% endfor %}
+</div>

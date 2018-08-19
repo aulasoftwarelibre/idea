@@ -1,8 +1,0 @@
-<div class="ui vertical fluid menu">
-    <div class="header item">Grupos</div>
-    {% for group in groups %}
-        <a class="item" href="{{ path('idea_group_index',{'slug': group.slug}) }}">
-            {{ group.name }}
-        </a>
-    {% endfor %}
-</div>

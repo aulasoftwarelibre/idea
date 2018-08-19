@@ -11,14 +11,14 @@
 
 namespace App\Services\Telegram;
 
-use League\Tactician\CommandBus;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Telegram\Bot\Api;
 
 final class TelegramService extends Api
 {
     private $bus;
 
-    public function setTacticianBus(CommandBus $bus)
+    public function setMessageBus(MessageBusInterface $bus)
     {
         $this->bus = $bus;
     }
@@ -26,7 +26,7 @@ final class TelegramService extends Api
     /**
      * @return mixed
      */
-    public function getTacticianBus()
+    public function getMessageBus(): MessageBusInterface
     {
         return $this->bus;
     }

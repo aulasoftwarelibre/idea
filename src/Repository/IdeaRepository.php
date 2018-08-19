@@ -59,4 +59,21 @@ class IdeaRepository extends CeoRepository
 
         return $this->createPaginator($query, $page);
     }
+
+    public function findFilteredByVotes()
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT i, COUNT(v.id) as votes
+                FROM App:Idea i
+                JOIN i.votes v
+                WHERE i.state = :status
+                AND i.closed = FALSE
+                GROUP BY i.id
+                ORDER BY COUNT (v.id) DESC 
+            ')
+            ->setParameter('status', Idea::STATE_PROPOSED)
+            ->setMaxResults(5)
+            ->execute();
+    }
 }
