@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.0.1] - Sun, 19 Aug 2018 19:54:21 +0200
+
+Fix some bugs in production:
+
+* vich_image needs filter to set the proper uri
+* removed old login path
+* changed production config values
+
 ## [2.0.0] - Sun, 19 Aug 2018 19:16:20 +0200
 
 - [Symfony] Actualizado a symfony 4.1

@@ -2,7 +2,7 @@
     <div class="ui dropdown item" id="login">
         <div class="text">
             {% if profile.image.name is not empty %}
-                <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile')  }}">
+                <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
             {% else %}
                 <img class="avatar ui image" src="{{ asset('assets/images/default.png')  }}">
             {% endif %}
