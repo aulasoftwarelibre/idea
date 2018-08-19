@@ -1,5 +1,6 @@
 # Changelog
 
+
 ## [1.8.0] - Tue, 17 Apr 2018 08:10:16 +0200
 
 - Listado de asistentes y exportación de datos para poder generar los informes.

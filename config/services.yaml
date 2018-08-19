@@ -38,17 +38,15 @@ services:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    # TacticianBundle
-    App\Handler\:
-        resource: '../src/Handler/'
+    App\Messenger\:
+        resource: '%kernel.project_dir%/src/Messenger/**/*Handler.php'
         public: true
-        tags:
-            - { name: 'tactician.handler', typehints: true }
+        tags: [messenger.message_handler]
 
     Telegram\Bot\Api: '@App\Services\Telegram\TelegramService'
 
     App\Services\Telegram\TelegramService:
         arguments: [ '%env(TELEGRAM_BOT_API)%' ]
         calls:
-            - ['setTacticianBus', ['@tactician.commandbus.default'] ]
+            - ['setMessageBus', ['@messenger.bus.default'] ]
 

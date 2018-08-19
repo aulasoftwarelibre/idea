@@ -11,26 +11,26 @@
 
 namespace App\Console;
 
-use App\Command\SendMessageToTelegramChatsCommand;
-use League\Tactician\CommandBus;
+use App\Messenger\TelegramChat\SendMessageToTelegramChatsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class TelegramSendCommand extends Command
 {
     protected static $defaultName = 'ceo:telegram:send';
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
 
     /**
      * AppTelegramSendCommand constructor.
      */
-    public function __construct(CommandBus $bus)
+    public function __construct(MessageBusInterface $bus)
     {
         $this->bus = $bus;
 
@@ -56,7 +56,7 @@ class TelegramSendCommand extends Command
             return 1;
         }
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new SendMessageToTelegramChatsCommand(
                 $message
             )

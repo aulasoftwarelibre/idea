@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "50931d32adcc93dff74c2a5c582c44ff",
+    "content-hash": "dca1657e6569d265ec1227754351fc3a",
     "packages": [
         {
             "name": "beberlei/assert",
@@ -3265,292 +3265,6 @@
             "time": "2015-05-21T12:24:47+00:00"
         },
         {
-            "name": "league/tactician",
-            "version": "v1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/tactician.git",
-                "reference": "d0339e22fd9252fb0fa53102b488d2c514483b8a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician/zipball/d0339e22fd9252fb0fa53102b488d2c514483b8a",
-                "reference": "d0339e22fd9252fb0fa53102b488d2c514483b8a",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9",
-                "phpunit/phpunit": "^4.8.35",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Tactician\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ross Tuck",
-                    "homepage": "http://tactician.thephpleague.com"
-                }
-            ],
-            "description": "A small, flexible command bus. Handy for building service layers.",
-            "keywords": [
-                "command",
-                "command bus",
-                "service layer"
-            ],
-            "time": "2017-11-30T09:17:20+00:00"
-        },
-        {
-            "name": "league/tactician-bundle",
-            "version": "v1.1.5",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/tactician-bundle.git",
-                "reference": "bf10a37e27e4306bb9de5d909dba36226aa8e3c4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician-bundle/zipball/bf10a37e27e4306bb9de5d909dba36226aa8e3c4",
-                "reference": "bf10a37e27e4306bb9de5d909dba36226aa8e3c4",
-                "shasum": ""
-            },
-            "require": {
-                "league/tactician": "^1.0",
-                "league/tactician-container": "^2.0",
-                "league/tactician-logger": "^0.10.0",
-                "php": ">=7.0",
-                "symfony/config": "^2.8|^3.3|^4.0",
-                "symfony/dependency-injection": "^2.8|^3.3|^4.0",
-                "symfony/http-kernel": "^2.8|^3.3|^4.0",
-                "symfony/yaml": "^2.8|^3.3|^4.0"
-            },
-            "require-dev": {
-                "league/tactician-doctrine": "^1.1.1",
-                "matthiasnoback/symfony-config-test": "^3.0",
-                "matthiasnoback/symfony-dependency-injection-test": "^2.1",
-                "mockery/mockery": "~1.0",
-                "phpunit/phpunit": "~6.1",
-                "symfony/console": "^2.8|^3.3|^4.0",
-                "symfony/framework-bundle": "^2.8.15|^3.3|^4.0",
-                "symfony/security": "^2.8|^3.3|^4.0",
-                "symfony/security-bundle": "^2.8|^3.3|^4.0",
-                "symfony/validator": "^2.8|^3.3|^4.0"
-            },
-            "suggest": {
-                "league/tactician-doctrine": "For doctrine transaction middleware",
-                "symfony/console": "For debugging command-to-handler routing using the tactician:debug console command",
-                "symfony/security": "For command security middleware",
-                "symfony/validator": "For command validator middleware"
-            },
-            "type": "symfony-bundle",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.0-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "League\\Tactician\\Bundle\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Rafael Dohms",
-                    "homepage": "http://doh.ms"
-                },
-                {
-                    "name": "Xander Smalbil",
-                    "email": "xander@videofunk.nl"
-                },
-                {
-                    "name": "Richard Tuin",
-                    "homepage": "http://www.rtuin.nl/"
-                },
-                {
-                    "name": "Ross Tuck",
-                    "email": "me@rosstuck.com"
-                }
-            ],
-            "description": "Bundle to integrate Tactician with Symfony projects",
-            "keywords": [
-                "bundle",
-                "symfony",
-                "tactician"
-            ],
-            "time": "2018-04-25T07:12:11+00:00"
-        },
-        {
-            "name": "league/tactician-container",
-            "version": "2.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/tactician-container.git",
-                "reference": "d1a5d884e072b8cafbff802d07766076eb2ffcb0"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician-container/zipball/d1a5d884e072b8cafbff802d07766076eb2ffcb0",
-                "reference": "d1a5d884e072b8cafbff802d07766076eb2ffcb0",
-                "shasum": ""
-            },
-            "require": {
-                "league/tactician": "^1.0",
-                "php": ">=5.5",
-                "psr/container": "^1.0"
-            },
-            "require-dev": {
-                "league/container": "~2.3",
-                "phpunit/phpunit": "~4.3",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Tactician\\Container\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nigel Greenway",
-                    "homepage": "http://futurepixels.co.uk"
-                }
-            ],
-            "description": "Tactician integration for any container implementing PSR-11",
-            "keywords": [
-                "container",
-                "container-interop",
-                "di",
-                "interoperable",
-                "league",
-                "tactician"
-            ],
-            "time": "2017-04-13T06:27:12+00:00"
-        },
-        {
-            "name": "league/tactician-doctrine",
-            "version": "v1.1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/tactician-doctrine.git",
-                "reference": "c554dfc464e56aa7057fa4625376f9406e5656f6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician-doctrine/zipball/c554dfc464e56aa7057fa4625376f9406e5656f6",
-                "reference": "c554dfc464e56aa7057fa4625376f9406e5656f6",
-                "shasum": ""
-            },
-            "require": {
-                "doctrine/dbal": "^2.4",
-                "league/tactician": "^1.0",
-                "php": ">=5.5"
-            },
-            "require-dev": {
-                "doctrine/orm": "~2.4",
-                "mockery/mockery": "~0.9.7",
-                "phpunit/phpunit": "~4.8",
-                "squizlabs/php_codesniffer": "~2.0"
-            },
-            "suggest": {
-                "doctrine/orm": "Required if you need to use ORM Transaction Middleware"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Tactician\\Doctrine\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ross Tuck"
-                }
-            ],
-            "description": "Plugins for Tactician commands using Doctrine, like wrapping every command in a transaction",
-            "homepage": "https://github.com/thephpleague/tactician-doctrine",
-            "keywords": [
-                "command bus",
-                "doctrine",
-                "tactician",
-                "transactions"
-            ],
-            "time": "2018-04-13T10:03:47+00:00"
-        },
-        {
-            "name": "league/tactician-logger",
-            "version": "v0.10.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/thephpleague/tactician-logger.git",
-                "reference": "3ff9ee04e4cbec100af827f829ed4c7ff7c08442"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/tactician-logger/zipball/3ff9ee04e4cbec100af827f829ed4c7ff7c08442",
-                "reference": "3ff9ee04e4cbec100af827f829ed4c7ff7c08442",
-                "shasum": ""
-            },
-            "require": {
-                "league/tactician": "^1.0",
-                "php": ">=5.5.0",
-                "psr/log": "~1.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "^0.9",
-                "phpunit/phpunit": "4.*",
-                "squizlabs/php_codesniffer": "~2.3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "League\\Tactician\\Logger\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ross Tuck"
-                }
-            ],
-            "description": "Adds PSR-3 logging support to the Tactician command bus",
-            "homepage": "https://github.com/thephpleague/tactician-logger",
-            "keywords": [
-                "log",
-                "logging",
-                "tactician"
-            ],
-            "time": "2016-08-23T05:50:38+00:00"
-        },
-        {
             "name": "liip/imagine-bundle",
             "version": "2.1.0",
             "source": {
@@ -5798,16 +5512,16 @@
         },
         {
             "name": "sonata-project/admin-bundle",
-            "version": "3.38.0",
+            "version": "3.38.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sonata-project/SonataAdminBundle.git",
-                "reference": "d49b839241e68d8bbb5b634e7db496c57685190d"
+                "reference": "02be77afb4b09e36352f3c45c2cffebcc5204957"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/d49b839241e68d8bbb5b634e7db496c57685190d",
-                "reference": "d49b839241e68d8bbb5b634e7db496c57685190d",
+                "url": "https://api.github.com/repos/sonata-project/SonataAdminBundle/zipball/02be77afb4b09e36352f3c45c2cffebcc5204957",
+                "reference": "02be77afb4b09e36352f3c45c2cffebcc5204957",
                 "shasum": ""
             },
             "require": {
@@ -5899,7 +5613,7 @@
                 "bootstrap",
                 "sonata"
             ],
-            "time": "2018-08-14T21:54:03+00:00"
+            "time": "2018-08-17T12:23:45+00:00"
         },
         {
             "name": "sonata-project/block-bundle",
@@ -8345,6 +8059,69 @@
             "description": "Enforces Long Term Supported versions of Symfony components",
             "homepage": "https://symfony.com",
             "time": "2018-04-03T05:04:16+00:00"
+        },
+        {
+            "name": "symfony/messenger",
+            "version": "v4.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/messenger.git",
+                "reference": "00e620218b545261ce242a9b145e31a01ae77d42"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/messenger/zipball/00e620218b545261ce242a9b145e31a01ae77d42",
+                "reference": "00e620218b545261ce242a9b145e31a01ae77d42",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1.3"
+            },
+            "require-dev": {
+                "psr/log": "~1.0",
+                "symfony/console": "~3.4|~4.0",
+                "symfony/dependency-injection": "~3.4.6|~4.0",
+                "symfony/http-kernel": "~3.4|~4.0",
+                "symfony/process": "~3.4|~4.0",
+                "symfony/property-access": "~3.4|~4.0",
+                "symfony/serializer": "~3.4|~4.0",
+                "symfony/validator": "~3.4|~4.0",
+                "symfony/var-dumper": "~3.4|~4.0"
+            },
+            "suggest": {
+                "enqueue/messenger-adapter": "For using the php-enqueue library as a transport."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.1-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Messenger\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                },
+                {
+                    "name": "Samuel Roze",
+                    "email": "samuel.roze@gmail.com"
+                }
+            ],
+            "description": "Symfony Messenger Component",
+            "homepage": "https://symfony.com",
+            "time": "2018-07-26T21:05:42+00:00"
         },
         {
             "name": "symfony/monolog-bridge",
