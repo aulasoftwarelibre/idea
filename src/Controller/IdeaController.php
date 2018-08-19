@@ -151,7 +151,7 @@ class IdeaController extends Controller
             $this->addFlash('negative', 'No quedan plazas libres');
         }
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -169,7 +169,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -187,7 +187,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha abierto correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -205,7 +205,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha cerrado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -228,7 +228,7 @@ class IdeaController extends Controller
             )
         );
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -245,7 +245,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha rechazado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**

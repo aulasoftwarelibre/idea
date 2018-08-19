@@ -6,7 +6,7 @@ framework:
     #trusted_hosts: ~
     # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
     session:
-        handler_id: ~
+        handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
     #esi: ~
     #fragments: ~
