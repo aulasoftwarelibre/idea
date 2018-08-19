@@ -31,6 +31,7 @@ class IdeaType extends AbstractType
             ->add('description', CKEditorType::class, [
                 'label' => 'form.label_description',
                 'required' => true,
+                'purify_html' => true,
                 'attr' => ['rows' => 20],
             ])
             ->add('group', EntityType::class, [

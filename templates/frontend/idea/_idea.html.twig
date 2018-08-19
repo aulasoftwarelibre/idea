@@ -67,7 +67,7 @@
             </div>
             <div class="description" style="clear: unset">
                 {% if complete is defined %}
-                    {{ idea.description | raw }}
+                    {{ idea.description | purify }}
                 {% else %}
                     {{ idea.description | striptags | truncate(200) }}
                 {% endif %}
