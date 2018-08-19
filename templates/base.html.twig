@@ -51,10 +51,10 @@
         <div class="ui main container">
             <div id="main" class="ui vertical stripe segment">
 
-                <div class="ui right dividing rail" style="width: 260px">
-                    <div class="ui vertical stripe sticky">
+                <div class="ui right dividing rail">
+                    <div class="ui vertical stripe">
                         {% block side_menu %}
-                        {{ render(controller('App\\Controller\\GroupController::listGroupsAction')) }}
+                        {{ render(controller('App\\Controller\\IdeaController::getMoreVotesPendingIdeas')) }}
                         {% endblock %}
                     </div>
                 </div>
