@@ -12,6 +12,7 @@
 namespace App\Repository;
 
 use App\Entity\Group;
+use App\Entity\Idea;
 use Pagerfanta\Pagerfanta;
 
 class IdeaRepository extends CeoRepository
@@ -57,5 +58,22 @@ class IdeaRepository extends CeoRepository
         )->setParameter('groupId', $group);
 
         return $this->createPaginator($query, $page);
+    }
+
+    public function findFilteredByVotes()
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT i, COUNT(v.id) as votes
+                FROM App:Idea i
+                JOIN i.votes v
+                WHERE i.state = :status
+                AND i.closed = FALSE
+                GROUP BY i.id
+                ORDER BY COUNT (v.id) DESC 
+            ')
+            ->setParameter('status', Idea::STATE_PROPOSED)
+            ->setMaxResults(5)
+            ->execute();
     }
 }

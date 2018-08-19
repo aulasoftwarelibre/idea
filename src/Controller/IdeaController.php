@@ -27,6 +27,7 @@ use App\Messenger\Idea\RejectIdeaCommand;
 use App\Messenger\Idea\UpdateIdeaCommand;
 use App\Messenger\Vote\AddVoteCommand;
 use App\Messenger\Vote\RemoveVoteCommand;
+use App\Repository\IdeaRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -292,6 +293,16 @@ class IdeaController extends Controller
         return $this->render('frontend/idea/index_group.html.twig', [
             'ideas' => $ideas,
             'group' => $group,
+        ]);
+    }
+
+    public function getMoreVotesPendingIdeas(IdeaRepository $ideaRepository)
+    {
+        $ideas = $ideaRepository->findFilteredByVotes();
+
+        return $this->render('frontend/idea/_ideas_block.html.twig', [
+            'title' => 'Pendientes con más votos',
+            'ideas' => $ideas,
         ]);
     }
 }
