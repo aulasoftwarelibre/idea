@@ -50,3 +50,4 @@ services:
         calls:
             - ['setMessageBus', ['@messenger.bus.default'] ]
 
+    Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'

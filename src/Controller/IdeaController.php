@@ -28,6 +28,7 @@ use App\Messenger\Idea\UpdateIdeaCommand;
 use App\Messenger\Vote\AddVoteCommand;
 use App\Messenger\Vote\RemoveVoteCommand;
 use App\Repository\IdeaRepository;
+use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,11 +51,19 @@ class IdeaController extends Controller
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var SeoGeneratorProvider
+     */
+    private $seoGeneratorProvider;
 
-    public function __construct(MessageBusInterface $bus, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        MessageBusInterface $bus,
+        EventDispatcherInterface $eventDispatcher,
+        SeoGeneratorProvider $seoGeneratorProvider
+    ) {
         $this->bus = $bus;
         $this->eventDispatcher = $eventDispatcher;
+        $this->seoGeneratorProvider = $seoGeneratorProvider;
     }
 
     /**
@@ -151,7 +160,7 @@ class IdeaController extends Controller
             $this->addFlash('negative', 'No quedan plazas libres');
         }
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -169,7 +178,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -187,7 +196,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha abierto correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -205,7 +214,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha cerrado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -228,7 +237,7 @@ class IdeaController extends Controller
             )
         );
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -245,7 +254,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha rechazado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -253,6 +262,27 @@ class IdeaController extends Controller
      */
     public function showAction(Idea $idea)
     {
+        $title = $idea->getTitle();
+        $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
+
+        $this->seoGeneratorProvider
+            ->get('basic')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('og')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('twitter')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
         return $this->render('frontend/idea/show.html.twig', [
             'complete' => true,
             'idea' => $idea,

@@ -4,15 +4,55 @@
     <div class="ui grid">
         {% include('/frontend/idea/_idea.html.twig') %}
 
+        {% if is_granted('ROLE_ADMIN') %}
         <div class="row">
-            <div class="three wide column">
-                Participantes:
+            <div class="column">
+                <h3 class="ui dividing header">Administrar</h3>
+
+                <div class="ui buttons">
+                    {% if idea.closed %}
+                        <a class="ui icon button open idea" data-slug="{{ idea.slug }}">
+                            <i class="unlock icon"></i>
+                            <span class="text mobile hidden">Abrir idea</span>
+                        </a>
+                    {% else %}
+                        <a class="ui icon button close idea" data-slug="{{ idea.slug }}">
+                            <i class="lock icon"></i>
+                            <span class="text mobile hidden">Cerrar idea</span>
+                        </a>
+                    {% endif %}
+                    {% if idea.state != constant('App\\Entity\\Idea::STATE_APPROVED') %}
+                        <a class="ui icon button approve idea" data-slug="{{ idea.slug }}">
+                            <i class="thumbs up outline icon"></i>
+                            <span class="text mobile hidden">Aprobar idea</span>
+                        </a>
+                    {% endif %}
+                    {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
+                        <a class="ui icon button reject idea" data-slug="{{ idea.slug }}">
+                            <i class="thumbs down outline icon"></i>
+                            <span class="text mobile hidden">Rechazar idea</span>
+                        </a>
+                    {% endif %}
+                        <a class="ui icon button" href="{{ path('admin_app_idea_edit', {id: idea.id}) }}">
+                            <i class="pencil icon"></i>
+                            <span class="text mobile hidden">Editar idea</span>
+                        </a>
+                </div>
             </div>
-            <div class="thirteen wide column">
+        </div>
+        {% endif %}
+
+
+        <div class="row">
+            <div class="column">
+                <h3 class="ui dividing header">Participantes</h3>
+
+
                 {% for vote in idea.votes %}
                     {% set user = vote.user %}
                     <a class="ui basic image label"
                         {% if is_granted('ROLE_ADMIN') %}
+                            href="{{ path('admin_app_user_show', {'id': user.id}) }}"
                             data-tooltip="{{ user.fullname }}"
                         {% endif %}
                     >
@@ -23,6 +63,8 @@
                         {% endif %}
                         {{ user.username }}
                     </a>
+                {% else %}
+                    <span class="ui label">No hay participantes</span>
                 {% endfor %}
             </div>
         </div>
@@ -51,6 +93,5 @@
 {% block side_menu %}
     {{ parent() }}
 
-    {% include "/frontend/idea/_admin.html.twig" %}
 {% endblock %}
 

@@ -8,6 +8,7 @@
  */
 
 @import "~semantic-ui-css/semantic.css";
+@import "./reponsive-semantic-ui.css";
 
 
 .logo {
