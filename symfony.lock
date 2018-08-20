@@ -230,6 +230,15 @@
     "league/event": {
         "version": "2.1.2"
     },
+    "leogout/seo-bundle": {
+        "version": "1.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "1.0",
+            "ref": "7011d56665c0005e700a900611758d34abc9b1a8"
+        }
+    },
     "liip/imagine-bundle": {
         "version": "1.8",
         "recipe": {

@@ -28,6 +28,7 @@ use App\Messenger\Idea\UpdateIdeaCommand;
 use App\Messenger\Vote\AddVoteCommand;
 use App\Messenger\Vote\RemoveVoteCommand;
 use App\Repository\IdeaRepository;
+use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -50,11 +51,19 @@ class IdeaController extends Controller
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var SeoGeneratorProvider
+     */
+    private $seoGeneratorProvider;
 
-    public function __construct(MessageBusInterface $bus, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        MessageBusInterface $bus,
+        EventDispatcherInterface $eventDispatcher,
+        SeoGeneratorProvider $seoGeneratorProvider
+    ) {
         $this->bus = $bus;
         $this->eventDispatcher = $eventDispatcher;
+        $this->seoGeneratorProvider = $seoGeneratorProvider;
     }
 
     /**
@@ -253,6 +262,27 @@ class IdeaController extends Controller
      */
     public function showAction(Idea $idea)
     {
+        $title = $idea->getTitle();
+        $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
+
+        $this->seoGeneratorProvider
+            ->get('basic')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('og')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('twitter')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
         return $this->render('frontend/idea/show.html.twig', [
             'complete' => true,
             'idea' => $idea,

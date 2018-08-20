@@ -42,4 +42,5 @@ return [
     HWI\Bundle\OAuthBundle\HWIOAuthBundle::class => ['all' => true],
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle::class => ['all' => true],
+    Leogout\Bundle\SeoBundle\LeogoutSeoBundle::class => ['all' => true],
 ];
