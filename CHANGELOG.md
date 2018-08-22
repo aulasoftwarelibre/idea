@@ -1,5 +1,15 @@
 # Changelog
 
+## [2.2.0] - Wed, 22 Aug 2018 22:45:11 +0200
+
+Improved idea listing template
+    
+* Removed inverse colors (thanks @victormonserrat)
+* Show shadow content in cards as summary
+* Reverted menu from full width to fixed width
+* Added background
+
+
 ## [2.1.0] - Mon, 20 Aug 2018 13:52:39 +0200
 
 - Añadido soporte para SEO
