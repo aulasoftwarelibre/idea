@@ -11,7 +11,7 @@
 
 namespace App\Services\Telegram\Command;
 
-use App\Command\GetTelegramChatNotificationsQuery;
+use App\Messenger\TelegramChat\GetTelegramChatNotificationsQuery;
 use Telegram\Bot\Commands\Command;
 
 class NotifyCommand extends Command
@@ -24,7 +24,7 @@ class NotifyCommand extends Command
         $message = $this->getUpdate()->getMessage();
 
         try {
-            $this->telegram->getTacticianBus()->handle(
+            $this->telegram->getMessageBus()->dispatch(
                 new GetTelegramChatNotificationsQuery(
                     (string) $message->getChat()->getId()
                 )

@@ -11,8 +11,8 @@
 
 namespace App\Services\Telegram\Command;
 
-use App\Command\RegisterUserChatCommand;
 use App\Entity\TelegramChat;
+use App\Messenger\TelegramChat\RegisterUserChatCommand;
 use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
@@ -32,7 +32,7 @@ class StartCommand extends Command
 
         $message = $this->getUpdate()->getMessage();
 
-        $valid = $this->telegram->getTacticianBus()->handle(
+        $valid = $this->telegram->getMessageBus()->dispatch(
             new RegisterUserChatCommand(
                 $message,
                 $arguments

@@ -1,8 +1,9 @@
-approved: 'Aprobada'
+approved: APROBADA
 idea_num_comments: '%count% comentario|%count% comentarios'
 idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
-proposed: 'Nueva'
-rejected: 'Rechazada'
+new: NUEVA
+proposed: PENDIENTE
+rejected: RECHAZADA
 Action: Acción
 
 breadcrumb.link_activity_list: Lista de actividades
@@ -100,7 +101,9 @@ list.label_occurred_on: Fecha de celebración
 list.label_duration: Duración
 list.label_academic_year: Año académico
 list.label_user: Usuario
+list.label_user_email: Correo
 list.label_user_fullname: Nombre completo
+list.label_user_nic: Id.
 list.label_role: Rol
 list.label_is_reported: Informe
 list.label_private: Privado

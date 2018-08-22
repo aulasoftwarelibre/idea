@@ -11,15 +11,6 @@
 
 namespace App\Controller;
 
-use App\Command\AddIdeaCommand;
-use App\Command\AddVoteCommand;
-use App\Command\ApproveIdeaCommand;
-use App\Command\CloseIdeaCommand;
-use App\Command\GetIdeasByGroupQuery;
-use App\Command\GetIdeasByPageQuery;
-use App\Command\RejectIdeaCommand;
-use App\Command\RemoveVoteCommand;
-use App\Command\UpdateIdeaCommand;
 use App\Entity\Group;
 use App\Entity\Idea;
 use App\Event\IdeaWasApprovedEvent;
@@ -27,14 +18,25 @@ use App\Event\IdeaWasCreatedEvent;
 use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\Form\Type\IdeaType;
-use League\Tactician\CommandBus;
+use App\Messenger\Idea\AddIdeaCommand;
+use App\Messenger\Idea\ApproveIdeaCommand;
+use App\Messenger\Idea\CloseIdeaCommand;
+use App\Messenger\Idea\GetIdeasByGroupQuery;
+use App\Messenger\Idea\GetIdeasByPageQuery;
+use App\Messenger\Idea\RejectIdeaCommand;
+use App\Messenger\Idea\UpdateIdeaCommand;
+use App\Messenger\Vote\AddVoteCommand;
+use App\Messenger\Vote\RemoveVoteCommand;
+use App\Repository\IdeaRepository;
+use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/idea")
@@ -42,18 +44,26 @@ use Symfony\Component\HttpFoundation\Response;
 class IdeaController extends Controller
 {
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
     /**
      * @var EventDispatcherInterface
      */
     private $eventDispatcher;
+    /**
+     * @var SeoGeneratorProvider
+     */
+    private $seoGeneratorProvider;
 
-    public function __construct(CommandBus $bus, EventDispatcherInterface $eventDispatcher)
-    {
+    public function __construct(
+        MessageBusInterface $bus,
+        EventDispatcherInterface $eventDispatcher,
+        SeoGeneratorProvider $seoGeneratorProvider
+    ) {
         $this->bus = $bus;
         $this->eventDispatcher = $eventDispatcher;
+        $this->seoGeneratorProvider = $seoGeneratorProvider;
     }
 
     /**
@@ -67,7 +77,7 @@ class IdeaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $idea = $this->bus->handle(
+            $idea = $this->bus->dispatch(
                 new AddIdeaCommand(
                     $form->getData()->getTitle(),
                     $form->getData()->getDescription(),
@@ -103,7 +113,7 @@ class IdeaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $idea = $this->bus->handle(
+            $idea = $this->bus->dispatch(
                 new UpdateIdeaCommand(
                     $idea,
                     $form->getData()->getTitle(),
@@ -131,7 +141,7 @@ class IdeaController extends Controller
     public function joinAction(Idea $idea, Request $request)
     {
         try {
-            $this->bus->handle(
+            $this->bus->dispatch(
                 new AddVoteCommand(
                     $idea,
                     $this->getUser()
@@ -150,7 +160,7 @@ class IdeaController extends Controller
             $this->addFlash('negative', 'No quedan plazas libres');
         }
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -160,7 +170,7 @@ class IdeaController extends Controller
      */
     public function leaveAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             new RemoveVoteCommand(
                 $idea,
                 $this->getUser()
@@ -168,7 +178,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -178,7 +188,7 @@ class IdeaController extends Controller
      */
     public function openAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             new CloseIdeaCommand(
                 $idea,
                 false
@@ -186,7 +196,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha abierto correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -196,7 +206,7 @@ class IdeaController extends Controller
      */
     public function closeAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             new CloseIdeaCommand(
                 $idea,
                 true
@@ -204,7 +214,7 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha cerrado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -214,7 +224,7 @@ class IdeaController extends Controller
      */
     public function approveAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             new ApproveIdeaCommand(
                 $idea
             )
@@ -227,7 +237,7 @@ class IdeaController extends Controller
             )
         );
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -237,14 +247,14 @@ class IdeaController extends Controller
      */
     public function rejectAction(Idea $idea, Request $request)
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             new RejectIdeaCommand(
                 $idea
             )
         );
         $this->addFlash('positive', 'La idea se ha rechazado correctamente.');
 
-        return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);
+        return new Response(null, Response::HTTP_NO_CONTENT);
     }
 
     /**
@@ -252,6 +262,27 @@ class IdeaController extends Controller
      */
     public function showAction(Idea $idea)
     {
+        $title = $idea->getTitle();
+        $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
+
+        $this->seoGeneratorProvider
+            ->get('basic')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('og')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
+        $this->seoGeneratorProvider
+            ->get('twitter')
+            ->setTitle($title)
+            ->setDescription($description)
+        ;
+
         return $this->render('frontend/idea/show.html.twig', [
             'complete' => true,
             'idea' => $idea,
@@ -264,7 +295,7 @@ class IdeaController extends Controller
      */
     public function indexAction(int $page): Response
     {
-        $ideas = $this->bus->handle(
+        $ideas = $this->bus->dispatch(
             new GetIdeasByPageQuery(
                 $page,
                 $this->isGranted('ROLE_ADMIN')
@@ -282,7 +313,7 @@ class IdeaController extends Controller
      */
     public function indexByGroupAction(Group $group, int $page): Response
     {
-        $ideas = $this->bus->handle(
+        $ideas = $this->bus->dispatch(
             new GetIdeasByGroupQuery(
                 $page,
                 $group
@@ -292,6 +323,16 @@ class IdeaController extends Controller
         return $this->render('frontend/idea/index_group.html.twig', [
             'ideas' => $ideas,
             'group' => $group,
+        ]);
+    }
+
+    public function getMoreVotesPendingIdeas(IdeaRepository $ideaRepository)
+    {
+        $ideas = $ideaRepository->findFilteredByVotes();
+
+        return $this->render('frontend/idea/_ideas_block.html.twig', [
+            'title' => 'Pendientes con más votos',
+            'ideas' => $ideas,
         ]);
     }
 }

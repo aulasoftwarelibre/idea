@@ -12,7 +12,6 @@
 namespace App\Form\Type;
 
 use App\Entity\Degree;
-use App\Entity\TelegramChat;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

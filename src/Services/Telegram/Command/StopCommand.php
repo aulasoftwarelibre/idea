@@ -11,7 +11,7 @@
 
 namespace App\Services\Telegram\Command;
 
-use App\Command\UnregisterUserChatCommand;
+use App\Messenger\TelegramChat\UnregisterUserChatCommand;
 use Telegram\Bot\Commands\Command;
 
 class StopCommand extends Command
@@ -28,7 +28,7 @@ class StopCommand extends Command
         $message = $this->getUpdate()->getMessage();
         $chatId = (string) $message->getChat()->getId();
 
-        $this->telegram->getTacticianBus()->handle(
+        $this->telegram->getMessageBus()->dispatch(
             new UnregisterUserChatCommand(
                 $chatId
             )

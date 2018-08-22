@@ -1,0 +1,43 @@
+sonata_admin:
+    templates:
+        # default global templates
+        layout:  '/backend/standard_layout.html.twig'
+    title: Ideas
+    title_logo: 'assets/images/ideas-small.png'
+    options:
+        title_mode: 'single_image'
+    dashboard:
+        groups:
+            app.admin.resources:
+                label: 'group.resources'
+                label_catalogue: 'messages'
+                icon: '<i class="fa fa-database"></i>'
+                items:
+                - 'eco.admin.activity'
+                - 'eco.admin.idea'
+                - 'eco.admin.degree'
+            app.admin.messages:
+                label: 'group.messages'
+                label_catalogue: 'messages'
+                icon: '<i class="fa fa-telegram"></i>'
+                items:
+                - 'eco.admin.telegram_chat'
+            app.admin.user:
+                label: 'sonata_user'
+                label_catalogue: 'SonataUserBundle'
+                icon: '<i class="fa fa-users"></i>'
+                items:
+                - 'sonata.user.admin.user'
+                - 'sonata.user.admin.group'
+
+sonata_block:
+    default_contexts: ['cms']
+    blocks:
+        # Enable the SonataAdminBundle block
+        sonata.admin.block.admin_list:
+            contexts:   ['admin']
+        sonata.admin.block.search_result:
+            contexts:   ['admin']
+        # Your other blocks
+        sonata.block.service.text:
+        sonata.block.service.inactive:

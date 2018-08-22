@@ -1,5 +1,40 @@
 # Changelog
 
+## [2.2.0] - Wed, 22 Aug 2018 22:45:11 +0200
+
+Improved idea listing template
+    
+* Removed inverse colors (thanks @victormonserrat)
+* Show shadow content in cards as summary
+* Reverted menu from full width to fixed width
+* Added background
+
+
+## [2.1.0] - Mon, 20 Aug 2018 13:52:39 +0200
+
+- Añadido soporte para SEO
+- Administración de ideas responsiva
+- Fix: No se muestran mensajes flash
+
+## [2.0.1] - Sun, 19 Aug 2018 19:54:21 +0200
+
+Fix some bugs in production:
+
+* vich_image needs filter to set the proper uri
+* removed old login path
+* changed production config values
+
+## [2.0.0] - Sun, 19 Aug 2018 19:16:20 +0200
+
+- [Symfony] Actualizado a symfony 4.1
+- [Symfony] Migrado de Tactician a Messenger
+- [Templates] Mejorada la interfaz para móviles
+- Varios bugs solucionados
+
+## [1.8.0] - Tue, 17 Apr 2018 08:10:16 +0200
+
+- Listado de asistentes y exportación de datos para poder generar los informes.
+
 ## [1.7.0] - Sun, 11 Mar 2018 22:52:14 +0100
 
 - [Comments] La versión 2.1.0 de FosCommentBundle vuelve a dar problemas con los permalinks.

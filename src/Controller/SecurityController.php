@@ -11,24 +11,11 @@
 
 namespace App\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SecurityController extends Controller
 {
-    /**
-     * @Route("/login", name="login")
-     */
-    public function login(AuthenticationUtils $authenticationUtils)
-    {
-        $exception = $authenticationUtils->getLastAuthenticationError();
-
-        return $this->render('security/login.html.twig', [
-            'error' => $exception,
-        ]);
-    }
-
     /**
      * @Route("/logout", name="logout")
      */

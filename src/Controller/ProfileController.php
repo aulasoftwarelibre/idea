@@ -11,22 +11,22 @@
 
 namespace App\Controller;
 
-use App\Command\GenerateUserTelegramTokenCommand;
-use App\Command\UnregisterUserChatCommand;
 use App\Entity\Participation;
 use App\Entity\TelegramChat;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
+use App\Messenger\TelegramChat\GenerateUserTelegramTokenCommand;
+use App\Messenger\TelegramChat\UnregisterUserChatCommand;
 use App\Repository\UserRepository;
-use League\Tactician\CommandBus;
+use App\Services\Telegram\TelegramCachedCalls;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Telegram\Bot\Api as Telegram;
+use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/profile")
@@ -38,15 +38,15 @@ class ProfileController extends Controller
      */
     private $repository;
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
     /**
-     * @var Telegram
+     * @var TelegramCachedCalls
      */
     private $telegram;
 
-    public function __construct(UserRepository $repository, CommandBus $bus, Telegram $telegram)
+    public function __construct(UserRepository $repository, MessageBusInterface $bus, TelegramCachedCalls $telegram)
     {
         $this->repository = $repository;
         $this->bus = $bus;
@@ -126,7 +126,7 @@ class ProfileController extends Controller
             return new JsonResponse(['error' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        $this->bus->handle(
+        $this->bus->dispatch(
             new UnregisterUserChatCommand(
                 $user->getTelegramChat()->getId()
             )
@@ -165,7 +165,7 @@ class ProfileController extends Controller
         $profile = $this->repository->getProfile($user->getId());
         $botname = $this->telegram->getMe()->getUsername();
 
-        $token = $this->bus->handle(
+        $token = $this->bus->dispatch(
             new GenerateUserTelegramTokenCommand(
                 $user->getId()
             )
@@ -173,6 +173,25 @@ class ProfileController extends Controller
 
         return $this->render('/frontend/profile/_card.html.twig', [
             'profile' => $profile,
+            'token' => $token,
+            'botname' => $botname,
+        ]);
+    }
+
+    public function showMenu()
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        $botname = $this->telegram->getMe()->getUsername();
+
+        $token = $this->bus->dispatch(
+            new GenerateUserTelegramTokenCommand(
+                $user->getId()
+            )
+        );
+
+        return $this->render('/frontend/profile/_menu.html.twig', [
+            'profile' => $user,
             'token' => $token,
             'botname' => $botname,
         ]);

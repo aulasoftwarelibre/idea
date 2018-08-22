@@ -1,0 +1,40 @@
+services:
+    eco.admin.activity:
+        class: App\Admin\ActivityAdmin
+        arguments: [~, App\Entity\Activity, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.activity }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+            - [ addChild, ["@eco.admin.participation"]]
+    eco.admin.degree:
+        class: App\Admin\DegreeAdmin
+        arguments: [~, App\Entity\Degree, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.degree }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+    eco.admin.idea:
+        class: App\Admin\IdeaAdmin
+        arguments: [~, App\Entity\Idea, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.idea }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+    eco.admin.participation:
+        class: App\Admin\ParticipationAdmin
+        arguments: [~, App\Entity\Participation, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.participation }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+    eco.admin.telegram_chat:
+        class: App\Admin\TelegramChatAdmin
+        arguments: [ ~, App\Entity\TelegramChat, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat }
+
+
+twig:
+    form_themes:
+        - 'SonataCoreBundle:Form:datepicker.html.twig'

@@ -11,10 +11,10 @@
 
 namespace App\Security\Voter;
 
-use App\Command\CloseIdeaCommand;
-use App\Command\UpdateIdeaCommand;
 use App\Entity\Idea;
 use App\Entity\User;
+use App\Messenger\Idea\CloseIdeaCommand;
+use App\Messenger\Idea\UpdateIdeaCommand;
 use App\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;

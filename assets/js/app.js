@@ -3,6 +3,19 @@ global.$ = global.jQuery = require('jquery');
 require('semantic-ui-css');
 import Clipboard from 'clipboard';
 
+function actions(button, url) {
+    button.addClass('loading');
+    $.post(Routing.generate(url, {slug: button.data('slug')}), {})
+        .done(function () {
+            location.reload();
+        })
+        .fail(function () {
+            button.removeClass('loading animated');
+            button.addClass('red disabled');
+            button.text('ERROR');
+        });
+}
+
 $(document).ready(function () {
     $('.ui.sticky')
         .sticky({
@@ -10,48 +23,25 @@ $(document).ready(function () {
         })
     ;
 
-    $("a.close.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_close', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.close.idea").click(function () {
+        actions($(this), 'idea_close');
     });
-    $("a.open.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_open', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.open.idea").click(function () {
+        actions($(this), 'idea_open');
     });
-    $("a.approve.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_approve', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.approve.idea").click(function () {
+        actions($(this), 'idea_approve');
     });
-    $("a.reject.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_reject', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.reject.idea").click(function () {
+        actions($(this), 'idea_reject');
     });
-    $("a.join.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_join', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.join.idea").click(function () {
+        actions($(this), 'idea_join');
     });
-    $("a.leave.idea").click(function (action) {
-        var slug = $(this).data('slug');
-        $.post(Routing.generate('idea_leave', {slug: slug}), {})
-            .done(function () {
-                location.reload();
-            });
+    $("a.leave.idea").click(function () {
+        actions($(this), 'idea_leave');
     });
+
     $("#telegram-connect").click(function (action) {
         $('.ui.basic.modal')
             .modal({
@@ -84,18 +74,6 @@ $(document).ready(function () {
                 location.reload();
             });
     });
-    // fix menu when passed
-    $('.masthead')
-        .visibility({
-            once: false,
-            onBottomPassed: function() {
-                $('.fixed.menu').transition('fade in');
-            },
-            onBottomPassedReverse: function() {
-                $('.fixed.menu').transition('fade out');
-            }
-        })
-    ;
 
     // create sidebar and attach to menu open
     $('.ui.sidebar')

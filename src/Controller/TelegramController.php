@@ -11,18 +11,18 @@
 
 namespace App\Controller;
 
-use App\Command\Abstracts\ProcessTelegramChatCommand;
-use App\Command\LeftChatParticipantCommand;
-use App\Command\NewChatParticipantCommand;
+use App\Messenger\TelegramChat\Abstracts\ProcessTelegramChatCommand;
+use App\Messenger\TelegramChat\LeftChatParticipantCommand;
+use App\Messenger\TelegramChat\NewChatParticipantCommand;
 use App\Services\Telegram\Command\HelpCommand;
 use App\Services\Telegram\Command\NotifyCommand;
 use App\Services\Telegram\Command\StartCommand;
 use App\Services\Telegram\Command\StopCommand;
-use League\Tactician\CommandBus;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Telegram\Bot\Api;
 use Telegram\Bot\Objects\CallbackQuery;
@@ -40,14 +40,14 @@ class TelegramController extends Controller
      */
     private $logger;
     /**
-     * @var CommandBus
+     * @var MessageBusInterface
      */
     private $bus;
 
     /**
      * TelegramController constructor.
      */
-    public function __construct(Api $telegram, LoggerInterface $logger, CommandBus $bus)
+    public function __construct(Api $telegram, LoggerInterface $logger, MessageBusInterface $bus)
     {
         $this->logger = $logger;
         $this->telegram = $telegram;
@@ -95,7 +95,7 @@ class TelegramController extends Controller
             $this->logger->debug('Message: '.\GuzzleHttp\json_encode($message->jsonSerialize()));
 
             if ($message->getNewChatMember() instanceof User) {
-                $this->bus->handle(
+                $this->bus->dispatch(
                     new NewChatParticipantCommand(
                         $message
                     )
@@ -105,7 +105,7 @@ class TelegramController extends Controller
             }
 
             if ($message->getLeftChatMember() instanceof User) {
-                $this->bus->handle(
+                $this->bus->dispatch(
                     new LeftChatParticipantCommand(
                         $message
                     )
@@ -143,7 +143,7 @@ class TelegramController extends Controller
      */
     private function processCallback(CallbackQuery $callback): void
     {
-        $this->bus->handle(
+        $this->bus->dispatch(
             $this->getCallbackCommand($callback)
         );
     }
