@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.2.2] - Wed, 22 Aug 2018 23:05:24 +0200
+
+* Forgotten css in production
+
 ## [2.2.1] - Wed, 22 Aug 2018 22:58:03 +0200
 
 * Fixed a bug with basic labels with semantic-ui-css >= 2.3.2    
