@@ -2,13 +2,13 @@
     {% set state = idea.state %}
     {% set createdAt = idea.createdAt %}
     {% if state == 'proposed' and date(createdAt) > date('-2 days') %}
-        <div class="ui fluid top attached yellow label">{{ 'new' | trans }}</div>
+        <div class="ui fluid top attached basic yellow label">{{ 'new' | trans }}</div>
     {% elseif state == 'approved' %}
-        <div class="ui fluid top attached green label">{{ state | trans }}</div>
+        <div class="ui fluid top attached basic green label">{{ state | trans }}</div>
     {% elseif state == 'rejected' %}
-        <div class="ui fluid top attached red label">{{ state | trans }}</div>
+        <div class="ui fluid top attached basic red label">{{ state | trans }}</div>
     {% else %}
-        <div class="ui fluid top attached gray label">{{ state | trans }}</div>
+        <div class="ui fluid top attached basic gray label">{{ state | trans }}</div>
     {% endif %}
 {% endmacro %}
 
@@ -24,33 +24,35 @@
                     <div class="label">votos</div>
                 </div>
             {% if idea.closed %}
-                <div class="ui fluid bottom attached red small button">
+                <div class="ui fluid bottom attached red small basic button">
                     CERRADA
                 </div>
             {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="ui animated fluid bottom attached small button" href="{{ path('hwi_oauth_connect') }}">
+                <a class="ui animated fluid bottom attached small basic button" href="{{ path('hwi_oauth_connect') }}">
                     <div class="visible content"><i class="plus icon"></i></div>
                     <div class="hidden content">
                         CONECTAR
                     </div>
                 </a>
             {% elseif is_granted('OWNER', idea) %}
-                <a class="ui fluid bottom attached green small button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
+                <a class="ui fluid bottom attached green small basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
                     EDITAR
                 </a>
             {% elseif is_voted(idea) %}
-                <a class="ui animated fluid bottom attached green small button leave idea" data-slug="{{ idea.slug }}">
-                    <div class="visible content"><i class="users icon"></i></div>
+                <a class="ui animated fluid bottom attached green small basic button leave idea" data-slug="{{ idea.slug }}">
+                    <div class="visible content">
+                        UNIDO
+                    </div>
                     <div class="hidden content">
                         SALIR
                     </div>
                 </a>
             {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
-                <div class="ui fluid bottom attached red small button">
+                <div class="ui fluid bottom attached red small basic button">
                     SIN PLAZAS
                 </div>
             {% else %}
-                <a class="ui animated fluid bottom attached small button join idea" data-slug="{{ idea.slug }}">
+                <a class="ui animated fluid bottom attached small basic button join idea" data-slug="{{ idea.slug }}">
                     <div class="visible content"><i class="plus icon"></i></div>
                     <div class="hidden content">
                         UNIRTE
@@ -59,19 +61,25 @@
             {% endif %}
             </div>
 
+            <div class="meta" style="margin-bottom: 10px;">
+                <span style="background-color: rgb(237, 239, 241); padding: 0px 4px; border-radius: 2px; font-weight: 500; color: black">{{ idea.group }}</span>
+                Enviado por {{ idea.owner.username }} {{ idea.createdAt | time_diff }}
+            </div>
+
             <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
                 {{ idea.title }}
             </a>
-            <div class="meta">
-                Enviado {{ idea.createdAt | time_diff }} por {{ idea.owner }} a {{ idea.group }}
+            {% if complete is defined %}
+            <div class="description">
+                {{ idea.description | purify }}
             </div>
-            <div class="description" style="clear: unset">
-                {% if complete is defined %}
-                    {{ idea.description | purify }}
-                {% else %}
-                    {{ idea.description | striptags | truncate(200) }}
-                {% endif %}
+            {% else %}
+            <div class="description">
+                <div class="summary">
+                    {{ idea.description | purify('summary') }}
+                </div>
             </div>
+            {% endif %}
         </div>
         <div class="extra content">
             <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">

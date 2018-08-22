@@ -19,7 +19,7 @@
 </head>
 
 
-<body>
+<body id="body">
 <!-- Sidebar Menu -->
 <div class="ui left vertical inverted menu sidebar">
     {{ knp_menu_render('sidebarMenu', {'bare': true, 'dropdown': false}) }}
@@ -27,22 +27,19 @@
 
 <!-- Page Contents -->
 <div class="pusher">
-    <div class="ui vertical center aligned segment">
+    <div class="ui large secondary pointing fixed menu">
         <div class="ui container">
-            <div class="ui large top main fixed menu">
-                <a class="toc item"><i class="sidebar icon"></i></a>
-                <a class="logo" href="{{ path('homepage') }}"></a>
+            <a class="toc item"><i class="sidebar icon"></i></a>
+            <a class="logo" href="{{ path('homepage') }}"></a>
 
-                {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
+            {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
 
-                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
-                {% else %}
-                    <a class="floated right item" href="{{ path('hwi_oauth_connect') }}"><i class="sign in icon"></i> Conectar</a>
-                {% endif %}
-            </div>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
+            {% else %}
+                <a class="floated right item" href="{{ path('hwi_oauth_connect') }}"><i class="sign in icon"></i> Conectar</a>
+            {% endif %}
         </div>
-        {% block jumbo %}{% endblock %}
     </div>
 
     <div class="full height">

@@ -1,7 +1,7 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="ui grid">
+    <div class="ui grid" id="ideas">
         {% for idea in ideas %}
             {% include('/frontend/idea/_idea.html.twig') %}
         {% else %}
