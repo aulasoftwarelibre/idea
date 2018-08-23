@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use App\Entity\Activity;
 use App\Entity\Participation;
@@ -29,7 +29,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CeoReportActivitiesCommand extends Command
 {
-    protected static $defaultName = 'ceo:report:activities';
     /**
      * @var ActivityRepository
      */
@@ -39,10 +38,10 @@ class CeoReportActivitiesCommand extends Command
      */
     private $slugify;
 
-    public function __construct(
-        ActivityRepository $activityRepository
-    ) {
+    public function __construct(ActivityRepository $activityRepository)
+    {
         parent::__construct();
+
         $this->activityRepository = $activityRepository;
         $this->slugify = new Slugify();
     }
@@ -50,6 +49,7 @@ class CeoReportActivitiesCommand extends Command
     protected function configure()
     {
         $this
+            ->setName('idea:repost:activities')
             ->setDescription('Informe de todas las actividades')
             ->addArgument('template', InputArgument::REQUIRED)
         ;

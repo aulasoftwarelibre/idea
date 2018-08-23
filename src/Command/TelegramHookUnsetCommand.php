@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -39,7 +39,7 @@ class TelegramHookUnsetCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ceo:telegram:unset')
+            ->setName('idea:telegram:unset')
         ;
     }
 
