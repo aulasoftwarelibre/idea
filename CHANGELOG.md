@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.3.0] - Thu, 23 Aug 2018 10:16:14 +0200
+
+* Change project name from _ceo_ to _idea_
+* Moved console commands
+* Template refactorization
+
 ## [2.2.2] - Wed, 22 Aug 2018 23:05:24 +0200
 
 * Forgotten css in production
