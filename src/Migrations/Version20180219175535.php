@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
