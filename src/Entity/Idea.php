@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -25,9 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Idea
 {
-    const STATE_PROPOSED = 'proposed';
-    const STATE_REJECTED = 'rejected';
-    const STATE_APPROVED = 'approved';
+    public const RELATIVE_STATE_NEW = 'new';
+    public const STATE_PROPOSED = 'proposed';
+    public const STATE_REJECTED = 'rejected';
+    public const STATE_APPROVED = 'approved';
 
     const LIMITLESS = 0;
 
@@ -252,6 +253,17 @@ class Idea
         $this->state = $state;
 
         return $this;
+    }
+
+    public function getRelativeState(): string
+    {
+        $diff = $this->createdAt->diff(new \DateTime());
+
+        if ($diff->days <= 2) {
+            return self::RELATIVE_STATE_NEW;
+        }
+
+        return $this->state;
     }
 
     /**

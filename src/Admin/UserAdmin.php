@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -56,6 +56,7 @@ class UserAdmin extends BaseUserAdmin
                 ->with('Profile')
                     ->add('collective', ChoiceType::class, [
                         'choices' => User::getCollectives(),
+                        'required' => false,
                     ])
                     ->add('nic')
                     ->add('degree')

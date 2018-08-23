@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use App\Messenger\TelegramChat\SendMessageToTelegramChatsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -21,7 +21,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class TelegramSendCommand extends Command
 {
-    protected static $defaultName = 'ceo:telegram:send';
     /**
      * @var MessageBusInterface
      */
@@ -40,6 +39,7 @@ class TelegramSendCommand extends Command
     protected function configure()
     {
         $this
+            ->setName('idea:telegram:send')
             ->setDescription('Enviar un mensaje a todos los grupos')
             ->addArgument('msg', InputArgument::OPTIONAL, 'Argument description')
         ;

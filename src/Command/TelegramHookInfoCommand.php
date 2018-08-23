@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -9,15 +9,17 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Routing\RouterInterface;
 use Telegram\Bot\Api;
+use Telegram\Bot\TelegramRequest;
 
-class TelegramHookUnsetCommand extends Command
+class TelegramHookInfoCommand extends Command
 {
     /**
      * @var Api
@@ -39,18 +41,29 @@ class TelegramHookUnsetCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ceo:telegram:unset')
+            ->setName('idea:telegram:info')
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $id = $this->telegram->getMe()->getId();
+        $io = new SymfonyStyle($input, $output);
 
-        $output->writeln("El id del bot es: {$id}");
+        $id = $this->telegram->getMe();
 
-        $result = $this->telegram->removeWebhook();
+        $io->writeln("El id del bot es: {$id->getId()}");
+        $io->writeln("El nick del bot es: {$id->getUsername()}");
+        $io->writeln("El webhook del bot es: {$this->getWebhookInfo()}");
+    }
 
-        $output->writeln((string) $result->getBody());
+    protected function getWebhookInfo()
+    {
+        $request = new TelegramRequest(
+            $this->telegram->getAccessToken(),
+            'GET',
+            'getWebhookInfo'
+        );
+
+        return $this->telegram->getClient()->sendRequest($request)->getBody();
     }
 }

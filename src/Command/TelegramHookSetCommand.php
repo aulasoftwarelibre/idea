@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -42,7 +42,7 @@ class TelegramHookSetCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ceo:telegram:set')
+            ->setName('idea:telegram:set')
             ->addOption('certificate', 'c', InputOption::VALUE_OPTIONAL)
         ;
     }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the ceo project.
+ * This file is part of the `idea` project.
  *
  * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Console;
+namespace App\Command;
 
 use App\Entity\Participation;
 use App\Entity\User;
@@ -25,7 +25,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class CeoReportCommand extends Command
 {
-    protected static $defaultName = 'ceo:report';
     /**
      * @var UserRepository
      */
@@ -41,6 +40,7 @@ class CeoReportCommand extends Command
     protected function configure()
     {
         $this
+            ->setName('idea:report')
             ->setDescription('Save Report')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Nombre del fichero', 'report')
         ;
@@ -52,7 +52,9 @@ class CeoReportCommand extends Command
         $filename = $input->getArgument('filename');
         $filename = "var/report/{$filename}.xlsx";
 
-        @mkdir('var/report');
+        if (!mkdir('var/report') && !is_dir('var/report')) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', 'var/report'));
+        }
         if (file_exists($filename)) {
             unlink($filename);
         }
