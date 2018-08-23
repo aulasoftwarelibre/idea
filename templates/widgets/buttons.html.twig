@@ -1,0 +1,51 @@
+{% macro simple_label(text, classes) %}
+    <div class="ui bottom attached {{ classes }} basic button">
+        {{ text | trans | upper }}
+    </div>
+{% endmacro %}
+
+{% macro simple_button(text, url, classes) %}
+    <a class="ui bottom attached {{ classes }} basic button" href="{{ url }}">
+        {{ text | trans | upper }}
+    </a>
+{% endmacro %}
+
+{% macro animated_button(first, first_icon, second, second_icon, url, classes) %}
+    <a class="ui animated bottom attached {{ classes }} basic button" href="{{ url }}">
+        <div class="visible content">
+            {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
+            {{ first | trans | upper  }}
+        </div>
+        <div class="hidden content">
+            {% if second_icon is not empty %}<i class="{{ second_icon }} icon"></i>{% endif %}
+            {{ second | trans | upper }}
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro js_animated_button(first, first_icon, second, second_icon, data, classes) %}
+    <a class="ui animated bottom attached {{ classes }} basic button" data-slug="{{ data }}">
+        <div class="visible content">
+            {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
+            {{ first | trans | upper  }}
+        </div>
+        <div class="hidden content">
+            {% if second_icon is not empty %}<i class="{{ second_icon }} icon"></i>{% endif %}
+            {{ second | trans | upper }}
+        </div>
+    </a>
+{% endmacro %}
+
+{% macro icon_button(text, icon, url, classes) %}
+    <a class="ui icon {{ classes }} button" href="{{- url -}}">
+        <i class="{{- icon }} icon"></i>
+        <span class="text mobile hidden">{{ text | trans }}</span>
+    </a>
+{% endmacro %}
+
+{% macro js_icon_button(text, icon, data, classes) %}
+    <a class="ui icon {{ classes }} button" data-slug="{{- data -}}">
+        <i class="{{- icon }} icon"></i>
+        <span class="text mobile hidden">{{ text | trans }}</span>
+    </a>
+{% endmacro %}

@@ -1,21 +1,30 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-
-    <h1 class="ui header">Editar idea</h1>
-
-    <div class="ui divider"></div>
-
     <div class="ui grid">
-        <div class="two column">
-            {{ form_start(form, {method: 'POST', action: path('idea_edit', {'slug': idea.slug})}) }}
-            {{ form_widget(form) }}
+        <div class="row">
+            <div class="ui idea fluid card">
+                <div class="content">
+                    <div class="two column">
+                        {{ form_start(form, {method: 'POST', action: path('idea_edit', {'slug': idea.slug})}) }}
+                        <h1 class="ui header">
+                            Editar idea
+                            <div class="sub header">{{ idea.title }}</div>
+                        </h1>
 
-            <div class="ui divider"></div>
+                        <div class="ui divider"></div>
 
-            <div class="ui submit button">Guardar</div>
 
-            {{ form_end(form) }}
+                        {{ form_widget(form) }}
+
+                        <div class="ui divider"></div>
+
+                        <div class="ui submit button">Guardar</div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}

@@ -1,10 +1,27 @@
-approved: APROBADA
+Action: Acción
+
+approved: aprobada
+closed: cerrada
+connect: conectar
+edit: editar
+full: sin plazas
+join: unirte
+joined: unido
+leave: salir
+new: nueva
+proposed: pendiente
+rejected: rechazada
+
 idea_num_comments: '%count% comentario|%count% comentarios'
 idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
-new: NUEVA
-proposed: PENDIENTE
-rejected: RECHAZADA
-Action: Acción
+
+send_by: 'Enviado por %owner% %when%'
+
+close_idea: Cerrar idea
+open_idea: Abrir idea
+approve_idea: Aprobar idea
+reject_idea: Rechazar idea
+edit_idea: Editar idea
 
 breadcrumb.link_activity_list: Lista de actividades
 breadcrumb.link_degree_list: Lista de grados

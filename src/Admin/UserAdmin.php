@@ -56,6 +56,7 @@ class UserAdmin extends BaseUserAdmin
                 ->with('Profile')
                     ->add('collective', ChoiceType::class, [
                         'choices' => User::getCollectives(),
+                        'required' => false,
                     ])
                     ->add('nic')
                     ->add('degree')

@@ -1,85 +1,45 @@
-{% macro ribbon(idea) %}
-    {% set state = idea.state %}
-    {% set createdAt = idea.createdAt %}
-    {% if state == 'proposed' and date(createdAt) > date('-2 days') %}
-        <div class="ui fluid top attached basic yellow label">{{ 'new' | trans }}</div>
-    {% elseif state == 'approved' %}
-        <div class="ui fluid top attached basic green label">{{ state | trans }}</div>
-    {% elseif state == 'rejected' %}
-        <div class="ui fluid top attached basic red label">{{ state | trans }}</div>
-    {% else %}
-        <div class="ui fluid top attached basic gray label">{{ state | trans }}</div>
-    {% endif %}
-{% endmacro %}
-
-{% import _self as widgets %}
+{% import 'widgets/buttons.html.twig' as buttons %}
 
 <div class="row">
     <div class="ui idea fluid card">
         <div class="content">
+            <!-- vote box -->
             <div class="ui vote basic compact floated left segment center aligned">
-                {{ widgets.ribbon(idea) }}
+                <div class="ui top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
                 <div class="ui tiny statistic">
                     <div class="value">{{ idea.votes | length }}</div>
                     <div class="label">votos</div>
                 </div>
-            {% if idea.closed %}
-                <div class="ui fluid bottom attached red small basic button">
-                    CERRADA
-                </div>
-            {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                <a class="ui animated fluid bottom attached small basic button" href="{{ path('hwi_oauth_connect') }}">
-                    <div class="visible content"><i class="plus icon"></i></div>
-                    <div class="hidden content">
-                        CONECTAR
-                    </div>
-                </a>
-            {% elseif is_granted('OWNER', idea) %}
-                <a class="ui fluid bottom attached green small basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
-                    EDITAR
-                </a>
-            {% elseif is_voted(idea) %}
-                <a class="ui animated fluid bottom attached green small basic button leave idea" data-slug="{{ idea.slug }}">
-                    <div class="visible content">
-                        UNIDO
-                    </div>
-                    <div class="hidden content">
-                        SALIR
-                    </div>
-                </a>
-            {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
-                <div class="ui fluid bottom attached red small basic button">
-                    SIN PLAZAS
-                </div>
-            {% else %}
-                <a class="ui animated fluid bottom attached small basic button join idea" data-slug="{{ idea.slug }}">
-                    <div class="visible content"><i class="plus icon"></i></div>
-                    <div class="hidden content">
-                        UNIRTE
-                    </div>
-                </a>
-            {% endif %}
+                {% if idea.closed %}
+                    {{ buttons.simple_label('closed', 'red') }}
+                {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('hwi_oauth_connect')) }}
+                {% elseif is_granted('OWNER', idea) %}
+                    {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
+                {% elseif is_voted(idea) %}
+                    {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
+                {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
+                    {{ buttons.simple_label('full', 'red') }}
+                {% else %}
+                    {{ buttons.js_animated_button(null, 'plus', 'join', null, idea.slug, 'join idea') }}
+                {% endif %}
             </div>
+            <!-- end vote box -->
 
-            <div class="meta" style="margin-bottom: 10px;">
-                <span style="background-color: rgb(237, 239, 241); padding: 0px 4px; border-radius: 2px; font-weight: 500; color: black">{{ idea.group }}</span>
-                Enviado por {{ idea.owner.username }} {{ idea.createdAt | time_diff }}
+            <!-- vote body -->
+            <div class="meta send by">
+                <span class="group">{{ idea.group }}</span> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
             </div>
+            <a class="header" href="{{ path('idea_show', {'slug': idea.slug}) }}">{{ idea.title }}</a>
 
-            <a  href="{{ path('idea_show', {'slug': idea.slug}) }}" class="header">
-                {{ idea.title }}
-            </a>
             {% if complete is defined %}
-            <div class="description">
-                {{ idea.description | purify }}
-            </div>
+                <div class="description">{{ idea.description | purify }}</div>
             {% else %}
-            <div class="description">
-                <div class="summary">
-                    {{ idea.description | purify('summary') }}
+                <div class="description">
+                    <div class="summary">{{ idea.description | purify('summary') }}</div>
                 </div>
-            </div>
             {% endif %}
+            <!-- end vote body -->
         </div>
         <div class="extra content">
             <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">
@@ -94,5 +54,83 @@
                 </span>
             {% endif %}
         </div>
+
+        {% if is_granted('ROLE_ADMIN') %}
+            <div class="extra content">
+                <div class="row">
+                    <div class="column">
+                        <h4 class="ui dividing header">Administrar</h4>
+
+                        <div class="ui buttons">
+                            {% if idea.closed %}
+                                {{ buttons.js_icon_button('open_idea', 'unlock', idea.slug, 'open idea') }}
+                            {% else %}
+                                {{ buttons.js_icon_button('close_idea', 'lock', idea.slug, 'close idea') }}
+                            {% endif %}
+                            {% if idea.state != constant('App\\Entity\\Idea::STATE_APPROVED') %}
+                                {{ buttons.js_icon_button('approve_idea', 'thumbs up outline', idea.slug, 'approve idea') }}
+                            {% endif %}
+                            {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
+                                {{ buttons.js_icon_button('reject_idea', 'thumbs down outline', idea.slug, 'reject idea') }}
+                            {% endif %}
+                            {{ buttons.icon_button('edit_idea', 'pencil', path('admin_app_idea_edit', {id: idea.id})) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if complete is defined %}
+            <div class="extra content">
+                <div class="row">
+                    <div class="column">
+                        <h3 class="ui dividing header">Participantes</h3>
+
+                        {% for vote in idea.votes %}
+                            {% set user = vote.user %}
+                            <a class="ui basic image label"
+                                {% if is_granted('ROLE_ADMIN') %}
+                                    href="{{ path('admin_app_user_show', {'id': user.id}) }}"
+                                    data-tooltip="{{ user.fullname }}"
+                                {% endif %}
+                            >
+                                {% if user.image.name is not empty %}
+                                    <img src="{{ vich_uploader_asset(user, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+                                {% else %}
+                                    <img src="{{ asset('assets/images/default.png') }}">
+                                {% endif %}
+                                {{ user.username }}
+                            </a>
+                        {% else %}
+                            <span class="ui label">No hay participantes</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="extra content">
+                <div class="row">
+                    <div class="column">
+                        <h3 class="ui dividing header">Comentarios</h3>
+                    </div>
+
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                        {% include '@FOSComment/Thread/async.html.twig' with {'id': idea.id} %}
+                    {% else %}
+                        <div class="ui icon message">
+                            <i class="add user icon"></i>
+                            <div class="content">
+                                <div class="header">
+                                    ¿Quieres participar?
+                                </div>
+                                <p>
+                                    <a href="{{ path('hwi_oauth_connect') }}">Inicia sesión</a> para dejar un comentario.
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
     </div>
 </div>
