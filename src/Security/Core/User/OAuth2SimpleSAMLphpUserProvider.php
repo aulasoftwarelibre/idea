@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -18,6 +20,9 @@ use HWI\Bundle\OAuthBundle\Security\Core\User\FOSUBUserProvider;
 
 class OAuth2SimpleSAMLphpUserProvider extends FOSUBUserProvider
 {
+    /**
+     * {@inheritdoc}
+     */
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $username = $response->getUsername();

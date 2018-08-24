@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -18,12 +20,13 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class TelegramNotifySubscriber implements EventSubscriberInterface
+final class TelegramNotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @var MessageBusInterface
      */
     private $bus;
+
     /**
      * @var EngineInterface
      */
@@ -35,6 +38,9 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
         $this->engine = $engine;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -43,7 +49,7 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function ideaWasApproved(IdeaWasApprovedEvent $event)
+    public function ideaWasApproved(IdeaWasApprovedEvent $event): void
     {
         $idea = $event->getIdea();
 
@@ -55,14 +61,10 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->dispatch(
-            new SendMessageToTelegramChatsCommand(
-                $message
-            )
-        );
+        $this->bus->dispatch(new SendMessageToTelegramChatsCommand($message));
     }
 
-    public function ideaWasCreated(IdeaWasCreatedEvent $event)
+    public function ideaWasCreated(IdeaWasCreatedEvent $event): void
     {
         $idea = $event->getIdea();
 
@@ -74,10 +76,6 @@ class TelegramNotifySubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->dispatch(
-            new SendMessageToTelegramChatsCommand(
-                $message
-            )
-        );
+        $this->bus->dispatch(new SendMessageToTelegramChatsCommand($message));
     }
 }

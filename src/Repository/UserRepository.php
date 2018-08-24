@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,9 +13,28 @@
 
 namespace App\Repository;
 
-class UserRepository extends CeoRepository
+use App\Entity\User;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class UserRepository extends ServiceEntityRepository
 {
-    public function getChoices()
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, User::class);
+    }
+
+    public function add(User $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(User $user): void
+    {
+        $this->_em->remove($user);
+    }
+
+    public function getChoices(): array
     {
         $users = $this->createQueryBuilder('o')
             ->select('o.id as id, o.username as username, o.firstname as firstname, o.lastname as lastname')
@@ -29,7 +50,7 @@ class UserRepository extends CeoRepository
         return $result;
     }
 
-    public function getProfile(int $userId)
+    public function getProfile(int $userId): ?User
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -47,7 +68,7 @@ class UserRepository extends CeoRepository
             ;
     }
 
-    public function findOneByValidToken(string $token)
+    public function findOneByValidToken(string $token): ?User
     {
         return $this->getEntityManager()
             ->createQuery('

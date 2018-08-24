@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -27,9 +29,6 @@ final class RemoveVoteCommand
 
     /**
      * RemoveVoteCommand constructor.
-     *
-     * @param Idea $idea
-     * @param User $user
      */
     public function __construct(Idea $idea, User $user)
     {

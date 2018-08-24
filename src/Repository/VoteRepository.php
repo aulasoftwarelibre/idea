@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class VoteRepository extends CeoRepository
+use App\Entity\Vote;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class VoteRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Vote::class);
+    }
+
+    public function add(Vote $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(Vote $user): void
+    {
+        $this->_em->remove($user);
+    }
 }

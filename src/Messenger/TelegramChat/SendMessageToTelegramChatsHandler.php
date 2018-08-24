@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -32,14 +34,14 @@ class SendMessageToTelegramChatsHandler
         $this->telegram = $telegram;
     }
 
-    public function __invoke(SendMessageToTelegramChatsCommand $command)
+    public function __invoke(SendMessageToTelegramChatsCommand $command): void
     {
         $message = $command->getMessage();
         $telegram = $this->telegram;
 
         $telegramChats = $this->repository->findBy(['active' => true]);
 
-        array_map(function (TelegramChat $chat) use ($telegram, $message) {
+        array_map(function (TelegramChat $chat) use ($telegram, $message): void {
             $telegram->sendMessage([
                 'chat_id' => (int) $chat->getId(),
                 'text' => $message,

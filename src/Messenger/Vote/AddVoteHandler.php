@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -28,7 +30,7 @@ class AddVoteHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(AddVoteCommand $command)
+    public function __invoke(AddVoteCommand $command): void
     {
         $idea = $command->getIdea();
         $user = $command->getUser();

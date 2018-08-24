@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -35,11 +37,6 @@ class AddIdeaCommand
 
     /**
      * AddIdeaCommand constructor.
-     *
-     * @param string $title
-     * @param string $description
-     * @param User   $user
-     * @param Group  $group
      */
     public function __construct(
         string $title,

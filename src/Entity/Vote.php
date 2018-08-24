@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -59,9 +61,6 @@ class Vote
     private $idea;
 
     /**
-     * @param Idea $idea
-     * @param User $user
-     *
      * @return Vote
      */
     public static function create(Idea $idea, User $user): self
@@ -117,8 +116,6 @@ class Vote
     }
 
     /**
-     * @param User $user
-     *
      * @return Vote
      */
     public function setUser(User $user): self
@@ -137,8 +134,6 @@ class Vote
     }
 
     /**
-     * @param Idea $idea
-     *
      * @return Vote
      */
     public function setIdea(Idea $idea): self

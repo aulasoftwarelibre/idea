@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -28,9 +30,6 @@ class CloseIdeaHandler
 
     /**
      * CloseIdeaHandler constructor.
-     *
-     * @param IdeaRepository   $ideaRepository
-     * @param ThreadRepository $threadRepository
      */
     public function __construct(IdeaRepository $ideaRepository, ThreadRepository $threadRepository)
     {
@@ -38,7 +37,7 @@ class CloseIdeaHandler
         $this->threadRepository = $threadRepository;
     }
 
-    public function __invoke(CloseIdeaCommand $command)
+    public function __invoke(CloseIdeaCommand $command): void
     {
         $idea = $command->getIdea();
         $isClosed = $command->isClosed();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -46,16 +48,21 @@ class CeoReportActivitiesCommand extends Command
         $this->slugify = new Slugify();
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
             ->setName('idea:repost:activities')
             ->setDescription('Informe de todas las actividades')
-            ->addArgument('template', InputArgument::REQUIRED)
-        ;
+            ->addArgument('template', InputArgument::REQUIRED);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
         $template = $input->getArgument('template');
@@ -81,7 +88,7 @@ class CeoReportActivitiesCommand extends Command
         $io->success('Hecho.');
     }
 
-    protected function generateActivityReport(Spreadsheet $report, Activity $activity)
+    protected function generateActivityReport(Spreadsheet $report, Activity $activity): void
     {
         /** @var User $organizer */
         $organizer = $activity
@@ -90,8 +97,7 @@ class CeoReportActivitiesCommand extends Command
                 return Participation::ORGANIZER === $participation->getRole();
             })
             ->first()
-            ->getUser()
-        ;
+            ->getUser();
 
         $students = $activity
             ->getParticipations()
@@ -101,10 +107,8 @@ class CeoReportActivitiesCommand extends Command
             ->filter(function (User $user) {
                 return
                     User::STUDENT === $user->getCollective()
-                    && $user->getNic()
-                ;
-            })
-        ;
+                    && $user->getNic();
+            });
 
         $iterator = $students->getIterator();
         $iterator->uasort(function (User $first, User $second) {
@@ -130,8 +134,7 @@ class CeoReportActivitiesCommand extends Command
             $sheet->getStyle("A{$row}:D{$row}")
                 ->getBorders()
                 ->getBottom()
-                ->setBorderStyle(Border::BORDER_THIN)
-            ;
+                ->setBorderStyle(Border::BORDER_THIN);
 
             ++$row;
         }

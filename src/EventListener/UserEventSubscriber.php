@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -21,8 +23,6 @@ use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
-use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class UserEventSubscriber implements EventSubscriberInterface
 {
@@ -34,21 +34,18 @@ class UserEventSubscriber implements EventSubscriberInterface
      * @var TokenStorage
      */
     private $tokenStorage;
-    /**
-     * @var AuthorizationChecker
-     */
-    private $authorizationChecker;
 
     public function __construct(
         RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        AuthorizationCheckerInterface $authorizationChecker
+        TokenStorageInterface $tokenStorage
     ) {
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->authorizationChecker = $authorizationChecker;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -56,7 +53,7 @@ class UserEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): void
     {
         $token = $this->tokenStorage->getToken();
         if (!$token || !$token->getUser() instanceof User) {

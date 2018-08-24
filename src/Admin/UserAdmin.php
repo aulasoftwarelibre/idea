@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -21,6 +23,9 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UserAdmin extends BaseUserAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
@@ -62,8 +67,7 @@ class UserAdmin extends BaseUserAdmin
                     ->add('degree')
                     ->add('year')
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 
     /**
@@ -79,8 +83,7 @@ class UserAdmin extends BaseUserAdmin
                     'show' => [],
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -91,8 +94,7 @@ class UserAdmin extends BaseUserAdmin
         parent::configureDatagridFilters($filterMapper);
 
         $filterMapper
-            ->remove('username')
-        ;
+            ->remove('username');
 
         $filterMapper
             ->add('username', null, [
@@ -106,8 +108,7 @@ class UserAdmin extends BaseUserAdmin
             ])
             ->add('nic', null, [
                 'show_filter' => true,
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -135,7 +136,6 @@ class UserAdmin extends BaseUserAdmin
                 ->add('participations', null, [
                     'template' => '/backend/User/show_participation.html.twig',
                 ])
-            ->end()
-        ;
+            ->end();
     }
 }

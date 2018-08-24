@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,13 +25,19 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class IdeaAdmin extends AbstractAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
 
-    protected function configureFormFields(FormMapper $form)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('title', null, [
@@ -57,11 +65,13 @@ class IdeaAdmin extends AbstractAdmin
             ->add('votes', SonataVoteType::class, [
                 'multiple' => true,
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 
-    protected function configureListFields(ListMapper $list)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('title', null, [
@@ -78,11 +88,13 @@ class IdeaAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('title', null, [
@@ -90,11 +102,13 @@ class IdeaAdmin extends AbstractAdmin
             ->add('owner', null, [
             ])
             ->add('group', null, [
-            ])
-        ;
+            ]);
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->add('title', null, [
@@ -115,7 +129,6 @@ class IdeaAdmin extends AbstractAdmin
             ->add('createdAt', null, [
             ])
             ->add('updatedAt', null, [
-            ])
-        ;
+            ]);
     }
 }

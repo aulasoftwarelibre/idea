@@ -15,13 +15,3 @@ services:
         tags:
         - { name: 'knp_menu.menu_builder', method: 'sidebarMenu', alias: 'sidebarMenu'}
         - { name: 'knp_menu.menu_builder', method: 'mainMenu', alias: 'mainMenu'}
-
-#    App\Menu\SemanticMenuRenderer:
-#        arguments:
-#        - '@knp_menu.matcher'
-#        - '%knp_menu.renderer.list.options%'
-#        - '%kernel.charset%'
-#        public: true
-#        tags:
-#        - { name: 'knp_menu.renderer', alias: 'semantic'}
-#

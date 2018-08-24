@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,9 +17,6 @@ abstract class ProcessTelegramChatCommand
 {
     /**
      * ProcessTelegramChat constructor.
-     *
-     * @param int $chatId
-     * @param int $messageId
      */
     public function __construct(int $chatId, int $messageId)
     {

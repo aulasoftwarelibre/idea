@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -17,34 +19,39 @@ use App\Repository\IdeaRepository;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Events;
 use Psr\Log\LoggerInterface;
+use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class VotersNotifySubscriber implements EventSubscriberInterface
+final class VotersNotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @var \Swift_Mailer
      */
     private $mailer;
+
     /**
      * @var EngineInterface
      */
     private $engine;
+
     /**
      * @var IdeaRepository
      */
     private $ideaRepository;
+
     /**
      * @var LoggerInterface
      */
     private $logger;
+
     /**
      * @var string
      */
     private $mailFrom;
 
     public function __construct(
-        \Swift_Mailer $mailer,
+        Swift_Mailer $mailer,
         EngineInterface $engine,
         IdeaRepository $ideaRepository,
         LoggerInterface $logger,
@@ -57,6 +64,9 @@ class VotersNotifySubscriber implements EventSubscriberInterface
         $this->mailFrom = $mailFrom;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -64,7 +74,7 @@ class VotersNotifySubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function commentWasDone(CommentEvent $event)
+    public function commentWasDone(CommentEvent $event): void
     {
         $comment = $event->getComment();
         if ($comment->getParent()) {
@@ -90,12 +100,12 @@ class VotersNotifySubscriber implements EventSubscriberInterface
         }
 
         $toUsers = $idea->getVotes()->map(function (Vote $vote) {
-            return $vote->getUser()->getUsername().'@uco.es';
+            return $vote->getUser()->getUsername() . '@uco.es';
         })->toArray();
 
-        $this->logger->debug('[MAIL TO] Destinatarios: '.implode(', ', $toUsers));
+        $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
 
-        $message = (new \Swift_Message('[AulaSL] Comentario de organización'))
+        $message = (new Swift_Message('[AulaSL] Comentario de organización'))
             ->setFrom($this->mailFrom)
             ->setTo($this->mailFrom)
             ->setBcc($toUsers)
@@ -109,6 +119,6 @@ class VotersNotifySubscriber implements EventSubscriberInterface
 
         $count = $this->mailer->send($message);
 
-        $this->logger->debug('[MAIL TO] Recibidos por '.$count);
+        $this->logger->debug('[MAIL TO] Recibidos por ' . $count);
     }
 }

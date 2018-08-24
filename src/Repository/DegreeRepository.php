@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class DegreeRepository extends CeoRepository
+use App\Entity\Degree;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class DegreeRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Degree::class);
+    }
+
+    public function add(Degree $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(Degree $user): void
+    {
+        $this->_em->remove($user);
+    }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,8 +17,14 @@ use App\Entity\Group;
 
 class GetIdeasByGroupQuery
 {
+    /**
+     * @var int
+     */
     private $page;
 
+    /**
+     * @var Group
+     */
     private $group;
 
     public function __construct(int $page, Group $group)
@@ -36,7 +44,7 @@ class GetIdeasByGroupQuery
     /**
      * @param int $page
      */
-    public function setPage(int $page)
+    public function setPage(int $page): void
     {
         $this->page = $page;
     }
@@ -52,7 +60,7 @@ class GetIdeasByGroupQuery
     /**
      * @param mixed $group
      */
-    public function setGroup($group)
+    public function setGroup($group): void
     {
         $this->group = $group;
     }

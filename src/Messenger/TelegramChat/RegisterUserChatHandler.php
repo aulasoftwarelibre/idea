@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -14,7 +16,6 @@ namespace App\Messenger\TelegramChat;
 use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
 use App\Repository\UserRepository;
-use App\Services\Telegram\TelegramService;
 
 class RegisterUserChatHandler
 {
@@ -23,25 +24,19 @@ class RegisterUserChatHandler
      */
     private $telegramChatRepository;
     /**
-     * @var TelegramService
-     */
-    private $telegram;
-    /**
      * @var UserRepository
      */
     private $userRepository;
 
     public function __construct(
         TelegramChatRepository $telegramChatRepository,
-        UserRepository $userRepository,
-        TelegramService $telegram
+        UserRepository $userRepository
     ) {
         $this->telegramChatRepository = $telegramChatRepository;
-        $this->telegram = $telegram;
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(RegisterUserChatCommand $command)
+    public function __invoke(RegisterUserChatCommand $command): ?TelegramChat
     {
         $message = $command->getMessage();
         $token = $command->getToken();
@@ -58,7 +53,7 @@ class RegisterUserChatHandler
 
         $telegramChat = $this->telegramChatRepository->find($chat->getId());
         if (!$telegramChat) {
-            $telegramChat = new TelegramChat($chat->getId(), $chat->getType());
+            $telegramChat = new TelegramChat((string) $chat->getId(), $chat->getType());
         }
 
         $telegramChat->setUsername($chat->getUsername());

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -21,7 +23,10 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TelegramChatAdmin extends AbstractAdmin
 {
-    protected function configureListFields(ListMapper $list)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('id', null, [
@@ -44,11 +49,13 @@ class TelegramChatAdmin extends AbstractAdmin
                 'actions' => [
                     'show' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id')
@@ -61,11 +68,13 @@ class TelegramChatAdmin extends AbstractAdmin
                 ],
             ])
             ->add('title')
-            ->add('active')
-        ;
+            ->add('active');
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->add('id')
@@ -74,11 +83,13 @@ class TelegramChatAdmin extends AbstractAdmin
             ])
             ->add('title')
             ->add('username')
-            ->add('active')
-        ;
+            ->add('active');
     }
 
-    protected function configureRoutes(RouteCollection $collection)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureRoutes(RouteCollection $collection): void
     {
         $collection->remove('edit');
         $collection->remove('create');

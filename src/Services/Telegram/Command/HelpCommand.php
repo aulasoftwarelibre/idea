@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,16 +17,25 @@ use Telegram\Bot\Commands\Command;
 
 class HelpCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'help';
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Muestra la ayuda.';
 
-    public function handle($arguments)
+    /**
+     * {@inheritdoc}
+     */
+    public function handle($arguments): void
     {
         $commands = $this->getTelegram()->getCommands();
 
         $response = '';
         foreach ($commands as $name => $command) {
-            $response .= sprintf('/%s - %s'.PHP_EOL, $name, $command->getDescription());
+            $response .= sprintf('/%s - %s' . PHP_EOL, $name, $command->getDescription());
         }
 
         $this->replyWithMessage(['text' => $response]);

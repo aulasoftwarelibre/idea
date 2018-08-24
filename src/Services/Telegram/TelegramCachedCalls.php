@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,6 +15,7 @@ namespace App\Services\Telegram;
 
 use Psr\Cache\CacheItemPoolInterface;
 use Telegram\Bot\Api as Telegram;
+use Telegram\Bot\Objects\User;
 
 class TelegramCachedCalls
 {
@@ -31,7 +34,7 @@ class TelegramCachedCalls
         $this->cache = $cache;
     }
 
-    public function getMe(): \Telegram\Bot\Objects\User
+    public function getMe(): User
     {
         $key = 'telegram_get_me';
         $cachedMe = $this->cache->getItem($key);

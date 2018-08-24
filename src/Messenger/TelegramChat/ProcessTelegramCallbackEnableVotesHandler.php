@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,13 +18,13 @@ use App\Messenger\TelegramChat\Abstracts\ProcessTelegramChat;
 
 class ProcessTelegramCallbackEnableVotesHandler extends ProcessTelegramChat
 {
-    public function __invoke(ProcessTelegramCallbackEnableVotesCommand $command)
+    public function __invoke(ProcessTelegramCallbackEnableVotesCommand $command): void
     {
         $chatId = (string) $command->getChatId();
 
         $telegramChat = $this->repository->find($chatId);
         if (!$telegramChat instanceof TelegramChat) {
-            return null;
+            return;
         }
 
         $telegramChat->addNotification(TelegramChat::NOTIFY_VOTES);

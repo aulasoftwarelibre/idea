@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -21,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Participation
 {
-    const ATTENDEE = 'attendee';
-    const PRESENTER = 'presenter';
-    const ORGANIZER = 'organizer';
+    public const ATTENDEE = 'attendee';
+    public const PRESENTER = 'presenter';
+    public const ORGANIZER = 'organizer';
 
     /**
      * @var int
@@ -144,8 +146,6 @@ class Participation
     }
 
     /**
-     * @param string $role
-     *
      * @return Participation
      */
     public function setRole(string $role): self
@@ -164,8 +164,6 @@ class Participation
     }
 
     /**
-     * @param bool $isReported
-     *
      * @return Participation
      */
     public function setIsReported(bool $isReported): self
@@ -184,8 +182,6 @@ class Participation
     }
 
     /**
-     * @param User $user
-     *
      * @return Participation
      */
     public function setUser(User $user): self
@@ -204,8 +200,6 @@ class Participation
     }
 
     /**
-     * @param Activity $activity
-     *
      * @return Participation
      */
     public function setActivity(Activity $activity): self

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -147,8 +149,6 @@ class Activity
     }
 
     /**
-     * @param string $title
-     *
      * @return Activity
      */
     public function setTitle(string $title): self
@@ -167,8 +167,6 @@ class Activity
     }
 
     /**
-     * @param \DateTime $occurredOn
-     *
      * @return Activity
      */
     public function setOccurredOn(\DateTime $occurredOn): self
@@ -187,8 +185,6 @@ class Activity
     }
 
     /**
-     * @param int $duration
-     *
      * @return Activity
      */
     public function setDuration(int $duration): self
@@ -207,8 +203,6 @@ class Activity
     }
 
     /**
-     * @param Participation $participant
-     *
      * @return Activity
      */
     public function addParticipation(Participation $participant): self
@@ -222,7 +216,7 @@ class Activity
     /**
      * @param Participation $participant
      */
-    public function removeParticipation(Participation $participant)
+    public function removeParticipation(Participation $participant): void
     {
         $this->participations->removeElement($participant);
     }
@@ -236,8 +230,6 @@ class Activity
     }
 
     /**
-     * @param string $academicYear
-     *
      * @return Activity
      */
     public function setAcademicYear(string $academicYear): self

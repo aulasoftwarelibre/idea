@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -22,7 +24,10 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 
 class ActivityAdmin extends AbstractAdmin
 {
-    protected function configureFormFields(FormMapper $form)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('title', null, [
@@ -33,11 +38,13 @@ class ActivityAdmin extends AbstractAdmin
                 'format' => 'd/M/y',
             ])
             ->add('duration', null, [
-            ])
-        ;
+            ]);
     }
 
-    protected function configureListFields(ListMapper $list)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('title', null, [
@@ -53,20 +60,24 @@ class ActivityAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('title', null, [
                 'show_filter' => true,
-            ])
-        ;
+            ]);
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->with('Activities')
@@ -86,17 +97,19 @@ class ActivityAdmin extends AbstractAdmin
                 ->add('participations', null, [
                     'template' => '/backend/Activity/show_participation.html.twig',
                 ])
-            ->end()
-
-        ;
+            ->end();
     }
 
-    protected function configureSideMenu(MenuItemInterface $menu, $action, AdminInterface $childAdmin = null)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
     {
-        if (!$childAdmin && !in_array($action, ['edit', 'show'], true)) {
+        if (!$childAdmin && !\in_array($action, ['edit', 'show'], true)) {
             return;
         }
 
+        /** @var AdminInterface $admin */
         $admin = $this->isChild() ? $this->getParent() : $this;
         $id = $admin->getRequest()->get('id');
 

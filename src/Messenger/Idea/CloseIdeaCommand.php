@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -26,9 +28,6 @@ final class CloseIdeaCommand
 
     /**
      * CloseIdeaCommand constructor.
-     *
-     * @param Idea $idea
-     * @param bool $closed
      */
     public function __construct(Idea $idea, bool $closed = true)
     {

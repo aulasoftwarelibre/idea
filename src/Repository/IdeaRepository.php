@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,10 +15,31 @@ namespace App\Repository;
 
 use App\Entity\Group;
 use App\Entity\Idea;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
+use Pagerfanta\Adapter\DoctrineORMAdapter;
 use Pagerfanta\Pagerfanta;
 
-class IdeaRepository extends CeoRepository
+class IdeaRepository extends ServiceEntityRepository
 {
+    public const NUM_ITEMS = 5;
+
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Idea::class);
+    }
+
+    public function add(Idea $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(Idea $user): void
+    {
+        $this->_em->remove($user);
+    }
+
     /**
      * @param int $page
      *
@@ -48,7 +71,8 @@ class IdeaRepository extends CeoRepository
     public function findByGroup(Group $group, int $page = 1): Pagerfanta
     {
         $query = $this->getEntityManager()
-            ->createQuery('
+            ->createQuery(
+                '
                 SELECT i, g, o
                 FROM App:Idea i
                 LEFT JOIN i.group g
@@ -60,7 +84,7 @@ class IdeaRepository extends CeoRepository
         return $this->createPaginator($query, $page);
     }
 
-    public function findFilteredByVotes()
+    public function findFilteredByVotes(): array
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -75,5 +99,20 @@ class IdeaRepository extends CeoRepository
             ->setParameter('status', Idea::STATE_PROPOSED)
             ->setMaxResults(5)
             ->execute();
+    }
+
+    /**
+     * @param Query $query
+     * @param int   $page
+     *
+     * @return Pagerfanta
+     */
+    protected function createPaginator(Query $query, int $page): Pagerfanta
+    {
+        $paginator = new Pagerfanta(new DoctrineORMAdapter($query, false));
+        $paginator->setMaxPerPage(self::NUM_ITEMS);
+        $paginator->setCurrentPage($page);
+
+        return $paginator;
     }
 }

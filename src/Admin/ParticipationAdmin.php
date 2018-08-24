@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -20,9 +22,15 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ParticipationAdmin extends AbstractAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $parentAssociationMapping = 'activity';
 
-    protected function configureFormFields(FormMapper $form)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('user', ModelAutocompleteType::class, [
@@ -32,11 +40,13 @@ class ParticipationAdmin extends AbstractAdmin
                 'choices' => Participation::getRoles(),
             ])
             ->add('isReported', null, [
-            ])
-        ;
+            ]);
     }
 
-    protected function configureListFields(ListMapper $list)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->add('user')
@@ -50,8 +60,7 @@ class ParticipationAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
     /**
@@ -64,6 +73,9 @@ class ParticipationAdmin extends AbstractAdmin
             : 'Participante'; // shown in the breadcrumb on the create view
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getExportFields()
     {
         return [

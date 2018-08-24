@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,12 +15,15 @@ namespace App\Messenger\TelegramChat;
 
 class GenerateUserTelegramTokenCommand
 {
+    /**
+     * @var string
+     */
     private $userId;
 
     /**
      * GenerateUserTelegramTokenCommand constructor.
      */
-    public function __construct($userId)
+    public function __construct(string $userId)
     {
         $this->userId = $userId;
     }
@@ -26,7 +31,7 @@ class GenerateUserTelegramTokenCommand
     /**
      * @return mixed
      */
-    public function getUserId()
+    public function getUserId(): string
     {
         return $this->userId;
     }

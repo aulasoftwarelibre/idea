@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -71,7 +73,7 @@ class IdeaController extends Controller
      * @Method({"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request): Response
     {
         $form = $this->createForm(IdeaType::class, new Idea());
         $form->handleRequest($request);
@@ -88,7 +90,8 @@ class IdeaController extends Controller
 
             $this->addFlash('positive', 'Idea creada con éxito');
 
-            $this->eventDispatcher->dispatch(IdeaWasCreatedEvent::class,
+            $this->eventDispatcher->dispatch(
+                IdeaWasCreatedEvent::class,
                 new IdeaWasCreatedEvent(
                     $idea
                 )
@@ -107,7 +110,7 @@ class IdeaController extends Controller
      * @Method({"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', idea)")
      */
-    public function editAction(Idea $idea, Request $request)
+    public function editAction(Idea $idea, Request $request): Response
     {
         $form = $this->createForm(IdeaType::class, $idea);
         $form->handleRequest($request);
@@ -138,7 +141,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function joinAction(Idea $idea, Request $request)
+    public function joinAction(Idea $idea, Request $request): Response
     {
         try {
             $this->bus->dispatch(
@@ -150,7 +153,8 @@ class IdeaController extends Controller
 
             $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
 
-            $this->eventDispatcher->dispatch(IdeaWasVotedEvent::class,
+            $this->eventDispatcher->dispatch(
+                IdeaWasVotedEvent::class,
                 new IdeaWasVotedEvent(
                     $idea,
                     $this->getUser()
@@ -168,7 +172,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function leaveAction(Idea $idea, Request $request)
+    public function leaveAction(Idea $idea, Request $request): Response
     {
         $this->bus->dispatch(
             new RemoveVoteCommand(
@@ -186,7 +190,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function openAction(Idea $idea, Request $request)
+    public function openAction(Idea $idea, Request $request): Response
     {
         $this->bus->dispatch(
             new CloseIdeaCommand(
@@ -204,7 +208,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function closeAction(Idea $idea, Request $request)
+    public function closeAction(Idea $idea, Request $request): Response
     {
         $this->bus->dispatch(
             new CloseIdeaCommand(
@@ -222,7 +226,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function approveAction(Idea $idea, Request $request)
+    public function approveAction(Idea $idea, Request $request): Response
     {
         $this->bus->dispatch(
             new ApproveIdeaCommand(
@@ -231,7 +235,8 @@ class IdeaController extends Controller
         );
         $this->addFlash('positive', 'La idea se ha aprobado correctamente.');
 
-        $this->get('event_dispatcher')->dispatch(IdeaWasApprovedEvent::class,
+        $this->get('event_dispatcher')->dispatch(
+            IdeaWasApprovedEvent::class,
             new IdeaWasApprovedEvent(
                 $idea
             )
@@ -245,7 +250,7 @@ class IdeaController extends Controller
      * @Method({"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
-    public function rejectAction(Idea $idea, Request $request)
+    public function rejectAction(Idea $idea, Request $request): Response
     {
         $this->bus->dispatch(
             new RejectIdeaCommand(
@@ -260,7 +265,7 @@ class IdeaController extends Controller
     /**
      * @Route("/{slug}", name="idea_show")
      */
-    public function showAction(Idea $idea)
+    public function showAction(Idea $idea): Response
     {
         $title = $idea->getTitle();
         $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
@@ -268,20 +273,17 @@ class IdeaController extends Controller
         $this->seoGeneratorProvider
             ->get('basic')
             ->setTitle($title)
-            ->setDescription($description)
-        ;
+            ->setDescription($description);
 
         $this->seoGeneratorProvider
             ->get('og')
             ->setTitle($title)
-            ->setDescription($description)
-        ;
+            ->setDescription($description);
 
         $this->seoGeneratorProvider
             ->get('twitter')
             ->setTitle($title)
-            ->setDescription($description)
-        ;
+            ->setDescription($description);
 
         return $this->render('frontend/idea/show.html.twig', [
             'complete' => true,
@@ -326,7 +328,7 @@ class IdeaController extends Controller
         ]);
     }
 
-    public function getMoreVotesPendingIdeas(IdeaRepository $ideaRepository)
+    public function getMoreVotesPendingIdeas(IdeaRepository $ideaRepository): Response
     {
         $ideas = $ideaRepository->findFilteredByVotes();
 

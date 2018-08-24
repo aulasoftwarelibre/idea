@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,9 +18,12 @@ use Telegram\Bot\Api;
 
 final class TelegramService extends Api
 {
+    /**
+     * @var MessageBusInterface
+     */
     private $bus;
 
-    public function setMessageBus(MessageBusInterface $bus)
+    public function setMessageBus(MessageBusInterface $bus): void
     {
         $this->bus = $bus;
     }

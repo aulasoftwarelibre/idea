@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -17,6 +19,7 @@ use App\Repository\UserRepository;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
+use RuntimeException;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -37,27 +40,27 @@ class CeoReportCommand extends Command
         $this->userRepository = $userRepository;
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
             ->setName('idea:report')
             ->setDescription('Save Report')
-            ->addArgument('filename', InputArgument::OPTIONAL, 'Nombre del fichero', 'report')
-        ;
+            ->addArgument('filename', InputArgument::OPTIONAL, 'Nombre del fichero', 'report');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
         $filename = $input->getArgument('filename');
         $filename = "var/report/{$filename}.xlsx";
 
-        if (!mkdir('var/report') && !is_dir('var/report')) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', 'var/report'));
-        }
-        if (file_exists($filename)) {
-            unlink($filename);
-        }
+        $this->warmUp($filename);
 
         $report = new Spreadsheet();
         $sheet = $report->getActiveSheet();
@@ -70,15 +73,13 @@ class CeoReportCommand extends Command
 
         /** @var User $user */
         foreach ($users as $user) {
-            if (User::STUDENT !== $user->getCollective()) {
+            if (User::STUDENT !== $user->getCollective() || $user->getParticipations()->isEmpty()
+            ) {
                 continue;
             }
 
-            if ($user->getParticipations()->isEmpty()) {
-                continue;
-            }
-
-            $student = sprintf('%s, %s - %s',
+            $student = sprintf(
+                '%s, %s - %s',
                 $user->getLastname(),
                 $user->getFirstname(),
                 $user->getNic()
@@ -116,5 +117,15 @@ class CeoReportCommand extends Command
         $write->save($filename);
 
         $io->success('Hecho.');
+    }
+
+    protected function warmUp(string $filename): void
+    {
+        if (!mkdir('var/report') && !is_dir('var/report')) {
+            throw new RuntimeException(sprintf('Directory "%s" was not created', 'var/report'));
+        }
+        if (file_exists($filename)) {
+            unlink($filename);
+        }
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class ParticipationRepository extends CeoRepository
+use App\Entity\Participation;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class ParticipationRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Participation::class);
+    }
+
+    public function add(Participation $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(Participation $user): void
+    {
+        $this->_em->remove($user);
+    }
 }

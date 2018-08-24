@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,7 +15,6 @@ namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
-use App\Services\Telegram\TelegramService;
 
 class UnregisterUserChatHandler
 {
@@ -21,18 +22,13 @@ class UnregisterUserChatHandler
      * @var TelegramChatRepository
      */
     private $repository;
-    /**
-     * @var TelegramService
-     */
-    private $telegram;
 
-    public function __construct(TelegramChatRepository $repository, TelegramService $telegram)
+    public function __construct(TelegramChatRepository $repository)
     {
         $this->repository = $repository;
-        $this->telegram = $telegram;
     }
 
-    public function __invoke(UnregisterUserChatCommand $command)
+    public function __invoke(UnregisterUserChatCommand $command): void
     {
         $chatId = $command->getChatId();
 

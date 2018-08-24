@@ -1,0 +1,68 @@
+imports:
+    - { resource: 'vendor/symplify/easy-coding-standard/config/symfony.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/symfony-risky.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/php71.yml' }
+    - { resource: 'vendor/symplify/easy-coding-standard/config/psr12.yml' }
+#    # custom
+#    - { resource: 'vendor/symplify/easy-coding-standard/config/common.yml' }
+#    - { resource: 'vendor/symplify/easy-coding-standard/config/symplify.yml' }
+
+services:
+    # Slevomat
+    SlevomatCodingStandard\Sniffs\Classes\UnusedPrivateElementsSniff: ~
+    SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff:
+        enableEachParameterAndReturnInspection: true
+    SlevomatCodingStandard\Sniffs\Namespaces\ReferenceUsedNamesOnlySniff:
+        allowPartialUses: false
+        allowFullyQualifiedGlobalClasses: true
+        allowFullyQualifiedGlobalFunctions: true
+        allowFullyQualifiedGlobalConstants: true
+
+    # Metrics
+    PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\CyclomaticComplexitySniff:
+        absoluteComplexity: 4
+    PHP_CodeSniffer\Standards\Generic\Sniffs\Metrics\NestingLevelSniff:
+        absoluteNestingLevel: 3
+
+    # PhpCsFixer
+    PhpCsFixer\Fixer\PhpTag\LinebreakAfterOpeningTagFixer: ~
+    PhpCsFixer\Fixer\Alias\MbStrFunctionsFixer: ~
+    PhpCsFixer\Fixer\ClassNotation\NoPhp4ConstructorFixer: ~
+    PhpCsFixer\Fixer\FunctionNotation\NoUnreachableDefaultArgumentValueFixer: ~
+    PhpCsFixer\Fixer\ControlStructure\NoUselessElseFixer: ~
+    PhpCsFixer\Fixer\ReturnNotation\NoUselessReturnFixer: ~
+    PhpCsFixer\Fixer\Import\OrderedImportsFixer: ~
+    PhpCsFixer\Fixer\PhpUnit\PhpUnitStrictFixer: ~
+    PhpCsFixer\Fixer\Phpdoc\PhpdocOrderFixer: ~
+    PhpCsFixer\Fixer\Strict\StrictComparisonFixer: ~
+    PhpCsFixer\Fixer\Strict\StrictParamFixer: ~
+    PhpCsFixer\Fixer\Comment\HeaderCommentFixer:
+        header: |
+            This file is part of the `idea` project.
+
+            (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
+
+            For the full copyright and license information, please view the LICENSE
+            file that was distributed with this source code.
+        separate: 'both'
+
+
+parameters:
+    cache_directory: 'var/cache/ecs_cache'
+    exclude_files:
+        - 'src/Kernel.php'
+        - 'src/Migrations/*'
+
+    exclude_checkers:
+        # from symplify.yml set
+        - 'Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff'
+        - 'Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer'
+        - 'Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff'
+        - 'Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff'
+        - 'Symplify\CodingStandard\Sniffs\Property\DynamicPropertySniff'
+        - 'Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff'
+        - 'Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff'
+
+    skip:
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~
+        SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~

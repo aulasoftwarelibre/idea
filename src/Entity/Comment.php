@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,6 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Comment extends BaseComment implements SignedCommentInterface
 {
     /**
+     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -46,17 +49,17 @@ class Comment extends BaseComment implements SignedCommentInterface
      */
     protected $author;
 
-    public function setAuthor(UserInterface $author)
+    public function setAuthor(UserInterface $author): void
     {
         $this->author = $author;
     }
 
-    public function getAuthor()
+    public function getAuthor(): User
     {
         return $this->author;
     }
 
-    public function getAuthorName()
+    public function getAuthorName(): string
     {
         if (null === $this->getAuthor()) {
             return 'Anonymous';

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -14,7 +16,6 @@ namespace App\Command;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Routing\RouterInterface;
 use Telegram\Bot\Api;
 
 class TelegramHookUnsetCommand extends Command
@@ -23,27 +24,27 @@ class TelegramHookUnsetCommand extends Command
      * @var Api
      */
     private $telegram;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
 
-    public function __construct(Api $telegram, RouterInterface $router)
+    public function __construct(Api $telegram)
     {
         $this->telegram = $telegram;
-        $this->router = $router;
 
         parent::__construct();
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
-            ->setName('idea:telegram:unset')
-        ;
+            ->setName('idea:telegram:unset');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $id = $this->telegram->getMe()->getId();
 

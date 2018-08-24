@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -18,14 +20,19 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CeoDatabaseInitCommand extends ContainerAwareCommand
 {
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
-            ->setName('idea:database:init')
-        ;
+            ->setName('idea:database:init');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $manager = $this->getContainer()->get('doctrine.orm.default_entity_manager');
         $repository = $manager->getRepository(Degree::class);
@@ -53,7 +60,10 @@ class CeoDatabaseInitCommand extends ContainerAwareCommand
         $manager->flush();
     }
 
-    public static $degrees = <<<EOD
+    /**
+     * @var string
+     */
+    private static $degrees = <<<EOD
 {
  "degrees": [
   {
@@ -192,7 +202,10 @@ class CeoDatabaseInitCommand extends ContainerAwareCommand
 }
 EOD;
 
-    public static $masters = <<<EOD
+    /**
+     * @var string
+     */
+    private static $masters = <<<EOD
 {
  "masters": [
   {

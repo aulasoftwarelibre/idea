@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,7 +15,6 @@ namespace App\EventListener;
 
 use App\Entity\Idea;
 use App\Entity\TelegramChat;
-use App\Entity\User;
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasVotedEvent;
 use App\Messenger\TelegramChat\SendMessageToTelegramUserChatCommand;
@@ -24,16 +25,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class OwnerNotifySubscriber implements EventSubscriberInterface
+final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
      * @var MessageBusInterface
      */
     private $bus;
+
     /**
      * @var EngineInterface
      */
     private $engine;
+
     /**
      * @var IdeaRepository
      */
@@ -49,6 +52,9 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
         $this->ideaRepository = $ideaRepository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function getSubscribedEvents()
     {
         return [
@@ -58,14 +64,11 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function commentWasDone(CommentEvent $event)
+    public function commentWasDone(CommentEvent $event): void
     {
         $comment = $event->getComment();
         $ideaId = $comment->getThread()->getId();
         $commenter = $comment->getAuthorName();
-        if ($commenter instanceof User) {
-            $commenter = $commenter->getUsername();
-        }
 
         $idea = $this->ideaRepository->find($ideaId);
         if (!$idea instanceof Idea) {
@@ -89,14 +92,11 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand(
-                $owner->getTelegramChat()->getId(),
-                $message
-            )
+            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
         );
     }
 
-    public function ideaWasApproved(IdeaWasApprovedEvent $event)
+    public function ideaWasApproved(IdeaWasApprovedEvent $event): void
     {
         $idea = $event->getIdea();
         $owner = $idea->getOwner();
@@ -111,14 +111,11 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand(
-                $owner->getTelegramChat()->getId(),
-                $message
-            )
+            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
         );
     }
 
-    public function ideaWasVoted(IdeaWasVotedEvent $event)
+    public function ideaWasVoted(IdeaWasVotedEvent $event): void
     {
         $idea = $event->getIdea();
         $owner = $idea->getOwner();
@@ -135,10 +132,7 @@ class OwnerNotifySubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand(
-                $owner->getTelegramChat()->getId(),
-                $message
-            )
+            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
         );
     }
 }

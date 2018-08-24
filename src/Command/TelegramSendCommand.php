@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -26,9 +28,6 @@ class TelegramSendCommand extends Command
      */
     private $bus;
 
-    /**
-     * AppTelegramSendCommand constructor.
-     */
     public function __construct(MessageBusInterface $bus)
     {
         $this->bus = $bus;
@@ -36,15 +35,20 @@ class TelegramSendCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
             ->setName('idea:telegram:send')
             ->setDescription('Enviar un mensaje a todos los grupos')
-            ->addArgument('msg', InputArgument::OPTIONAL, 'Argument description')
-        ;
+            ->addArgument('msg', InputArgument::OPTIONAL, 'Argument description');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,6 +18,9 @@ use Telegram\Bot\Api as Telegram;
 
 class SendMessageToTelegramUserChatHandler
 {
+    /**
+     * @var Telegram
+     */
     private $telegram;
     /**
      * @var TelegramChatRepository
@@ -28,7 +33,7 @@ class SendMessageToTelegramUserChatHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(SendMessageToTelegramUserChatCommand $command)
+    public function __invoke(SendMessageToTelegramUserChatCommand $command): void
     {
         $chatId = $command->getChatId();
         $message = $command->getMessage();

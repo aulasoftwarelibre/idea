@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -39,14 +41,19 @@ class TelegramHookSetCommand extends Command
         parent::__construct();
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
             ->setName('idea:telegram:set')
-            ->addOption('certificate', 'c', InputOption::VALUE_OPTIONAL)
-        ;
+            ->addOption('certificate', 'c', InputOption::VALUE_OPTIONAL);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);

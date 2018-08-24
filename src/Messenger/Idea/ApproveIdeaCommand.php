@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -22,8 +24,6 @@ class ApproveIdeaCommand
 
     /**
      * RejectIdeaCommand constructor.
-     *
-     * @param Idea $idea
      */
     public function __construct(Idea $idea)
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -28,6 +30,7 @@ use Telegram\Bot\Api;
 use Telegram\Bot\Objects\CallbackQuery;
 use Telegram\Bot\Objects\Message;
 use Telegram\Bot\Objects\User;
+use function GuzzleHttp\json_encode;
 
 class TelegramController extends Controller
 {
@@ -44,9 +47,6 @@ class TelegramController extends Controller
      */
     private $bus;
 
-    /**
-     * TelegramController constructor.
-     */
     public function __construct(Api $telegram, LoggerInterface $logger, MessageBusInterface $bus)
     {
         $this->logger = $logger;
@@ -56,10 +56,8 @@ class TelegramController extends Controller
 
     /**
      * @Route("/webhook", name="telegram_hook")
-     *
-     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
      */
-    public function hook(Request $request)
+    public function hook(Request $request): Response
     {
         $this->telegram->addCommands([
             StartCommand::class,
@@ -72,58 +70,47 @@ class TelegramController extends Controller
         $update = $this->telegram->getWebhookUpdate();
 
         if ($update->getCallbackQuery() instanceof CallbackQuery) {
-            $callback = $update->getCallbackQuery();
-            $message = $callback->getMessage();
-            $chat = $message->getChat();
-            $this->logger->debug(\json_encode($callback->jsonSerialize()));
-
-            try {
-                $this->processCallback($callback);
-                $this->replyCallback($callback);
-            } catch (\Exception $e) {
-                $this->telegram->sendMessage([
-                    'chat_id' => $chat->getId(),
-                    'text' => $e->getMessage(),
-                ]);
-            }
-
-            return new Response();
+            return $this->sendCallbackQueryResponse($update);
         }
 
         if ($update->getMessage() instanceof Message) {
             $message = $update->getMessage();
-            $this->logger->debug('Message: '.\GuzzleHttp\json_encode($message->jsonSerialize()));
+            $this->logger->debug('Message: ' . json_encode($message->jsonSerialize()));
 
-            if ($message->getNewChatMember() instanceof User) {
-                $this->bus->dispatch(
-                    new NewChatParticipantCommand(
-                        $message
-                    )
-                );
-
-                return new Response();
-            }
-
-            if ($message->getLeftChatMember() instanceof User) {
-                $this->bus->dispatch(
-                    new LeftChatParticipantCommand(
-                        $message
-                    )
-                );
-
-                return new Response();
-            }
+            return $this->sendMessageResponse($message);
         }
 
-        return new Response();
+        return new Response('', Response::HTTP_NO_CONTENT);
     }
 
-    /**
-     * @param CallbackQuery $callbackQuery
-     *
-     * @return ProcessTelegramChatCommand
-     */
-    private function getCallbackCommand(CallbackQuery $callbackQuery)
+    private function sendCallbackQueryResponse(CallbackQuery $update): Response
+    {
+        $callback = $update->getCallbackQuery();
+        $message = $callback->getMessage();
+        $chat = $message->getChat();
+        $this->logger->debug(\json_encode($callback->jsonSerialize()));
+
+        try {
+            $this->processCallback($callback);
+            $this->replyCallback($callback);
+        } catch (\Throwable $e) {
+            $this->telegram->sendMessage([
+                'chat_id' => $chat->getId(),
+                'text' => $e->getMessage(),
+            ]);
+        }
+
+        return new Response('', Response::HTTP_NO_CONTENT);
+    }
+
+    private function processCallback(CallbackQuery $callback): void
+    {
+        $this->bus->dispatch(
+            $this->getCallbackCommand($callback)
+        );
+    }
+
+    private function getCallbackCommand(CallbackQuery $callbackQuery): ProcessTelegramChatCommand
     {
         $data = $callbackQuery->getData();
         $class = "\\App\\Command\\ProcessTelegramCallback{$data}Command";
@@ -138,25 +125,29 @@ class TelegramController extends Controller
         );
     }
 
-    /**
-     * @param CallbackQuery $callback
-     */
-    private function processCallback(CallbackQuery $callback): void
-    {
-        $this->bus->dispatch(
-            $this->getCallbackCommand($callback)
-        );
-    }
-
-    /**
-     * @param CallbackQuery $callback
-     *
-     * @throws \Telegram\Bot\Exceptions\TelegramSDKException
-     */
     private function replyCallback(CallbackQuery $callback): void
     {
         $this->telegram->answerCallbackQuery([
             'callback_query_id' => $callback->getId(),
         ]);
+    }
+
+    private function sendMessageResponse(Message $message): Response
+    {
+        if ($message->getNewChatMember() instanceof User) {
+            $this->bus->dispatch(
+                new NewChatParticipantCommand(
+                    $message
+                )
+            );
+        } elseif ($message->getLeftChatMember() instanceof User) {
+            $this->bus->dispatch(
+                new LeftChatParticipantCommand(
+                    $message
+                )
+            );
+        }
+
+        return new Response('', Response::HTTP_NO_CONTENT);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,13 +18,13 @@ use App\Messenger\TelegramChat\Abstracts\ProcessTelegramChat;
 
 class ProcessTelegramCallbackDisableCommentsHandler extends ProcessTelegramChat
 {
-    public function __invoke(ProcessTelegramCallbackDisableCommentsCommand $command)
+    public function __invoke(ProcessTelegramCallbackDisableCommentsCommand $command): void
     {
         $chatId = $command->getChatId();
 
         $telegramChat = $this->repository->find($chatId);
         if (!$telegramChat instanceof TelegramChat) {
-            return null;
+            return;
         }
 
         $telegramChat->removeNotification(TelegramChat::NOTIFY_COMMENTS);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,15 +25,13 @@ class ApproveIdeaHandler
 
     /**
      * ApproveIdeaHandler constructor.
-     *
-     * @param IdeaRepository $repository
      */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(ApproveIdeaCommand $command)
+    public function __invoke(ApproveIdeaCommand $command): void
     {
         $idea = $command->getIdea();
 

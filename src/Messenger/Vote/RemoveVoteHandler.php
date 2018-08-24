@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,15 +25,13 @@ class RemoveVoteHandler
 
     /**
      * RemoveVoteHandler constructor.
-     *
-     * @param VoteRepository $repository
      */
     public function __construct(VoteRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(RemoveVoteCommand $command)
+    public function __invoke(RemoveVoteCommand $command): void
     {
         $idea = $command->getIdea();
         $owner = $idea->getOwner();

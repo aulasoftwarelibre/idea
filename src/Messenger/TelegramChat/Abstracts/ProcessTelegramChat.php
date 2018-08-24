@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -92,7 +94,7 @@ abstract class ProcessTelegramChat
         ]);
     }
 
-    private function createButton(string $text, bool $status)
+    private function createButton(string $text, bool $status): array
     {
         $response = $status ? "Disable ${text}" : "Enable ${text}";
 

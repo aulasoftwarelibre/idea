@@ -15,32 +15,27 @@ namespace App\Security\Voter;
 
 use App\Entity\Idea;
 use App\Entity\User;
-use App\Messenger\Idea\CloseIdeaCommand;
-use App\Messenger\Idea\UpdateIdeaCommand;
+use App\Entity\Vote;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
-class EditIdeaCommandVoter extends Voter
+class ShowIdeaVoter extends Voter
 {
     /**
      * @var string
      */
-    public const HANDLE = 'handle';
+    public const SHOW = 'SHOW';
 
     /**
      * {@inheritdoc}
      */
     protected function supports($attribute, $subject)
     {
-        if (static::HANDLE !== $attribute) {
+        if (self::SHOW !== $attribute) {
             return false;
         }
 
-        if ($subject instanceof CloseIdeaCommand) {
-            return true;
-        }
-
-        if ($subject instanceof UpdateIdeaCommand) {
+        if ($subject instanceof Idea) {
             return true;
         }
 
@@ -52,17 +47,16 @@ class EditIdeaCommandVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
+        /** @var User $user */
         $user = $token->getUser();
 
         if (!$user instanceof User) {
             return false;
         }
 
-        /** @var Idea $idea */
-        $idea = $subject->getIdea();
-
-        return $user->equalsTo($idea->getOwner())
-            || $user->hasRole('ROLE_ADMIN')
-            ;
+        return $user->hasRole('ROLE_ADMIN')
+            || $subject->getVotes()->exists(function (Vote $vote) use ($user) {
+                return $vote->getUser()->equalsTo($user);
+            });
     }
 }

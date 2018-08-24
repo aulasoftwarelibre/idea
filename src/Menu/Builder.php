@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,6 +15,7 @@ namespace App\Menu;
 
 use App\Repository\GroupRepository;
 use Knp\Menu\FactoryInterface;
+use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -41,7 +44,7 @@ class Builder
         $this->groupRepository = $groupRepository;
     }
 
-    public function mainMenu(array $options)
+    public function mainMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
 
@@ -61,7 +64,7 @@ class Builder
         return $menu;
     }
 
-    public function sidebarMenu(array $options)
+    public function sidebarMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
 

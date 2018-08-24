@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -28,6 +30,9 @@ class ArrayToVoteTransform implements DataTransformerInterface
         $this->repository = $repository;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function transform($votes)
     {
         $users = [];
@@ -41,6 +46,9 @@ class ArrayToVoteTransform implements DataTransformerInterface
         return $users;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function reverseTransform($users)
     {
         $votes = new ArrayCollection();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,7 +17,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
-use Symfony\Component\Routing\RouterInterface;
 use Telegram\Bot\Api;
 use Telegram\Bot\TelegramRequest;
 
@@ -25,27 +26,27 @@ class TelegramHookInfoCommand extends Command
      * @var Api
      */
     private $telegram;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
 
-    public function __construct(Api $telegram, RouterInterface $router)
+    public function __construct(Api $telegram)
     {
         $this->telegram = $telegram;
-        $this->router = $router;
 
         parent::__construct();
     }
 
-    protected function configure()
+    /**
+     * {@inheritdoc}
+     */
+    protected function configure(): void
     {
         $this
-            ->setName('idea:telegram:info')
-        ;
+            ->setName('idea:telegram:info');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    /**
+     * {@inheritdoc}
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
 
@@ -56,7 +57,7 @@ class TelegramHookInfoCommand extends Command
         $io->writeln("El webhook del bot es: {$this->getWebhookInfo()}");
     }
 
-    protected function getWebhookInfo()
+    protected function getWebhookInfo(): string
     {
         $request = new TelegramRequest(
             $this->telegram->getAccessToken(),

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,10 +18,19 @@ use Telegram\Bot\Commands\Command;
 
 class NotifyCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'notify';
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Informa de las notificaciones activas';
 
-    public function handle($arguments)
+    /**
+     * {@inheritdoc}
+     */
+    public function handle($arguments): void
     {
         $message = $this->getUpdate()->getMessage();
 
@@ -29,7 +40,7 @@ class NotifyCommand extends Command
                     (string) $message->getChat()->getId()
                 )
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             $this->replyWithMessage([
                 'text' => $e->getMessage(),
             ]);

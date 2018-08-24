@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -31,14 +33,14 @@ class LeftChatParticipantHandler
         $this->telegram = $telegram;
     }
 
-    public function __invoke(LeftChatParticipantCommand $command)
+    public function __invoke(LeftChatParticipantCommand $command): void
     {
         $message = $command->getMessage();
         $chat = $message->getChat();
         $me = $this->telegram->getMe();
 
         if ($message->getLeftChatParticipant()->getId() !== $me->getId()) {
-            return null;
+            return;
         }
 
         $telegramChat = $this->repository->find($chat->getId());

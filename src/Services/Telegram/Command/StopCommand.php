@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,10 +18,19 @@ use Telegram\Bot\Commands\Command;
 
 class StopCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'stop';
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Borra la conexión con el bot.';
 
-    public function handle($arguments)
+    /**
+     * {@inheritdoc}
+     */
+    public function handle($arguments): void
     {
         $this->replyWithMessage([
             'text' => 'Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.',

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -17,10 +19,19 @@ use Telegram\Bot\Commands\Command;
 
 class StartCommand extends Command
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $name = 'start';
+    /**
+     * {@inheritdoc}
+     */
     protected $description = 'Inicia la interacción con el bot.';
 
-    public function handle($arguments)
+    /**
+     * {@inheritdoc}
+     */
+    public function handle($arguments): void
     {
         if (empty($arguments)) {
             $this->replyWithMessage([

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -33,10 +35,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 class User extends BaseUser implements EquatableInterface
 {
-    const STUDENT = 'student';
-    const STAFF = 'staff';
-    const TEACHER = 'teacher';
-    const EXTERNAL = 'external';
+    public const STUDENT = 'student';
+    public const STAFF = 'staff';
+    public const TEACHER = 'teacher';
+    public const EXTERNAL = 'external';
 
     /**
      * @var int
@@ -136,6 +138,8 @@ class User extends BaseUser implements EquatableInterface
     private $image;
 
     /**
+     * @var Group[]|Collection
+     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Group")
      * @ORM\JoinTable(name="fos_user_user_group",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
@@ -172,10 +176,8 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @param User $user
-     *
-     * @return bool
      */
-    public function equalsTo(self $user)
+    public function equalsTo(self $user): bool
     {
         return $this->getId() === $user->getId();
     }
@@ -183,17 +185,15 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @return string
      */
-    public function getSspId()
+    public function getSspId(): string
     {
         return $this->ssp_id;
     }
 
     /**
-     * @param string $ssp_id
-     *
      * @return User
      */
-    public function setSspId($ssp_id)
+    public function setSspId(string $ssp_id): self
     {
         $this->ssp_id = $ssp_id;
         $this->username = $ssp_id;
@@ -204,17 +204,15 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @return string
      */
-    public function getSspAccessToken()
+    public function getSspAccessToken(): string
     {
         return $this->sspAccessToken;
     }
 
     /**
-     * @param string $sspAccessToken
-     *
      * @return User
      */
-    public function setSspAccessToken($sspAccessToken)
+    public function setSspAccessToken(string $sspAccessToken): self
     {
         $this->sspAccessToken = $sspAccessToken;
 
@@ -230,8 +228,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param TelegramChat|null $telegramChat
-     *
      * @return User
      */
     public function setTelegramChat(?TelegramChat $telegramChat): self
@@ -291,8 +287,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param string|null $collective
-     *
      * @return User
      */
     public function setCollective(?string $collective): self
@@ -311,8 +305,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param Idea $idea
-     *
      * @return User
      */
     public function addIdea(Idea $idea): self
@@ -325,7 +317,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @param Idea $idea
      */
-    public function removeIdea(Idea $idea)
+    public function removeIdea(Idea $idea): void
     {
         $this->ideas->removeElement($idea);
     }
@@ -339,8 +331,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param Vote $vote
-     *
      * @return User
      */
     public function addVote(Vote $vote): self
@@ -354,7 +344,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @param Vote $vote
      */
-    public function removeVote(Vote $vote)
+    public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
     }
@@ -368,8 +358,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param Degree|null $degree
-     *
      * @return User
      */
     public function setDegree(?Degree $degree): self
@@ -388,8 +376,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param string|null $year
-     *
      * @return User
      */
     public function setYear(?string $year): self
@@ -408,7 +394,7 @@ class User extends BaseUser implements EquatableInterface
      *
      * @param File|UploadedFile $image
      */
-    public function setImageFile(File $image = null)
+    public function setImageFile(?File $image = null): void
     {
         $this->imageFile = $image;
 
@@ -428,8 +414,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param EmbeddedFile $image
-     *
      * @return User
      */
     public function setImage(EmbeddedFile $image): self
@@ -456,8 +440,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param string|null $nic
-     *
      * @return User
      */
     public function setNic(?string $nic): self
@@ -476,8 +458,6 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @param Participation $participation
-     *
      * @return User
      */
     public function addParticipation(Participation $participation): self
@@ -491,12 +471,12 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @param Participation $participation
      */
-    public function removeParticipation(Participation $participation)
+    public function removeParticipation(Participation $participation): void
     {
         $this->participations->removeElement($participation);
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         return $user instanceof self
             && $user->getId() === $this->getId();

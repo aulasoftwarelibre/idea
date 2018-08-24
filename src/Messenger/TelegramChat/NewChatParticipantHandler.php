@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -32,7 +34,7 @@ class NewChatParticipantHandler
         $this->telegram = $telegram;
     }
 
-    public function __invoke(NewChatParticipantCommand $command)
+    public function __invoke(NewChatParticipantCommand $command): TelegramChat
     {
         $message = $command->getMessage();
         $chat = $message->getChat();
@@ -45,7 +47,7 @@ class NewChatParticipantHandler
         $telegramChat = $this->repository->find($chat->getId());
 
         if (!$telegramChat) {
-            $telegramChat = new TelegramChat($chat->getId(), $chat->getType());
+            $telegramChat = new TelegramChat((string) $chat->getId(), $chat->getType());
             $telegramChat->setTitle($chat->getTitle());
             $this->repository->add($telegramChat);
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -46,6 +48,9 @@ class Group extends BaseGroup
      */
     private $ideas;
 
+    /**
+     * {@inheritdoc}
+     */
     public function __construct($name, array $roles = [])
     {
         parent::__construct($name, $roles);
@@ -62,8 +67,6 @@ class Group extends BaseGroup
     }
 
     /**
-     * @param Idea $idea
-     *
      * @return Group
      */
     public function addIdea(Idea $idea): self
@@ -76,7 +79,7 @@ class Group extends BaseGroup
     /**
      * @param Idea $idea
      */
-    public function removeIdea(Idea $idea)
+    public function removeIdea(Idea $idea): void
     {
         $this->ideas->removeElement($idea);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -18,6 +20,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $paths = [
         'identifier' => 'sub',
         'nickname' => 'nickname',
@@ -26,7 +31,10 @@ class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
         'profilepicture' => null,
     ];
 
-    protected function configureOptions(OptionsResolver $resolver)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         parent::configureOptions($resolver);
 
@@ -41,6 +49,9 @@ class OAuth2SimpleSAMLphpResourceOwner extends GenericOAuth2ResourceOwner
         ]);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUserInformation(array $accessToken, array $extraParameters = [])
     {
         $jwk_set = JWKFactory::createFromJKU($this->options['jwks_url']);
