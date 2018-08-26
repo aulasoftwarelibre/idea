@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Activity;
+use App\Form\DataMapper\GenericDataMapper;
 use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Admin\AdminInterface;
@@ -24,6 +26,20 @@ use Sonata\CoreBundle\Form\Type\DatePickerType;
 
 class ActivityAdmin extends AbstractAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
+    protected $datagridValues = [
+        '_page' => 1,
+        '_sort_order' => 'DESC',
+        '_sort_by' => 'occurredOn',
+    ];
+
+    public function getNewInstance(): ?Activity
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -39,6 +55,11 @@ class ActivityAdmin extends AbstractAdmin
             ])
             ->add('duration', null, [
             ]);
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(Activity::class));
     }
 
     /**

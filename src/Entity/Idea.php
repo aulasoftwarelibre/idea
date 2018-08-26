@@ -101,7 +101,7 @@ class Idea
     private $owner;
 
     /**
-     * @var Vote[]
+     * @var Vote[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="idea", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $votes;
@@ -140,6 +140,23 @@ class Idea
      */
     private $private;
 
+    /**
+     * Idea constructor.
+     */
+    public function __construct(string $title, string $description, User $owner, Group $group)
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->owner = $owner;
+        $this->group = $group;
+
+        $this->votes = new ArrayCollection();
+        $this->closed = false;
+        $this->private = false;
+        $this->state = static::STATE_PROPOSED;
+        $this->numSeats = self::LIMITLESS;
+    }
+
     public static function getStates(): array
     {
         return [
@@ -150,23 +167,11 @@ class Idea
     }
 
     /**
-     * Idea constructor.
-     */
-    public function __construct()
-    {
-        $this->votes = new ArrayCollection();
-        $this->closed = false;
-        $this->private = false;
-        $this->state = static::STATE_PROPOSED;
-        $this->numSeats = self::LIMITLESS;
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
     {
-        return $this->title ?? '';
+        return $this->title;
     }
 
     /**
@@ -180,7 +185,7 @@ class Idea
     /**
      * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -198,7 +203,7 @@ class Idea
     /**
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
@@ -263,7 +268,7 @@ class Idea
     /**
      * @return string
      */
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -307,7 +312,7 @@ class Idea
     /**
      * @return User
      */
-    public function getOwner(): ?User
+    public function getOwner(): User
     {
         return $this->owner;
     }
@@ -326,7 +331,7 @@ class Idea
     /**
      * @return Group
      */
-    public function getGroup(): ?Group
+    public function getGroup(): Group
     {
         return $this->group;
     }

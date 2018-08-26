@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Participation;
+use App\Form\DataMapper\GenericDataMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -27,6 +28,11 @@ class ParticipationAdmin extends AbstractAdmin
      */
     protected $parentAssociationMapping = 'activity';
 
+    public function getNewInstance(): ?Participation
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -36,11 +42,19 @@ class ParticipationAdmin extends AbstractAdmin
             ->add('user', ModelAutocompleteType::class, [
                 'property' => ['firstname', 'lastname', 'username'],
             ])
+            ->add('activity', null, [
+            ])
             ->add('role', ChoiceType::class, [
                 'choices' => Participation::getRoles(),
             ])
             ->add('isReported', null, [
             ]);
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(Participation::class))
+        ;
     }
 
     /**

@@ -34,13 +34,13 @@ class NewChatParticipantHandler
         $this->telegram = $telegram;
     }
 
-    public function __invoke(NewChatParticipantCommand $command): TelegramChat
+    public function __invoke(NewChatParticipantCommand $command): ?TelegramChat
     {
         $message = $command->getMessage();
         $chat = $message->getChat();
         $me = $this->telegram->getMe();
 
-        if ($message->getNewChatParticipant()->getId() !== $me->getId()) {
+        if ($message->getNewChatMember()->getId() !== $me->getId()) {
             return null;
         }
 

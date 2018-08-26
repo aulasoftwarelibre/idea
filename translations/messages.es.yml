@@ -80,6 +80,7 @@ filter.label_id: Id.
 filter.label_private: Privado
 
 form.label__action: Acción
+form.label_activity: Actividad
 form.label_closed: Cerrado
 form.label_created_at: Fecha creación
 form.label_description: Descripción

@@ -31,6 +31,9 @@ use App\Messenger\Vote\AddVoteCommand;
 use App\Messenger\Vote\RemoveVoteCommand;
 use App\Repository\IdeaRepository;
 use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
+use Leogout\Bundle\SeoBundle\Seo\Basic\BasicSeoGenerator;
+use Leogout\Bundle\SeoBundle\Seo\Og\OgSeoGenerator;
+use Leogout\Bundle\SeoBundle\Seo\Twitter\TwitterSeoGenerator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -75,7 +78,7 @@ class IdeaController extends Controller
      */
     public function newAction(Request $request): Response
     {
-        $form = $this->createForm(IdeaType::class, new Idea());
+        $form = $this->createForm(IdeaType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -270,18 +273,21 @@ class IdeaController extends Controller
         $title = $idea->getTitle();
         $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
 
-        $this->seoGeneratorProvider
-            ->get('basic')
+        /** @var BasicSeoGenerator $basicSeoGenerator */
+        $basicSeoGenerator = $this->seoGeneratorProvider->get('basic');
+        $basicSeoGenerator
             ->setTitle($title)
             ->setDescription($description);
 
-        $this->seoGeneratorProvider
-            ->get('og')
+        /** @var OgSeoGenerator $ogSeoGenerator */
+        $ogSeoGenerator = $this->seoGeneratorProvider->get('og');
+        $ogSeoGenerator
             ->setTitle($title)
             ->setDescription($description);
 
-        $this->seoGeneratorProvider
-            ->get('twitter')
+        /** @var TwitterSeoGenerator $twitterSeoGenerator */
+        $twitterSeoGenerator = $this->seoGeneratorProvider->get('twitter');
+        $twitterSeoGenerator
             ->setTitle($title)
             ->setDescription($description);
 

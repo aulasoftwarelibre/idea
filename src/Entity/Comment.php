@@ -45,23 +45,40 @@ class Comment extends BaseComment implements SignedCommentInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      *
-     * @var User
+     * @var UserInterface|User
      */
     protected $author;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setAuthor(UserInterface $author): void
     {
+        if (!$author instanceof User) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected \'%s\' instance, \'%s\' given.',
+                User::class,
+                \get_class($author)
+            ));
+        }
+
         $this->author = $author;
     }
 
-    public function getAuthor(): User
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthor(): UserInterface
     {
         return $this->author;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getAuthorName(): string
     {
-        if (null === $this->getAuthor()) {
+        if (null === $this->author) {
             return 'Anonymous';
         }
 

@@ -58,7 +58,7 @@ class Activity
     private $academicYear;
 
     /**
-     * @var int Activity duration in hours
+     * @var int
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      * @Assert\Range(min="1")
@@ -73,7 +73,7 @@ class Activity
     private $slug;
 
     /**
-     * @var Participation[]
+     * @var Participation[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="activity", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $participations;
@@ -95,8 +95,12 @@ class Activity
     /**
      * Activity constructor.
      */
-    public function __construct()
+    public function __construct(string $title, \DateTime $occurredOn, string $academicYear, int $duration)
     {
+        $this->title = $title;
+        $this->occurredOn = $occurredOn;
+        $this->academicYear = $academicYear;
+        $this->duration = $duration;
         $this->participations = new ArrayCollection();
     }
 
@@ -143,7 +147,7 @@ class Activity
     /**
      * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
@@ -159,9 +163,9 @@ class Activity
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTime
      */
-    public function getOccurredOn(): ?\DateTime
+    public function getOccurredOn(): \DateTime
     {
         return $this->occurredOn;
     }
@@ -177,7 +181,7 @@ class Activity
     }
 
     /**
-     * @return int|null
+     * @return int
      */
     public function getDuration(): ?int
     {
@@ -222,9 +226,9 @@ class Activity
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAcademicYear(): ?string
+    public function getAcademicYear(): string
     {
         return $this->academicYear;
     }

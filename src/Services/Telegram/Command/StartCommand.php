@@ -61,7 +61,7 @@ class StartCommand extends Command
         $this->replyWithMessage([
             'text' => sprintf(
                 "Enhorabuena te has registrado con el usuario %s.\nEnvía /stop para desconectar",
-                $valid->getUser()->getUsername()
+                $valid->getUsername()
             ),
         ]);
 

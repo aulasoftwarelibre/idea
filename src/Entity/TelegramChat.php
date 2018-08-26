@@ -165,7 +165,10 @@ class TelegramChat
      */
     public function setUser(?User $user): void
     {
-        $user->setTelegramChat($this);
+        if ($user) {
+            $user->setTelegramChat($this);
+        }
+
         $this->user = $user;
     }
 
@@ -226,6 +229,6 @@ class TelegramChat
      */
     public function __toString(): string
     {
-        return $this->getTitle() ?? $this->getUsername();
+        return $this->getTitle() ?? $this->getUsername() ?? '';
     }
 }

@@ -19,7 +19,7 @@ use App\Entity\Idea;
 class UpdateIdeaCommand
 {
     /**
-     * @var int
+     * @var Idea
      */
     private $idea;
     /**

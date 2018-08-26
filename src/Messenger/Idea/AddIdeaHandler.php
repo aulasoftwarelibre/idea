@@ -42,14 +42,8 @@ class AddIdeaHandler
         $vote = new Vote();
         $vote->setUser($user);
 
-        $idea = new Idea();
-        $idea
-            ->setTitle($title)
-            ->setDescription($description)
-            ->setOwner($user)
-            ->setGroup($group)
-            ->addVote($vote)
-        ;
+        $idea = new Idea($title, $description, $user, $group);
+        $idea->addVote($vote);
 
         $this->repository->add($idea);
 

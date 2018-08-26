@@ -29,7 +29,7 @@ final class TelegramService extends Api
     }
 
     /**
-     * @return mixed
+     * @return MessageBusInterface
      */
     public function getMessageBus(): MessageBusInterface
     {

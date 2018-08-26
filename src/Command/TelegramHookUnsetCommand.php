@@ -52,6 +52,6 @@ class TelegramHookUnsetCommand extends Command
 
         $result = $this->telegram->removeWebhook();
 
-        $output->writeln((string) $result->getBody());
+        $output->writeln($result->getBody());
     }
 }

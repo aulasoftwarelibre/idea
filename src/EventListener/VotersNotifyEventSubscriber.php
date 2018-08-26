@@ -13,13 +13,13 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Entity\Comment;
 use App\Entity\Idea;
 use App\Entity\Vote;
 use App\Repository\IdeaRepository;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Events;
 use Psr\Log\LoggerInterface;
-use Swift_Mailer;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Templating\EngineInterface;
 
@@ -51,7 +51,7 @@ final class VotersNotifyEventSubscriber implements EventSubscriberInterface
     private $mailFrom;
 
     public function __construct(
-        Swift_Mailer $mailer,
+        \Swift_Mailer $mailer,
         EngineInterface $engine,
         IdeaRepository $ideaRepository,
         LoggerInterface $logger,
@@ -77,7 +77,9 @@ final class VotersNotifyEventSubscriber implements EventSubscriberInterface
     public function commentWasDone(CommentEvent $event): void
     {
         $comment = $event->getComment();
-        if ($comment->getParent()) {
+        /** @var Comment|null $parent */
+        $parent = $comment->getParent();
+        if ($parent) {
             $this->logger->debug('[MAIL IGNORE] Mensaje enviado como respuesta');
 
             return;
@@ -105,7 +107,7 @@ final class VotersNotifyEventSubscriber implements EventSubscriberInterface
 
         $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
 
-        $message = (new Swift_Message('[AulaSL] Comentario de organización'))
+        $message = (new \Swift_Message('[AulaSL] Comentario de organización'))
             ->setFrom($this->mailFrom)
             ->setTo($this->mailFrom)
             ->setBcc($toUsers)

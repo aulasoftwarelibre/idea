@@ -59,7 +59,6 @@
         "phpstan/phpstan": "^0.10.3",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.1",
-        "phpstan/phpstan-webmozart-assert": "^0.10.0",
         "symfony/debug-pack": "*",
         "symfony/dotenv": "^4.1",
         "symfony/maker-bundle": "^1.0",

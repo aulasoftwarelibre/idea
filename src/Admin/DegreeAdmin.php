@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Degree;
+use App\Form\DataMapper\GenericDataMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -30,6 +32,11 @@ class DegreeAdmin extends AbstractAdmin
         '_sort_by' => 'name',
     ];
 
+    public function getNewInstance(): ?Degree
+    {
+        return null;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -38,6 +45,11 @@ class DegreeAdmin extends AbstractAdmin
         $form
             ->add('name', null, [
             ]);
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(Degree::class));
     }
 
     /**

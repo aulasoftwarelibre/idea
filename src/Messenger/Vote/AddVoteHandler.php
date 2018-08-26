@@ -15,13 +15,12 @@ namespace App\Messenger\Vote;
 
 use App\Entity\Vote;
 use App\Exception\NoMoreSeatsLeftException;
-use App\Repository\IdeaRepository;
 use App\Repository\VoteRepository;
 
 class AddVoteHandler
 {
     /**
-     * @var IdeaRepository
+     * @var VoteRepository
      */
     private $repository;
 

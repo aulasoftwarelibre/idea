@@ -26,9 +26,15 @@ class OAuth2SimpleSAMLphpUserProvider extends FOSUBUserProvider
     public function loadUserByOAuthUserResponse(UserResponseInterface $response)
     {
         $username = $response->getUsername();
-        if (null === $username) {
+        if (empty($username)) {
             throw new AccountNotLinkedException(sprintf('Username is empty.'));
         }
+
+        $email = $response->getEmail();
+        if (empty($email)) {
+            throw new AccountNotLinkedException(sprintf('Email is empty.'));
+        }
+
 
         $user = $this->userManager->findUserBy([$this->getProperty($response) => $username]);
         if ($user) {
@@ -41,7 +47,7 @@ class OAuth2SimpleSAMLphpUserProvider extends FOSUBUserProvider
             ->setUsername($username)
             ->setSspId($username)
             ->setSspAccessToken($response->getAccessToken())
-            ->setEmail($response->getEmail())
+            ->setEmail($email)
             ->setPassword('!')
             ->setEnabled(true);
 

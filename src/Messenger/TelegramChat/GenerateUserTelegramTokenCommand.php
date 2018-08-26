@@ -29,7 +29,7 @@ class GenerateUserTelegramTokenCommand
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUserId(): string
     {

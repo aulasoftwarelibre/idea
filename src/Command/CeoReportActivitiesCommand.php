@@ -110,6 +110,7 @@ class CeoReportActivitiesCommand extends Command
                     && $user->getNic();
             });
 
+        /** @var \ArrayIterator $iterator */
         $iterator = $students->getIterator();
         $iterator->uasort(function (User $first, User $second) {
             return $first->getLastname() <=> $second->getLastname();
@@ -126,7 +127,7 @@ class CeoReportActivitiesCommand extends Command
         $row = 13;
         /** @var User $student */
         foreach ($students as $student) {
-            $sheet->setCellValue("A{$row}", mb_strtoupper($student->getNic()));
+            $sheet->setCellValue("A{$row}", mb_strtoupper($student->getNic() ?? ''));
             $sheet->setCellValue("B{$row}", mb_strtoupper($student->getLastname()));
             $sheet->setCellValue("C{$row}", mb_strtoupper($student->getFirstname()));
             $sheet->setCellValue("D{$row}", 10);

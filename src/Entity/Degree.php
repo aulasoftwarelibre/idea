@@ -44,11 +44,19 @@ class Degree
     private $slug;
 
     /**
-     * @var string
+     * Degree constructor.
+     */
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
      */
     public function __toString(): string
     {
-        return $this->getName() ?? '';
+        return $this->getName();
     }
 
     /**

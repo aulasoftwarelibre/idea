@@ -79,7 +79,7 @@ class TelegramHookSetCommand extends Command
             }
             $result = $this->telegram->setWebhook($data);
 
-            $output->writeln((string) $result->getBody());
+            $output->writeln($result->getBody());
         } catch (TelegramSDKException $exception) {
             $output->writeln($exception->getMessage());
         }

@@ -16,6 +16,15 @@ namespace App\Messenger\TelegramChat\Abstracts;
 abstract class ProcessTelegramChatCommand
 {
     /**
+     * @var int
+     */
+    private $chatId;
+    /**
+     * @var int
+     */
+    private $messageId;
+
+    /**
      * ProcessTelegramChat constructor.
      */
     public function __construct(int $chatId, int $messageId)

@@ -39,7 +39,7 @@ class LeftChatParticipantHandler
         $chat = $message->getChat();
         $me = $this->telegram->getMe();
 
-        if ($message->getLeftChatParticipant()->getId() !== $me->getId()) {
+        if ($message->getLeftChatMember()->getId() !== $me->getId()) {
             return;
         }
 

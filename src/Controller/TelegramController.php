@@ -70,7 +70,7 @@ class TelegramController extends Controller
         $update = $this->telegram->getWebhookUpdate();
 
         if ($update->getCallbackQuery() instanceof CallbackQuery) {
-            return $this->sendCallbackQueryResponse($update);
+            return $this->sendCallbackQueryResponse($update->getCallbackQuery());
         }
 
         if ($update->getMessage() instanceof Message) {
@@ -83,12 +83,11 @@ class TelegramController extends Controller
         return new Response('', Response::HTTP_NO_CONTENT);
     }
 
-    private function sendCallbackQueryResponse(CallbackQuery $update): Response
+    private function sendCallbackQueryResponse(CallbackQuery $callback): Response
     {
-        $callback = $update->getCallbackQuery();
         $message = $callback->getMessage();
         $chat = $message->getChat();
-        $this->logger->debug(\json_encode($callback->jsonSerialize()));
+        $this->logger->debug((string) \json_encode($callback->jsonSerialize()));
 
         try {
             $this->processCallback($callback);

@@ -43,7 +43,7 @@ class Group extends BaseGroup
     private $slug;
 
     /**
-     * @var Idea[]
+     * @var Idea[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $ideas;
@@ -59,7 +59,7 @@ class Group extends BaseGroup
     }
 
     /**
-     * @return Idea[]
+     * @return Idea[]|Collection
      */
     public function getIdeas(): Collection
     {

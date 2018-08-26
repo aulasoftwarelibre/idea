@@ -49,8 +49,7 @@ class CeoDatabaseInitCommand extends ContainerAwareCommand
                 continue;
             }
 
-            $entity = new Degree();
-            $entity->setName($name);
+            $entity = new Degree($name);
 
             $manager->persist($entity);
 

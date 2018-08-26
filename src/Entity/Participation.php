@@ -76,12 +76,11 @@ class Participation
      */
     private $activity;
 
-    /**
-     * Participant constructor.
-     */
-    public function __construct()
+    public function __construct(User $user, Activity $activity, string $role = self::ATTENDEE)
     {
-        $this->role = static::ATTENDEE;
+        $this->role = $role;
+        $this->user = $user;
+        $this->activity = $activity;
         $this->isReported = false;
     }
 
@@ -94,35 +93,39 @@ class Participation
     }
 
     /**
-     * @return string
+     * @return User
      */
-    public function getTitle(): string
+    public function getUser(): User
     {
-        return $this->getActivity()->getTitle();
+        return $this->user;
     }
 
     /**
-     * @return int
+     * @return Participation
      */
-    public function getDuration(): int
+    public function setUser(User $user): self
     {
-        return $this->getActivity()->getDuration();
+        $this->user = $user;
+
+        return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return Activity
      */
-    public function getCreatedAt(): \DateTime
+    public function getActivity(): Activity
     {
-        return $this->createdAt;
+        return $this->activity;
     }
 
     /**
-     * @return \DateTime
+     * @return Participation
      */
-    public function getUpdatedAt(): \DateTime
+    public function setActivity(Activity $activity): self
     {
-        return $this->updatedAt;
+        $this->activity = $activity;
+
+        return $this;
     }
 
     /**
@@ -158,7 +161,7 @@ class Participation
     /**
      * @return bool
      */
-    public function isReported(): bool
+    public function getIsReported(): bool
     {
         return $this->isReported;
     }
@@ -174,38 +177,34 @@ class Participation
     }
 
     /**
-     * @return User|null
+     * @return string
      */
-    public function getUser(): ?User
+    public function getTitle(): string
     {
-        return $this->user;
+        return $this->getActivity()->getTitle();
     }
 
     /**
-     * @return Participation
+     * @return int
      */
-    public function setUser(User $user): self
+    public function getDuration(): ?int
     {
-        $this->user = $user;
-
-        return $this;
+        return $this->getActivity()->getDuration();
     }
 
     /**
-     * @return Activity|null
+     * @return \DateTime
      */
-    public function getActivity(): ?Activity
+    public function getCreatedAt(): \DateTime
     {
-        return $this->activity;
+        return $this->createdAt;
     }
 
     /**
-     * @return Participation
+     * @return \DateTime
      */
-    public function setActivity(Activity $activity): self
+    public function getUpdatedAt(): \DateTime
     {
-        $this->activity = $activity;
-
-        return $this;
+        return $this->updatedAt;
     }
 }

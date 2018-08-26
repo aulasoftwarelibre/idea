@@ -107,25 +107,25 @@ class User extends BaseUser implements EquatableInterface
     private $nic;
 
     /**
-     * @var Participation[]
+     * @var Participation[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $participations;
 
     /**
-     * @var Idea[]
+     * @var Idea[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $ideas;
 
     /**
-     * @var Vote[]
+     * @var Vote[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $votes;
 
     /**
-     * @var File
+     * @var File|UploadedFile|null
      * @Vich\UploadableField(mapping="avatars", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName")
      */
     private $imageFile;
@@ -133,7 +133,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
      *
-     * @var string
+     * @var EmbeddedFile
      */
     private $image;
 
@@ -297,9 +297,9 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return Idea[]
+     * @return Idea[]|Collection
      */
-    public function getIdeas(): array
+    public function getIdeas(): Collection
     {
         return $this->ideas;
     }
@@ -323,9 +323,9 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return Vote[]
+     * @return Vote[]|Collection
      */
-    public function getVotes(): array
+    public function getVotes(): Collection
     {
         return $this->votes;
     }
@@ -392,7 +392,7 @@ class User extends BaseUser implements EquatableInterface
      * must be able to accept an instance of 'File' as the bundle will inject one here
      * during Doctrine hydration.
      *
-     * @param File|UploadedFile $image
+     * @param File|UploadedFile|null $image
      */
     public function setImageFile(?File $image = null): void
     {
@@ -401,7 +401,7 @@ class User extends BaseUser implements EquatableInterface
         if ($image) {
             // It is required that at least one field changes if you are using doctrine
             // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTimeImmutable();
+            $this->updatedAt = new \DateTime();
         }
     }
 

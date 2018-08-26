@@ -92,7 +92,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
+            new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
 
@@ -111,7 +111,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
+            new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
 
@@ -132,7 +132,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
         ]);
 
         $this->bus->dispatch(
-            new SendMessageToTelegramUserChatCommand($owner->getTelegramChat()->getId(), $message)
+            new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
 }

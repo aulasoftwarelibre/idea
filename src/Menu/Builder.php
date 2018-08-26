@@ -16,7 +16,6 @@ namespace App\Menu;
 use App\Repository\GroupRepository;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class Builder
@@ -26,7 +25,7 @@ class Builder
      */
     private $factory;
     /**
-     * @var AuthorizationChecker
+     * @var AuthorizationCheckerInterface
      */
     private $authorizationChecker;
     /**

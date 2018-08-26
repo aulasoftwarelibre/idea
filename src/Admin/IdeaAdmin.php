@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Idea;
+use App\Form\DataMapper\GenericDataMapper;
 use App\Form\Type\SonataVoteType;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
@@ -33,6 +34,11 @@ class IdeaAdmin extends AbstractAdmin
         '_sort_order' => 'DESC',
         '_sort_by' => 'createdAt',
     ];
+
+    public function getNewInstance(): ?Idea
+    {
+        return null;
+    }
 
     /**
      * {@inheritdoc}
@@ -66,6 +72,11 @@ class IdeaAdmin extends AbstractAdmin
                 'multiple' => true,
                 'required' => false,
             ]);
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(Idea::class));
     }
 
     /**
