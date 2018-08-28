@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -18,13 +20,13 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TelegramChat
 {
-    const PRIVATE = 'private';
-    const GROUP = 'group';
-    const SUPERGROUP = 'supergroup';
-    const CHANNEL = 'channel';
+    public const PRIVATE = 'private';
+    public const GROUP = 'group';
+    public const SUPERGROUP = 'supergroup';
+    public const CHANNEL = 'channel';
 
-    const NOTIFY_VOTES = 'notify.votes';
-    const NOTIFY_COMMENTS = 'notify.comments';
+    public const NOTIFY_VOTES = 'notify.votes';
+    public const NOTIFY_COMMENTS = 'notify.comments';
 
     /**
      * @var string
@@ -64,16 +66,14 @@ class TelegramChat
     protected $user;
 
     /**
-     * @var array
+     * @var array|string[]
+     *
      * @ORM\Column(type="json", nullable=true)
      */
     private $notifications;
 
     /**
      * TelegramChat constructor.
-     *
-     * @param string $id
-     * @param string $type
      */
     public function __construct(string $id, string $type)
     {
@@ -107,8 +107,6 @@ class TelegramChat
     }
 
     /**
-     * @param null|string $title
-     *
      * @return TelegramChat
      */
     public function setTitle(?string $title): self
@@ -127,8 +125,6 @@ class TelegramChat
     }
 
     /**
-     * @param null|string $username
-     *
      * @return TelegramChat
      */
     public function setUsername(?string $username): self
@@ -147,8 +143,6 @@ class TelegramChat
     }
 
     /**
-     * @param bool $active
-     *
      * @return TelegramChat
      */
     public function setActive(bool $active): self
@@ -171,7 +165,10 @@ class TelegramChat
      */
     public function setUser(?User $user): void
     {
-        $user->setTelegramChat($this);
+        if ($user) {
+            $user->setTelegramChat($this);
+        }
+
         $this->user = $user;
     }
 
@@ -194,8 +191,6 @@ class TelegramChat
     }
 
     /**
-     * @param string $notification
-     *
      * @return TelegramChat
      */
     public function addNotification(string $notification): self
@@ -207,19 +202,21 @@ class TelegramChat
         return $this;
     }
 
-    public function removeNotification(string $notification)
+    public function removeNotification(string $notification): void
     {
-        $this->notifications = array_filter($this->notifications,
+        $this->notifications = array_filter(
+            $this->notifications,
             function ($item) use ($notification) {
                 return $notification !== $item;
-            })
+            }
+        )
         ;
     }
 
     /**
      * @return array
      */
-    public static function getNotificationsTypes()
+    public static function getNotificationsTypes(): array
     {
         return [
             'Comments' => self::NOTIFY_COMMENTS,
@@ -230,8 +227,8 @@ class TelegramChat
     /**
      * @return string
      */
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getTitle() ?? $this->getUsername();
+        return $this->getTitle() ?? $this->getUsername() ?? '';
     }
 }

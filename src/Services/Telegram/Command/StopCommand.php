@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,26 +13,37 @@
 
 namespace App\Services\Telegram\Command;
 
+use App\Entity\TelegramChat;
 use App\Messenger\TelegramChat\UnregisterUserChatCommand;
-use Telegram\Bot\Commands\Command;
+use BotMan\BotMan\BotMan;
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class StopCommand extends Command
+class StopCommand
 {
-    protected $name = 'stop';
-    protected $description = 'Borra la conexión con el bot.';
+    /**
+     * @var MessageBusInterface
+     */
+    private $bus;
 
-    public function handle($arguments)
+    public function __construct(MessageBusInterface $bus)
     {
-        $this->replyWithMessage([
-            'text' => 'Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.',
-        ]);
+        $this->bus = $bus;
+    }
 
-        $message = $this->getUpdate()->getMessage();
-        $chatId = (string) $message->getChat()->getId();
+    public function __invoke(BotMan $bot): void
+    {
+        $message = Message::fromIncomingMessage($bot->getMessage());
 
-        $this->telegram->getMessageBus()->dispatch(
+        if (TelegramChat::PRIVATE !== $message->getChat()->getType()) {
+            return;
+        }
+
+        $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
+
+        $this->bus->dispatch(
             new UnregisterUserChatCommand(
-                $chatId
+                (string) $message->getChat()->getId()
             )
         );
     }

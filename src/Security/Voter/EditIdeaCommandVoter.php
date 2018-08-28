@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,26 +17,19 @@ use App\Entity\Idea;
 use App\Entity\User;
 use App\Messenger\Idea\CloseIdeaCommand;
 use App\Messenger\Idea\UpdateIdeaCommand;
-use App\Repository\IdeaRepository;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
 class EditIdeaCommandVoter extends Voter
 {
-    const HANDLE = 'handle';
     /**
-     * @var IdeaRepository
+     * @var string
      */
-    private $repository;
+    public const HANDLE = 'handle';
 
     /**
-     * CloseIdeaVoter constructor.
+     * {@inheritdoc}
      */
-    public function __construct(IdeaRepository $repository)
-    {
-        $this->repository = $repository;
-    }
-
     protected function supports($attribute, $subject)
     {
         if (static::HANDLE !== $attribute) {
@@ -52,6 +47,9 @@ class EditIdeaCommandVoter extends Voter
         return false;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();

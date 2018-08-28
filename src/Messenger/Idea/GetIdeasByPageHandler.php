@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,8 +25,6 @@ class GetIdeasByPageHandler
 
     /**
      * GetIdeaPaginatorHandler constructor.
-     *
-     * @param IdeaRepository $repository
      */
     public function __construct(IdeaRepository $repository)
     {

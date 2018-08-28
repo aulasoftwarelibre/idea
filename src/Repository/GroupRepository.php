@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class GroupRepository extends CeoRepository
+use App\Entity\Group;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class GroupRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Group::class);
+    }
+
+    public function add(Group $user): void
+    {
+        $this->_em->persist($user);
+    }
+
+    public function remove(Group $user): void
+    {
+        $this->_em->remove($user);
+    }
 }

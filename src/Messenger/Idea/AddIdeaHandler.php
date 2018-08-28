@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -30,7 +32,7 @@ class AddIdeaHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(AddIdeaCommand $command)
+    public function __invoke(AddIdeaCommand $command): Idea
     {
         $title = $command->getTitle();
         $description = $command->getDescription();
@@ -40,14 +42,8 @@ class AddIdeaHandler
         $vote = new Vote();
         $vote->setUser($user);
 
-        $idea = new Idea();
-        $idea
-            ->setTitle($title)
-            ->setDescription($description)
-            ->setOwner($user)
-            ->setGroup($group)
-            ->addVote($vote)
-        ;
+        $idea = new Idea($title, $description, $user, $group);
+        $idea->addVote($vote);
 
         $this->repository->add($idea);
 

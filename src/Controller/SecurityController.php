@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,7 @@
 
 namespace App\Controller;
 
+use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -19,8 +22,8 @@ class SecurityController extends Controller
     /**
      * @Route("/logout", name="logout")
      */
-    public function logout()
+    public function logout(): void
     {
-        throw new \RuntimeException('La ruta /logout debe estar activa en el cortafuegos.');
+        throw new RuntimeException('La ruta /logout debe estar activa en el cortafuegos.');
     }
 }

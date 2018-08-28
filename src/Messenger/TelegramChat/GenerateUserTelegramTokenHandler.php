@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -30,7 +32,7 @@ class GenerateUserTelegramTokenHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(GenerateUserTelegramTokenCommand $command)
+    public function __invoke(GenerateUserTelegramTokenCommand $command): ?string
     {
         $userId = $command->getUserId();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,13 +15,12 @@ namespace App\Messenger\Vote;
 
 use App\Entity\Vote;
 use App\Exception\NoMoreSeatsLeftException;
-use App\Repository\IdeaRepository;
 use App\Repository\VoteRepository;
 
 class AddVoteHandler
 {
     /**
-     * @var IdeaRepository
+     * @var VoteRepository
      */
     private $repository;
 
@@ -28,7 +29,7 @@ class AddVoteHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(AddVoteCommand $command)
+    public function __invoke(AddVoteCommand $command): void
     {
         $idea = $command->getIdea();
         $user = $command->getUser();

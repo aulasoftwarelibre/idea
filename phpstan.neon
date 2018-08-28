@@ -1,0 +1,18 @@
+includes:
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+
+parameters:
+    reportUnmatchedIgnoredErrors: false
+
+    symfony:
+        container_xml_path: var/cache/dev/srcDevDebugProjectContainer.xml
+
+    ignoreErrors:
+        # Magic calls
+        - '/Call to an undefined method Telegram\\Bot\\Api::/'
+        - '/Parameter #3 $driver of method BotMan\\BotMan\\BotMan::say\(\) expects BotMan\\BotMan\\Interfaces\\DriverInterface|null, string given/'
+
+    excludes_analyse:
+        - '**/Migrations/**.php'
+

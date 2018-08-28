@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -56,7 +58,7 @@ class Activity
     private $academicYear;
 
     /**
-     * @var int Activity duration in hours
+     * @var int
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
      * @Assert\Range(min="1")
@@ -71,7 +73,7 @@ class Activity
     private $slug;
 
     /**
-     * @var Participation[]
+     * @var Participation[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="activity", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $participations;
@@ -93,8 +95,12 @@ class Activity
     /**
      * Activity constructor.
      */
-    public function __construct()
+    public function __construct(string $title, \DateTime $occurredOn, string $academicYear, int $duration)
     {
+        $this->title = $title;
+        $this->occurredOn = $occurredOn;
+        $this->academicYear = $academicYear;
+        $this->duration = $duration;
         $this->participations = new ArrayCollection();
     }
 
@@ -141,14 +147,12 @@ class Activity
     /**
      * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
-     *
      * @return Activity
      */
     public function setTitle(string $title): self
@@ -159,16 +163,14 @@ class Activity
     }
 
     /**
-     * @return \DateTime|null
+     * @return \DateTime
      */
-    public function getOccurredOn(): ?\DateTime
+    public function getOccurredOn(): \DateTime
     {
         return $this->occurredOn;
     }
 
     /**
-     * @param \DateTime $occurredOn
-     *
      * @return Activity
      */
     public function setOccurredOn(\DateTime $occurredOn): self
@@ -179,7 +181,7 @@ class Activity
     }
 
     /**
-     * @return int|null
+     * @return int
      */
     public function getDuration(): ?int
     {
@@ -187,8 +189,6 @@ class Activity
     }
 
     /**
-     * @param int $duration
-     *
      * @return Activity
      */
     public function setDuration(int $duration): self
@@ -207,8 +207,6 @@ class Activity
     }
 
     /**
-     * @param Participation $participant
-     *
      * @return Activity
      */
     public function addParticipation(Participation $participant): self
@@ -222,22 +220,20 @@ class Activity
     /**
      * @param Participation $participant
      */
-    public function removeParticipation(Participation $participant)
+    public function removeParticipation(Participation $participant): void
     {
         $this->participations->removeElement($participant);
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAcademicYear(): ?string
+    public function getAcademicYear(): string
     {
         return $this->academicYear;
     }
 
     /**
-     * @param string $academicYear
-     *
      * @return Activity
      */
     public function setAcademicYear(string $academicYear): self

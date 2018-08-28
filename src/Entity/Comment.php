@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -23,6 +25,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Comment extends BaseComment implements SignedCommentInterface
 {
     /**
+     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -42,23 +45,40 @@ class Comment extends BaseComment implements SignedCommentInterface
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      *
-     * @var User
+     * @var UserInterface|User
      */
     protected $author;
 
-    public function setAuthor(UserInterface $author)
+    /**
+     * {@inheritdoc}
+     */
+    public function setAuthor(UserInterface $author): void
     {
+        if (!$author instanceof User) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected \'%s\' instance, \'%s\' given.',
+                User::class,
+                \get_class($author)
+            ));
+        }
+
         $this->author = $author;
     }
 
-    public function getAuthor()
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthor(): UserInterface
     {
         return $this->author;
     }
 
-    public function getAuthorName()
+    /**
+     * {@inheritdoc}
+     */
+    public function getAuthorName(): string
     {
-        if (null === $this->getAuthor()) {
+        if (null === $this->author) {
             return 'Anonymous';
         }
 

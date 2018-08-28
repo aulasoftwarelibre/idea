@@ -1,0 +1,3 @@
+BotmanBundle:
+    resource: .
+    type: extra

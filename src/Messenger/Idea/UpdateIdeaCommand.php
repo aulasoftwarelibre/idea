@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -17,7 +19,7 @@ use App\Entity\Idea;
 class UpdateIdeaCommand
 {
     /**
-     * @var int
+     * @var Idea
      */
     private $idea;
     /**

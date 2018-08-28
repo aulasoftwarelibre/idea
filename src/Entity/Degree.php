@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -15,7 +17,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
- * @ORM\Entity(repositoryClass="Doctrine\ORM\EntityRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\DegreeRepository")
  * @ORM\Table()
  */
 class Degree
@@ -42,11 +44,19 @@ class Degree
     private $slug;
 
     /**
-     * @var string
+     * Degree constructor.
+     */
+    public function __construct(string $name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * @return string
      */
     public function __toString(): string
     {
-        return $this->getName() ?? '';
+        return $this->getName();
     }
 
     /**
@@ -66,8 +76,6 @@ class Degree
     }
 
     /**
-     * @param string $name
-     *
      * @return Degree
      */
     public function setName(string $name): self

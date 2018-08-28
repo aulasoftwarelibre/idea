@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,7 @@
 
 namespace App\Messenger\Idea;
 
+use App\Entity\Idea;
 use App\Repository\IdeaRepository;
 
 class UpdateIdeaHandler
@@ -25,7 +28,7 @@ class UpdateIdeaHandler
         $this->repository = $repository;
     }
 
-    public function __invoke(UpdateIdeaCommand $command)
+    public function __invoke(UpdateIdeaCommand $command): Idea
     {
         $idea = $command->getIdea();
         $title = $command->getTitle();

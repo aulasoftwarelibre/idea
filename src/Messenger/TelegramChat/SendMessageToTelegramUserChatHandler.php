@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,24 +13,28 @@
 
 namespace App\Messenger\TelegramChat;
 
+use App\BotMan\Drivers\Telegram\TelegramDriver;
 use App\Repository\TelegramChatRepository;
-use Telegram\Bot\Api as Telegram;
+use BotMan\BotMan\BotMan;
 
 class SendMessageToTelegramUserChatHandler
 {
-    private $telegram;
+    /**
+     * @var BotMan
+     */
+    private $bot;
     /**
      * @var TelegramChatRepository
      */
     private $repository;
 
-    public function __construct(Telegram $telegram, TelegramChatRepository $repository)
+    public function __construct(BotMan $bot, TelegramChatRepository $repository)
     {
-        $this->telegram = $telegram;
+        $this->bot = $bot;
         $this->repository = $repository;
     }
 
-    public function __invoke(SendMessageToTelegramUserChatCommand $command)
+    public function __invoke(SendMessageToTelegramUserChatCommand $command): void
     {
         $chatId = $command->getChatId();
         $message = $command->getMessage();
@@ -38,9 +44,6 @@ class SendMessageToTelegramUserChatHandler
             return;
         }
 
-        $this->telegram->sendMessage([
-            'chat_id' => (int) $chatId,
-            'text' => $message,
-        ]);
+        $this->bot->say($message, $chatId, TelegramDriver::class);
     }
 }

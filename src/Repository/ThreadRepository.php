@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class ThreadRepository extends CeoRepository
+use App\Entity\Thread;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class ThreadRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Thread::class);
+    }
+
+    public function add(Thread $thread): void
+    {
+        $this->_em->persist($thread);
+    }
+
+    public function remove(Thread $thread): void
+    {
+        $this->_em->remove($thread);
+    }
 }

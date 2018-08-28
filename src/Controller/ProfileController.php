@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -58,7 +60,7 @@ class ProfileController extends Controller
      * @Method({"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function editAction(Request $request)
+    public function editAction(Request $request): Response
     {
         $user = $this->getUser();
         $form = $this->createForm(ProfileType::class, $user);
@@ -86,7 +88,7 @@ class ProfileController extends Controller
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function showAction(Request $request)
+    public function showAction(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -97,7 +99,7 @@ class ProfileController extends Controller
         $activities = 0;
         $hours = 0;
 
-        $profile->getParticipations()->map(function (Participation $participation) use (&$academicYears, &$activities, &$hours) {
+        $profile->getParticipations()->map(function (Participation $participation) use (&$academicYears, &$activities, &$hours): void {
             $academicYear = $participation->getActivity()->getAcademicYear();
             $academicYears[$academicYear][] = $participation;
 
@@ -118,17 +120,19 @@ class ProfileController extends Controller
      * @Method("POST")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function disconnectTelegramAction()
+    public function disconnectTelegramAction(): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
-        if (!$user->getTelegramChat() instanceof TelegramChat) {
+        $telegramChat = $user->getTelegramChat();
+
+        if (!$telegramChat instanceof TelegramChat) {
             return new JsonResponse(['error' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $this->bus->dispatch(
             new UnregisterUserChatCommand(
-                $user->getTelegramChat()->getId()
+                $telegramChat->getId()
             )
         );
 
@@ -142,7 +146,7 @@ class ProfileController extends Controller
      * @Method("GET")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
-    public function getTelegramStatusAction()
+    public function getTelegramStatusAction(): JsonResponse
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -158,7 +162,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function showCard()
+    public function showCard(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -167,7 +171,7 @@ class ProfileController extends Controller
 
         $token = $this->bus->dispatch(
             new GenerateUserTelegramTokenCommand(
-                $user->getId()
+                (string) $user->getId()
             )
         );
 
@@ -178,7 +182,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    public function showMenu()
+    public function showMenu(): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -186,7 +190,7 @@ class ProfileController extends Controller
 
         $token = $this->bus->dispatch(
             new GenerateUserTelegramTokenCommand(
-                $user->getId()
+                (string) $user->getId()
             )
         );
 

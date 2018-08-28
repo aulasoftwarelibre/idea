@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -13,47 +15,46 @@ namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
 use App\Messenger\TelegramChat\RegisterUserChatCommand;
-use Telegram\Bot\Commands\Command;
+use BotMan\BotMan\BotMan;
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
+use Symfony\Component\Messenger\MessageBusInterface;
 
-class StartCommand extends Command
+class StartCommand
 {
-    protected $name = 'start';
-    protected $description = 'Inicia la interacción con el bot.';
+    /**
+     * @var MessageBusInterface
+     */
+    private $bus;
 
-    public function handle($arguments)
+    public function __construct(MessageBusInterface $bus)
     {
-        if (empty($arguments)) {
-            $this->replyWithMessage([
-                'text' => 'Este bot aún no interacciona con usuarios.',
-            ]);
+        $this->bus = $bus;
+    }
 
+    public function __invoke(BotMan $bot, string $token): void
+    {
+        $message = Message::fromIncomingMessage($bot->getMessage());
+
+        if (TelegramChat::PRIVATE !== $message->getChat()->getType()) {
             return;
         }
 
-        $message = $this->getUpdate()->getMessage();
-
-        $valid = $this->telegram->getMessageBus()->dispatch(
+        $valid = $this->bus->dispatch(
             new RegisterUserChatCommand(
                 $message,
-                $arguments
+                $token
             )
         );
 
         if (!$valid instanceof TelegramChat) {
-            $this->replyWithMessage([
-                'text' => 'El token no es válido.',
-            ]);
+            $bot->reply('El token no es válido.');
 
             return;
         }
 
-        $this->replyWithMessage([
-            'text' => sprintf(
-                "Enhorabuena te has registrado con el usuario %s.\nEnvía /stop para desconectar",
-                $valid->getUser()->getUsername()
-            ),
-        ]);
-
-        $this->triggerCommand('notify');
+        $bot->reply(sprintf(
+            'Enhorabuena te has registrado con el usuario \'%s\'. Envía /stop para desconectar',
+            (string) $valid->getUser()
+        ));
     }
 }

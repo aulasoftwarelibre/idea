@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,24 @@
 
 namespace App\Repository;
 
-class TelegramChatRepository extends CeoRepository
+use App\Entity\TelegramChat;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+
+class TelegramChatRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, TelegramChat::class);
+    }
+
+    public function add(TelegramChat $thread): void
+    {
+        $this->_em->persist($thread);
+    }
+
+    public function remove(TelegramChat $thread): void
+    {
+        $this->_em->remove($thread);
+    }
 }

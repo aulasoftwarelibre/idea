@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,6 +13,8 @@
 
 namespace App\Admin;
 
+use App\Entity\Degree;
+use App\Form\DataMapper\GenericDataMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -19,21 +23,39 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 class DegreeAdmin extends AbstractAdmin
 {
+    /**
+     * {@inheritdoc}
+     */
     protected $datagridValues = [
         '_page' => 1,
         '_sort_order' => 'ASC',
         '_sort_by' => 'name',
     ];
 
-    protected function configureFormFields(FormMapper $form)
+    public function getNewInstance(): ?Degree
+    {
+        return null;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('name', null, [
-            ])
-        ;
+            ]);
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(Degree::class));
     }
 
-    protected function configureListFields(ListMapper $list)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('name', null, [
@@ -44,23 +66,26 @@ class DegreeAdmin extends AbstractAdmin
                     'show' => [],
                     'edit' => [],
                 ],
-            ])
-        ;
+            ]);
     }
 
-    protected function configureDatagridFilters(DatagridMapper $filter)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('name', null, [
                 'show_filter' => true,
-            ])
-        ;
+            ]);
     }
 
-    protected function configureShowFields(ShowMapper $show)
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('name')
-        ;
+            ->add('name');
     }
 }

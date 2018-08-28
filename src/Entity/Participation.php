@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -21,9 +23,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Participation
 {
-    const ATTENDEE = 'attendee';
-    const PRESENTER = 'presenter';
-    const ORGANIZER = 'organizer';
+    public const ATTENDEE = 'attendee';
+    public const PRESENTER = 'presenter';
+    public const ORGANIZER = 'organizer';
 
     /**
      * @var int
@@ -74,12 +76,11 @@ class Participation
      */
     private $activity;
 
-    /**
-     * Participant constructor.
-     */
-    public function __construct()
+    public function __construct(User $user, Activity $activity, string $role = self::ATTENDEE)
     {
-        $this->role = static::ATTENDEE;
+        $this->role = $role;
+        $this->user = $user;
+        $this->activity = $activity;
         $this->isReported = false;
     }
 
@@ -92,35 +93,39 @@ class Participation
     }
 
     /**
-     * @return string
+     * @return User
      */
-    public function getTitle(): string
+    public function getUser(): User
     {
-        return $this->getActivity()->getTitle();
+        return $this->user;
     }
 
     /**
-     * @return int
+     * @return Participation
      */
-    public function getDuration(): int
+    public function setUser(User $user): self
     {
-        return $this->getActivity()->getDuration();
+        $this->user = $user;
+
+        return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return Activity
      */
-    public function getCreatedAt(): \DateTime
+    public function getActivity(): Activity
     {
-        return $this->createdAt;
+        return $this->activity;
     }
 
     /**
-     * @return \DateTime
+     * @return Participation
      */
-    public function getUpdatedAt(): \DateTime
+    public function setActivity(Activity $activity): self
     {
-        return $this->updatedAt;
+        $this->activity = $activity;
+
+        return $this;
     }
 
     /**
@@ -144,8 +149,6 @@ class Participation
     }
 
     /**
-     * @param string $role
-     *
      * @return Participation
      */
     public function setRole(string $role): self
@@ -158,14 +161,12 @@ class Participation
     /**
      * @return bool
      */
-    public function isReported(): bool
+    public function getIsReported(): bool
     {
         return $this->isReported;
     }
 
     /**
-     * @param bool $isReported
-     *
      * @return Participation
      */
     public function setIsReported(bool $isReported): self
@@ -176,42 +177,34 @@ class Participation
     }
 
     /**
-     * @return User|null
+     * @return string
      */
-    public function getUser(): ?User
+    public function getTitle(): string
     {
-        return $this->user;
+        return $this->getActivity()->getTitle();
     }
 
     /**
-     * @param User $user
-     *
-     * @return Participation
+     * @return int
      */
-    public function setUser(User $user): self
+    public function getDuration(): ?int
     {
-        $this->user = $user;
-
-        return $this;
+        return $this->getActivity()->getDuration();
     }
 
     /**
-     * @return Activity|null
+     * @return \DateTime
      */
-    public function getActivity(): ?Activity
+    public function getCreatedAt(): \DateTime
     {
-        return $this->activity;
+        return $this->createdAt;
     }
 
     /**
-     * @param Activity $activity
-     *
-     * @return Participation
+     * @return \DateTime
      */
-    public function setActivity(Activity $activity): self
+    public function getUpdatedAt(): \DateTime
     {
-        $this->activity = $activity;
-
-        return $this;
+        return $this->updatedAt;
     }
 }

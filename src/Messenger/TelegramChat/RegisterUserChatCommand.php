@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -11,7 +13,7 @@
 
 namespace App\Messenger\TelegramChat;
 
-use Telegram\Bot\Objects\Message;
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
 
 class RegisterUserChatCommand
 {
@@ -20,11 +22,11 @@ class RegisterUserChatCommand
      */
     private $message;
     /**
-     * @var null|string
+     * @var string
      */
     private $token;
 
-    public function __construct(Message $message, ?string $token)
+    public function __construct(Message $message, string $token)
     {
         $this->message = $message;
         $this->token = $token;
@@ -39,9 +41,9 @@ class RegisterUserChatCommand
     }
 
     /**
-     * @return null|string
+     * @return string
      */
-    public function getToken(): ?string
+    public function getToken(): string
     {
         return $this->token;
     }

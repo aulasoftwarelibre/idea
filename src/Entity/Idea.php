@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -30,7 +32,7 @@ class Idea
     public const STATE_REJECTED = 'rejected';
     public const STATE_APPROVED = 'approved';
 
-    const LIMITLESS = 0;
+    public const LIMITLESS = 0;
 
     /**
      * @var int
@@ -99,7 +101,7 @@ class Idea
     private $owner;
 
     /**
-     * @var Vote[]
+     * @var Vote[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="idea", cascade={"persist", "remove"}, orphanRemoval=true)
      */
     private $votes;
@@ -138,6 +140,23 @@ class Idea
      */
     private $private;
 
+    /**
+     * Idea constructor.
+     */
+    public function __construct(string $title, string $description, User $owner, Group $group)
+    {
+        $this->title = $title;
+        $this->description = $description;
+        $this->owner = $owner;
+        $this->group = $group;
+
+        $this->votes = new ArrayCollection();
+        $this->closed = false;
+        $this->private = false;
+        $this->state = static::STATE_PROPOSED;
+        $this->numSeats = self::LIMITLESS;
+    }
+
     public static function getStates(): array
     {
         return [
@@ -148,29 +167,17 @@ class Idea
     }
 
     /**
-     * Idea constructor.
-     */
-    public function __construct()
-    {
-        $this->votes = new ArrayCollection();
-        $this->closed = false;
-        $this->private = false;
-        $this->state = static::STATE_PROPOSED;
-        $this->numSeats = self::LIMITLESS;
-    }
-
-    /**
      * @return string
      */
     public function __toString(): string
     {
-        return $this->title ?? '';
+        return $this->title;
     }
 
     /**
      * @return int
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->id;
     }
@@ -178,14 +185,12 @@ class Idea
     /**
      * @return string
      */
-    public function getTitle(): ?string
+    public function getTitle(): string
     {
         return $this->title;
     }
 
     /**
-     * @param string $title
-     *
      * @return Idea
      */
     public function setTitle(string $title): self
@@ -198,14 +203,12 @@ class Idea
     /**
      * @return string
      */
-    public function getDescription(): ?string
+    public function getDescription(): string
     {
         return $this->description;
     }
 
     /**
-     * @param string $description
-     *
      * @return Idea
      */
     public function setDescription(string $description): self
@@ -224,8 +227,6 @@ class Idea
     }
 
     /**
-     * @param bool $closed
-     *
      * @return Idea
      */
     public function setClosed(bool $closed): self
@@ -244,8 +245,6 @@ class Idea
     }
 
     /**
-     * @param string $state
-     *
      * @return Idea
      */
     public function setState(string $state): self
@@ -269,7 +268,7 @@ class Idea
     /**
      * @return string
      */
-    public function getSlug(): ?string
+    public function getSlug(): string
     {
         return $this->slug;
     }
@@ -283,8 +282,6 @@ class Idea
     }
 
     /**
-     * @param \DateTime $createdAt
-     *
      * @return Idea
      */
     public function setCreatedAt(\DateTime $createdAt): self
@@ -303,8 +300,6 @@ class Idea
     }
 
     /**
-     * @param \DateTime $updatedAt
-     *
      * @return Idea
      */
     public function setUpdatedAt(\DateTime $updatedAt): self
@@ -317,14 +312,12 @@ class Idea
     /**
      * @return User
      */
-    public function getOwner(): ?User
+    public function getOwner(): User
     {
         return $this->owner;
     }
 
     /**
-     * @param User $owner
-     *
      * @return Idea
      */
     public function setOwner(User $owner): self
@@ -338,14 +331,12 @@ class Idea
     /**
      * @return Group
      */
-    public function getGroup(): ?Group
+    public function getGroup(): Group
     {
         return $this->group;
     }
 
     /**
-     * @param Group $group
-     *
      * @return Idea
      */
     public function setGroup(Group $group): self
@@ -364,8 +355,6 @@ class Idea
     }
 
     /**
-     * @param Vote $vote
-     *
      * @return Idea
      */
     public function addVote(Vote $vote): self
@@ -386,7 +375,7 @@ class Idea
     /**
      * @param Vote $vote
      */
-    public function removeVote(Vote $vote)
+    public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
     }
@@ -400,8 +389,6 @@ class Idea
     }
 
     /**
-     * @param int $numSeats
-     *
      * @return Idea
      */
     public function setNumSeats(int $numSeats): self
@@ -420,8 +407,6 @@ class Idea
     }
 
     /**
-     * @param \DateTime|null $startsAt
-     *
      * @return Idea
      */
     public function setStartsAt(?\DateTime $startsAt): self
@@ -440,8 +425,6 @@ class Idea
     }
 
     /**
-     * @param null|string $location
-     *
      * @return Idea
      */
     public function setLocation(?string $location): self
@@ -460,8 +443,6 @@ class Idea
     }
 
     /**
-     * @param bool $private
-     *
      * @return Idea
      */
     public function setPrivate(bool $private): self

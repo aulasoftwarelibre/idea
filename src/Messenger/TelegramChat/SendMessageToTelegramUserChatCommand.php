@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of the `idea` project.
  *
@@ -16,16 +18,16 @@ class SendMessageToTelegramUserChatCommand
     /**
      * @var string
      */
-    private $message;
+    private $chatId;
     /**
      * @var string
      */
-    private $chatId;
+    private $message;
 
     public function __construct(string $chatId, string $message)
     {
-        $this->message = $message;
         $this->chatId = $chatId;
+        $this->message = $message;
     }
 
     /**
