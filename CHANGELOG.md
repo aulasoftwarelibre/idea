@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.4.0] - Tue, 28 Aug 2018 23:29:46 +0200
+
+* Changed telegram layer to botman
+* Added quality code tools
+
 ## [2.3.0] - Thu, 23 Aug 2018 10:16:14 +0200
 
 * Change project name from _ceo_ to _idea_
