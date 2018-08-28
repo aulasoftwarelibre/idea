@@ -43,11 +43,8 @@ services:
         public: true
         tags: [messenger.message_handler]
 
-    Telegram\Bot\Api: '@App\Services\Telegram\TelegramService'
-
-    App\Services\Telegram\TelegramService:
-        arguments: [ '%env(TELEGRAM_BOT_API)%' ]
-        calls:
-            - ['setMessageBus', ['@messenger.bus.default'] ]
+    App\Services\Telegram\:
+        resource: '%kernel.project_dir%/src/Services/Telegram/'
+        public: true
 
     Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'

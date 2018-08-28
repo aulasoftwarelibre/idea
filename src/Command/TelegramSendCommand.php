@@ -49,7 +49,7 @@ class TelegramSendCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $io = new SymfonyStyle($input, $output);
         $message = $input->getArgument('msg');
@@ -57,7 +57,7 @@ class TelegramSendCommand extends Command
         if (empty($message)) {
             $io->error('El mensaje está vacío');
 
-            return 1;
+            return;
         }
 
         $this->bus->dispatch(

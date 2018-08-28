@@ -43,4 +43,5 @@ return [
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle::class => ['all' => true],
     Leogout\Bundle\SeoBundle\LeogoutSeoBundle::class => ['all' => true],
+    Sgomez\Bundle\BotmanBundle\BotmanBundle::class => ['all' => true],
 ];

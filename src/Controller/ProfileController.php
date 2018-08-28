@@ -124,13 +124,15 @@ class ProfileController extends Controller
     {
         /** @var User $user */
         $user = $this->getUser();
-        if (!$user->getTelegramChat() instanceof TelegramChat) {
+        $telegramChat = $user->getTelegramChat();
+
+        if (!$telegramChat instanceof TelegramChat) {
             return new JsonResponse(['error' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
         $this->bus->dispatch(
             new UnregisterUserChatCommand(
-                $user->getTelegramChat()->getId()
+                $telegramChat->getId()
             )
         );
 

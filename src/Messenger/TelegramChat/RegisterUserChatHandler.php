@@ -41,23 +41,17 @@ class RegisterUserChatHandler
         $message = $command->getMessage();
         $token = $command->getToken();
 
-        $chat = $message->getChat();
-        if (null === $token || TelegramChat::PRIVATE !== $chat->getType()) {
-            return null;
-        }
-
-
         $user = $this->userRepository->findOneByValidToken($token);
-        if (!$user) {
+        if (null === $user || null === $message->getFrom()) {
             return null;
         }
 
-        $telegramChat = $this->telegramChatRepository->find($chat->getId());
+        $telegramChat = $this->telegramChatRepository->find($message->getFrom()->getId());
         if (!$telegramChat) {
-            $telegramChat = new TelegramChat((string) $chat->getId(), $chat->getType());
+            $telegramChat = new TelegramChat((string) $message->getChat()->getId(), $message->getChat()->getType());
         }
 
-        $telegramChat->setUsername($chat->getUsername());
+        $telegramChat->setUsername($message->getFrom()->getUsername() ?? null);
         $telegramChat->setUser($user);
 
         $this->telegramChatRepository->add($telegramChat);
