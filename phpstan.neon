@@ -11,6 +11,7 @@ parameters:
     ignoreErrors:
         # Magic calls
         - '/Call to an undefined method Telegram\\Bot\\Api::/'
+        - '/Parameter #3 $driver of method BotMan\\BotMan\\BotMan::say\(\) expects BotMan\\BotMan\\Interfaces\\DriverInterface|null, string given/'
 
     excludes_analyse:
         - '**/Migrations/**.php'

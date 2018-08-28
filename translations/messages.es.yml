@@ -159,7 +159,9 @@ http_error_404.suggestion: Comprueba que la dirección de la página está bien 
 http_error_500.description: Se ha producido un error grave en el servidor.
 http_error_500.suggestion: Intentar recargar esta página dentro de unos minutos o <a href="%url%">vuelve a la portada del sitio</a>.
 
-Disable Comments: Desactivar comentarios
-Enable Comments: Activar comentarios
-Disable Votes: Desactivar votos
-Enable Votes: Activar votos
+account_not_connected_with_telegram: La cuenta no está vinculada a la plataforma de actividades
+select_notifications: Activa o desactiva las notificaciones que te interesen
+disable_notify.comments: Desactivar comentarios
+enable_notify.comments: Activar comentarios
+disable_notify.votes: Desactivar votos
+enable_notify.votes: Activar votos

@@ -13,35 +13,37 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-class SendMessageToTelegramUserChatCommand
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
+
+class NewChatMembersCommand
 {
     /**
-     * @var string
+     * @var array|string[]
      */
-    private $chatId;
+    private $payload;
     /**
-     * @var string
+     * @var Message
      */
     private $message;
 
-    public function __construct(string $chatId, string $message)
+    public function __construct(array $payload, Message $message)
     {
-        $this->chatId = $chatId;
+        $this->payload = $payload;
         $this->message = $message;
     }
 
     /**
-     * @return string
+     * @return array
      */
-    public function getChatId(): string
+    public function getPayload(): array
     {
-        return $this->chatId;
+        return $this->payload;
     }
 
     /**
-     * @return string
+     * @return Message
      */
-    public function getMessage(): string
+    public function getMessage(): Message
     {
         return $this->message;
     }

@@ -11,15 +11,14 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Services\Telegram\Command;
+namespace App\Services\Telegram\Events;
 
-use App\Entity\TelegramChat;
-use App\Messenger\TelegramChat\UnregisterUserChatCommand;
+use App\Messenger\TelegramChat\LeftChatMemberCommand;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class StopCommand
+class LeftChatMemberEvent
 {
     /**
      * @var MessageBusInterface
@@ -31,19 +30,14 @@ class StopCommand
         $this->bus = $bus;
     }
 
-    public function __invoke(BotMan $bot): void
+    public function __invoke(array $payload, BotMan $bot): void
     {
         $message = Message::fromIncomingMessage($bot->getMessage());
 
-        if (TelegramChat::PRIVATE !== $message->getChat()->getType()) {
-            return;
-        }
-
-        $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
-
         $this->bus->dispatch(
-            new UnregisterUserChatCommand(
-                (string) $message->getChat()->getId()
+            new LeftChatMemberCommand(
+                $payload,
+                $message
             )
         );
     }

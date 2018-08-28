@@ -13,39 +13,39 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
+use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
-use Telegram\Bot\Api;
+use Sgomez\Bundle\BotmanBundle\Services\Http\TelegramClient;
 
-class LeftChatParticipantHandler
+class LeftChatMemberHandler
 {
     /**
      * @var TelegramChatRepository
      */
     private $repository;
     /**
-     * @var Api
+     * @var TelegramClient
      */
-    private $telegram;
+    private $client;
 
-    public function __construct(TelegramChatRepository $repository, Api $telegram)
+    public function __construct(TelegramChatRepository $repository, TelegramClient $client)
     {
         $this->repository = $repository;
-        $this->telegram = $telegram;
+        $this->client = $client;
     }
 
-    public function __invoke(LeftChatParticipantCommand $command): void
+    public function __invoke(LeftChatMemberCommand $command): void
     {
         $message = $command->getMessage();
-        $chat = $message->getChat();
-        $me = $this->telegram->getMe();
 
-        if ($message->getLeftChatMember()->getId() !== $me->getId()) {
+        $me = $this->client->getMe();
+
+        if (null === $message->getLeftChatMember() || $message->getLeftChatMember()->getId() !== $me->getId()) {
             return;
         }
 
-        $telegramChat = $this->repository->find($chat->getId());
-
-        if ($telegramChat) {
+        $telegramChat = $this->repository->find($message->getChat()->getId());
+        if ($telegramChat instanceof TelegramChat) {
             $this->repository->remove($telegramChat);
         }
     }

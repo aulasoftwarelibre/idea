@@ -13,37 +13,32 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-use App\BotMan\Drivers\Telegram\TelegramDriver;
+use App\Entity\TelegramChat;
 use App\Repository\TelegramChatRepository;
-use BotMan\BotMan\BotMan;
 
-class SendMessageToTelegramUserChatHandler
+class EnableNotificationHandler
 {
-    /**
-     * @var BotMan
-     */
-    private $bot;
     /**
      * @var TelegramChatRepository
      */
     private $repository;
 
-    public function __construct(BotMan $bot, TelegramChatRepository $repository)
+    public function __construct(TelegramChatRepository $repository)
     {
-        $this->bot = $bot;
         $this->repository = $repository;
     }
 
-    public function __invoke(SendMessageToTelegramUserChatCommand $command): void
+    public function __invoke(EnableNotificationCommand $command): void
     {
-        $chatId = $command->getChatId();
-        $message = $command->getMessage();
+        $chatId = $command->getMessage()->getChat()->getId();
+        $notification = $command->getNotification();
 
         $telegramChat = $this->repository->find($chatId);
-        if (!$telegramChat) {
+        if (!$telegramChat instanceof TelegramChat ||
+             !\in_array($notification, TelegramChat::getNotificationsTypes(), true)) {
             return;
         }
 
-        $this->bot->say($message, $chatId, TelegramDriver::class);
+        $telegramChat->addNotification($notification);
     }
 }

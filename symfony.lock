@@ -5,6 +5,12 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
+    "botman/botman": {
+        "version": "2.4.1"
+    },
+    "botman/driver-telegram": {
+        "version": "1.5.2"
+    },
     "clue/stream-filter": {
         "version": "v1.4.0"
     },
@@ -37,9 +43,6 @@
     },
     "doctrine/common": {
         "version": "v2.9.0"
-    },
-    "doctrine/data-fixtures": {
-        "version": "v1.3.1"
     },
     "doctrine/dbal": {
         "version": "v2.8.0"
@@ -100,6 +103,9 @@
     },
     "egulias/email-validator": {
         "version": "2.1.5"
+    },
+    "evenement/evenement": {
+        "version": "v3.0.1"
     },
     "exercise/htmlpurifier-bundle": {
         "version": "0.2",
@@ -185,17 +191,8 @@
     "hwi/oauth-bundle": {
         "version": "0.6.1"
     },
-    "illuminate/contracts": {
-        "version": "v5.5.17"
-    },
-    "illuminate/support": {
-        "version": "v5.5.17"
-    },
     "imagine/imagine": {
         "version": "v0.7.1"
-    },
-    "irazasyed/telegram-bot-sdk": {
-        "version": "v2.2.0"
     },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
@@ -230,9 +227,6 @@
     "knplabs/knp-menu-bundle": {
         "version": "v2.2.1"
     },
-    "league/event": {
-        "version": "2.1.2"
-    },
     "leogout/seo-bundle": {
         "version": "1.0",
         "recipe": {
@@ -263,6 +257,9 @@
     "monolog/monolog": {
         "version": "1.23.0"
     },
+    "mpociot/pipeline": {
+        "version": "1.0.2"
+    },
     "myclabs/deep-copy": {
         "version": "1.8.1"
     },
@@ -274,9 +271,6 @@
             "version": "3.2",
             "ref": "5ef2976310e8f9621c1a722a73bfbe115c1559a3"
         }
-    },
-    "nesbot/carbon": {
-        "version": "1.22.1"
     },
     "nette/bootstrap": {
         "version": "v2.4.6"
@@ -307,6 +301,9 @@
     },
     "ocramius/proxy-manager": {
         "version": "2.2.0"
+    },
+    "opis/closure": {
+        "version": "3.0.12"
     },
     "ornicar/gravatar-bundle": {
         "version": "1.3.0"
@@ -410,6 +407,27 @@
     "ramsey/uuid": {
         "version": "3.7.3"
     },
+    "react/cache": {
+        "version": "v0.5.0"
+    },
+    "react/dns": {
+        "version": "v0.4.15"
+    },
+    "react/event-loop": {
+        "version": "v1.0.0"
+    },
+    "react/promise": {
+        "version": "v2.7.0"
+    },
+    "react/promise-timer": {
+        "version": "v1.5.0"
+    },
+    "react/socket": {
+        "version": "v0.8.12"
+    },
+    "react/stream": {
+        "version": "v1.0.0"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -427,6 +445,9 @@
             "version": "4.0",
             "ref": "421933bf8f0e75546ac8e00cb3eb12904fa2ac1a"
         }
+    },
+    "sgomez/botman-bundle": {
+        "version": "v0.1.0"
     },
     "slevomat/coding-standard": {
         "version": "4.6.3"
@@ -475,6 +496,9 @@
     },
     "sonata-project/user-bundle": {
         "version": "4.2.3"
+    },
+    "spatie/macroable": {
+        "version": "1.0.0"
     },
     "spomky-labs/aes-key-wrap": {
         "version": "v3.0.3"
@@ -677,6 +701,9 @@
     "symfony/property-info": {
         "version": "v4.1.3"
     },
+    "symfony/psr-http-message-bridge": {
+        "version": "v1.0.2"
+    },
     "symfony/routing": {
         "version": "4.0",
         "recipe": {
@@ -814,6 +841,9 @@
             "version": "1.0",
             "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
         }
+    },
+    "tightenco/collect": {
+        "version": "v5.6.33"
     },
     "twig/extensions": {
         "version": "1.0",

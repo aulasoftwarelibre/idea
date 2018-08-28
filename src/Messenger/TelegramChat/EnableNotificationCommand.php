@@ -13,18 +13,23 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-use Telegram\Bot\Objects\Message;
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
 
-class NewChatParticipantCommand
+class EnableNotificationCommand
 {
     /**
      * @var Message
      */
     private $message;
+    /**
+     * @var string
+     */
+    private $notification;
 
-    public function __construct(Message $message)
+    public function __construct(Message $message, string $notification)
     {
         $this->message = $message;
+        $this->notification = $notification;
     }
 
     /**
@@ -33,5 +38,13 @@ class NewChatParticipantCommand
     public function getMessage(): Message
     {
         return $this->message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getNotification(): string
+    {
+        return $this->notification;
     }
 }

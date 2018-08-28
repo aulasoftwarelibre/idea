@@ -14,24 +14,24 @@ declare(strict_types=1);
 namespace App\Services\Telegram;
 
 use Psr\Cache\CacheItemPoolInterface;
-use Telegram\Bot\Api as Telegram;
-use Telegram\Bot\Objects\User;
+use Sgomez\Bundle\BotmanBundle\Model\Telegram\User;
+use Sgomez\Bundle\BotmanBundle\Services\Http\TelegramClient;
 
 class TelegramCachedCalls
 {
     /**
-     * @var Telegram
-     */
-    private $telegram;
-    /**
      * @var CacheItemPoolInterface
      */
     private $cache;
+    /**
+     * @var TelegramClient
+     */
+    private $client;
 
-    public function __construct(Telegram $telegram, CacheItemPoolInterface $cache)
+    public function __construct(TelegramClient $client, CacheItemPoolInterface $cache)
     {
-        $this->telegram = $telegram;
         $this->cache = $cache;
+        $this->client = $client;
     }
 
     public function getMe(): User
@@ -40,7 +40,7 @@ class TelegramCachedCalls
         $cachedMe = $this->cache->getItem($key);
 
         if (!$cachedMe->isHit()) {
-            $me = $this->telegram->getMe();
+            $me = $this->client->getMe();
             $cachedMe->set($me);
 
             $this->cache->save($cachedMe);
