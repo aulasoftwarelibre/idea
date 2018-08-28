@@ -6,7 +6,7 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.activity }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
-            - [ addChild, ["@eco.admin.participation"]]
+            - [ addChild, ['@eco.admin.participation', 'activity']]
     eco.admin.degree:
         class: App\Admin\DegreeAdmin
         arguments: [~, App\Entity\Degree, ~]

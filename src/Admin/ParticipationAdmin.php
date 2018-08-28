@@ -19,15 +19,11 @@ use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class ParticipationAdmin extends AbstractAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
-    protected $parentAssociationMapping = 'activity';
-
     public function getNewInstance(): ?Participation
     {
         return null;
@@ -98,5 +94,14 @@ class ParticipationAdmin extends AbstractAdmin
             'user.nic',
             'role',
         ];
+    }
+
+    protected function configureRoutes(RouteCollection $collection): void
+    {
+        if ($this->isChild()) {
+            return;
+        }
+
+        $collection->clear();
     }
 }
