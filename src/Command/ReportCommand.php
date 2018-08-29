@@ -46,7 +46,7 @@ class ReportCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('idea:report')
+            ->setName('idea:report:students')
             ->setDescription('Save Report')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Nombre del fichero', 'report');
     }
