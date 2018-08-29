@@ -56,8 +56,6 @@
         "white-october/pagerfanta-bundle": "^1.2"
     },
     "require-dev": {
-        "hautelook/alice-bundle": "^2.0",
-        "nelmio/alice": "^3.4",
         "phpstan/phpstan": "^0.10.3",
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.1",
@@ -67,8 +65,7 @@
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "^1.0",
         "symfony/web-server-bundle": "^4.1",
-        "symplify/easy-coding-standard": "^4.6",
-        "theofidry/alice-data-fixtures": "^1.0"
+        "symplify/easy-coding-standard": "^4.6"
     },
     "config": {
         "preferred-install": {
