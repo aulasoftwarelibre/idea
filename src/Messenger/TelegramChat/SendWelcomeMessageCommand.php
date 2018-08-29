@@ -15,7 +15,7 @@ namespace App\Messenger\TelegramChat;
 
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
 
-class NewChatMembersCommand
+class SendWelcomeMessageCommand
 {
     /**
      * @var Message

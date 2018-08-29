@@ -6,3 +6,6 @@ exercise_html_purifier:
         Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
     summary:
         HTML.ForbiddenElements: ['a']
+    telegram:
+        HTML.AllowedElements: ['b','i','a', 'code', 'pre']
+
