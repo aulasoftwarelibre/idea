@@ -36,7 +36,6 @@ class NewChatMembersEvent
 
         $this->bus->dispatch(
             new NewChatMembersCommand(
-                $payload,
                 $message
             )
         );

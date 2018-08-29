@@ -18,26 +18,13 @@ use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
 class NewChatMembersCommand
 {
     /**
-     * @var array|string[]
-     */
-    private $payload;
-    /**
      * @var Message
      */
     private $message;
 
-    public function __construct(array $payload, Message $message)
+    public function __construct(Message $message)
     {
-        $this->payload = $payload;
         $this->message = $message;
-    }
-
-    /**
-     * @return array
-     */
-    public function getPayload(): array
-    {
-        return $this->payload;
     }
 
     /**
