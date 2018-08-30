@@ -1,5 +1,7 @@
 hwi_oauth:
     firewall_names: ['main']
+    use_referer: true
+    target_path_parameter: _destination
     fosub:
         properties:
             ssp: 'ssp_id'
