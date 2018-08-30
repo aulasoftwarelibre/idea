@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TelegramChatRepository")
@@ -71,6 +72,13 @@ class TelegramChat
      * @ORM\Column(type="json", nullable=true)
      */
     private $notifications;
+
+    /**
+     * @var null|string
+     * @ORM\Column(type="text", nullable=true)
+     * @Assert\Length(min="10", minMessage="error.welcome.message.too.short")
+     */
+    private $welcomeMessage;
 
     /**
      * TelegramChat constructor.
@@ -222,6 +230,24 @@ class TelegramChat
             'Comments' => self::NOTIFY_COMMENTS,
             'Votes' => self::NOTIFY_VOTES,
         ];
+    }
+
+    /**
+     * @return null|string
+     */
+    public function getWelcomeMessage(): ?string
+    {
+        return $this->welcomeMessage;
+    }
+
+    /**
+     * @return TelegramChat
+     */
+    public function setWelcomeMessage(?string $welcomeMessage): self
+    {
+        $this->welcomeMessage = $welcomeMessage;
+
+        return $this;
     }
 
     /**

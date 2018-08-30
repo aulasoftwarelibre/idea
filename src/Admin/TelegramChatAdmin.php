@@ -17,12 +17,31 @@ use App\Entity\TelegramChat;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
+use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class TelegramChatAdmin extends AbstractAdmin
 {
+    protected function configureFormFields(FormMapper $form): void
+    {
+        $form
+            ->add('title', null, [
+                'disabled' => true,
+            ])
+            ->add('active', null, [
+                'required' => false,
+            ])
+            ->add('welcomeMessage', SimpleFormatterType::class, [
+                'format' => 'richhtml',
+                'ckeditor_context' => 'simple_toolbar',
+                'attr' => ['rows' => 20],
+            ])
+        ;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -47,6 +66,7 @@ class TelegramChatAdmin extends AbstractAdmin
             ])
             ->add('_action', 'actions', [
                 'actions' => [
+                    'edit' => [],
                     'show' => [],
                 ],
             ]);
@@ -83,7 +103,9 @@ class TelegramChatAdmin extends AbstractAdmin
             ])
             ->add('title')
             ->add('username')
-            ->add('active');
+            ->add('active')
+            ->add('welcomeMessage')
+        ;
     }
 
     /**
@@ -91,7 +113,6 @@ class TelegramChatAdmin extends AbstractAdmin
      */
     protected function configureRoutes(RouteCollection $collection): void
     {
-        $collection->remove('edit');
         $collection->remove('create');
     }
 }

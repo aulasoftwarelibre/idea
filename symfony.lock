@@ -161,9 +161,6 @@
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
-    "fzaninotto/faker": {
-        "version": "v1.8.0"
-    },
     "gedmo/doctrine-extensions": {
         "version": "v2.4.36"
     },
@@ -178,15 +175,6 @@
     },
     "harmony-project/ui-bundle": {
         "version": "1.1.2"
-    },
-    "hautelook/alice-bundle": {
-        "version": "1.4",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.4",
-            "ref": "3447d538661064626c782b1122a14defa48dc0b1"
-        }
     },
     "hwi/oauth-bundle": {
         "version": "0.6.1"
@@ -259,18 +247,6 @@
     },
     "mpociot/pipeline": {
         "version": "1.0.2"
-    },
-    "myclabs/deep-copy": {
-        "version": "1.8.1"
-    },
-    "nelmio/alice": {
-        "version": "3.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "3.2",
-            "ref": "5ef2976310e8f9621c1a722a73bfbe115c1559a3"
-        }
     },
     "nette/bootstrap": {
         "version": "v2.4.6"
@@ -493,6 +469,9 @@
     },
     "sonata-project/formatter-bundle": {
         "version": "4.x-dev"
+    },
+    "sonata-project/intl-bundle": {
+        "version": "2.5.0"
     },
     "sonata-project/user-bundle": {
         "version": "4.2.3"
@@ -832,15 +811,6 @@
     },
     "symplify/token-runner": {
         "version": "v4.6.1"
-    },
-    "theofidry/alice-data-fixtures": {
-        "version": "1.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes-contrib",
-            "branch": "master",
-            "version": "1.0",
-            "ref": "fe5a50faf580eb58f08ada2abe8afbd2d4941e05"
-        }
     },
     "tightenco/collect": {
         "version": "v5.6.33"

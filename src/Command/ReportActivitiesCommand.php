@@ -54,7 +54,7 @@ class ReportActivitiesCommand extends Command
     protected function configure(): void
     {
         $this
-            ->setName('idea:repost:activities')
+            ->setName('idea:report:activities')
             ->setDescription('Informe de todas las actividades')
             ->addArgument('template', InputArgument::REQUIRED);
     }

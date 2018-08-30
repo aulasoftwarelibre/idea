@@ -36,16 +36,6 @@ class WebhookController extends Controller
 
             $bot->on('new_chat_members', NewChatMembersEvent::class);
             $bot->on('left_chat_member', LeftChatMemberEvent::class);
-
-            $bot->hears('hi', function (BotMan $bot): void {
-                $bot->reply('Hello buddy');
-
-                try {
-                    dump($bot->getMessage()->getExtras('something'));
-                } catch (\Throwable $e) {
-                    dump($e->getMessage());
-                }
-            });
         });
 
         $bot->listen();
