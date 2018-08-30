@@ -93,6 +93,7 @@ class IdeaAdmin extends AbstractAdmin
             ->add('state', null, [
             ])
             ->add('createdAt', null, [
+                'locale' => 'es',
             ])
             ->add('_action', 'actions', [
                 'actions' => [

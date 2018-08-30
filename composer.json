@@ -29,6 +29,7 @@
         "sonata-project/admin-bundle": "^3.38",
         "sonata-project/doctrine-orm-admin-bundle": "^3.6",
         "sonata-project/formatter-bundle": "4.x-dev",
+        "sonata-project/intl-bundle": "^2.5",
         "sonata-project/user-bundle": "^4.2",
         "spomky-labs/jose": "^7.1",
         "stof/doctrine-extensions-bundle": "^1.3",
