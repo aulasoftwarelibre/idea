@@ -91,6 +91,7 @@ class IdeaAdmin extends AbstractAdmin
             ->add('closed', null, [
             ])
             ->add('state', null, [
+                'template' => '/backend/Idea/list_field_state.html.twig',
             ])
             ->add('createdAt', null, [
                 'locale' => 'es',
