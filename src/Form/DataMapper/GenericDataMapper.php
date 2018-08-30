@@ -13,11 +13,11 @@ declare(strict_types=1);
 
 namespace App\Form\DataMapper;
 
-use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\Exception\RuntimeException;
-use Symfony\Component\Form\Exception\UnexpectedTypeException;
+use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
+use Symfony\Component\Form\FormInterface;
 
-class GenericDataMapper implements DataMapperInterface
+class GenericDataMapper extends PropertyPathMapper
 {
     /**
      * @var string
@@ -26,29 +26,9 @@ class GenericDataMapper implements DataMapperInterface
 
     public function __construct(string $entityClass)
     {
+        parent::__construct();
+
         $this->entityClass = $entityClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function mapDataToForms($data, $forms): void
-    {
-        if (null === $data) {
-            return;
-        }
-
-        if ($this->entityClass !== \get_class($data)) {
-            throw new UnexpectedTypeException($data, $this->entityClass);
-        }
-
-        $forms = iterator_to_array($forms);
-        $fields = array_keys($forms);
-
-        foreach ($fields as $field) {
-            $getter = $this->getFieldAccessor($data, 'get', $field);
-            $forms[$field]->setData($data->$getter());
-        }
     }
 
     /**
@@ -56,24 +36,20 @@ class GenericDataMapper implements DataMapperInterface
      */
     public function mapFormsToData($forms, &$data): void
     {
-        $forms = iterator_to_array($forms);
-
         if (null === $data) {
             $data = $this->createInstance($forms);
         }
 
-        if ($this->entityClass !== \get_class($data)) {
-            throw new UnexpectedTypeException($data, $this->entityClass);
-        }
-
-        foreach ($forms as $field => $form) {
-            $setter = $this->getFieldAccessor($data, 'set', $field);
-            $data->$setter($form->getData());
-        }
+        parent::mapFormsToData($forms, $data);
     }
 
-    private function createInstance(array $forms): object
+    /**
+     * @param FormInterface[]|\Traversable $forms A list of {@link FormInterface} instances
+     */
+    private function createInstance($forms): object
     {
+        $forms = iterator_to_array($forms);
+
         try {
             $instance = new \ReflectionClass($this->entityClass);
         } catch (\ReflectionException $e) {
@@ -101,20 +77,5 @@ class GenericDataMapper implements DataMapperInterface
         }, $parameters);
 
         return $instance->newInstanceArgs($args);
-    }
-
-    private function getFieldAccessor(object $data, string $prefix, string $field): string
-    {
-        $accessorName = $prefix . ucfirst($field);
-
-        if (!method_exists($data, $accessorName)) {
-            throw new RuntimeException(sprintf(
-                'Expected method \'%s\' in class \'%s\' does not exists',
-                $accessorName,
-                \get_class($data)
-            ));
-        }
-
-        return $accessorName;
     }
 }
