@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.5.0] - Thu, 30 Aug 2018 13:33:58 +0200
+
+* Fixed GenericDataMapper problem with Collections
+* Added open and close idea batch actions
+* Send welcome message to new users in active groups
+* Removed obsolete fixtures
+
 ## [2.4.0] - Tue, 28 Aug 2018 23:29:46 +0200
 
 * Changed telegram layer to botman
