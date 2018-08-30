@@ -470,6 +470,9 @@
     "sonata-project/formatter-bundle": {
         "version": "4.x-dev"
     },
+    "sonata-project/intl-bundle": {
+        "version": "2.5.0"
+    },
     "sonata-project/user-bundle": {
         "version": "4.2.3"
     },

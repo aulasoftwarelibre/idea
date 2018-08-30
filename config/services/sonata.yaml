@@ -16,7 +16,7 @@ services:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
     eco.admin.idea:
         class: App\Admin\IdeaAdmin
-        arguments: [~, App\Entity\Idea, ~]
+        arguments: [~, 'App\Entity\Idea', 'App\Controller\IdeaCRUDController']
         tags:
             - { name: sonata.admin, manager_type: orm, label: menu.idea }
         calls:

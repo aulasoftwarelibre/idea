@@ -91,8 +91,10 @@ class IdeaAdmin extends AbstractAdmin
             ->add('closed', null, [
             ])
             ->add('state', null, [
+                'template' => '/backend/Idea/list_field_state.html.twig',
             ])
             ->add('createdAt', null, [
+                'locale' => 'es',
             ])
             ->add('_action', 'actions', [
                 'actions' => [
@@ -113,7 +115,12 @@ class IdeaAdmin extends AbstractAdmin
             ->add('owner', null, [
             ])
             ->add('group', null, [
-            ]);
+            ])
+            ->add('state', 'doctrine_orm_choice', [], ChoiceType::class, [
+                'choices' => Idea::getStates(),
+            ])
+            ->add('closed')
+        ;
     }
 
     /**
@@ -141,5 +148,18 @@ class IdeaAdmin extends AbstractAdmin
             ])
             ->add('updatedAt', null, [
             ]);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureBatchActions($actions)
+    {
+        if ($this->hasAccess('edit')) {
+            $actions['open'] = [];
+            $actions['close'] = [];
+        }
+
+        return $actions;
     }
 }

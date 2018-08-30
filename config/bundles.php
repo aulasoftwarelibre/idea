@@ -41,4 +41,5 @@ return [
     Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle::class => ['all' => true],
     Leogout\Bundle\SeoBundle\LeogoutSeoBundle::class => ['all' => true],
     Sgomez\Bundle\BotmanBundle\BotmanBundle::class => ['all' => true],
+    Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
 ];
