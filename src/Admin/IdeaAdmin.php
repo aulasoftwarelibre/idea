@@ -149,4 +149,17 @@ class IdeaAdmin extends AbstractAdmin
             ->add('updatedAt', null, [
             ]);
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureBatchActions($actions)
+    {
+        if ($this->hasAccess('edit')) {
+            $actions['open'] = [];
+            $actions['close'] = [];
+        }
+
+        return $actions;
+    }
 }

@@ -57,6 +57,13 @@ Group: Grupo
 Supergroup: Supergrupo
 Private: Privado
 
+batch.label_open: Abrir
+batch.label_close: Cerrar
+flash_batch_close_error: Hubo un error al cerrar las ideas seleccionadas
+flash_batch_close_success: Se han cerrado las ideas seleccionadas
+flash_batch_open_error: Hubo un error al abrir las ideas seleccionadas
+flash_batch_open_success: Se han abierto las ideas seleccionadas
+
 filter.label__action: Acción
 filter.label_closed: Cerrado
 filter.label_created_at: Fecha creación
