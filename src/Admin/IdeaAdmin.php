@@ -115,7 +115,12 @@ class IdeaAdmin extends AbstractAdmin
             ->add('owner', null, [
             ])
             ->add('group', null, [
-            ]);
+            ])
+            ->add('state', 'doctrine_orm_choice', [], ChoiceType::class, [
+                'choices' => Idea::getStates(),
+            ])
+            ->add('closed')
+        ;
     }
 
     /**
