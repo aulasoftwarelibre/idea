@@ -13,17 +13,17 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-use App\Entity\TelegramChat;
-use App\Repository\TelegramChatRepository;
+use App\Entity\TelegramChatPrivate;
+use App\Repository\TelegramChatPrivateRepository;
 
 class EnableNotificationHandler
 {
     /**
-     * @var TelegramChatRepository
+     * @var TelegramChatPrivateRepository
      */
     private $repository;
 
-    public function __construct(TelegramChatRepository $repository)
+    public function __construct(TelegramChatPrivateRepository $repository)
     {
         $this->repository = $repository;
     }
@@ -34,8 +34,8 @@ class EnableNotificationHandler
         $notification = $command->getNotification();
 
         $telegramChat = $this->repository->find($chatId);
-        if (!$telegramChat instanceof TelegramChat ||
-             !\in_array($notification, TelegramChat::getNotificationsTypes(), true)) {
+        if (!$telegramChat instanceof TelegramChatPrivate ||
+             !\in_array($notification, TelegramChatPrivate::getNotificationsTypes(), true)) {
             return;
         }
 

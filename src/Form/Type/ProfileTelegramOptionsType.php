@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Form\Type;
 
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatPrivate;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -30,7 +31,7 @@ class ProfileTelegramOptionsType extends AbstractType
             ->add('notifications', ChoiceType::class, [
                 'label' => 'Notificaciones de telegram',
                 'required' => false,
-                'choices' => TelegramChat::getNotificationsTypes(),
+                'choices' => TelegramChatPrivate::getNotificationsTypes(),
                 'multiple' => true,
                 'expanded' => true,
                 'choice_translation_domain' => 'messages',

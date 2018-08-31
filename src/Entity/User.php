@@ -60,8 +60,8 @@ class User extends BaseUser implements EquatableInterface
     protected $sspAccessToken;
 
     /**
-     * @var TelegramChat|null
-     * @ORM\OneToOne(targetEntity="TelegramChat", inversedBy="user")
+     * @var TelegramChatPrivate|null
+     * @ORM\OneToOne(targetEntity="App\Entity\TelegramChatPrivate", inversedBy="user")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
     protected $telegramChat;
@@ -220,7 +220,7 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return TelegramChat|null
+     * @return TelegramChatPrivate|null
      */
     public function getTelegramChat(): ?TelegramChat
     {
@@ -230,7 +230,7 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @return User
      */
-    public function setTelegramChat(?TelegramChat $telegramChat): self
+    public function setTelegramChat(?TelegramChatPrivate $telegramChat): self
     {
         $this->telegramChat = $telegramChat;
         $this->telegramSecretToken = null;

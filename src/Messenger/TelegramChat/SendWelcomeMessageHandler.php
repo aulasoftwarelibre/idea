@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-use App\Entity\TelegramChat;
+use App\Entity\TelegramChatGroup;
+use App\Entity\TelegramChatSuperGroup;
 use App\Repository\TelegramChatRepository;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\User;
@@ -50,9 +51,12 @@ class SendWelcomeMessageHandler
             return;
         }
 
-        /** @var null|TelegramChat $telegramChat */
         $telegramChat = $this->repository->find($chatId);
-        if (null === $telegramChat || null === $telegramChat->getWelcomeMessage() || false === $telegramChat->isActive()) {
+        if (!$telegramChat instanceof TelegramChatGroup && !$telegramChat instanceof TelegramChatSuperGroup) {
+            return;
+        }
+
+        if (null === $telegramChat->getWelcomeMessage() || false === $telegramChat->isActive()) {
             return;
         }
 

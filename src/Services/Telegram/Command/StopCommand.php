@@ -39,12 +39,14 @@ class StopCommand
             return;
         }
 
-        $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
-
-        $this->bus->dispatch(
+        $removed = $this->bus->dispatch(
             new UnregisterUserChatCommand(
                 (string) $message->getChat()->getId()
             )
         );
+
+        if (true === $removed) {
+            $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
+        }
     }
 }
