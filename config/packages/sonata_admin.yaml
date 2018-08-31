@@ -1,4 +1,7 @@
 sonata_admin:
+    security:
+        role_admin: ROLE_ADMIN
+        role_super_admin: ROLE_SUPER_ADMIN
     templates:
         # default global templates
         layout:  '/backend/standard_layout.html.twig'
@@ -16,6 +19,8 @@ sonata_admin:
                 - 'eco.admin.activity'
                 - 'eco.admin.idea'
                 - 'eco.admin.degree'
+                roles:
+                    - 'ROLE_ADMIN'
             app.admin.messages:
                 label: 'group.messages'
                 label_catalogue: 'messages'
@@ -25,6 +30,8 @@ sonata_admin:
                 - 'eco.admin.telegram_chat_super_group'
                 - 'eco.admin.telegram_chat_group'
                 - 'eco.admin.telegram_chat_channel'
+                roles:
+                    - 'ROLE_SUPER_ADMIN'
             app.admin.user:
                 label: 'sonata_user'
                 label_catalogue: 'SonataUserBundle'
@@ -32,6 +39,8 @@ sonata_admin:
                 items:
                 - 'sonata.user.admin.user'
                 - 'sonata.user.admin.group'
+                roles:
+                    - 'ROLE_SUPER_ADMIN'
 
 sonata_block:
     default_contexts: ['cms']
