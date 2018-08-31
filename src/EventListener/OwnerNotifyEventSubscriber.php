@@ -15,6 +15,7 @@ namespace App\EventListener;
 
 use App\Entity\Idea;
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatPrivate;
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasVotedEvent;
 use App\Messenger\TelegramChat\SendMessageToTelegramUserChatCommand;
@@ -77,7 +78,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
 
         $owner = $idea->getOwner();
         $telegramChat = $owner->getTelegramChat();
-        if (!$telegramChat || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_COMMENTS)) {
+        if (!$telegramChat instanceof TelegramChatPrivate || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_COMMENTS)) {
             return;
         }
 
@@ -102,7 +103,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
         $owner = $idea->getOwner();
 
         $telegramChat = $owner->getTelegramChat();
-        if (!$telegramChat || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_VOTES)) {
+        if (!$telegramChat instanceof TelegramChatPrivate || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_VOTES)) {
             return;
         }
 
@@ -122,7 +123,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
         $voter = $event->getVoter();
 
         $telegramChat = $owner->getTelegramChat();
-        if (!$telegramChat || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_VOTES)) {
+        if (!$telegramChat instanceof TelegramChatPrivate || !$telegramChat->isEnabledNotification(TelegramChat::NOTIFY_VOTES)) {
             return;
         }
 

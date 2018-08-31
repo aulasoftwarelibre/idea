@@ -13,30 +13,32 @@ declare(strict_types=1);
 
 namespace App\Messenger\TelegramChat;
 
-use App\Entity\TelegramChat;
-use App\Repository\TelegramChatRepository;
+use App\Entity\TelegramChatPrivate;
+use App\Repository\TelegramChatPrivateRepository;
 
 class UnregisterUserChatHandler
 {
     /**
-     * @var TelegramChatRepository
+     * @var TelegramChatPrivateRepository
      */
     private $repository;
 
-    public function __construct(TelegramChatRepository $repository)
+    public function __construct(TelegramChatPrivateRepository $repository)
     {
         $this->repository = $repository;
     }
 
-    public function __invoke(UnregisterUserChatCommand $command): void
+    public function __invoke(UnregisterUserChatCommand $command): bool
     {
         $chatId = $command->getChatId();
 
         $telegramChat = $this->repository->find($chatId);
-        if (!$telegramChat instanceof TelegramChat || TelegramChat::PRIVATE !== $telegramChat->getType()) {
-            return;
+        if (!$telegramChat instanceof TelegramChatPrivate) {
+            return false;
         }
 
         $this->repository->remove($telegramChat);
+
+        return true;
     }
 }

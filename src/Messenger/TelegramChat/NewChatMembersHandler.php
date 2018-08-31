@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatGroup;
+use App\Entity\TelegramChatSuperGroup;
 use App\Repository\TelegramChatRepository;
 use Sgomez\Bundle\BotmanBundle\Services\Http\TelegramClient;
 
@@ -45,7 +47,7 @@ class NewChatMembersHandler
                 $telegramChat = $this->repository->find($chat->getId());
 
                 if (!$telegramChat instanceof TelegramChat) {
-                    $telegramChat = new TelegramChat((string) $chat->getId(), $chat->getType());
+                    $telegramChat = $this->createInstance($chat->getType(), (string) $chat->getId());
                     $telegramChat->setTitle($chat->getTitle());
 
                     $this->repository->add($telegramChat);
@@ -56,5 +58,24 @@ class NewChatMembersHandler
         }
 
         return null;
+    }
+
+    /**
+     * @return TelegramChatGroup|TelegramChatSuperGroup
+     */
+    private function createInstance(string $type, string $id)
+    {
+        if (TelegramChat::GROUP === $type) {
+            return new TelegramChatGroup($id);
+        }
+
+        if (TelegramChat::SUPER_GROUP === $type) {
+            return new TelegramChatSuperGroup($id);
+        }
+
+        throw new \RuntimeException(sprintf(
+            'Unknown telegram chat type: `%s`',
+            $type
+        ));
     }
 }

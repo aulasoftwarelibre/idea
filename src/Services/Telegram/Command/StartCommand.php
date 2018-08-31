@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatPrivate;
 use App\Messenger\TelegramChat\RegisterUserChatCommand;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
@@ -46,7 +47,7 @@ class StartCommand
             )
         );
 
-        if (!$valid instanceof TelegramChat) {
+        if (!$valid instanceof TelegramChatPrivate) {
             $bot->reply('El token no es válido.');
 
             return;

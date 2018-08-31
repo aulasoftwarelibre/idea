@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatPrivate;
 use App\Messenger\TelegramChat\DisableNotificationCommand;
 use App\Messenger\TelegramChat\EnableNotificationCommand;
-use App\Repository\TelegramChatRepository;
+use App\Repository\TelegramChatPrivateRepository;
 use BotMan\BotMan\BotMan;
 use BotMan\Drivers\Telegram\Extensions\Keyboard;
 use BotMan\Drivers\Telegram\Extensions\KeyboardButton;
@@ -31,7 +32,7 @@ class NotifyCommand
      */
     private $bus;
     /**
-     * @var TelegramChatRepository
+     * @var TelegramChatPrivateRepository
      */
     private $repository;
     /**
@@ -39,7 +40,7 @@ class NotifyCommand
      */
     private $translator;
 
-    public function __construct(MessageBusInterface $bus, TelegramChatRepository $repository, TranslatorInterface $translator)
+    public function __construct(MessageBusInterface $bus, TelegramChatPrivateRepository $repository, TranslatorInterface $translator)
     {
         $this->bus = $bus;
         $this->repository = $repository;
@@ -56,7 +57,7 @@ class NotifyCommand
         }
 
         $telegramChat = $this->repository->find($chatId);
-        if (!$telegramChat instanceof TelegramChat) {
+        if (!$telegramChat instanceof TelegramChatPrivate) {
             $bot->reply($this->translator->trans('account_not_connected_with_telegram'));
 
             return;
@@ -77,7 +78,7 @@ class NotifyCommand
         }
 
         $telegramChat = $this->repository->find($chatId);
-        if (!$telegramChat instanceof TelegramChat) {
+        if (!$telegramChat instanceof TelegramChatPrivate) {
             $bot->reply($this->translator->trans('account_not_connected_with_telegram'));
 
             return;
@@ -100,10 +101,10 @@ class NotifyCommand
         $bot->sendRequest('editMessageReplyMarkup', array_merge($parameters, $keyboard->toArray()));
     }
 
-    private function createKeyboard(TelegramChat $telegramChat): Keyboard
+    private function createKeyboard(TelegramChatPrivate $telegramChat): Keyboard
     {
         $keyboard = Keyboard::create();
-        $notifications = TelegramChat::getNotificationsTypes();
+        $notifications = TelegramChatPrivate::getNotificationsTypes();
 
         foreach ($notifications as $notification) {
             $keyboard->addRow(
