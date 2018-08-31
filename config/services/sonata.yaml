@@ -28,12 +28,28 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.participation }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
-    eco.admin.telegram_chat:
-        class: App\Admin\TelegramChatAdmin
-        arguments: [ ~, App\Entity\TelegramChat, ~]
+    eco.admin.telegram_chat_private:
+        class: App\Admin\TelegramChatPrivateAdmin
+        arguments: [ ~, App\Entity\TelegramChatPrivate, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat }
-
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_private }
+    eco.admin.telegram_chat_super_group:
+        class: App\Admin\TelegramChatSuperGroupAdmin
+        arguments: [ ~, App\Entity\TelegramChatSuperGroup, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_super_group }
+    eco.admin.telegram_chat_group:
+        class: App\Admin\TelegramChatGroupAdmin
+        arguments: [ ~, App\Entity\TelegramChatGroup, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_group }
+    eco.admin.telegram_chat_channel:
+        class: App\Admin\TelegramChatChannelAdmin
+        arguments: [ ~, App\Entity\TelegramChatChannel, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_channel }
+        calls:
+            - [ setBotman, ['@botman']]
 
 twig:
     form_themes:

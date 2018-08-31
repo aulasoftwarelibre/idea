@@ -38,6 +38,10 @@ menu.degree: Grados
 menu.idea: Ideas
 menu.participation: Participantes
 menu.telegram_chat: Chats
+menu.telegram_chat_private: Chats privados
+menu.telegram_chat_super_group: Súper-grupos
+menu.telegram_chat_group: Grupos
+menu.telegram_chat_channel: Canales
 
 attendee: Asistente
 organizer: Organizador

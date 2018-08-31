@@ -21,7 +21,10 @@ sonata_admin:
                 label_catalogue: 'messages'
                 icon: '<i class="fa fa-telegram"></i>'
                 items:
-                - 'eco.admin.telegram_chat'
+                - 'eco.admin.telegram_chat_private'
+                - 'eco.admin.telegram_chat_super_group'
+                - 'eco.admin.telegram_chat_group'
+                - 'eco.admin.telegram_chat_channel'
             app.admin.user:
                 label: 'sonata_user'
                 label_catalogue: 'SonataUserBundle'
