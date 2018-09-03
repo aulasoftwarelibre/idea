@@ -1,7 +1,6 @@
 botman:
-    controller: '\App\Controller\WebhookController'
     drivers:
         telegram:
-            class: '\App\BotMan\Drivers\Telegram\TelegramDriver'
+            class: 'App\BotMan\Drivers\Telegram\TelegramDriver'
             parameters:
                 token: '%env(TELEGRAM_BOT_API)%'
