@@ -38,4 +38,15 @@ class TelegramDriver extends BaseTelegramDriver
             $this->http->post($this->buildApiUrl('answerCallbackQuery'), [], $parameters);
         }
     }
+
+    protected function isValidLoginRequest(): bool
+    {
+        $check_hash = $this->queryParameters->get('hash');
+
+        if (null === $check_hash) {
+            return false;
+        }
+
+        return parent::isValidLoginRequest();
+    }
 }

@@ -14,25 +14,26 @@ declare(strict_types=1);
 namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
-use App\Repository\TelegramChatRepository;
+use App\Entity\TelegramChatPrivate;
+use App\Repository\TelegramChatPrivateRepository;
 use App\Repository\UserRepository;
 
 class RegisterUserChatHandler
 {
     /**
-     * @var TelegramChatRepository
+     * @var TelegramChatPrivateRepository
      */
-    private $telegramChatRepository;
+    private $telegramChatPrivateRepository;
     /**
      * @var UserRepository
      */
     private $userRepository;
 
     public function __construct(
-        TelegramChatRepository $telegramChatRepository,
+        TelegramChatPrivateRepository $telegramChatPrivateRepository,
         UserRepository $userRepository
     ) {
-        $this->telegramChatRepository = $telegramChatRepository;
+        $this->telegramChatPrivateRepository = $telegramChatPrivateRepository;
         $this->userRepository = $userRepository;
     }
 
@@ -46,15 +47,15 @@ class RegisterUserChatHandler
             return null;
         }
 
-        $telegramChat = $this->telegramChatRepository->find($message->getFrom()->getId());
+        $telegramChat = $this->telegramChatPrivateRepository->find($message->getFrom()->getId());
         if (!$telegramChat) {
-            $telegramChat = new TelegramChat((string) $message->getChat()->getId(), $message->getChat()->getType());
+            $telegramChat = new TelegramChatPrivate((string) $message->getChat()->getId());
         }
 
         $telegramChat->setUsername($message->getFrom()->getUsername() ?? null);
         $telegramChat->setUser($user);
 
-        $this->telegramChatRepository->add($telegramChat);
+        $this->telegramChatPrivateRepository->add($telegramChat);
 
         return $telegramChat;
     }

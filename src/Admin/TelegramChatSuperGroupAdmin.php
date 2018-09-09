@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\TelegramChat;
+use App\Entity\TelegramChatSuperGroup;
+use App\Form\DataMapper\GenericDataMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -21,10 +23,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class TelegramChatAdmin extends AbstractAdmin
+class TelegramChatSuperGroupAdmin extends AbstractAdmin
 {
+    public function getNewInstance(): ?TelegramChat
+    {
+        return null;
+    }
+
     protected function configureFormFields(FormMapper $form): void
     {
         $form
@@ -40,6 +46,11 @@ class TelegramChatAdmin extends AbstractAdmin
                 'attr' => ['rows' => 20],
             ])
         ;
+
+        $form
+            ->getFormBuilder()
+            ->setEmptyData(null)
+            ->setDataMapper(new GenericDataMapper(TelegramChatSuperGroup::class));
     }
 
     /**
@@ -51,15 +62,9 @@ class TelegramChatAdmin extends AbstractAdmin
             ->addIdentifier('id', null, [
                 'route' => ['name' => 'show'],
             ])
-            ->add('type', null, [
-                'template' => 'backend/TelegramChat/list_field_title.html.twig',
+            ->add('username', null, [
             ])
             ->add('title', null, [
-                'template' => '/backend/TelegramChat/type_field_list.html.twig',
-                'label' => 'list.label_name',
-            ])
-            ->add('user.username', null, [
-                'label' => 'list.label_user',
             ])
             ->add('active', null, [
                 'editable' => true,
@@ -69,7 +74,8 @@ class TelegramChatAdmin extends AbstractAdmin
                     'edit' => [],
                     'show' => [],
                 ],
-            ]);
+            ])
+        ;
     }
 
     /**
@@ -79,16 +85,9 @@ class TelegramChatAdmin extends AbstractAdmin
     {
         $filter
             ->add('id')
-            ->add('type', null, [], ChoiceType::class, [
-                'choices' => [
-                    'Channel' => TelegramChat::CHANNEL,
-                    'Group' => TelegramChat::GROUP,
-                    'Supergroup' => TelegramChat::SUPERGROUP,
-                    'Private' => TelegramChat::PRIVATE,
-                ],
-            ])
             ->add('title')
-            ->add('active');
+            ->add('active')
+        ;
     }
 
     /**
@@ -98,9 +97,6 @@ class TelegramChatAdmin extends AbstractAdmin
     {
         $show
             ->add('id')
-            ->add('type', null, [
-                'template' => 'backend/TelegramChat/show_field_title.html.twig',
-            ])
             ->add('title')
             ->add('username')
             ->add('active')

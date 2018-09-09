@@ -18,12 +18,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TelegramChatRepository")
+ * @ORM\InheritanceType("SINGLE_TABLE")
+ * @ORM\DiscriminatorColumn(name="type", type="string")
+ * @ORM\DiscriminatorMap({
+ *     "private" = "App\Entity\TelegramChatPrivate",
+ *     "group" = "App\Entity\TelegramChatGroup",
+ *     "supergroup" = "App\Entity\TelegramChatSuperGroup",
+ *     "channel" = "App\Entity\TelegramChatChannel",
+ * })
  */
-class TelegramChat
+abstract class TelegramChat
 {
     public const PRIVATE = 'private';
     public const GROUP = 'group';
-    public const SUPERGROUP = 'supergroup';
+    public const SUPER_GROUP = 'supergroup';
     public const CHANNEL = 'channel';
 
     public const NOTIFY_VOTES = 'notify.votes';
@@ -34,31 +42,31 @@ class TelegramChat
      * @ORM\Id
      * @ORM\Column(length=64)
      */
-    private $id;
-
-    /**
-     * @var string
-     * @ORM\Column(length=32)
-     */
-    private $type;
+    protected $id;
 
     /**
      * @var string|null
      * @ORM\Column(length=256, nullable=true)
      */
-    private $title;
+    protected $title;
 
     /**
      * @var string|null
      * @ORM\Column(length=256, nullable=true)
      */
-    private $username;
+    protected $username;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean")
+     * @var null|string
+     * @ORM\Column(length=255, nullable=true)
      */
-    private $active = false;
+    protected $firstName;
+
+    /**
+     * @var null|string
+     * @ORM\Column(length=255, nullable=true)
+     */
+    protected $lastName;
 
     /**
      * @var User|null
@@ -71,23 +79,27 @@ class TelegramChat
      *
      * @ORM\Column(type="json", nullable=true)
      */
-    private $notifications;
+    protected $notifications = [];
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    protected $active = false;
 
     /**
      * @var null|string
      * @ORM\Column(type="text", nullable=true)
      * @Assert\Length(min="10", minMessage="error.welcome.message.too.short")
      */
-    private $welcomeMessage;
+    protected $welcomeMessage;
 
     /**
      * TelegramChat constructor.
      */
-    public function __construct(string $id, string $type)
+    public function __construct(string $id)
     {
         $this->id = $id;
-        $this->type = $type;
-        $this->notifications = [];
     }
 
     /**
@@ -96,165 +108,5 @@ class TelegramChat
     public function getId(): string
     {
         return $this->id;
-    }
-
-    /**
-     * @return string
-     */
-    public function getType(): string
-    {
-        return $this->type;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    /**
-     * @return TelegramChat
-     */
-    public function setTitle(?string $title): self
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getUsername(): ?string
-    {
-        return $this->username;
-    }
-
-    /**
-     * @return TelegramChat
-     */
-    public function setUsername(?string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isActive(): bool
-    {
-        return $this->active;
-    }
-
-    /**
-     * @return TelegramChat
-     */
-    public function setActive(bool $active): self
-    {
-        $this->active = $active;
-
-        return $this;
-    }
-
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    /**
-     * @param User|null $user
-     */
-    public function setUser(?User $user): void
-    {
-        if ($user) {
-            $user->setTelegramChat($this);
-        }
-
-        $this->user = $user;
-    }
-
-    /**
-     * @return array
-     */
-    public function getNotifications(): array
-    {
-        return $this->notifications;
-    }
-
-    /**
-     * @param string $notification
-     *
-     * @return bool
-     */
-    public function isEnabledNotification(string $notification): bool
-    {
-        return in_array($notification, $this->notifications, true);
-    }
-
-    /**
-     * @return TelegramChat
-     */
-    public function addNotification(string $notification): self
-    {
-        if (!in_array($notification, $this->notifications, true)) {
-            $this->notifications[] = $notification;
-        }
-
-        return $this;
-    }
-
-    public function removeNotification(string $notification): void
-    {
-        $this->notifications = array_filter(
-            $this->notifications,
-            function ($item) use ($notification) {
-                return $notification !== $item;
-            }
-        )
-        ;
-    }
-
-    /**
-     * @return array
-     */
-    public static function getNotificationsTypes(): array
-    {
-        return [
-            'Comments' => self::NOTIFY_COMMENTS,
-            'Votes' => self::NOTIFY_VOTES,
-        ];
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getWelcomeMessage(): ?string
-    {
-        return $this->welcomeMessage;
-    }
-
-    /**
-     * @return TelegramChat
-     */
-    public function setWelcomeMessage(?string $welcomeMessage): self
-    {
-        $this->welcomeMessage = $welcomeMessage;
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    public function __toString(): string
-    {
-        return $this->getTitle() ?? $this->getUsername() ?? '';
     }
 }
