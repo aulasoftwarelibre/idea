@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.6.0] - Sun, 09 Sep 2018 20:54:39 +0200
+
+* Added generic chat class
+* Last updates
+* Fixed notice
+* First release for academic course 2018/2019 !!!
+
 ## [2.5.0] - Thu, 30 Aug 2018 13:33:58 +0200
 
 * Fixed GenericDataMapper problem with Collections
