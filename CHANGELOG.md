@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.7.0] - Mon, 10 Sep 2018 22:03:54 +0200
+
+* Fixed bugs
+
 ## [2.6.0] - Sun, 09 Sep 2018 20:54:39 +0200
 
 * Added generic chat class

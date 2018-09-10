@@ -40,6 +40,11 @@ class SendMessageToTelegramChatsHandler
         $message = $command->getMessage();
 
         $telegramChats = $this->repository->findBy(['active' => true]);
+
+        if (empty($telegramChats)) {
+            return;
+        }
+
         $recipients = array_map(function (TelegramChat $chat) {
             return $chat->getId();
         }, $telegramChats);
