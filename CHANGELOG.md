@@ -1,5 +1,9 @@
 # Changelog
 
+## [2.7.1] - Thu, 13 Sep 2018 17:48:51 +0200
+
+* Fixed bug adding a comment (#20)
+
 ## [2.7.0] - Mon, 10 Sep 2018 22:03:54 +0200
 
 * Fixed bugs
