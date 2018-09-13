@@ -68,7 +68,7 @@ class Comment extends BaseComment implements SignedCommentInterface
     /**
      * {@inheritdoc}
      */
-    public function getAuthor(): UserInterface
+    public function getAuthor(): ?UserInterface
     {
         return $this->author;
     }
