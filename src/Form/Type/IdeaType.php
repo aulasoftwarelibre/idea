@@ -16,17 +16,13 @@ namespace App\Form\Type;
 use App\Entity\Group;
 use App\Entity\Idea;
 use App\Entity\User;
-use App\Form\DataMapper\GenericDataMapper;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
-use Symfony\Component\Form\Exception;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class IdeaType extends AbstractType implements DataMapperInterface
 {
@@ -67,9 +63,9 @@ class IdeaType extends AbstractType implements DataMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    public function mapDataToForms($data, $forms)
+    public function mapDataToForms($data, $forms): void
     {
         $forms = iterator_to_array($forms);
 
@@ -79,9 +75,9 @@ class IdeaType extends AbstractType implements DataMapperInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
-    public function mapFormsToData($forms, &$data)
+    public function mapFormsToData($forms, &$data): void
     {
         $forms = iterator_to_array($forms);
 

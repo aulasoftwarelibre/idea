@@ -29,7 +29,6 @@ class TelegramChatPrivate extends TelegramChat
     }
 
     /**
-     * @param null|string $username
      * @return TelegramChatPrivate
      */
     public function setUsername(?string $username): self
@@ -38,7 +37,6 @@ class TelegramChatPrivate extends TelegramChat
 
         return $this;
     }
-
 
     /**
      * @return null|string
