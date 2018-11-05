@@ -15,7 +15,6 @@ namespace App\Repository;
 
 use App\Entity\TelegramChat;
 use App\Entity\TelegramChatGroup;
-use App\Entity\TelegramChatSuperGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 

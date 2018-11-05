@@ -13,7 +13,9 @@ declare(strict_types=1);
 
 namespace App\Admin;
 
+use App\Entity\Activity;
 use App\Entity\Participation;
+use App\Entity\User;
 use App\Form\DataMapper\GenericDataMapper;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
 use Sonata\AdminBundle\Datagrid\ListMapper;
@@ -26,7 +28,17 @@ class ParticipationAdmin extends AbstractAdmin
 {
     public function getNewInstance(): ?Participation
     {
-        return null;
+        /** @var null|ActivityAdmin $parent */
+        $parent = $this->getParent();
+
+        if (!$parent) {
+            return null;
+        }
+
+        /** @var Activity $activity */
+        $activity = $parent->getSubject();
+
+        return new Participation(new User(), $activity);
     }
 
     /**
