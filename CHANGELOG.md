@@ -1,5 +1,10 @@
 # Changelog
 
+## [2.7.2] - Mon, 05 Nov 2018 17:53:39 +0100
+
+* Fixed new participant form issue
+* Updated dependencies
+
 ## [2.7.1] - Thu, 13 Sep 2018 17:48:51 +0200
 
 * Fixed bug adding a comment (#20)
