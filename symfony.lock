@@ -119,6 +119,9 @@
     "ezyang/htmlpurifier": {
         "version": "v4.10.0"
     },
+    "facebook/webdriver": {
+        "version": "1.6.0"
+    },
     "fgrosse/phpasn1": {
         "version": "2.0.1"
     },
@@ -422,6 +425,9 @@
     "sgomez/botman-bundle": {
         "version": "v0.1.0"
     },
+    "slam/php-cs-fixer-extensions": {
+        "version": "v1.17.0"
+    },
     "slevomat/coding-standard": {
         "version": "4.6.3"
     },
@@ -635,6 +641,9 @@
     "symfony/orm-pack": {
         "version": "v1.0.5"
     },
+    "symfony/panther": {
+        "version": "v0.2.0"
+    },
     "symfony/phpunit-bridge": {
         "version": "4.1",
         "recipe": {
@@ -793,6 +802,9 @@
     },
     "symplify/token-runner": {
         "version": "v4.6.1"
+    },
+    "thecodingmachine/safe": {
+        "version": "v0.1.6"
     },
     "tightenco/collect": {
         "version": "v5.6.33"
