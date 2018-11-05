@@ -54,8 +54,8 @@ class TelegramSendCommand extends Command
         $io = new SymfonyStyle($input, $output);
         $message = $input->getArgument('msg');
 
-        if (empty($message)) {
-            $io->error('El mensaje está vacío');
+        if (empty($message) || !\is_string($message)) {
+            $io->error('El mensaje está vacío o no es válido');
 
             return;
         }
