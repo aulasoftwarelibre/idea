@@ -14,10 +14,10 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
     /**
      * @Route("/logout", name="logout")

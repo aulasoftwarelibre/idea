@@ -15,26 +15,26 @@ namespace App\EventListener;
 
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasCreatedEvent;
-use App\Messenger\TelegramChat\SendMessageToTelegramChatsCommand;
+use App\Message\TelegramChat\SendMessageToTelegramChatsCommand;
+use App\MessageBus\CommandBus;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 final class TelegramNotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
     /**
      * @var EngineInterface
      */
     private $engine;
 
-    public function __construct(MessageBusInterface $bus, EngineInterface $engine)
+    public function __construct(CommandBus $commandBus, EngineInterface $engine)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
         $this->engine = $engine;
     }
 
@@ -61,7 +61,7 @@ final class TelegramNotifyEventSubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->dispatch(new SendMessageToTelegramChatsCommand($message));
+        $this->commandBus->dispatch(new SendMessageToTelegramChatsCommand($message));
     }
 
     public function ideaWasCreated(IdeaWasCreatedEvent $event): void
@@ -76,6 +76,6 @@ final class TelegramNotifyEventSubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->dispatch(new SendMessageToTelegramChatsCommand($message));
+        $this->commandBus->dispatch(new SendMessageToTelegramChatsCommand($message));
     }
 }

@@ -9,8 +9,8 @@
         "ext-iconv": "*",
         "ext-json": "*",
         "botman/driver-telegram": "^1.5",
-        "doctrine/doctrine-migrations-bundle": "^1.3",
-        "exercise/htmlpurifier-bundle": "2.0.x-dev",
+        "doctrine/doctrine-migrations-bundle": "^2.0",
+        "exercise/htmlpurifier-bundle": "^2.0",
         "friendsofsymfony/ckeditor-bundle": "^1.1",
         "friendsofsymfony/comment-bundle": "^2.2",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
@@ -24,33 +24,34 @@
         "phpoffice/phpspreadsheet": "^1.4",
         "ramsey/uuid": "^3.8",
         "sensio/framework-extra-bundle": "^5.1",
-        "sensiolabs/security-checker": "^4.1",
         "sgomez/botman-bundle": "^0.2.0",
         "sonata-project/admin-bundle": "^3.38",
         "sonata-project/doctrine-orm-admin-bundle": "^3.6",
-        "sonata-project/formatter-bundle": "4.x-dev",
+        "sonata-project/formatter-bundle": "^4.1",
         "sonata-project/intl-bundle": "^2.5",
         "sonata-project/user-bundle": "^4.2",
         "spomky-labs/jose": "^7.1",
         "stof/doctrine-extensions-bundle": "^1.3",
-        "symfony/asset": "*",
-        "symfony/console": "*",
-        "symfony/expression-language": "*",
-        "symfony/flex": "^1.0",
-        "symfony/form": "*",
-        "symfony/framework-bundle": "*",
-        "symfony/messenger": "*",
+        "symfony/asset": "4.2.*",
+        "symfony/console": "4.2.*",
+        "symfony/dotenv": "4.2.*",
+        "symfony/expression-language": "4.2.*",
+        "symfony/flex": "^1.1",
+        "symfony/form": "4.2.*",
+        "symfony/framework-bundle": "4.2.*",
+        "symfony/messenger": "4.2.*",
         "symfony/monolog-bundle": "^3.1",
-        "symfony/orm-pack": "*",
-        "symfony/process": "*",
-        "symfony/security-bundle": "*",
-        "symfony/serializer-pack": "*",
+        "symfony/orm-pack": "1.0.*",
+        "symfony/process": "4.2.*",
+        "symfony/security-bundle": "4.2.*",
+        "symfony/serializer-pack": "1.0.*",
         "symfony/swiftmailer-bundle": "^3.1",
-        "symfony/twig-bundle": "*",
-        "symfony/validator": "*",
-        "symfony/web-link": "*",
+        "symfony/translation": "4.2.*",
+        "symfony/twig-bundle": "4.2.*",
+        "symfony/validator": "4.2.*",
+        "symfony/web-link": "4.2.*",
         "symfony/webpack-encore-pack": "^1.0",
-        "symfony/yaml": "*",
+        "symfony/yaml": "4.2.*",
         "vich/uploader-bundle": "^1.8",
         "white-october/pagerfanta-bundle": "^1.2"
     },
@@ -59,12 +60,11 @@
         "phpstan/phpstan-doctrine": "^0.10.0",
         "phpstan/phpstan-symfony": "^0.10.1",
         "symfony/debug-pack": "*",
-        "symfony/dotenv": "*",
         "symfony/maker-bundle": "^1.0",
         "symfony/profiler-pack": "*",
         "symfony/test-pack": "*",
         "symfony/web-server-bundle": "*",
-        "symplify/easy-coding-standard": "^4.6"
+        "symplify/easy-coding-standard": "^5.4"
     },
     "config": {
         "preferred-install": {
@@ -93,8 +93,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -112,7 +111,7 @@
     "extra": {
         "symfony": {
             "id": "01BTZNBWHBW8B65JX999E0TP91",
-            "require": "4.1.*",
+            "require": "4.2.*",
             "allow-contrib": true
         }
     }

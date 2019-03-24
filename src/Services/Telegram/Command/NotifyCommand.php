@@ -15,22 +15,22 @@ namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
 use App\Entity\TelegramChatPrivate;
-use App\Messenger\TelegramChat\DisableNotificationCommand;
-use App\Messenger\TelegramChat\EnableNotificationCommand;
+use App\Message\TelegramChat\DisableNotificationCommand;
+use App\Message\TelegramChat\EnableNotificationCommand;
+use App\MessageBus\CommandBus;
 use App\Repository\TelegramChatPrivateRepository;
 use BotMan\BotMan\BotMan;
 use BotMan\Drivers\Telegram\Extensions\Keyboard;
 use BotMan\Drivers\Telegram\Extensions\KeyboardButton;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Translation\TranslatorInterface;
 
 class NotifyCommand
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
     /**
      * @var TelegramChatPrivateRepository
      */
@@ -40,9 +40,9 @@ class NotifyCommand
      */
     private $translator;
 
-    public function __construct(MessageBusInterface $bus, TelegramChatPrivateRepository $repository, TranslatorInterface $translator)
+    public function __construct(CommandBus $commandBus, TelegramChatPrivateRepository $repository, TranslatorInterface $translator)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
         $this->repository = $repository;
         $this->translator = $translator;
     }
@@ -90,7 +90,7 @@ class NotifyCommand
             $command = new DisableNotificationCommand($message, $notification);
         }
 
-        $this->bus->dispatch($command);
+        $this->commandBus->dispatch($command);
         $keyboard = $this->createKeyboard($telegramChat);
 
         $parameters = [

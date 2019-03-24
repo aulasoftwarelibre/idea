@@ -53,16 +53,13 @@ parameters:
         - 'src/Kernel.php'
         - 'src/Migrations/*'
 
-    exclude_checkers:
-        # from symplify.yml set
-        - 'Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff'
-        - 'Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer'
-        - 'Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff'
-        - 'Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff'
-        - 'Symplify\CodingStandard\Sniffs\Property\DynamicPropertySniff'
-        - 'Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff'
-        - 'Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff'
-
     skip:
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableParameterTypeHintSpecification: ~
         SlevomatCodingStandard\Sniffs\TypeHints\TypeHintDeclarationSniff.MissingTraversableReturnTypeHintSpecification: ~
+        Symplify\CodingStandard\Sniffs\Architecture\ExplicitExceptionSniff: ~
+        Symplify\CodingStandard\Fixer\Naming\PropertyNameMatchingTypeFixer: ~
+        Symplify\CodingStandard\Sniffs\Naming\InterfaceNameSniff: ~
+        Symplify\CodingStandard\Sniffs\Naming\AbstractClassNameSniff: ~
+        Symplify\CodingStandard\Sniffs\Property\DynamicPropertySniff: ~
+        Symplify\CodingStandard\Sniffs\DependencyInjection\NoClassInstantiationSniff: ~
+        Symplify\CodingStandard\Sniffs\CleanCode\ForbiddenStaticFunctionSniff: ~

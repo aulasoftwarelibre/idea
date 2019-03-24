@@ -13,35 +13,35 @@ declare(strict_types=1);
 
 namespace App\Services\Telegram\Events;
 
-use App\Messenger\TelegramChat\NewChatMembersCommand;
-use App\Messenger\TelegramChat\SendWelcomeMessageCommand;
+use App\Message\TelegramChat\NewChatMembersCommand;
+use App\Message\TelegramChat\SendWelcomeMessageCommand;
+use App\MessageBus\CommandBus;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class NewChatMembersEvent
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(array $payload, BotMan $bot): void
     {
         $message = Message::fromIncomingMessage($bot->getMessage());
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new NewChatMembersCommand(
                 $message
             )
         );
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new SendWelcomeMessageCommand(
                 $message
             )

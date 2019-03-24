@@ -13,7 +13,8 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\Messenger\TelegramChat\SendMessageToTelegramChatsCommand;
+use App\Message\TelegramChat\SendMessageToTelegramChatsCommand;
+use App\MessageBus\CommandBus;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -26,11 +27,11 @@ class TelegramSendCommand extends Command
     /**
      * @var MessageBusInterface
      */
-    private $bus;
+    private $commandBus;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
 
         parent::__construct();
     }
@@ -60,7 +61,7 @@ class TelegramSendCommand extends Command
             return;
         }
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new SendMessageToTelegramChatsCommand(
                 $message
             )
