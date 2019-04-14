@@ -1,3 +1,6 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 
@@ -14,13 +17,8 @@ parameters:
 services:
     # default configuration for services in *this* file
     _defaults:
-        # automatically injects dependencies in your services
-        autowire: true
-        # automatically registers your services as commands, event subscribers, etc.
-        autoconfigure: true
-        # this means you cannot fetch services directly from the container via $container->get()
-        # if you need to do this, you can override this setting on individual services
-        public: false
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         bind:
             $mailFrom: '%mail_from%'
             $telegramPurifier: '@exercise_html_purifier.telegram'
@@ -29,20 +27,16 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/*'
-        # you can exclude directories or files
-        # but if a service is unused, it's removed anyway
-        exclude: '../src/{Admin,Entity,Menu,Migrations,Tests}'
+        exclude: '../src/{Admin,DependencyInjection,Entity,Menu,Migrations,Tests,Kernel.php}'
 
-    # controllers are imported separately to make sure they
-    # have the tag that allows actions to type-hint services
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
     App\Controller\:
         resource: '../src/Controller'
         tags: ['controller.service_arguments']
 
-    App\Messenger\:
-        resource: '%kernel.project_dir%/src/Messenger/**/*Handler.php'
-        public: true
-        tags: [messenger.message_handler]
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
 
     App\Services\Telegram\:
         resource: '%kernel.project_dir%/src/Services/Telegram/'
