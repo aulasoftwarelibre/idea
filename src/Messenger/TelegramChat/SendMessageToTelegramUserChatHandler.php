@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace App\Messenger\TelegramChat;
 
 use App\BotMan\Drivers\Telegram\TelegramDriver;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatRepository;
 use BotMan\BotMan\BotMan;
 
-class SendMessageToTelegramUserChatHandler
+class SendMessageToTelegramUserChatHandler implements CommandHandlerInterface
 {
     /**
      * @var BotMan

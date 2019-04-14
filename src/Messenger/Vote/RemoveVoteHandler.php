@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace App\Messenger\Vote;
 
 use App\Entity\Vote;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\VoteRepository;
 
-class RemoveVoteHandler
+class RemoveVoteHandler implements CommandHandlerInterface
 {
     /**
      * @var VoteRepository

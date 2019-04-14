@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChatPrivate;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatPrivateRepository;
 
-class DisableNotificationHandler
+class DisableNotificationHandler implements CommandHandlerInterface
 {
     /**
      * @var TelegramChatPrivateRepository

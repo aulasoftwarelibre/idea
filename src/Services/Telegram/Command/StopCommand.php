@@ -14,21 +14,21 @@ declare(strict_types=1);
 namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
+use App\MessageBus\CommandBus;
 use App\Messenger\TelegramChat\UnregisterUserChatCommand;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class StopCommand
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(BotMan $bot): void
@@ -39,14 +39,13 @@ class StopCommand
             return;
         }
 
-        $removed = $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new UnregisterUserChatCommand(
                 (string) $message->getChat()->getId()
             )
         );
 
-        if (true === $removed) {
-            $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
-        }
+        // TODO: check really registered before removed
+        $bot->reply('Se ha desactivado el chat. Para volver a registrarte acude a la web de actividades.');
     }
 }

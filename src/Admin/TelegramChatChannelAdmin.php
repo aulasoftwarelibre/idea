@@ -79,7 +79,6 @@ class TelegramChatChannelAdmin extends AbstractAdmin
             !array_key_exists('ok', $response) ||
             true !== $response['ok'] ||
             'channel' !== $response['result']['type']
-
         ) {
             throw new \RuntimeException(sprintf(
                 'Channel `%s` does not found. Error: %s',

@@ -19,7 +19,6 @@ return [
     FOS\UserBundle\FOSUserBundle::class => ['all' => true],
     Harmony\Bundle\UiBundle\HarmonyUiBundle::class => ['all' => true],
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
-    Knp\Bundle\MarkdownBundle\KnpMarkdownBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     Ornicar\GravatarBundle\OrnicarGravatarBundle::class => ['all' => true],
@@ -42,4 +41,6 @@ return [
     Leogout\Bundle\SeoBundle\LeogoutSeoBundle::class => ['all' => true],
     Sgomez\Bundle\BotmanBundle\BotmanBundle::class => ['all' => true],
     Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
+    Knp\Bundle\MarkdownBundle\KnpMarkdownBundle::class => ['all' => true],
+    Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
 ];

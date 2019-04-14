@@ -15,9 +15,10 @@ namespace App\Messenger\Vote;
 
 use App\Entity\Vote;
 use App\Exception\NoMoreSeatsLeftException;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\VoteRepository;
 
-class AddVoteHandler
+class AddVoteHandler implements CommandHandlerInterface
 {
     /**
      * @var VoteRepository

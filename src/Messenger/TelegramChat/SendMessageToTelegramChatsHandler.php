@@ -15,10 +15,11 @@ namespace App\Messenger\TelegramChat;
 
 use App\BotMan\Drivers\Telegram\TelegramDriver;
 use App\Entity\TelegramChat;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatRepository;
 use BotMan\BotMan\BotMan;
 
-class SendMessageToTelegramChatsHandler
+class SendMessageToTelegramChatsHandler implements CommandHandlerInterface
 {
     /**
      * @var TelegramChatRepository

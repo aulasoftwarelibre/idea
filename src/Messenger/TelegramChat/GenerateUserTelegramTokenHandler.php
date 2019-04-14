@@ -15,9 +15,10 @@ namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
 use App\Entity\User;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\UserRepository;
 
-class GenerateUserTelegramTokenHandler
+class GenerateUserTelegramTokenHandler implements CommandHandlerInterface
 {
     /**
      * @var UserRepository

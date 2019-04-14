@@ -15,21 +15,21 @@ namespace App\Services\Telegram\Command;
 
 use App\Entity\TelegramChat;
 use App\Entity\TelegramChatPrivate;
+use App\MessageBus\CommandBus;
 use App\Messenger\TelegramChat\RegisterUserChatCommand;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class StartCommand
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(BotMan $bot, string $token): void
@@ -40,7 +40,7 @@ class StartCommand
             return;
         }
 
-        $valid = $this->bus->dispatch(
+        $valid = $this->commandBus->dispatch(
             new RegisterUserChatCommand(
                 $message,
                 $token

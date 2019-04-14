@@ -13,10 +13,11 @@ declare(strict_types=1);
 
 namespace App\Messenger\Idea;
 
+use App\MessageBus\QueryHandlerInterface;
 use App\Repository\IdeaRepository;
 use Pagerfanta\Pagerfanta;
 
-class GetIdeasByGroupHandler
+class GetIdeasByGroupHandler implements QueryHandlerInterface
 {
     /**
      * @var IdeaRepository
