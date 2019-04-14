@@ -35,7 +35,6 @@ class OAuth2SimpleSAMLphpUserProvider extends FOSUBUserProvider
             throw new AccountNotLinkedException(sprintf('Email is empty.'));
         }
 
-
         $user = $this->userManager->findUserBy([$this->getProperty($response) => $username]);
         if ($user) {
             return $user;
