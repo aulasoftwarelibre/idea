@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace App\Messenger\Idea;
 
 use App\Entity\Thread;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\IdeaRepository;
 use App\Repository\ThreadRepository;
 
-class CloseIdeaHandler
+class CloseIdeaHandler implements CommandHandlerInterface
 {
     /**
      * @var IdeaRepository

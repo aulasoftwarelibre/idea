@@ -17,6 +17,7 @@ use App\Entity\Participation;
 use App\Entity\TelegramChat;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
+use App\MessageBus\CommandBus;
 use App\Messenger\TelegramChat\GenerateUserTelegramTokenCommand;
 use App\Messenger\TelegramChat\UnregisterUserChatCommand;
 use App\Repository\UserRepository;
@@ -27,7 +28,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -40,18 +40,18 @@ class ProfileController extends Controller
      */
     private $repository;
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
     /**
      * @var TelegramCachedCalls
      */
     private $telegram;
 
-    public function __construct(UserRepository $repository, MessageBusInterface $bus, TelegramCachedCalls $telegram)
+    public function __construct(UserRepository $repository, CommandBus $commandBus, TelegramCachedCalls $telegram)
     {
         $this->repository = $repository;
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
         $this->telegram = $telegram;
     }
 
@@ -130,7 +130,7 @@ class ProfileController extends Controller
             return new JsonResponse(['error' => 'Method not allowed'], Response::HTTP_METHOD_NOT_ALLOWED);
         }
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new UnregisterUserChatCommand(
                 $telegramChat->getId()
             )
@@ -169,7 +169,7 @@ class ProfileController extends Controller
         $profile = $this->repository->getProfile($user->getId());
         $botname = $this->telegram->getMe()->getUsername();
 
-        $token = $this->bus->dispatch(
+        $token = $this->commandBus->dispatch(
             new GenerateUserTelegramTokenCommand(
                 (string) $user->getId()
             )
@@ -188,7 +188,7 @@ class ProfileController extends Controller
         $user = $this->getUser();
         $botname = $this->telegram->getMe()->getUsername();
 
-        $token = $this->bus->dispatch(
+        $token = $this->commandBus->dispatch(
             new GenerateUserTelegramTokenCommand(
                 (string) $user->getId()
             )

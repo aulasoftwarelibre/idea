@@ -38,6 +38,13 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    App\MessageBus\CommandBus:
+        arguments: ['@messenger.bus.commands']
+    App\MessageBus\QueryBus:
+        arguments: ['@messenger.bus.queries']
+    App\MessageBus\EventBus:
+        arguments: ['@messenger.bus.events']
+
     App\Services\Telegram\:
         resource: '%kernel.project_dir%/src/Services/Telegram/'
         public: true

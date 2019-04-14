@@ -16,10 +16,11 @@ namespace App\Messenger\TelegramChat;
 use App\Entity\TelegramChat;
 use App\Entity\TelegramChatGroup;
 use App\Entity\TelegramChatSuperGroup;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatRepository;
 use Sgomez\Bundle\BotmanBundle\Services\Http\TelegramClient;
 
-class NewChatMembersHandler
+class NewChatMembersHandler implements CommandHandlerInterface
 {
     /**
      * @var TelegramChatRepository

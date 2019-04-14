@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace App\Messenger\Idea;
 
 use App\Entity\Idea;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\IdeaRepository;
 
-class RejectIdeaHandler
+class RejectIdeaHandler implements CommandHandlerInterface
 {
     /**
      * @var IdeaRepository

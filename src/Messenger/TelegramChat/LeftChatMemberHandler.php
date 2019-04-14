@@ -14,10 +14,11 @@ declare(strict_types=1);
 namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatRepository;
 use Sgomez\Bundle\BotmanBundle\Services\Http\TelegramClient;
 
-class LeftChatMemberHandler
+class LeftChatMemberHandler implements CommandHandlerInterface
 {
     /**
      * @var TelegramChatRepository

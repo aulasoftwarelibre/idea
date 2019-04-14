@@ -20,6 +20,8 @@ use App\Event\IdeaWasCreatedEvent;
 use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\Form\Type\IdeaType;
+use App\MessageBus\CommandBus;
+use App\MessageBus\QueryBus;
 use App\Messenger\Idea\AddIdeaCommand;
 use App\Messenger\Idea\ApproveIdeaCommand;
 use App\Messenger\Idea\CloseIdeaCommand;
@@ -40,7 +42,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -49,9 +50,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class IdeaController extends Controller
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
+    /**
+     * @var QueryBus
+     */
+    private $queryBus;
     /**
      * @var EventDispatcherInterface
      */
@@ -62,11 +67,13 @@ class IdeaController extends Controller
     private $seoGeneratorProvider;
 
     public function __construct(
-        MessageBusInterface $bus,
+        CommandBus $commandBus,
+        QueryBus $queryBus,
         EventDispatcherInterface $eventDispatcher,
         SeoGeneratorProvider $seoGeneratorProvider
     ) {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
         $this->eventDispatcher = $eventDispatcher;
         $this->seoGeneratorProvider = $seoGeneratorProvider;
     }
@@ -82,7 +89,7 @@ class IdeaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $idea = $this->bus->dispatch(
+            $idea = $this->commandBus->dispatch(
                 new AddIdeaCommand(
                     $form->getData()->getTitle(),
                     $form->getData()->getDescription(),
@@ -119,7 +126,7 @@ class IdeaController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $idea = $this->bus->dispatch(
+            $idea = $this->commandBus->dispatch(
                 new UpdateIdeaCommand(
                     $idea,
                     $form->getData()->getTitle(),
@@ -147,7 +154,7 @@ class IdeaController extends Controller
     public function joinAction(Idea $idea, Request $request): Response
     {
         try {
-            $this->bus->dispatch(
+            $this->commandBus->dispatch(
                 new AddVoteCommand(
                     $idea,
                     $this->getUser()
@@ -177,7 +184,7 @@ class IdeaController extends Controller
      */
     public function leaveAction(Idea $idea, Request $request): Response
     {
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new RemoveVoteCommand(
                 $idea,
                 $this->getUser()
@@ -195,7 +202,7 @@ class IdeaController extends Controller
      */
     public function openAction(Idea $idea, Request $request): Response
     {
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new CloseIdeaCommand(
                 $idea,
                 false
@@ -213,7 +220,7 @@ class IdeaController extends Controller
      */
     public function closeAction(Idea $idea, Request $request): Response
     {
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new CloseIdeaCommand(
                 $idea,
                 true
@@ -231,7 +238,7 @@ class IdeaController extends Controller
      */
     public function approveAction(Idea $idea, Request $request): Response
     {
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new ApproveIdeaCommand(
                 $idea
             )
@@ -255,7 +262,7 @@ class IdeaController extends Controller
      */
     public function rejectAction(Idea $idea, Request $request): Response
     {
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new RejectIdeaCommand(
                 $idea
             )
@@ -303,7 +310,7 @@ class IdeaController extends Controller
      */
     public function indexAction(int $page): Response
     {
-        $ideas = $this->bus->dispatch(
+        $ideas = $this->queryBus->query(
             new GetIdeasByPageQuery(
                 $page,
                 $this->isGranted('ROLE_ADMIN')
@@ -321,7 +328,7 @@ class IdeaController extends Controller
      */
     public function indexByGroupAction(Group $group, int $page): Response
     {
-        $ideas = $this->bus->dispatch(
+        $ideas = $this->queryBus->query(
             new GetIdeasByGroupQuery(
                 $page,
                 $group

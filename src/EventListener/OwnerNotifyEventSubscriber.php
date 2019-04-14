@@ -18,20 +18,20 @@ use App\Entity\TelegramChat;
 use App\Entity\TelegramChatPrivate;
 use App\Event\IdeaWasApprovedEvent;
 use App\Event\IdeaWasVotedEvent;
+use App\MessageBus\CommandBus;
 use App\Messenger\TelegramChat\SendMessageToTelegramUserChatCommand;
 use App\Repository\IdeaRepository;
 use FOS\CommentBundle\Event\CommentEvent;
 use FOS\CommentBundle\Events;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Templating\EngineInterface;
 
 final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
     /**
      * @var EngineInterface
@@ -44,11 +44,11 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
     private $ideaRepository;
 
     public function __construct(
-        MessageBusInterface $bus,
+        CommandBus $commandBus,
         EngineInterface $engine,
         IdeaRepository $ideaRepository
     ) {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
         $this->engine = $engine;
         $this->ideaRepository = $ideaRepository;
     }
@@ -92,7 +92,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
             'commenter' => $commenter,
         ]);
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
@@ -111,7 +111,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
             'idea' => $idea,
         ]);
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
@@ -132,7 +132,7 @@ final class OwnerNotifyEventSubscriber implements EventSubscriberInterface
             'voter' => $voter,
         ]);
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new SendMessageToTelegramUserChatCommand($telegramChat->getId(), $message)
         );
     }
