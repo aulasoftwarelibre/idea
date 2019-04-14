@@ -15,9 +15,10 @@ namespace App\Messenger\Idea;
 
 use App\Entity\Idea;
 use App\Entity\Vote;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\IdeaRepository;
 
-class AddIdeaHandler
+class AddIdeaHandler implements CommandHandlerInterface
 {
     /**
      * @var IdeaRepository

@@ -15,12 +15,13 @@ namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChatGroup;
 use App\Entity\TelegramChatSuperGroup;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatRepository;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\User;
 use Tightenco\Collect\Support\Collection;
 
-class SendWelcomeMessageHandler
+class SendWelcomeMessageHandler implements CommandHandlerInterface
 {
     /**
      * @var BotMan

@@ -15,10 +15,11 @@ namespace App\Messenger\TelegramChat;
 
 use App\Entity\TelegramChat;
 use App\Entity\TelegramChatPrivate;
+use App\MessageBus\CommandHandlerInterface;
 use App\Repository\TelegramChatPrivateRepository;
 use App\Repository\UserRepository;
 
-class RegisterUserChatHandler
+class RegisterUserChatHandler implements CommandHandlerInterface
 {
     /**
      * @var TelegramChatPrivateRepository

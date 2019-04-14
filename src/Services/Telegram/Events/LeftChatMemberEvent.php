@@ -13,28 +13,28 @@ declare(strict_types=1);
 
 namespace App\Services\Telegram\Events;
 
+use App\MessageBus\CommandBus;
 use App\Messenger\TelegramChat\LeftChatMemberCommand;
 use BotMan\BotMan\BotMan;
 use Sgomez\Bundle\BotmanBundle\Model\Telegram\Message;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class LeftChatMemberEvent
 {
     /**
-     * @var MessageBusInterface
+     * @var CommandBus
      */
-    private $bus;
+    private $commandBus;
 
-    public function __construct(MessageBusInterface $bus)
+    public function __construct(CommandBus $commandBus)
     {
-        $this->bus = $bus;
+        $this->commandBus = $commandBus;
     }
 
     public function __invoke(array $payload, BotMan $bot): void
     {
         $message = Message::fromIncomingMessage($bot->getMessage());
 
-        $this->bus->dispatch(
+        $this->commandBus->dispatch(
             new LeftChatMemberCommand(
                 $payload,
                 $message
