@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.0.0] - Mon, 15 Apr 2019 00:21:24 +0200
+
+* Updated to symfony 4.2
+* Updated logos
+
 ## [2.7.2] - Mon, 05 Nov 2018 17:53:39 +0100
 
 * Fixed new participant form issue
