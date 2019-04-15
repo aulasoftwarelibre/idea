@@ -1,5 +1,10 @@
 # Changelog
 
+## [3.1.0] - Mon, 15 Apr 2019 11:05:28 +0200
+ 
+ * Added API platform
+ * Added idea collection entry point
+
 ## [3.0.0] - Mon, 15 Apr 2019 00:21:24 +0200
 
 * Updated to symfony 4.2
