@@ -8,6 +8,7 @@
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
+        "api-platform/api-pack": "^1.2",
         "botman/driver-telegram": "^1.5",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "exercise/htmlpurifier-bundle": "^2.0",

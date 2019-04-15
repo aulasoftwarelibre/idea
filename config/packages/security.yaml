@@ -34,6 +34,7 @@ security:
     access_control:
         - { path: '^/login$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
         - { path: '^/admin', role: 'ROLE_SONATA_ADMIN' }
-        - { path: '^/api', role: 'ROLE_USER' }
+        - { path: '^/api/threads', role: 'ROLE_USER' }
+        - { path: '^/api', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
         - { path: '^/check', role: 'ROLE_USER' }
         - { path: '^/', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
