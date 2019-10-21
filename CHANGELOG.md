@@ -1,5 +1,9 @@
 # Changelog
 
+## [3.2.0] - Mon, 21 Oct 2019 17:22:40 +0200
+
+* Last git flow release
+
 ## [3.1.0] - Mon, 15 Apr 2019 11:05:28 +0200
  
  * Added API platform
