@@ -1,0 +1,10 @@
+knpu_oauth2_client:
+    clients:
+        # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
+        uco:
+            type: generic
+            provider_class: Uco\OAuth2\Client\Provider\Uco
+            client_id: '%env(CLIENT_ID)%'
+            client_secret: '%env(CLIENT_SECRET)%'
+            redirect_route: 'connect_uco_check'
+

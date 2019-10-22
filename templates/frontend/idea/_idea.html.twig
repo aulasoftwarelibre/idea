@@ -13,7 +13,7 @@
                 {% if idea.closed %}
                     {{ buttons.simple_label('closed', 'red') }}
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('hwi_oauth_connect')) }}
+                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('connect_uco_start')) }}
                 {% elseif is_granted('OWNER', idea) %}
                     {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
                 {% elseif is_voted(idea) %}
@@ -124,7 +124,7 @@
                                     ¿Quieres participar?
                                 </div>
                                 <p>
-                                    <a href="{{ path('hwi_oauth_connect') }}">Inicia sesión</a> para dejar un comentario.
+                                    <a href="{{ path('connect_uco_start') }}">Inicia sesión</a> para dejar un comentario.
                                 </p>
                             </div>
                         </div>
