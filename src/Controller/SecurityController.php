@@ -29,9 +29,10 @@ class SecurityController extends AbstractController
         return $clientRegistry
             ->getClient('uco')
             ->redirect([
-                'openid'
+                'openid',
             ]);
     }
+
     /**
      * @Route("/login/check-ssp", name="connect_uco_check")
      */
@@ -39,6 +40,7 @@ class SecurityController extends AbstractController
     {
         throw new RuntimeException('This method should not be called.');
     }
+
     /**
      * @Route("/logout", name="logout")
      */

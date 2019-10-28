@@ -6,7 +6,7 @@ parameters:
     reportUnmatchedIgnoredErrors: false
 
     symfony:
-        container_xml_path: var/cache/dev/srcDevDebugProjectContainer.xml
+        container_xml_path: var/cache/dev/srcApp_KernelDevDebugContainer.xml
 
     ignoreErrors:
         # Magic calls

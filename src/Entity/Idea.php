@@ -46,8 +46,6 @@ class Idea
     public const STATE_REJECTED = 'rejected';
     public const STATE_APPROVED = 'approved';
 
-    public const LIMITLESS = 0;
-
     /**
      * @var int
      * @ORM\Id()
@@ -56,6 +54,8 @@ class Idea
      * @ApiProperty(identifier=false)
      */
     private $id;
+
+    public const LIMITLESS = 0;
 
     /**
      * @var string

@@ -49,6 +49,7 @@
                 <div class="ui right dividing rail">
                     <div class="ui vertical stripe">
                         {% block side_menu %}
+                        {{ render(controller('App\\Controller\\IdeaController::getNextScheduledIdeas')) }}
                         {{ render(controller('App\\Controller\\IdeaController::getMoreVotesPendingIdeas')) }}
                         {% endblock %}
                     </div>

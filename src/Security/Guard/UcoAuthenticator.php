@@ -3,9 +3,9 @@
 declare(strict_types=1);
 
 /*
- * This file is part of the `scav` project.
+ * This file is part of the `idea` project.
  *
- * (c) Servicio de Informática de la Universidad de Córdoba
+ * (c) Aula de Software Libre de la UCO <aulasoftwarelibre@uco.es>
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -92,7 +92,6 @@ class UcoAuthenticator extends SocialAuthenticator
                 ->setEnabled(true);
         }
 
-
         $this->userManager->updateUser($user);
 
         return $user;
@@ -143,13 +142,8 @@ class UcoAuthenticator extends SocialAuthenticator
 
     /**
      * Returns the URL (if any) the user visited that forced them to login.
-     *
-     * @param Request $request
-     * @param string  $providerKey
-     *
-     * @return string|null
      */
-    protected function getTargetPath(Request $request, $providerKey): ?string
+    protected function getTargetPath(Request $request, string $providerKey): ?string
     {
         if (null === $request->getSession()) {
             return null;
