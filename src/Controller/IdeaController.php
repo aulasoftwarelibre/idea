@@ -36,9 +36,8 @@ use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
 use Leogout\Bundle\SeoBundle\Seo\Basic\BasicSeoGenerator;
 use Leogout\Bundle\SeoBundle\Seo\Og\OgSeoGenerator;
 use Leogout\Bundle\SeoBundle\Seo\Twitter\TwitterSeoGenerator;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -47,7 +46,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/idea")
  */
-class IdeaController extends Controller
+class IdeaController extends AbstractController
 {
     /**
      * @var CommandBus
@@ -79,8 +78,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/new", name="idea_new")
-     * @Method({"GET", "POST"})
+     * @Route("/new", name="idea_new", methods={"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function newAction(Request $request): Response
@@ -116,8 +114,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/edit", name="idea_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/{slug}/edit", name="idea_edit", methods={"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', idea)")
      */
     public function editAction(Idea $idea, Request $request): Response
@@ -147,8 +144,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/join", name="idea_join", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/join", name="idea_join", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function joinAction(Idea $idea, Request $request): Response
@@ -178,8 +174,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/leave", name="idea_leave", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/leave", name="idea_leave", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function leaveAction(Idea $idea, Request $request): Response
@@ -196,8 +191,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/open", name="idea_open", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/open", name="idea_open", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function openAction(Idea $idea, Request $request): Response
@@ -214,8 +208,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/close", name="idea_close", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/close", name="idea_close", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function closeAction(Idea $idea, Request $request): Response
@@ -232,8 +225,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/approve", name="idea_approve", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/approve", name="idea_approve", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function approveAction(Idea $idea, Request $request): Response
@@ -256,8 +248,7 @@ class IdeaController extends Controller
     }
 
     /**
-     * @Route("/{slug}/reject", name="idea_reject", options={"expose"=true})
-     * @Method({"POST"})
+     * @Route("/{slug}/reject", name="idea_reject", options={"expose"=true}, methods={"POST"})
      * @Security("is_granted('ROLE_ADMIN')")
      */
     public function rejectAction(Idea $idea, Request $request): Response
