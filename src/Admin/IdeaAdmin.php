@@ -21,6 +21,7 @@ use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
+use Sonata\Form\Type\DateTimePickerType;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
@@ -46,31 +47,45 @@ class IdeaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('title', null, [
-            ])
-            ->add('description', SimpleFormatterType::class, [
-                'format' => 'richhtml',
-                'ckeditor_context' => 'simple_toolbar',
-                'attr' => ['rows' => 20],
-            ])
-            ->add('closed', null, [
-            ])
-            ->add('private', null, [
-            ])
-            ->add('state', ChoiceType::class, [
-                'choices' => Idea::getStates(),
-            ])
-            ->add('owner', null, [
-                'placeholder' => 'Seleccione un usuario',
-            ])
-            ->add('group', null, [
-                'placeholder' => 'Seleccione un grupo',
-            ])
-            ->add('numSeats', null, [
-            ])
-            ->add('votes', SonataVoteType::class, [
-                'multiple' => true,
-                'required' => false,
+            ->with('block.content', ['class' => 'col-md-8'])
+                ->add('title', null, [
+                ])
+                ->add('description', SimpleFormatterType::class, [
+                    'format' => 'richhtml',
+                    'ckeditor_context' => 'simple_toolbar',
+                    'attr' => ['rows' => 20],
+                ])
+                ->add('group', null, [
+                    'placeholder' => 'Seleccione un grupo',
+                ])
+            ->end()
+            ->with('block.state', ['class' => 'col-md-4'])
+                ->add('closed', null, [
+                ])
+                ->add('private', null, [
+                ])
+                ->add('state', ChoiceType::class, [
+                    'choices' => Idea::getStates(),
+                ])
+                ->add('owner', null, [
+                    'placeholder' => 'Seleccione un usuario',
+                ])
+            ->end()
+            ->with('block.location', ['class' => 'col-md-4'])
+                ->add('location', null, [
+                    'required' => false,
+                ])
+                ->add('startsAt', DateTimePickerType::class, [
+                    'format' => 'd/M/y HH:mm',
+                    'required' => false,
+                ])
+            ->end()
+            ->with('block.votes', ['class' => 'col-md-12'])
+                ->add('numSeats', null, [
+                ])
+                ->add('votes', SonataVoteType::class, [
+                    'multiple' => true,
+                    'required' => false,
             ]);
 
         $form

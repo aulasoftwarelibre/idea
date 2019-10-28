@@ -63,6 +63,12 @@ Private: Privado
 
 batch.label_open: Abrir
 batch.label_close: Cerrar
+
+block.content: Contenido
+block.state: Estado
+block.location: Lugar
+block.votes: Votos
+
 flash_batch_close_error: Hubo un error al cerrar las ideas seleccionadas
 flash_batch_close_success: Se han cerrado las ideas seleccionadas
 flash_batch_open_error: Hubo un error al abrir las ideas seleccionadas
@@ -95,6 +101,8 @@ form.label_activity: Actividad
 form.label_closed: Cerrado
 form.label_created_at: Fecha creación
 form.label_description: Descripción
+form.label_location: Lugar
+form.label_starts_at: Día y hora
 form.label_group: Grupo
 form.label_name: Nombre
 form.label_owner: Propietario
