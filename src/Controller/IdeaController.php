@@ -336,8 +336,18 @@ class IdeaController extends AbstractController
     {
         $ideas = $ideaRepository->findFilteredByVotes();
 
-        return $this->render('frontend/idea/_ideas_block.html.twig', [
+        return $this->render('frontend/idea/_pending_ideas_block.html.twig', [
             'title' => 'Pendientes con más votos',
+            'ideas' => $ideas,
+        ]);
+    }
+
+    public function getNextScheduledIdeas(IdeaRepository $ideaRepository): Response
+    {
+        $ideas = $ideaRepository->findNextScheduled();
+
+        return $this->render('frontend/idea/_scheduled_ideas_block.html.twig', [
+            'title' => 'Próximas actividades',
             'ideas' => $ideas,
         ]);
     }

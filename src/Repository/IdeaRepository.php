@@ -79,7 +79,7 @@ class IdeaRepository extends ServiceEntityRepository
                 LEFT JOIN i.owner o
                 WHERE i.group = :groupId
                 ORDER BY i.createdAt DESC'
-        )->setParameter('groupId', $group);
+            )->setParameter('groupId', $group);
 
         return $this->createPaginator($query, $page);
     }
@@ -97,6 +97,22 @@ class IdeaRepository extends ServiceEntityRepository
                 ORDER BY COUNT (v.id) DESC 
             ')
             ->setParameter('status', Idea::STATE_PROPOSED)
+            ->setMaxResults(5)
+            ->execute();
+    }
+
+    public function findNextScheduled(): array
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT i
+                FROM App:Idea i
+                WHERE i.startsAt IS NOT NULL
+                AND i.startsAt > :now
+                AND i.state = :approved
+            ')
+            ->setParameter('now', new \DateTime())
+            ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();
     }
