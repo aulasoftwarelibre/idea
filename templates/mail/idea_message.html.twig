@@ -1,0 +1,75 @@
+{% extends "mail/base.html.twig" %}
+
+{% block body %}
+<table align="center" cellpadding="0" cellspacing="0" class="container-for-gmail-android" width="100%">
+    <tr>
+        <td align="left" valign="top" width="100%" style="background:repeat-x #ffffff;">
+            <center>
+                <table cellspacing="0" cellpadding="0" width="100%" bgcolor="#ffffff" style="background-color:transparent">
+                    <tr>
+                        <td width="100%" height="80" valign="top" style="text-align: center; vertical-align:middle;">
+                            <center>
+                                <table cellpadding="0" cellspacing="0" width="600" class="w320">
+                                    <tr>
+                                        <td class="pull-left mobile-header-padding-left" style="vertical-align: middle;">
+                                            <a href="https://www.uco.es/aulasoftwarelibre"><img width="300" src="cid:logo" alt="logo"></a>
+                                        </td>
+                                        <td class="pull-right mobile-header-padding-right" style="color: #4d4d4d;">
+                                            <a href="https://www.facebook.com/aulasoftwarelibre/"><img src="cid:facebook" alt="facebook" /></a>
+                                            <a href="https://www.instagram.com/aulasoftwarelibre/"><img src="cid:instagram" alt="instagram" /></a>
+                                            <a href="http://telegram.me/AulaSoftwareLibre"><img src="cid:telegram" alt="telegram" /></a>
+                                            <a href="https://twitter.com/aulasl"><img  src="cid:twitter" alt="twitter" /></a>
+                                            <a href="https://www.youtube.com/channel/UCfWiR5j-cbKcGTi9faK8P6w"><img width="32" height="32" src="cid:youtube" alt="youtube" /></a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </center>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+    <tr>
+        <td class="content-padding">
+            <center>
+                <table class="w320" bgcolor="#ffffff">
+                    <tr>
+                        <td class="header-lg">
+                            {{ idea.title }}
+                            <div class="header-sm">
+                                Organizado por {{ idea.group }}.
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="free-text">
+                            {{ comment | raw }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="button">
+                            <div>
+                                <a class="button-mobile" href="{{ url('idea_show', { 'slug': idea.slug }) }}">
+                                    Ir a la actividad
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </center>
+        </td>
+    </tr>
+    <tr class="gray">
+        <container class="w320">
+            <row>
+                <columns>
+                    <strong>Aula de Software Libre de la Universidad de Córdoba</strong><br />
+                    Aulario Averroes | Campus de Rabanales<br />
+                    Córdoba 14014<br /><br />
+                </columns>
+            </row>
+        </container>
+    </tr>
+</table>
+{% endblock %}

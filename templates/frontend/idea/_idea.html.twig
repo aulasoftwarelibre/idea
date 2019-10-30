@@ -74,6 +74,7 @@
                                 {{ buttons.js_icon_button('reject_idea', 'thumbs down outline', idea.slug, 'reject idea') }}
                             {% endif %}
                             {{ buttons.icon_button('edit_idea', 'pencil', path('admin_app_idea_edit', {id: idea.id})) }}
+                            {{ buttons.icon_button('idea_send_message', 'mail', path('idea_send_message', {slug: idea.slug})) }}
                         </div>
                     </div>
                 </div>

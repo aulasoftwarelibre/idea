@@ -1,0 +1,15 @@
+{% apply inky_to_html|inline_css(source('@css/mail.css')) %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Aula de Software Libre</title>
+</head>
+
+<body bgcolor="#f7f7f7">
+    <!-- Wrapper for the body of the email -->
+    {% block body %}{% endblock %}
+</body>
+</html>
+{% endapply %}
