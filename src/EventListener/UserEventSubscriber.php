@@ -63,7 +63,7 @@ class UserEventSubscriber implements EventSubscriberInterface
         $user = $token->getUser();
         if (
             false === $user->getHasProfile()
-            && 'App\Controller\ProfileController::editAction' !== $controller
+            && 'App\Controller\Profile\EditProfileController' !== $controller
             && 'App\Controller\SecurityController::logout' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {

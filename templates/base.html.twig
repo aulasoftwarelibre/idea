@@ -35,7 +35,7 @@
             {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
+                {{ render(controller('App\\Controller\\Profile\\ShowMenuProfileEmbedController')) }}
             {% else %}
                 <a class="floated right item" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
             {% endif %}
