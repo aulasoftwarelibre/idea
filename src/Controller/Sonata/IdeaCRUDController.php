@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Controller;
+namespace App\Controller\Sonata;
 
 use App\Entity\Idea;
 use Sonata\AdminBundle\Controller\CRUDController;
