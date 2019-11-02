@@ -58,15 +58,6 @@
                             {{ form_row(form.year) }}
                             {% endif %}
 
-                            {# Configuración de telegram #}
-                            {% if app.user.telegramChat is not null %}
-                                {{ form_row(form.telegramChat) }}
-
-                                <div class="ui mini message">
-                                    Actívalos para recibir comentarios en las ideas que has creado.
-                                </div>
-                            {% endif %}
-
                             <div class="ui divider"></div>
                             <div class="ui submit button">Guardar</div>
 

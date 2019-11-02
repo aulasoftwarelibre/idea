@@ -49,10 +49,6 @@ services:
     api_platform.message_bus:
         alias: 'messenger.bus.commands'
 
-    App\Services\Telegram\:
-        resource: '%kernel.project_dir%/src/Services/Telegram/'
-        public: true
-
     Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'
 
     App\DataProvider\IdeaCollectionDataProvider:

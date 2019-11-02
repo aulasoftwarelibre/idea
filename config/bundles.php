@@ -37,7 +37,6 @@ return [
     Http\HttplugBundle\HttplugBundle::class => ['all' => true],
     Exercise\HTMLPurifierBundle\ExerciseHTMLPurifierBundle::class => ['all' => true],
     Leogout\Bundle\SeoBundle\LeogoutSeoBundle::class => ['all' => true],
-    Sgomez\Bundle\BotmanBundle\BotmanBundle::class => ['all' => true],
     Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
     Symfony\WebpackEncoreBundle\WebpackEncoreBundle::class => ['all' => true],
     Nelmio\CorsBundle\NelmioCorsBundle::class => ['all' => true],

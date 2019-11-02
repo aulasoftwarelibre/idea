@@ -81,13 +81,6 @@ class ProfileType extends AbstractType
                 'label' => 'Año de ingreso',
             ])
         ;
-
-        if ($profile->getTelegramChat()) {
-            $builder
-                ->add('telegramChat', ProfileTelegramOptionsType::class, [
-                ])
-            ;
-        }
     }
 
     /**

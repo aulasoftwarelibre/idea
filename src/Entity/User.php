@@ -17,7 +17,6 @@ use App\Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -81,25 +80,6 @@ class User extends BaseUser implements EquatableInterface
      * @Assert\Regex("/[\w\d_]/u", message="form.label_alias_invalid")
      */
     protected $alias = '';
-
-    /**
-     * @var TelegramChatPrivate|null
-     * @ORM\OneToOne(targetEntity="App\Entity\TelegramChatPrivate", inversedBy="user")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    protected $telegramChat;
-
-    /**
-     * @var string|null
-     * @ORM\Column(length=100, nullable=true)
-     */
-    protected $telegramSecretToken;
-
-    /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $telegramSecretTokenExpiresAt;
 
     /**
      * @var string|null
@@ -284,52 +264,6 @@ class User extends BaseUser implements EquatableInterface
     public function setAlias(?string $alias): self
     {
         $this->alias = $alias;
-
-        return $this;
-    }
-
-    /**
-     * @return TelegramChatPrivate|null
-     */
-    public function getTelegramChat(): ?TelegramChat
-    {
-        return $this->telegramChat;
-    }
-
-    /**
-     * @return User
-     */
-    public function setTelegramChat(?TelegramChatPrivate $telegramChat): self
-    {
-        $this->telegramChat = $telegramChat;
-        $this->telegramSecretToken = null;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTelegramSecretToken(): ?string
-    {
-        return $this->telegramSecretToken;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getTelegramSecretTokenExpiresAt(): ?\DateTime
-    {
-        return $this->telegramSecretTokenExpiresAt;
-    }
-
-    /**
-     * Create new token.
-     */
-    public function generateNewSecretToken(): self
-    {
-        $this->telegramSecretToken = trim(base64_encode(Uuid::uuid4()->toString()), '=');
-        $this->telegramSecretTokenExpiresAt = new \DateTime('+10 minutes'); // 10 minutes
 
         return $this;
     }

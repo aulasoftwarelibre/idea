@@ -21,17 +21,6 @@ sonata_admin:
                 - 'eco.admin.degree'
                 roles:
                     - 'ROLE_ADMIN'
-            app.admin.messages:
-                label: 'group.messages'
-                label_catalogue: 'messages'
-                icon: '<i class="fa fa-telegram"></i>'
-                items:
-                - 'eco.admin.telegram_chat_private'
-                - 'eco.admin.telegram_chat_super_group'
-                - 'eco.admin.telegram_chat_group'
-                - 'eco.admin.telegram_chat_channel'
-                roles:
-                    - 'ROLE_SUPER_ADMIN'
             app.admin.user:
                 label: 'sonata_user'
                 label_catalogue: 'SonataUserBundle'
