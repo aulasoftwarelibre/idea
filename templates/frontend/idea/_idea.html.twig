@@ -13,7 +13,7 @@
                 {% if idea.closed %}
                     {{ buttons.simple_label('closed', 'red') }}
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('connect_uco_start')) }}
+                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('login')) }}
                 {% elseif is_granted('OWNER', idea) %}
                     {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
                 {% elseif is_voted(idea) %}
@@ -100,7 +100,11 @@
                                 {% else %}
                                     <img src="{{ asset('assets/images/default.png') }}">
                                 {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                 {{ user.username }}
+                                {% else %}
+                                {{ user.alias }}
+                                {% endif %}
                             </a>
                         {% else %}
                             <span class="ui label">No hay participantes</span>
@@ -125,7 +129,7 @@
                                     ¿Quieres participar?
                                 </div>
                                 <p>
-                                    <a href="{{ path('connect_uco_start') }}">Inicia sesión</a> para dejar un comentario.
+                                    <a href="{{ path('login') }}">Inicia sesión</a> para dejar un comentario.
                                 </p>
                             </div>
                         </div>

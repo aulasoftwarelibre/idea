@@ -4,7 +4,18 @@ knpu_oauth2_client:
         uco:
             type: generic
             provider_class: Uco\OAuth2\Client\Provider\Uco
-            client_id: '%env(CLIENT_ID)%'
-            client_secret: '%env(CLIENT_SECRET)%'
+            client_id: '%env(CLIENT_UCO_ID)%'
+            client_secret: '%env(CLIENT_UCO_SECRET)%'
             redirect_route: 'connect_uco_check'
 
+        google:
+            type: google
+            client_id: '%env(CLIENT_GOOGLE_ID)%'
+            client_secret: '%env(CLIENT_GOOGLE_SECRET)%'
+            redirect_route: 'connect_google_check'
+
+        github:
+            type: github
+            client_id: '%env(CLIENT_GITHUB_ID)%'
+            client_secret: '%env(CLIENT_GITHUB_SECRET)%'
+            redirect_route: 'connect_github_check'

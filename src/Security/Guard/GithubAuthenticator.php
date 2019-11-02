@@ -17,7 +17,10 @@ use App\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
+use KnpU\OAuth2ClientBundle\Client\Provider\GithubClient;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use League\OAuth2\Client\Provider\GithubResourceOwner;
+use League\OAuth2\Client\Token\AccessTokenInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,13 +28,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Uco\OAuth2\Client\Provider\UcoResourceOwner;
 
-class UcoAuthenticator extends SocialAuthenticator
+class GithubAuthenticator extends SocialAuthenticator
 {
-    use TargetPathTrait;
-
     /**
      * @var ClientRegistry
      */
@@ -60,7 +59,7 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'connect_uco_check' === $request->attributes->get('_route');
+        return 'connect_github_check' === $request->attributes->get('_route');
     }
 
     /**
@@ -76,17 +75,19 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var UcoResourceOwner $userResource */
+        /** @var GithubResourceOwner $userResource */
         $userResource = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
-        $userResourceId = $userResource->getId();
+        $userResourceId = $userResource->getId() . '@github.com';
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
         if (!$user) {
-            $user = User::createUcoUser($userResourceId);
+            $user = User::createExternalUser($userResourceId);
         }
 
+        $email = $this->getEmailFromGithub($credentials);
+        $user->setEmail($email);
         $user->setLastLogin(new \DateTime());
         $this->userManager->updateUser($user);
 
@@ -108,7 +109,7 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+        $targetPath = $this->getTargetPath($request, $providerKey);
 
         if (!$targetPath) {
             // Change it to your default target
@@ -124,15 +125,54 @@ class UcoAuthenticator extends SocialAuthenticator
     public function start(Request $request, ?AuthenticationException $authException = null)
     {
         return new RedirectResponse(
-            $this->router->generate('connect_uco_start'),
+            $this->router->generate('connect_github_start'),
             Response::HTTP_TEMPORARY_REDIRECT
         );
     }
 
+    /**
+     * @return OAuth2Client|GithubClient
+     */
     private function getClient(): OAuth2Client
     {
         return $this
             ->clientRegistry
-            ->getClient('uco');
+            ->getClient('github');
+    }
+
+    /**
+     * Returns the URL (if any) the user visited that forced them to login.
+     */
+    protected function getTargetPath(Request $request, string $providerKey): ?string
+    {
+        if (null === $request->getSession()) {
+            return null;
+        }
+
+        return $request->getSession()->get('_security.' . $providerKey . '.target_path');
+    }
+
+    /**
+     * @param AccessTokenInterface|string $credentials
+     *
+     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     */
+    private function getEmailFromGithub($credentials): string
+    {
+        $provider = $this->getClient()->getOAuth2Provider();
+        $request = $provider->getAuthenticatedRequest(
+            'GET',
+            'https://api.github.com/user/emails',
+            $credentials
+        );
+        $response = $provider->getParsedResponse($request);
+
+        return array_reduce($response, static function ($current, $email) {
+            if ($email['primary']) {
+                return $email['email'];
+            }
+
+            return $current;
+        }, '');
     }
 }

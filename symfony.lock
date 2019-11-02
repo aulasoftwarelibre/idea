@@ -283,6 +283,12 @@
     "league/oauth2-client": {
         "version": "2.4.1"
     },
+    "league/oauth2-github": {
+        "version": "2.0.0"
+    },
+    "league/oauth2-google": {
+        "version": "3.0.1"
+    },
     "leogout/seo-bundle": {
         "version": "1.0",
         "recipe": {

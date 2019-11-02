@@ -18,6 +18,8 @@
         "harmony-project/ui-bundle": "^1.1",
         "informaticauco/oauth2-uco": "^0.4.0",
         "knpuniversity/oauth2-client-bundle": "^1.28",
+        "league/oauth2-github": "^2.0",
+        "league/oauth2-google": "^3.0",
         "leogout/seo-bundle": "^1.2",
         "liip/imagine-bundle": "^2.1",
         "ornicar/gravatar-bundle": "^1.3",

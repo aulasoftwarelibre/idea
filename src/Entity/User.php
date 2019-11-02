@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -31,7 +32,19 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
+ * @ORM\AttributeOverrides({
+ *     @ORM\AttributeOverride(name="emailCanonical",
+ *         column=@ORM\Column(
+ *              name="email_canonical",
+ *              type="string",
+ *              length=255,
+ *              nullable=true,
+ *              unique=false,
+ *         )
+ *     )
+ * })
  * @Vich\Uploadable()
+ * @Validator\Alias()
  */
 class User extends BaseUser implements EquatableInterface
 {
@@ -49,15 +62,25 @@ class User extends BaseUser implements EquatableInterface
     protected $id;
 
     /**
-     * @var string
-     * @ORM\Column(name="ssp_id", type="string", length=50, unique=true, nullable=true)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    protected $ssp_id;
+    protected $isExternal;
 
     /**
-     * @var string
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    protected $sspAccessToken;
+    protected $hasProfile = false;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=16)
+     * @Assert\Regex("/[\w\d_]/u", message="form.label_alias_invalid")
+     */
+    protected $alias = '';
 
     /**
      * @var TelegramChatPrivate|null
@@ -148,6 +171,35 @@ class User extends BaseUser implements EquatableInterface
      */
     protected $groups;
 
+    public static function createUcoUser(string $username): self
+    {
+        $user = new self();
+        $user
+            ->setUsername($username)
+            ->setEmail("{$username}@uco.es")
+            ->setPassword('!')
+            ->setIsExternal(false)
+            ->setEnabled(true)
+        ;
+
+        return $user;
+    }
+
+    public static function createExternalUser(string $email): self
+    {
+        $user = new self();
+        $user
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('!')
+            ->setIsExternal(true)
+            ->setEnabled(true)
+            ->setCollective(self::EXTERNAL)
+        ;
+
+        return $user;
+    }
+
     /**
      * User constructor.
      */
@@ -183,38 +235,55 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSspId(): string
+    public function getHasProfile(): bool
     {
-        return $this->ssp_id;
+        return $this->hasProfile;
     }
 
     /**
      * @return User
      */
-    public function setSspId(string $ssp_id): self
+    public function setHasProfile(bool $hasProfile): self
     {
-        $this->ssp_id = $ssp_id;
-        $this->username = $ssp_id;
+        $this->hasProfile = $hasProfile;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSspAccessToken(): string
+    public function isExternal(): bool
     {
-        return $this->sspAccessToken;
+        return $this->isExternal;
     }
 
     /**
      * @return User
      */
-    public function setSspAccessToken(string $sspAccessToken): self
+    public function setIsExternal(bool $isExternal): self
     {
-        $this->sspAccessToken = $sspAccessToken;
+        $this->isExternal = $isExternal;
+
+        return $this;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getAlias(): ?string
+    {
+        return $this->alias;
+    }
+
+    /**
+     * @return User
+     */
+    public function setAlias(?string $alias): self
+    {
+        $this->alias = $alias;
 
         return $this;
     }

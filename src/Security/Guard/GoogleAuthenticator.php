@@ -25,13 +25,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Http\Util\TargetPathTrait;
-use Uco\OAuth2\Client\Provider\UcoResourceOwner;
 
-class UcoAuthenticator extends SocialAuthenticator
+class GoogleAuthenticator extends SocialAuthenticator
 {
-    use TargetPathTrait;
-
     /**
      * @var ClientRegistry
      */
@@ -60,7 +56,7 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'connect_uco_check' === $request->attributes->get('_route');
+        return 'connect_google_check' === $request->attributes->get('_route');
     }
 
     /**
@@ -76,15 +72,14 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var UcoResourceOwner $userResource */
         $userResource = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
-        $userResourceId = $userResource->getId();
+        $userResourceId = $userResource->toArray()['email'];
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
         if (!$user) {
-            $user = User::createUcoUser($userResourceId);
+            $user = User::createExternalUser($userResourceId);
         }
 
         $user->setLastLogin(new \DateTime());
@@ -108,7 +103,7 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+        $targetPath = $this->getTargetPath($request, $providerKey);
 
         if (!$targetPath) {
             // Change it to your default target
@@ -124,7 +119,7 @@ class UcoAuthenticator extends SocialAuthenticator
     public function start(Request $request, ?AuthenticationException $authException = null)
     {
         return new RedirectResponse(
-            $this->router->generate('connect_uco_start'),
+            $this->router->generate('connect_google_start'),
             Response::HTTP_TEMPORARY_REDIRECT
         );
     }
@@ -133,6 +128,18 @@ class UcoAuthenticator extends SocialAuthenticator
     {
         return $this
             ->clientRegistry
-            ->getClient('uco');
+            ->getClient('google');
+    }
+
+    /**
+     * Returns the URL (if any) the user visited that forced them to login.
+     */
+    protected function getTargetPath(Request $request, string $providerKey): ?string
+    {
+        if (null === $request->getSession()) {
+            return null;
+        }
+
+        return $request->getSession()->get('_security.' . $providerKey . '.target_path');
     }
 }

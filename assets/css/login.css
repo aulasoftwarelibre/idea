@@ -6,9 +6,12 @@ body {
 body > .grid {
     height: 100%;
 }
-.image {
+
+#logo {
     margin-top: -100px;
+    padding: 10px;
+    background: white;
 }
 .column {
-    max-width: 450px;
+    max-width: 650px;
 }
