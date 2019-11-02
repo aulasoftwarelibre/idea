@@ -11,7 +11,7 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Controller;
+namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\Form\Dto\IdeaMessageDto;
@@ -24,7 +24,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class IdeaSendMessageController extends AbstractController
+/**
+ * @Route("/idea/{slug}/message", name="idea_send_message", methods={"GET", "POST"})
+ * @Security("is_granted('ROLE_ADMIN')")
+ */
+class SendMessageIdeaController extends AbstractController
 {
     /**
      * @var CommandBus
@@ -36,10 +40,6 @@ class IdeaSendMessageController extends AbstractController
         $this->commandBus = $commandBus;
     }
 
-    /**
-     * @Route("/idea/{slug}/message", name="idea_send_message", methods={"GET", "POST"})
-     * @Security("is_granted('ROLE_ADMIN')")
-     */
     public function __invoke(Idea $idea, Request $request): Response
     {
         $form = $this->createForm(IdeaMessageType::class, new IdeaMessageDto());
