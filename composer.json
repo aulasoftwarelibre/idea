@@ -8,7 +8,6 @@
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
-        "api-platform/api-pack": "^1.2",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "exercise/htmlpurifier-bundle": "^2.0",
         "friendsofsymfony/ckeditor-bundle": "^1.0",
