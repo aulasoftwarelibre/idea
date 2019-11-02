@@ -111,25 +111,57 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @var Participation[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Participation",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $participations;
 
     /**
      * @var Idea[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Idea",
+     *     mappedBy="owner",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $ideas;
 
     /**
      * @var Vote[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Vote",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $votes;
 
     /**
+     * @var Comment[]|Collection
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Comment",
+     *     mappedBy="author",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $comments;
+
+    /**
      * @var File|UploadedFile|null
-     * @Vich\UploadableField(mapping="avatars", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName")
+     * @Vich\UploadableField(
+     *     mapping="avatars",
+     *     fileNameProperty="image.name",
+     *     size="image.size",
+     *     mimeType="image.mimeType",
+     *     originalName="image.originalName"
+     * )
      */
     private $imageFile;
 

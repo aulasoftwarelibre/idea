@@ -82,7 +82,6 @@ class GoogleAuthenticator extends SocialAuthenticator
             $user = User::createExternalUser($userResourceId);
         }
 
-        $user->setLastLogin(new \DateTime());
         $this->userManager->updateUser($user);
 
         return $user;

@@ -57,11 +57,11 @@ class JoinIdeaVoter extends Voter
 
     private function checkUserCanJoin(User $user, Idea $subject): bool
     {
-        if (!$this->checkFreeSeats($subject)) {
+        if (false === $this->checkFreeSeats($subject)) {
             return false;
         }
 
-        if (!$this->checkOpenForExternal($user, $subject)) {
+        if (false === $this->checkOpenForExternal($user, $subject)) {
             return false;
         }
 

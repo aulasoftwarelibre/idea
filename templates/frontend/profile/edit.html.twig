@@ -60,6 +60,10 @@
 
                             <div class="ui divider"></div>
                             <div class="ui submit button">Guardar</div>
+                            <div class="ui negative labeled icon button" id="remove">
+                                <i class="warning icon"></i>
+                                Borrar usuario
+                            </div>
 
                             {{ form_widget(form._token) }}
                             {{ form_end(form, {'render_rest': false}) }}
@@ -69,6 +73,32 @@
             </div>
         </div>
     </div>
+{% endblock %}
+
+{% block modal %}
+        <div class="ui remove tiny modal">
+                <div class="header">Borrar usuario</div>
+                <div class="content">
+                    <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
+                    a las actividades que haya asistido.</p>
+                    <p>Escriba "Estoy seguro" y pulse Confirmar para continuar.</p>
+                    <div class="ui input">
+                        <input name="iamsure" type="text" placeholder="Estoy seguro">
+                    </div>
+                </div>
+                <div class="actions">
+                    <form action="{{ path('profile_remove') }}" method="post" >
+                        <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                        <div class="ui black deny button">
+                            Cancelar
+                        </div>
+                        <button type="submit" class="ui disabled positive right labeled icon button">
+                            Confirmar
+                            <i class="checkmark icon"></i>
+                        </button>
+                    </form>
+                </div>
+        </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -133,5 +163,25 @@
                 }
             })
         ;
+
+        $('.remove.modal')
+            .modal('attach events', '#remove', 'show')
+        ;
+
+        $('input[name=iamsure]').on('input', function(e) {
+            const button = $('.remove.modal button');
+            const message = $(this).val()
+
+            if (message === "Estoy seguro") {
+                button.removeClass('disabled');
+                return;
+            }
+
+            if (button.hasClass('disabled')) {
+                return;
+            }
+
+            button.addClass('disabled');
+        })
     </script>
 {% endblock %}

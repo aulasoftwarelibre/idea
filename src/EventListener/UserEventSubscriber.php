@@ -13,6 +13,9 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
+use App\Controller\Profile\EditProfileController;
+use App\Controller\Profile\RemoveProfileController;
+use App\Controller\Security\LogoutController;
 use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -63,8 +66,9 @@ class UserEventSubscriber implements EventSubscriberInterface
         $user = $token->getUser();
         if (
             false === $user->getHasProfile()
-            && 'App\Controller\Profile\EditProfileController' !== $controller
-            && 'App\Controller\SecurityController::logout' !== $controller
+            && EditProfileController::class !== $controller
+            && RemoveProfileController::class !== $controller
+            && LogoutController::class !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {
             $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));

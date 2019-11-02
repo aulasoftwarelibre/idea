@@ -88,7 +88,6 @@ class GithubAuthenticator extends SocialAuthenticator
 
         $email = $this->getEmailFromGithub($credentials);
         $user->setEmail($email);
-        $user->setLastLogin(new \DateTime());
         $this->userManager->updateUser($user);
 
         return $user;

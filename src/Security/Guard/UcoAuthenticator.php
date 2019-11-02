@@ -87,7 +87,6 @@ class UcoAuthenticator extends SocialAuthenticator
             $user = User::createUcoUser($userResourceId);
         }
 
-        $user->setLastLogin(new \DateTime());
         $this->userManager->updateUser($user);
 
         return $user;
