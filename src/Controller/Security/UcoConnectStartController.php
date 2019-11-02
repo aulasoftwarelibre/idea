@@ -11,24 +11,23 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class SecurityUcoProviderController extends AbstractController
+/**
+ * @Route("/connect/uco", name="connect_uco_start")
+ */
+class UcoConnectStartController extends AbstractController
 {
     use TargetPathTrait;
 
-    /**
-     * @Route("/connect/uco", name="connect_uco_start")
-     */
-    public function connect(Request $request, ClientRegistry $clientRegistry): Response
+    public function __invoke(Request $request, ClientRegistry $clientRegistry): Response
     {
         if ($targetPath = $request->query->get('_target_path')) {
             $this->saveTargetPath($request->getSession(), 'main', $targetPath);
@@ -39,13 +38,5 @@ class SecurityUcoProviderController extends AbstractController
             ->redirect([
                 'openid',
             ]);
-    }
-
-    /**
-     * @Route("/connect/uco/check", name="connect_uco_check")
-     */
-    public function check(): void
-    {
-        throw new RuntimeException('This method should not be called.');
     }
 }

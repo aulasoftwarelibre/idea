@@ -11,42 +11,33 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace App\Controller;
+namespace App\Controller\Security;
 
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class SecurityGoogleProviderController extends AbstractController
+/**
+ * @Route("/connect/github", name="connect_github_start")
+ */
+class GithubConnectStartController extends AbstractController
 {
     use TargetPathTrait;
 
-    /**
-     * @Route("/connect/google", name="connect_google_start")
-     */
-    public function connect(Request $request, ClientRegistry $clientRegistry): Response
+    public function __invoke(Request $request, ClientRegistry $clientRegistry): Response
     {
         if ($targetPath = $request->query->get('_target_path')) {
             $this->saveTargetPath($request->getSession(), 'main', $targetPath);
         }
 
         return $clientRegistry
-            ->getClient('google')
+            ->getClient('github')
             ->redirect([
-                'openid', 'email', 'profile',
+                'user:email',
             ])
-        ;
-    }
-
-    /**
-     * @Route("/connect/google/check", name="connect_google_check")
-     */
-    public function check(): void
-    {
-        throw new RuntimeException('This method should not be called.');
+            ;
     }
 }
