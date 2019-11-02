@@ -20,7 +20,6 @@ return [
     JMS\SerializerBundle\JMSSerializerBundle::class => ['all' => true],
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
-    Ornicar\GravatarBundle\OrnicarGravatarBundle::class => ['all' => true],
     Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle::class => ['all' => true],
     Sonata\AdminBundle\SonataAdminBundle::class => ['all' => true],
     Sonata\BlockBundle\SonataBlockBundle::class => ['all' => true],

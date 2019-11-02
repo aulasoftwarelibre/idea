@@ -13,7 +13,7 @@
 <div id="fos_comment_{{ comment.id }}" class="comment fos_comment_comment_show fos_comment_comment_depth_{{ depth }}" {% if parent is defined and parent is not null %}data-parent="{{ parent.id }}"{% endif %}>
 
     <a class="avatar">
-        <img src="{{ gravatar(comment.author.email) }}">
+        <img src="{{ vich_uploader_asset(comment.author, 'imageFile') | imagine_filter('squared_thumbnail') }}">
     </a>
     <div class="content">
         <a class="author">
