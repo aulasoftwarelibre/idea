@@ -1,6 +1,7 @@
 Action: Acción
 
 approved: aprobada
+blocked: solo uco
 closed: cerrada
 connect: conectar
 edit: editar
@@ -97,11 +98,15 @@ filter.label_is_reported: Informe
 filter.label_id: Id.
 filter.label_private: Privado
 
+form.help_alias: Selecciona un nombre de usuario para tu cuenta (máximo 16 caracteres entre letras, números y _).
+
 form.label__action: Acción
 form.label_activity: Actividad
+form.label_alias: Alias
 form.label_closed: Cerrado
 form.label_created_at: Fecha creación
 form.label_description: Descripción
+form.label_external_num_seats: Plazas externas
 form.label_location: Lugar
 form.label_starts_at: Día y hora
 form.label_group: Grupo

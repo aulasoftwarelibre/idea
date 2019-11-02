@@ -20,8 +20,10 @@
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
                 {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
                     {{ buttons.simple_label('full', 'red') }}
-                {% else %}
+                {% elseif is_granted('IDEA_JOIN', idea) %}
                     {{ buttons.js_animated_button(null, 'plus', 'join', null, idea.slug, 'join idea') }}
+                {% else %}
+                    {{ buttons.simple_label('blocked', 'red') }}
                 {% endif %}
             </div>
             <!-- end vote box -->

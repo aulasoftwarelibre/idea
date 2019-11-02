@@ -16,7 +16,7 @@ namespace App\EventListener;
 use App\Entity\User;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -51,7 +51,7 @@ class UserEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
         $token = $this->tokenStorage->getToken();
         if (!$token || !$token->getUser() instanceof User) {
@@ -59,9 +59,10 @@ class UserEventSubscriber implements EventSubscriberInterface
         }
 
         $controller = $event->getRequest()->attributes->get('_controller');
+        /** @var User $user */
         $user = $token->getUser();
         if (
-            empty($user->getCollective())
+            false === $user->getHasProfile()
             && 'App\Controller\ProfileController::editAction' !== $controller
             && 'App\Controller\SecurityController::logout' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()

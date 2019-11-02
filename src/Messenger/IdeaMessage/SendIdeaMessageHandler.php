@@ -21,7 +21,6 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SendIdeaMessageHandler implements CommandHandlerInterface
 {
@@ -83,9 +82,10 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
     }
 
     /**
-     * @param Idea $idea
+     * @param Idea   $idea
      * @param string $message
-     * @param bool $isTest
+     * @param bool   $isTest
+     *
      * @return TemplatedEmail
      */
     private function createEmail(Idea $idea, string $message, bool $isTest): TemplatedEmail
@@ -118,6 +118,7 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             $email->bcc(...$toUsers);
             $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
         }
+
         return $email;
     }
 }

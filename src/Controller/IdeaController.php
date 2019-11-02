@@ -145,7 +145,7 @@ class IdeaController extends AbstractController
 
     /**
      * @Route("/{slug}/join", name="idea_join", options={"expose"=true}, methods={"POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY') && is_granted('IIDEA_JOIN')")
      */
     public function joinAction(Idea $idea, Request $request): Response
     {

@@ -82,4 +82,19 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+
+    public function findUsedAliasOrUsername(string $find): ?User
+    {
+        return $this->getEntityManager()
+            ->createQuery('
+                SELECT u
+                FROM App:User u
+                WHERE u.username = :username
+                   OR u.alias = :alias
+            ')
+            ->setParameter('username', $find)
+            ->setParameter('alias', $find)
+            ->getOneOrNullResult()
+        ;
+    }
 }
