@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Menu;
 
 use App\Repository\GroupRepository;
+use App\Security\Voter\AddIdeaVoter;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -49,7 +50,7 @@ class Builder
 
         $menu->addChild('Inicio', ['route' => 'idea_index']);
 
-        if ($this->authorizationChecker->isGranted('ROLE_USER')) {
+        if ($this->authorizationChecker->isGranted(AddIdeaVoter::ADD)) {
             $menu->addChild('Añadir idea', ['route' => 'idea_new']);
         }
 

@@ -19,6 +19,7 @@ use App\Event\IdeaWasCreatedEvent;
 use App\Form\Type\IdeaType;
 use App\MessageBus\CommandBus;
 use App\Messenger\Idea\AddIdeaCommand;
+use App\Security\Voter\AddIdeaVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -51,6 +52,8 @@ class NewIdeaController extends AbstractController
 
     public function __invoke(Request $request): Response
     {
+        $this->denyAccessUnlessGranted(AddIdeaVoter::ADD);
+
         $form = $this->createForm(IdeaType::class);
         $form->handleRequest($request);
 

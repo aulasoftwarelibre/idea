@@ -19,6 +19,7 @@ use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\MessageBus\CommandBus;
 use App\Messenger\Vote\AddVoteCommand;
+use App\Security\Voter\JoinIdeaVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -28,7 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/idea/{slug}/join", name="idea_join", options={"expose"=true}, methods={"POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY') && is_granted('IDEA_JOIN')")
+ * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
 class JoinIdeaController extends AbstractController
 {
@@ -51,6 +52,8 @@ class JoinIdeaController extends AbstractController
 
     public function __invoke(Idea $idea, Request $request): Response
     {
+        $this->denyAccessUnlessGranted(JoinIdeaVoter::JOIN, $idea);
+
         try {
             /** @var User $user */
             $user = $this->getUser();
