@@ -332,9 +332,6 @@
     "ornicar/gravatar-bundle": {
         "version": "1.3.0"
     },
-    "pagerfanta/pagerfanta": {
-        "version": "v2.0.1"
-    },
     "php-cs-fixer/diff": {
         "version": "v1.3.0"
     },
@@ -880,9 +877,6 @@
     },
     "webmozart/assert": {
         "version": "1.3.0"
-    },
-    "white-october/pagerfanta-bundle": {
-        "version": "v1.2.1"
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"

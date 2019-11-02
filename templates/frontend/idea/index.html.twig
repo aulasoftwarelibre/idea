@@ -1,3 +1,5 @@
+{% from "widgets/paginator.html.twig" import pagination %}
+
 {% extends "base.html.twig" %}
 
 {% block body %}
@@ -18,9 +20,7 @@
         {% endfor %}
 
         <div class="centered aligned row">
-            {% if ideas.haveToPaginate %}
-                {{ pagerfanta(ideas, 'idea_main', { routeName: 'idea_index_paginated' }) }}
-            {% endif %}
+            {{ pagination(page, numPages, 'idea_index_paginated') }}
         </div>
     </div>
 {% endblock %}

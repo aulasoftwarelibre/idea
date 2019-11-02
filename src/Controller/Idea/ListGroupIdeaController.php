@@ -47,9 +47,14 @@ class ListGroupIdeaController extends AbstractController
             )
         );
 
+        $itemsPerPage = $ideas->getQuery()->getMaxResults();
+        $numPages = ceil($ideas->count() / $itemsPerPage);
+
         return $this->render('frontend/idea/index_group.html.twig', [
             'ideas' => $ideas,
             'group' => $group,
+            'numPages' => $numPages,
+            'page' => $page
         ]);
     }
 }

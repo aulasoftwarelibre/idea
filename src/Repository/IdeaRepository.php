@@ -18,12 +18,12 @@ use App\Entity\Idea;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
-use Pagerfanta\Adapter\DoctrineORMAdapter;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Pagerfanta\Pagerfanta;
 
 class IdeaRepository extends ServiceEntityRepository
 {
-    public const NUM_ITEMS = 5;
+    public const NUM_ITEMS_PER_PAGE = 5;
 
     public function __construct(ManagerRegistry $registry)
     {
@@ -40,12 +40,22 @@ class IdeaRepository extends ServiceEntityRepository
         $this->_em->remove($user);
     }
 
+    private function createPaginator(Query $dql, int $page = 1, int $limit = self::NUM_ITEMS_PER_PAGE): Paginator
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit)
+        ;
+
+        return $paginator;
+    }
+
     /**
-     * @param int $page
-     *
      * @return Pagerfanta
      */
-    public function findLatest(int $page, bool $showPrivates): Pagerfanta
+    public function findLatest(int $page, bool $showPrivates): Paginator
     {
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.group', 'g')
@@ -63,12 +73,9 @@ class IdeaRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Group $group
-     * @param int   $page
-     *
      * @return Pagerfanta
      */
-    public function findByGroup(Group $group, int $page = 1): Pagerfanta
+    public function findByGroup(Group $group, int $page = 1): Paginator
     {
         $query = $this->getEntityManager()
             ->createQuery(
@@ -115,20 +122,5 @@ class IdeaRepository extends ServiceEntityRepository
             ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();
-    }
-
-    /**
-     * @param Query $query
-     * @param int   $page
-     *
-     * @return Pagerfanta
-     */
-    protected function createPaginator(Query $query, int $page): Pagerfanta
-    {
-        $paginator = new Pagerfanta(new DoctrineORMAdapter($query, false));
-        $paginator->setMaxPerPage(self::NUM_ITEMS);
-        $paginator->setCurrentPage($page);
-
-        return $paginator;
     }
 }

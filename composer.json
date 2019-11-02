@@ -55,8 +55,7 @@
         "twig/cssinliner-extra": "^2.12",
         "twig/extra-bundle": "^2.12",
         "twig/inky-extra": "^2.12",
-        "vich/uploader-bundle": "^1.8",
-        "white-october/pagerfanta-bundle": "^1.2"
+        "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {
         "phpstan/phpstan": "^0.10.3",

@@ -511,6 +511,14 @@ class User extends BaseUser implements EquatableInterface
         $this->participations->removeElement($participation);
     }
 
+    /**
+     * @return Comment[]|Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
     public function isEqualTo(UserInterface $user): bool
     {
         return $user instanceof self

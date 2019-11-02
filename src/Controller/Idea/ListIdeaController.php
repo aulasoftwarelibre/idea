@@ -16,6 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
 use App\Messenger\Idea\GetIdeasByPageQuery;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,28 +27,23 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ListIdeaController extends AbstractController
 {
-    /**
-     * @var QueryBus
-     */
-    private $queryBus;
-
-    public function __construct(
-        QueryBus $queryBus
-    ) {
-        $this->queryBus = $queryBus;
-    }
-
-    public function __invoke(int $page): Response
+    public function __invoke(int $page, QueryBus $queryBus): Response
     {
-        $ideas = $this->queryBus->query(
+        /** @var Paginator $ideas */
+        $ideas = $queryBus->query(
             new GetIdeasByPageQuery(
                 $page,
                 $this->isGranted('ROLE_ADMIN')
             )
         );
 
+        $itemsPerPage = $ideas->getQuery()->getMaxResults();
+        $numPages = ceil($ideas->count() / $itemsPerPage);
+
         return $this->render('frontend/idea/index.html.twig', [
             'ideas' => $ideas,
+            'numPages' => $numPages,
+            'page' => $page
         ]);
     }
 }
