@@ -146,6 +146,14 @@ class Idea
     private $numSeats;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", name="external_num_seats")
+     * @Assert\Range(min=0)
+     * @Groups("read")
+     */
+    private $externalNumSeats;
+
+    /**
      * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
@@ -182,6 +190,7 @@ class Idea
         $this->private = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
+        $this->externalNumSeats = 0;
     }
 
     public static function getStates(): array
@@ -382,6 +391,16 @@ class Idea
     }
 
     /**
+     * @return Collection
+     */
+    public function getExternalVotes(): Collection
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->getUser()->isExternal();
+        });
+    }
+
+    /**
      * @return Idea
      */
     public function addVote(Vote $vote): self
@@ -421,6 +440,24 @@ class Idea
     public function setNumSeats(int $numSeats): self
     {
         $this->numSeats = $numSeats;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExternalNumSeats(): int
+    {
+        return $this->externalNumSeats;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setExternalNumSeats(int $externalNumSeats): self
+    {
+        $this->externalNumSeats = $externalNumSeats;
 
         return $this;
     }
