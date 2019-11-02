@@ -60,13 +60,15 @@ class ProfileController extends AbstractController
      */
     public function editAction(Request $request): Response
     {
+        /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(ProfileType::class, $user);
 
         $form->handleRequest($request);
 
+        $manager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->get('doctrine.orm.default_entity_manager');
+            $user->setHasProfile(true);
 
             $manager->persist($user);
             $manager->flush();
@@ -75,6 +77,7 @@ class ProfileController extends AbstractController
 
             return $this->redirectToRoute('homepage');
         }
+        $manager->detach($user);
 
         return $this->render('/frontend/profile/edit.html.twig', [
             'form' => $form->createView(),

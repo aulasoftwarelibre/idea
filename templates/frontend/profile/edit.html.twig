@@ -8,7 +8,17 @@
         <div class="row">
             <div class="ui idea fluid card">
                 <div class="content">
-                    {% if app.user.collective is empty %}
+                    {% if app.user.hasProfile is empty and app.user.collective is not empty %}
+                        <div class="ui floating info icon message">
+                            <i class="exclamation icon"></i>
+                            <div class="content">
+                                <div class="header">
+                                    ¡Ahora puedes configurar tu nombre de usuario!
+                                </div>
+                                Por defecto es tu nombre de usuario pero puedes cambiarlo por otro.
+                            </div>
+                        </div>
+                    {% elseif app.user.hasProfile is empty %}
                         <div class="ui floating warning icon message">
                             <i class="exclamation icon"></i>
                             <div class="content">
@@ -26,6 +36,15 @@
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
+
+                            <div class="required field">
+                                {{ form_label(form.alias) }}
+                                {{ form_errors(form.alias) }}
+                                {{ form_widget(form.alias) }}
+                                <div style="font-size: 10px; padding-top: 5px;">
+                                    {{ form_help(form.alias) }}
+                                </div>
+                            </div>
                             <div class="two fields">
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}
@@ -33,15 +52,20 @@
                             {{ form_row(form.imageFile) }}
                             {{ form_row(form.biography) }}
                             {{ form_row(form.collective) }}
+                            {% if not app.user.isExternal %}
                             {{ form_row(form.degree) }}
                             <a class="ui basic button" id="clear-degree">Borrar selección</a>
                             {{ form_row(form.year) }}
+                            {% endif %}
 
                             {# Configuración de telegram #}
                             {% if app.user.telegramChat is not null %}
                                 {{ form_row(form.telegramChat) }}
+
+                                <div class="ui mini message">
+                                    Actívalos para recibir comentarios en las ideas que has creado.
+                                </div>
                             {% endif %}
-                            Actívalos para recibir comentarios en las ideas que has creado.
 
                             <div class="ui divider"></div>
                             <div class="ui submit button">Guardar</div>

@@ -30,7 +30,15 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $profile */
+        $profile = $builder->getData();
+
         $builder
+            ->add('alias', null, [
+                'label' => 'Alias',
+                'required' => true,
+                'help' => 'form.help_alias',
+            ])
             ->add('firstname', null, [
                 'label' => 'Nombre',
                 'required' => true,
@@ -58,6 +66,7 @@ class ProfileType extends AbstractType
                 'required' => true,
                 'placeholder' => 'Selecciona tu colectivo',
                 'choices' => User::getCollectives(),
+                'disabled' => $profile->isExternal(),
             ])
             ->add('degree', EntityType::class, [
                 'label' => 'Estudios',
@@ -72,9 +81,6 @@ class ProfileType extends AbstractType
                 'label' => 'Año de ingreso',
             ])
         ;
-
-        /** @var User $profile */
-        $profile = $builder->getData();
 
         if ($profile->getTelegramChat()) {
             $builder
