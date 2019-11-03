@@ -43,7 +43,7 @@ class ListIdeaController extends AbstractController
         return $this->render('frontend/idea/index.html.twig', [
             'ideas' => $ideas,
             'numPages' => $numPages,
-            'page' => $page
+            'page' => $page,
         ]);
     }
 }

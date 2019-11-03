@@ -35,7 +35,8 @@ class AliasValidator extends ConstraintValidator
     }
 
     /**
-     * @param User|string $entity
+     * @param User|string|null $entity
+     * @param Alias            $constraint
      */
     public function validate($entity, Constraint $constraint): void
     {
@@ -53,7 +54,6 @@ class AliasValidator extends ConstraintValidator
         }
 
         $this->context->buildViolation($constraint->message)
-            ->setParameter('{{ value }}', $entity->getAlias())
             ->addViolation();
     }
 }

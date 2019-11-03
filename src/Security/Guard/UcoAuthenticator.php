@@ -21,6 +21,7 @@ use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
@@ -107,11 +108,14 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
+        $homepagePath = $this->router->generate('homepage');
+        if (!$request->getSession() instanceof Session) {
+            return new RedirectResponse($homepagePath);
+        }
 
+        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if (!$targetPath) {
-            // Change it to your default target
-            $targetPath = $this->router->generate('homepage');
+            return new RedirectResponse($homepagePath);
         }
 
         return new RedirectResponse($targetPath);

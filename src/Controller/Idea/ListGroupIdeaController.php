@@ -54,7 +54,7 @@ class ListGroupIdeaController extends AbstractController
             'ideas' => $ideas,
             'group' => $group,
             'numPages' => $numPages,
-            'page' => $page
+            'page' => $page,
         ]);
     }
 }

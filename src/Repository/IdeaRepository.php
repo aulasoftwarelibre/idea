@@ -19,7 +19,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Pagerfanta\Pagerfanta;
 
 class IdeaRepository extends ServiceEntityRepository
 {
@@ -52,9 +51,6 @@ class IdeaRepository extends ServiceEntityRepository
         return $paginator;
     }
 
-    /**
-     * @return Pagerfanta
-     */
     public function findLatest(int $page, bool $showPrivates): Paginator
     {
         $qb = $this->createQueryBuilder('i')
@@ -72,9 +68,6 @@ class IdeaRepository extends ServiceEntityRepository
         return $this->createPaginator($query, $page);
     }
 
-    /**
-     * @return Pagerfanta
-     */
     public function findByGroup(Group $group, int $page = 1): Paginator
     {
         $query = $this->getEntityManager()

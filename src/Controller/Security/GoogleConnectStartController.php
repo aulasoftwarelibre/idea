@@ -17,6 +17,7 @@ use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
@@ -29,9 +30,7 @@ class GoogleConnectStartController extends AbstractController
 
     public function __invoke(Request $request, ClientRegistry $clientRegistry): Response
     {
-        if ($targetPath = $request->query->get('_target_path')) {
-            $this->saveTargetPath($request->getSession(), 'main', $targetPath);
-        }
+        $this->storeTargetPath($request);
 
         return $clientRegistry
             ->getClient('google')
@@ -39,5 +38,13 @@ class GoogleConnectStartController extends AbstractController
                 'openid', 'email', 'profile',
             ])
         ;
+    }
+
+    private function storeTargetPath(Request $request): void
+    {
+        $targetPath = $request->query->get('_target_path');
+        if ($targetPath && $request->hasSession() && ($session = $request->getSession()) instanceof SessionInterface) {
+            $this->saveTargetPath($session, 'main', $targetPath);
+        }
     }
 }

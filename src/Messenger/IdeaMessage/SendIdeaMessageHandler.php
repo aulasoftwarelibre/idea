@@ -21,6 +21,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
 class SendIdeaMessageHandler implements CommandHandlerInterface
 {
@@ -77,7 +78,12 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             throw new \InvalidArgumentException("Idea {$ideaId} not found");
         }
 
-        $email = $this->createEmail($idea, $message, $isTest);
+        $token = $this->token->getToken();
+        if (!$token instanceof TokenInterface) {
+            return;
+        }
+
+        $email = $this->createEmail($idea, $message, $isTest, $token);
         $this->mailer->send($email);
     }
 
@@ -88,7 +94,7 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
      *
      * @return TemplatedEmail
      */
-    private function createEmail(Idea $idea, string $message, bool $isTest): TemplatedEmail
+    private function createEmail(Idea $idea, string $message, bool $isTest, TokenInterface $token): TemplatedEmail
     {
         $email = (new TemplatedEmail())
             ->from($this->mailFrom)
@@ -107,7 +113,7 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             ]);
 
         if ($isTest) {
-            $loggedUserEmail = $this->token->getToken()->getUsername() . '@uco.es';
+            $loggedUserEmail = $token->getUsername() . '@uco.es';
             $email->bcc($loggedUserEmail);
             $this->logger->debug('[MAIL TO] Enviada prueba');
         } else {

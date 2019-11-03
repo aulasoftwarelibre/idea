@@ -283,11 +283,11 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return string|null
+     * @return string
      */
-    public function getAlias(): ?string
+    public function getAlias(): string
     {
-        return $this->alias;
+        return (string) $this->alias;
     }
 
     /**
