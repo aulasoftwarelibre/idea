@@ -38,7 +38,4 @@ $(document).ready(function () {
     $("a.leave.idea").click(function () {
         actions($(this), 'idea_leave');
     });
-    $('.ui.sidebar')
-        .sidebar()
-    ;
 });
