@@ -75,13 +75,15 @@ class GoogleAuthenticator extends SocialAuthenticator
         $userResource = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
-        $userResourceId = $userResource->toArray()['email'];
+        $userResourceId = $userResource->getId() . '@google.com';
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
         if (!$user) {
             $user = User::createExternalUser($userResourceId);
         }
 
+        $email = $userResource->toArray()['email'];
+        $user->setEmail($email);
         $this->userManager->updateUser($user);
 
         return $user;
