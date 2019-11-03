@@ -21,23 +21,25 @@
 
 <body id="body">
 <!-- Sidebar Menu -->
-<div class="ui left vertical inverted menu sidebar">
-    {{ knp_menu_render('sidebarMenu', {'bare': true, 'dropdown': false}) }}
+<div class="ui sidebar">
 </div>
 
 <!-- Page Contents -->
 <div class="pusher">
-    <div class="ui large secondary pointing fixed menu">
-        <div class="ui container">
-            <a class="toc item"><i class="sidebar icon"></i></a>
+    <div class="ui top fixed huge menu">
+        <div class="ui fluid container">
             <a class="logo" href="{{ path('homepage') }}"></a>
 
-            {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
+            {{ render(controller('App\\Controller\\Profile\\ShowGroupMenuEmbedController')) }}
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {{ render(controller('App\\Controller\\Profile\\ShowMenuProfileEmbedController')) }}
             {% else %}
-                <a class="floated right item" href="{{ path('login') }}"><i class="sign in icon"></i> Conectar</a>
+            <div class="floated right borderless item">
+                <a class="tiny ui primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
+                    <i class="sign in icon"></i> Conectar
+                </a>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -70,7 +72,6 @@
                 {% block body %}{% endblock %}
             </div>
         </div>
-
     </div>
 
     <div class="ui inverted vertical footer segment">

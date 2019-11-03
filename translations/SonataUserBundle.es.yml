@@ -7,6 +7,7 @@ form.label_degree: Grado
 form.label_collective: Colectivo
 form.label_nic: Id
 form.label_year: Curso académico
+form.label_icon: Icono
 
 list.label__action: Acción
 list.label_degree: Grado

@@ -44,6 +44,12 @@ class Group extends BaseGroup
 
     /**
      * @var string
+     * @ORM\Column(length=32)
+     */
+    private $icon;
+
+        /**
+     * @var string
      * @ORM\Column(length=255, unique=true)
      * @Gedmo\Slug(fields={"name"}, unique=true)
      */
@@ -97,5 +103,24 @@ class Group extends BaseGroup
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return (string) $this->icon;
+    }
+
+    /**
+     * @param string $icon
+     * @return Group
+     */
+    public function setIcon(string $icon): Group
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 }

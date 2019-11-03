@@ -1,7 +1,11 @@
 {% import 'widgets/buttons.html.twig' as buttons %}
 
 <div class="row">
-    <div class="ui idea fluid card">
+    <div class="ui idea fluid card"
+     {% if complete is not defined %}
+     style="cursor: pointer" onclick="location.href='{{ path('idea_show', {'slug': idea.slug }) }}'"
+     {% endif %}
+    >
         <div class="content">
             <!-- vote box -->
             <div class="ui vote basic compact floated left segment center aligned">
@@ -30,17 +34,19 @@
 
             <!-- vote body -->
             <div class="meta send by">
-                <span class="group">{{ idea.group }}</span> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
+                <a class="group" href="{{ path('idea_group_index', {'slug': idea.group.slug}) }}">{{ idea.group }}</a> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
             </div>
-            <a class="header" href="{{ path('idea_show', {'slug': idea.slug}) }}">{{ idea.title }}</a>
 
             {% if complete is defined %}
+                <h1 class="header">{{ idea.title }}</h1>
                 <div class="description">{{ idea.description | purify }}</div>
             {% else %}
+                <a class="header" href="{{ path('idea_show', {'slug': idea.slug}) }}">{{ idea.title }}</a>
                 <div class="description">
                     <div class="summary">{{ idea.description | purify('summary') }}</div>
                 </div>
             {% endif %}
+
             <!-- end vote body -->
         </div>
         <div class="extra content">
@@ -139,5 +145,5 @@
                 </div>
             </div>
         {% endif %}
-    </div>
+    </a>
 </div>

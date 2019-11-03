@@ -13,14 +13,18 @@
 <div id="fos_comment_{{ comment.id }}" class="comment fos_comment_comment_show fos_comment_comment_depth_{{ depth }}" {% if parent is defined and parent is not null %}data-parent="{{ parent.id }}"{% endif %}>
 
     <a class="avatar">
-        <img src="{{ vich_uploader_asset(comment.author, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+        {% if comment.author.image.name is not empty %}
+            <img class="avatar ui image" src="{{ vich_uploader_asset(comment.author, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+        {% else %}
+            <img class="avatar ui image" src="{{ asset('assets/images/default.png')  }}">
+        {% endif %}
     </a>
     <div class="content">
         <a class="author">
             {% if comment is fos_comment_in_state(constant('FOS\\CommentBundle\\Model\\CommentInterface::STATE_DELETED')) %}
                 {% trans from 'FOSCommentBundle' %}fos_comment_comment_deleted{% endtrans %}
             {% else %}
-                {{ comment.authorName }}
+                {{ comment.author.alias }}
             {% endif %}
         </a>
         <div class="metadata">

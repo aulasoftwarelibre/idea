@@ -1,28 +1,43 @@
 <div class="right menu">
-    <div class="ui dropdown item" id="login">
-        <div class="text">
+    <a class="ui small  basic icon button" id="add"
+       data-tooltip="Añadir nueva idea"
+       data-position="bottom center"
+       data-variation="mini"
+    >
+        <i class="add icon"></i>
+    </a>
+    <div class="ui compact dropdown topmenu basic button item" id="login">
             {% if profile.image.name is not empty %}
-                <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
+            <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
             {% else %}
-                <img class="avatar ui image" src="{{ asset('assets/images/default.png')  }}">
+            <img class="avatar ui image" src="{{ asset('assets/images/default.png')  }}">
             {% endif %}
-            {{ app.user.alias ?? app.user.username }}
+        <div class="current text">
+            <span class="name">
+                {{ app.user.alias ?? app.user.username }}
+            </span>
         </div>
         <i class="dropdown icon"></i>
         <div class="menu">
             {% if is_granted('ROLE_ADMIN') %}
             <a class="item" href="{{ path('sonata_admin_dashboard') }}">
                 <i class="lock icon"></i>
+                <span class="name">
                 Administrar
+                </span>
             </a>
             {% endif %}
             <a class="item" href="{{ path('profile_edit') }}">
                 <i class="edit icon"></i>
+                <span class="name">
                 Editar perfil
+                </span>
             </a>
             <a class="item" href="{{ path('profile_show') }}">
                 <i class="user icon"></i>
+                <span class="name">
                 Ver curriculum
+                </span>
             </a>
             <a class="item" href="{{ path('logout') }}"><i class="sign out icon"></i> Salir</a>
         </div>

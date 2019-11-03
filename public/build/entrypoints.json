@@ -4,7 +4,6 @@
       "js": [
         "/build/runtime.js",
         "/build/vendors~app~login.js",
-        "/build/vendors~app.js",
         "/build/app.js"
       ],
       "css": [

@@ -4,15 +4,6 @@
 
 {% block body %}
     <div class="ui grid" id="ideas">
-        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-        <div class="ui icon message">
-            <i class="telegram icon"></i>
-            <div class="content">
-                ¿Aún no perteneces al grupo de Telegram del Aula de Software Libre? <a target="_blank" href="https://t.me/AulaSoftwareLibreUCO">Apúntate</a>.
-            </div>
-        </div>
-        {% endif %}
-
         {% for idea in ideas %}
             {% include('/frontend/idea/_idea.html.twig') %}
         {% else %}
