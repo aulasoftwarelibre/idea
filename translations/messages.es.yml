@@ -30,6 +30,8 @@ breadcrumb.link_degree_list: Lista de grados
 breadcrumb.link_idea_list: Lista de ideas
 breadcrumb.link_participation_list: Lista de participantes
 breadcrumb.link_participation_create: Crear participante
+breadcrumb.link_log_policy_list: Lista de Políticas
+breadcrumb.link_log_policy_create: Crear Política
 Telegram Chat List: Lista de chats de Telegram
 
 group.resources: Recursos
@@ -44,6 +46,7 @@ menu.telegram_chat_private: Chats privados
 menu.telegram_chat_super_group: Súper-grupos
 menu.telegram_chat_group: Grupos
 menu.telegram_chat_channel: Canales
+menu.logpolicy: Políticas
 
 attendee: Asistente
 organizer: Organizador
@@ -97,6 +100,7 @@ filter.label_role: Rol
 filter.label_is_reported: Informe
 filter.label_id: Id.
 filter.label_private: Privado
+filter.label_version: Versión
 
 form.help_alias: Selecciona un nombre de usuario para tu cuenta (máximo 16 caracteres entre letras, números y _).
 
@@ -152,6 +156,10 @@ list.label_user_nic: Id.
 list.label_role: Rol
 list.label_is_reported: Informe
 list.label_private: Privado
+list.label_tag: Tag
+list.label_version: Versión
+list.label_create_at: Fecha de creación
+list.label_mandatory: Obligatorio
 
 show.label__action: Acción
 show.label_closed: Cerrado

@@ -19,6 +19,7 @@ sonata_admin:
                 - 'eco.admin.activity'
                 - 'eco.admin.idea'
                 - 'eco.admin.degree'
+                - 'eco.admin.logpolicy'
                 roles:
                     - 'ROLE_ADMIN'
             app.admin.user:

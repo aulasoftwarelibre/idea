@@ -28,6 +28,13 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.participation }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
+    eco.admin.logpolicy:
+        class: App\Admin\LogPolicyAdmin
+        arguments: [~, App\Entity\LogPolicy, ~]
+        tags:
+            - { name: sonata.admin, manager_type: orm, label: menu.logpolicy }
+        calls:
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
 
 twig:
     form_themes:

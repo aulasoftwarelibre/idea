@@ -23,6 +23,7 @@ services:
             $assetsPath: '%kernel.project_dir%/assets'
             $mailFrom: '%mail_from%'
             $telegramPurifier: '@exercise_html_purifier.telegram'
+            $policyVersion: '%env(POLICY_VERSION)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
