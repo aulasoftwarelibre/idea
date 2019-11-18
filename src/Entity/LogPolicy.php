@@ -21,6 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
 class LogPolicy
 {
     /**
+     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
@@ -28,26 +29,31 @@ class LogPolicy
     private $id;
 
     /**
+     * @var \DateTimeInterface
      * @ORM\Column(type="datetime")
      */
     private $createAt;
 
     /**
+     * @var bool
      * @ORM\Column(type="boolean")
      */
     private $mandatory;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $version;
 
     /**
+     * @var User|null
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
     private $user;
 
     /**
+     * @var string
      * @ORM\Column(type="string", length=255)
      */
     private $tag;

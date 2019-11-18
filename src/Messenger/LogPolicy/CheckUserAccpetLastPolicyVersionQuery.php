@@ -17,6 +17,9 @@ use App\Entity\User;
 
 class CheckUserAccpetLastPolicyVersionQuery
 {
+    /**
+     * @var User
+     */
     private $user;
 
     public function __construct(User $user)

@@ -16,8 +16,7 @@ namespace App\Security\Guard;
 use App\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
-use KnpU\OAuth2ClientBundle\Client\Provider\GithubClient;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Token\AccessTokenInterface;
@@ -129,10 +128,7 @@ class GithubAuthenticator extends SocialAuthenticator
         );
     }
 
-    /**
-     * @return OAuth2Client|GithubClient
-     */
-    private function getClient(): OAuth2Client
+    private function getClient(): OAuth2ClientInterface
     {
         return $this
             ->clientRegistry

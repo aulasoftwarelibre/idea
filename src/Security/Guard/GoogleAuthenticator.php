@@ -16,7 +16,7 @@ namespace App\Security\Guard;
 use App\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -125,7 +125,7 @@ class GoogleAuthenticator extends SocialAuthenticator
         );
     }
 
-    private function getClient(): OAuth2Client
+    private function getClient(): OAuth2ClientInterface
     {
         return $this
             ->clientRegistry

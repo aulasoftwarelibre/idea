@@ -36,7 +36,7 @@ class UcoConnectStartController extends AbstractController
             ->getClient('uco')
             ->redirect([
                 'openid',
-            ]);
+            ], []);
     }
 
     private function storeTargetPath(Request $request): void

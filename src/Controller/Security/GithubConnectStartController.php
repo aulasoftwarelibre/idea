@@ -36,8 +36,8 @@ class GithubConnectStartController extends AbstractController
             ->getClient('github')
             ->redirect([
                 'user:email',
-            ])
-            ;
+            ], [])
+        ;
     }
 
     private function storeTargetPath(Request $request): void

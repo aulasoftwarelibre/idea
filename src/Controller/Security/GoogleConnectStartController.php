@@ -36,7 +36,7 @@ class GoogleConnectStartController extends AbstractController
             ->getClient('google')
             ->redirect([
                 'openid', 'email', 'profile',
-            ])
+            ], [])
         ;
     }
 

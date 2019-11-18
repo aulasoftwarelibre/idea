@@ -143,7 +143,7 @@ class User extends BaseUser implements EquatableInterface
     private $votes;
 
     /**
-     * @var LogPolicy\Collection
+     * @var LogPolicy[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\LogPolicy",
      *     mappedBy="user"
@@ -401,7 +401,10 @@ class User extends BaseUser implements EquatableInterface
         return $this->versions;
     }
 
-    public function addVersion(LogPolicy $version): void
+    /**
+     * @return User
+     */
+    public function addVersion(LogPolicy $version): self
     {
         $version->setUser($this);
         $this->versions[] = $version;

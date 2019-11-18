@@ -17,6 +17,9 @@ use App\Entity\User;
 
 class UserAcceptedLastPolicyVersionCommand
 {
+    /**
+     * @var User
+     */
     private $user;
 
     public function __construct(User $user)
