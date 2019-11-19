@@ -15,6 +15,8 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\Type\ProfileType;
+use App\MessageBus\CommandBus;
+use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EditProfileController extends AbstractController
 {
-    public function __invoke(Request $request): Response
+
+    public function __invoke(Request $request, CommandBus $commandBus): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -38,6 +41,10 @@ class EditProfileController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setHasProfile(true);
+
+            $commandBus->dispatch(
+                new UserAcceptedLastPolicyVersionCommand($user)
+            );
 
             $manager->persist($user);
             $manager->flush();

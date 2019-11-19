@@ -61,6 +61,7 @@ class LogPolicy
     public function __construct()
     {
         $this->tag = 'general';
+        $this->mandatory = true;
     }
 
     public function getId(): ?int

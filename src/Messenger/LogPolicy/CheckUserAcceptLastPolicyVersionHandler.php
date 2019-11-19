@@ -35,6 +35,7 @@ class CheckUserAcceptLastPolicyVersionHandler implements QueryHandlerInterface
         $foundCurrentPolicyVersion = function (LogPolicy $version) {
             return $version->getVersion() === $this->policyVersion;
         };
+
         $isFound = $versions->filter($foundCurrentPolicyVersion)->isEmpty();
 
         return false === $isFound;

@@ -24,19 +24,22 @@ class UserAcceptedLastPolicyVersionHandler implements CommandHandlerInterface
      */
     private $manager;
 
-    public function __construct(ObjectManager $manager)
+    private $policyVersion;
+
+    public function __construct(ObjectManager $manager, string $policyVersion)
     {
         $this->manager = $manager;
+        $this->policyVersion = $policyVersion;
     }
 
     public function __invoke(UserAcceptedLastPolicyVersionCommand $command): void
     {
         $user = $command->getUser();
-
         $logPolicy = new LogPolicy();
-
-        $logPolicy->setUser($user);
+        $logPolicy->setVersion($this->policyVersion);
         $logPolicy->setCreateAt(new \DateTime());
+
+        $user->addVersion($logPolicy);
         $this->manager->persist($logPolicy);
     }
 }
