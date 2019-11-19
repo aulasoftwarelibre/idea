@@ -28,7 +28,7 @@ class CheckUserAcceptLastPolicyVersionHandler implements QueryHandlerInterface
         $this->policyVersion = $policyVersion;
     }
 
-    public function __invoke(CheckUserAccpetLastPolicyVersionQuery $query): bool
+    public function __invoke(CheckUserAcceptLastPolicyVersionQuery $query): bool
     {
         $versions = $query->getUser()->getVersions();
 

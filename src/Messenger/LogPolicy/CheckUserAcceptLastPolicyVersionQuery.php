@@ -15,7 +15,7 @@ namespace App\Messenger\LogPolicy;
 
 use App\Entity\User;
 
-class CheckUserAccpetLastPolicyVersionQuery
+class CheckUserAcceptLastPolicyVersionQuery
 {
     /**
      * @var User
