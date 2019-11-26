@@ -81,10 +81,12 @@ class ProfileType extends AbstractType
             ->add('year', null, [
                 'label' => 'Año de ingreso',
             ])
-            ->add('agreeTerms', CheckboxType::class, [
+            ->add('terms', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
-            ]);
+                'label' => 'He leido y acepto la Política de privacidad , Condiciones generales de uso y Política de Cookies',
+            ])
+        ;
     }
 
     /**

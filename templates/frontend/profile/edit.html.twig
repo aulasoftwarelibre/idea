@@ -1,3 +1,4 @@
+
 {% extends "base.html.twig" %}
 
 {% block vich_image_widget %}
@@ -53,19 +54,25 @@
                             {{ form_row(form.biography) }}
                             {{ form_row(form.collective) }}
                             {% if not app.user.isExternal %}
-                            {{ form_row(form.degree) }}
-                            <a class="ui basic button" id="clear-degree">Borrar selección</a>
-                            {{ form_row(form.year) }}
-                            <div>
-                                {{ form_widget(form.agreeTerms) }}
-                                   <label>He leido y acepto la
-                                <a href="https://www.uco.es/organizacion/secretariageneral/proteccion-de-datos">Política de privacidad</a>
-                                       , Condiciones generales de uso y Política de Cookies
-                                       </label>
-                            </div>
+                                {{ form_row(form.degree) }}
+                                <a class="ui basic button" id="clear-degree">Borrar selección</a>
+                                {{ form_row(form.year) }}
                             {% endif %}
 
                             <div class="ui divider"></div>
+
+                            <div class="required field">
+                                <div class="ui checkbox">
+                                    {{ form_widget(form.terms) }}
+                                    <label class="required" for="profile_terms">He leído y acepto la
+                                        <a target="_blank" href="https://www.uco.es/organizacion/secretariageneral/proteccion-de-datos">Política de privacidad</a>,
+                                        Condiciones generales de uso y Política de Cookies.
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="ui divider"></div>
+
                             <div class="ui submit button">Guardar</div>
                             <div class="ui negative labeled icon button" id="remove">
                                 <i class="warning icon"></i>
@@ -83,29 +90,29 @@
 {% endblock %}
 
 {% block modal %}
-        <div class="ui remove tiny modal">
-                <div class="header">Borrar usuario</div>
-                <div class="content">
-                    <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
-                    a las actividades que haya asistido.</p>
-                    <p>Escriba "Estoy seguro" y pulse Confirmar para continuar.</p>
-                    <div class="ui input">
-                        <input name="iamsure" type="text" placeholder="Estoy seguro">
-                    </div>
-                </div>
-                <div class="actions">
-                    <form action="{{ path('profile_remove') }}" method="post" >
-                        <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-                        <div class="ui black deny button">
-                            Cancelar
-                        </div>
-                        <button type="submit" class="ui disabled positive right labeled icon button">
-                            Confirmar
-                            <i class="checkmark icon"></i>
-                        </button>
-                    </form>
-                </div>
+    <div class="ui remove tiny modal">
+        <div class="header">Borrar usuario</div>
+        <div class="content">
+            <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
+                a las actividades que haya asistido.</p>
+            <p>Escriba "Estoy seguro" y pulse Confirmar para continuar.</p>
+            <div class="ui input">
+                <input name="iamsure" type="text" placeholder="Estoy seguro">
+            </div>
         </div>
+        <div class="actions">
+            <form action="{{ path('profile_remove') }}" method="post" >
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                <div class="ui black deny button">
+                    Cancelar
+                </div>
+                <button type="submit" class="ui disabled positive right labeled icon button">
+                    Confirmar
+                    <i class="checkmark icon"></i>
+                </button>
+            </form>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
@@ -165,6 +172,13 @@
                         rules: [{
                             type: 'collective[student]',
                             prompt: 'Indica el año de ingreso a tus estudios actuales'
+                        }]
+                    },
+                    profile_terms: {
+                        identifier: 'profile_terms',
+                        rules: [{
+                            type: 'checked',
+                            prompt: 'Debes aceptar las condiciones para continuar'
                         }]
                     }
                 }
