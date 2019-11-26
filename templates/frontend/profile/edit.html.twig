@@ -56,6 +56,13 @@
                             {{ form_row(form.degree) }}
                             <a class="ui basic button" id="clear-degree">Borrar selección</a>
                             {{ form_row(form.year) }}
+                            <div>
+                                {{ form_widget(form.agreeTerms) }}
+                                   <label>He leido y acepto la
+                                <a href="https://www.uco.es/organizacion/secretariageneral/proteccion-de-datos">Política de privacidad</a>
+                                       , Condiciones generales de uso y Política de Cookies
+                                       </label>
+                            </div>
                             {% endif %}
 
                             <div class="ui divider"></div>
