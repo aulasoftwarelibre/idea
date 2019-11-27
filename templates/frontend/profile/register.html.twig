@@ -9,44 +9,27 @@
         <div class="row">
             <div class="ui idea fluid card">
                 <div class="content">
-                    {% if app.user.hasProfile is empty and app.user.collective is not empty %}
-                        <div class="ui floating info icon message">
-                            <i class="exclamation icon"></i>
-                            <div class="content">
-                                <div class="header">
-                                    ¡Ahora puedes configurar tu nombre de usuario!
-                                </div>
-                                Por defecto es tu nombre de usuario pero puedes cambiarlo por otro.
-                            </div>
-                        </div>
-                    {% endif %}
                     <div class="ui grid">
                         <div class="two column">
                             {{ form_start(form, {method: 'POST', action: path('profile_register')}) }}
-                            <h2 class="ui header">Crear perfil</h2>
+                            <h2 class="ui header">Registrar usuario</h2>
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
 
-                            <div class="required field">
-                                {{ form_label(form.alias) }}
-                                {{ form_errors(form.alias) }}
-                                {{ form_widget(form.alias) }}
-                                <div style="font-size: 10px; padding-top: 5px;">
-                                    {{ form_help(form.alias) }}
-                                </div>
-                            </div>
-                            <div class="two fields">
+                            <div class="three fields">
+                                {{ form_row(form.alias) }}
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}
                             </div>
                             {{ form_row(form.imageFile) }}
-                            {{ form_row(form.biography) }}
                             {{ form_row(form.collective) }}
                             {% if not app.user.isExternal %}
-                                {{ form_row(form.degree) }}
+                                <div class="two fields">
+                                    {{ form_row(form.degree) }}
+                                    {{ form_row(form.year) }}
+                                </div>
                                 <a class="ui basic button" id="clear-degree">Borrar selección</a>
-                                {{ form_row(form.year) }}
                             {% endif %}
 
                             <div class="ui divider"></div>
@@ -54,7 +37,7 @@
                             <div class="required field">
                                 <div class="ui checkbox">
                                     {{ form_widget(form.terms) }}
-                                    <label class="required" for="profile_terms">He leído y acepto la
+                                    <label class="required" for="register_terms">He leído y acepto la
                                         <a target="_blank" href="https://www.uco.es/organizacion/secretariageneral/proteccion-de-datos">Política de privacidad</a>,
                                         <a target="_blank" href="{{ path('terms') }}">Condiciones generales de uso</a> y
                                         <a target="_blank" href="{{ path('cookies') }}">Política de Cookies</a>.
@@ -127,32 +110,6 @@
     </div>
 {% endblock %}
 
-{% block modal %}
-    <div class="ui remove tiny modal">
-        <div class="header">Borrar usuario</div>
-        <div class="content">
-            <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
-                a las actividades que haya asistido.</p>
-            <p>Escriba "Estoy seguro" y pulse Confirmar para continuar.</p>
-            <div class="ui input">
-                <input name="iamsure" type="text" placeholder="Estoy seguro">
-            </div>
-        </div>
-        <div class="actions">
-            <form action="{{ path('profile_remove') }}" method="post" >
-                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
-                <div class="ui black deny button">
-                    Cancelar
-                </div>
-                <button type="submit" class="ui disabled positive right labeled icon button">
-                    Confirmar
-                    <i class="checkmark icon"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-{% endblock %}
-
 {% block javascripts %}
     {{ parent() }}
 
@@ -161,11 +118,11 @@
             .dropdown({ fullTextSearch: true })
         ;
         $('#clear-degree').click(function() {
-            $('#profile_degree').dropdown('clear')
+            $('#register_degree').dropdown('clear')
         })
 
         $.fn.form.settings.rules.collective = function(value, required) {
-            var collective = $('.ui.form').form('get value', 'profile[collective]');
+            var collective = $('.ui.form').form('get value', 'register[collective]');
 
             return collective !== required || value;
         };
@@ -175,45 +132,57 @@
                 on: 'blur',
                 inline : true,
                 fields: {
-                    profile_firstname: {
-                        identifier: 'profile_firstname',
+                    register_alias: {
+                        identifier: 'register_alias',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica un alias'
+                        },
+                        {
+                            type: 'regExp',
+                            value: /^[\w\d_]{3,16}$/i,
+                            prompt: 'El formato no es correcto'
+                        }]
+                    },
+                    register_firstname: {
+                        identifier: 'register_firstname',
                         rules: [{
                             type: 'empty',
                             prompt: 'Indica tu nombre'
                         }]
                     },
-                    profile_lastname: {
-                        identifier: 'profile_lastname',
+                    register_lastname: {
+                        identifier: 'register_lastname',
                         rules: [{
                             type: 'empty',
                             prompt: 'Indica tus apellidos'
                         }]
                     },
-                    profile_collective: {
-                        identifier: 'profile_collective',
+                    register_collective: {
+                        identifier: 'register_collective',
                         rules: [{
                             type: 'empty',
                             prompt: 'Indica tu colectivo'
                         }]
                     },
-                    profile_degree: {
-                        identifier: 'profile_degree',
-                        depends: 'profile_collective',
+                    register_degree: {
+                        identifier: 'register_degree',
+                        depends: 'register_collective',
                         rules: [{
                             type: 'collective[student]',
                             prompt: 'Si eres alumno indica tus estudios'
                         }]
                     },
-                    profile_year: {
-                        identifier: 'profile_year',
-                        depends: 'profile_collective',
+                    register_year: {
+                        identifier: 'register_year',
+                        depends: 'register_collective',
                         rules: [{
                             type: 'collective[student]',
                             prompt: 'Indica el año de ingreso a tus estudios actuales'
                         }]
                     },
-                    profile_terms: {
-                        identifier: 'profile_terms',
+                    register_terms: {
+                        identifier: 'register_terms',
                         rules: [{
                             type: 'checked',
                             prompt: 'Debes aceptar las condiciones para continuar'
@@ -222,25 +191,5 @@
                 }
             })
         ;
-
-        $('.remove.modal')
-            .modal('attach events', '#remove', 'show')
-        ;
-
-        $('input[name=iamsure]').on('input', function(e) {
-            const button = $('.remove.modal button');
-            const message = $(this).val()
-
-            if (message === "Estoy seguro") {
-                button.removeClass('disabled');
-                return;
-            }
-
-            if (button.hasClass('disabled')) {
-                return;
-            }
-
-            button.addClass('disabled');
-        })
     </script>
 {% endblock %}

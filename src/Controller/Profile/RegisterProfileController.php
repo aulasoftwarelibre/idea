@@ -15,6 +15,7 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\Type\ProfileType;
+use App\Form\Type\RegisterType;
 use App\MessageBus\CommandBus;
 use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -33,7 +34,7 @@ class RegisterProfileController extends AbstractController
     {
         /** @var User $user */
         $user = $this->getUser();
-        $form = $this->createForm(ProfileType::class, $user);
+        $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
 
