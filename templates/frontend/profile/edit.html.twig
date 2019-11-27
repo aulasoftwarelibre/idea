@@ -66,10 +66,62 @@
                                     {{ form_widget(form.terms) }}
                                     <label class="required" for="profile_terms">He leído y acepto la
                                         <a target="_blank" href="https://www.uco.es/organizacion/secretariageneral/proteccion-de-datos">Política de privacidad</a>,
-                                        Condiciones generales de uso y Política de Cookies.
+                                        <a target="_blank" href="{{ path('terms') }}">Condiciones generales de uso</a> y
+                                        <a target="_blank" href="{{ path('cookies') }}">Política de Cookies</a>.
                                     </label>
                                 </div>
                             </div>
+
+                            <table class="ui celled compact table">
+                                <tbody>
+                                <tr>
+                                    <th>Responsable</th>
+                                    <td>
+                                        Aula de Software Libre<br/>
+                                        Universidad de Córdoba<br/>
+                                        Aulario Averroes. Campus de Rabanales<br/>
+                                        Córdoba 14014<br/>
+                                        Correo electrónico: aulasoftwarelibre@uco.es<br/>
+                                        Contacto DPO: proteccion.datos@uco.es
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Finalidad</th>
+                                    <td>
+                                        Gestión de la participación en las actividades del Aula de Software Libre
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Legitimación</th>
+                                    <td>
+                                        Consentimiento del interesado.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Destinatarios</th>
+                                    <td>
+                                        Los datos no serán cedidos a terceros.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Derechos</th>
+                                    <td>
+                                        El usuario podrá revocar en cualquier momento su consentimiento, así como
+                                        ejercitar, los derechos de oposición, acceso, portabilidad, rectificación,
+                                        limitación y supresión de datos.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>Procedencia</th>
+                                    <td>
+                                        Para el caso de los usuarios conectados a través de proveedores de identidad
+                                        distintos a la Universidad de Córdoba, los datos procederán de dichas redes.
+                                        De ellas solo se almacenan un identificador opaco y la dirección de correo
+                                        electrónico.
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
 
                             <div class="ui divider"></div>
 

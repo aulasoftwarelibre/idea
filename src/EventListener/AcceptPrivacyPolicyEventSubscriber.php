@@ -10,6 +10,7 @@ use App\Controller\Security\LogoutController;
 use App\Entity\User;
 use App\MessageBus\QueryBus;
 use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
+use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -81,6 +82,7 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
             && EditProfileController::class !== $controller
             && RemoveProfileController::class !== $controller
             && LogoutController::class !== $controller
+            && TemplateController::class.'::templateAction' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ){
             $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));

@@ -17,6 +17,7 @@ use App\Controller\Profile\EditProfileController;
 use App\Controller\Profile\RemoveProfileController;
 use App\Controller\Security\LogoutController;
 use App\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -61,6 +62,7 @@ class UserEventSubscriber implements EventSubscriberInterface
             return;
         }
 
+
         $controller = $event->getRequest()->attributes->get('_controller');
         /** @var User $user */
         $user = $token->getUser();
@@ -69,6 +71,7 @@ class UserEventSubscriber implements EventSubscriberInterface
             && EditProfileController::class !== $controller
             && RemoveProfileController::class !== $controller
             && LogoutController::class !== $controller
+            && TemplateController::class.'::templateAction' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {
             $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));
