@@ -62,7 +62,6 @@ class UserEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-
         $controller = $event->getRequest()->attributes->get('_controller');
         /** @var User $user */
         $user = $token->getUser();
@@ -71,7 +70,7 @@ class UserEventSubscriber implements EventSubscriberInterface
             && EditProfileController::class !== $controller
             && RemoveProfileController::class !== $controller
             && LogoutController::class !== $controller
-            && TemplateController::class.'::templateAction' !== $controller
+            && TemplateController::class . '::templateAction' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {
             $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));

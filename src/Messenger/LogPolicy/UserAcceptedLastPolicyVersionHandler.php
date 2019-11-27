@@ -24,6 +24,9 @@ class UserAcceptedLastPolicyVersionHandler implements CommandHandlerInterface
      */
     private $manager;
 
+    /**
+     * @var string
+     */
     private $policyVersion;
 
     public function __construct(ObjectManager $manager, string $policyVersion)

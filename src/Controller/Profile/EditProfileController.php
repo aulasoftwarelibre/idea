@@ -29,7 +29,6 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EditProfileController extends AbstractController
 {
-
     public function __invoke(Request $request, CommandBus $commandBus): Response
     {
         /** @var User $user */
