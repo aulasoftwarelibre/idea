@@ -16,6 +16,7 @@ namespace App\Controller\Profile;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
 use App\MessageBus\CommandBus;
+use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,12 +24,12 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/profile/edit", name="profile_edit", methods={"GET", "POST"})
+ * @Route("/profile/register", name="profile_register", methods={"GET", "POST"})
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
  */
-class EditProfileController extends AbstractController
+class RegisterProfileController extends AbstractController
 {
-    public function __invoke(Request $request): Response
+    public function __invoke(Request $request, CommandBus $commandBus): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -40,16 +41,20 @@ class EditProfileController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $user->setHasProfile(true);
 
+            $commandBus->dispatch(
+                new UserAcceptedLastPolicyVersionCommand($user)
+            );
+
             $manager->persist($user);
             $manager->flush();
 
-            $this->addFlash('positive', 'Su perfil ha sido actualizado');
+            $this->addFlash('positive', 'Su perfil se ha creado correctamente');
 
             return $this->redirectToRoute('homepage');
         }
         $manager->detach($user);
 
-        return $this->render('/frontend/profile/edit.html.twig', [
+        return $this->render('/frontend/profile/register.html.twig', [
             'form' => $form->createView(),
         ]);
     }
