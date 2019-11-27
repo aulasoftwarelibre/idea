@@ -13,6 +13,7 @@ use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -29,17 +30,25 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
      * @var TokenStorageInterface
      */
     private $tokenStorage;
-
+    /**
+     * @var QueryBus
+     */
     private $queryBus;
+    /**
+     * @var Session
+     */
+    private $session;
 
     public function __construct(
         RouterInterface $router,
         TokenStorageInterface $tokenStorage,
-        QueryBus $queryBus
+        QueryBus $queryBus,
+        SessionInterface $session
     ) {
         $this->router = $router;
         $this->tokenStorage = $tokenStorage;
         $this->queryBus = $queryBus;
+        $this->session = $session;
     }
 
     /**
@@ -75,8 +84,7 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ){
             $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));
-            $session = new Session();
-            $session->getFlashBag()->add(
+            $this->session->getFlashBag()->add(
                 'warning',
                 'Se debe aceptar la politica de privacidad');
         }
