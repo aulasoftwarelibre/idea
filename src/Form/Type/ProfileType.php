@@ -59,10 +59,6 @@ class ProfileType extends AbstractType
                 'image_uri' => false,
                 'imagine_pattern' => 'squared_thumbnail',
             ])
-            ->add('biography', TextareaType::class, [
-                'label' => 'Biografía',
-                'required' => false,
-            ])
             ->add('collective', ChoiceType::class, [
                 'label' => 'Colectivo',
                 'required' => true,
@@ -81,13 +77,6 @@ class ProfileType extends AbstractType
             ])
             ->add('year', null, [
                 'label' => 'Año de ingreso',
-            ])
-            ->add('terms', CheckboxType::class, [
-                'mapped' => false,
-                'required' => true,
-                'constraints' => [
-                    new IsTrue(['message' => 'Debe aceptar los términos de uso'])
-                ]
             ])
         ;
     }
