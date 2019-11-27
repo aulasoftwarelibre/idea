@@ -22,6 +22,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\IsTrue;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class ProfileType extends AbstractType
@@ -84,7 +85,9 @@ class ProfileType extends AbstractType
             ->add('terms', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
-                'label' => 'He leido y acepto la Política de privacidad , Condiciones generales de uso y Política de Cookies',
+                'constraints' => [
+                    new IsTrue(['message' => 'Debe aceptar los términos de uso'])
+                ]
             ])
         ;
     }
