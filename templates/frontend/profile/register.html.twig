@@ -19,21 +19,11 @@
                                 Por defecto es tu nombre de usuario pero puedes cambiarlo por otro.
                             </div>
                         </div>
-                    {% elseif app.user.hasProfile is empty %}
-                        <div class="ui floating warning icon message">
-                            <i class="exclamation icon"></i>
-                            <div class="content">
-                                <div class="header">
-                                    Debes registrarte antes de seguir.
-                                </div>
-                                Completa el siguiente formulario.
-                            </div>
-                        </div>
                     {% endif %}
                     <div class="ui grid">
                         <div class="two column">
-                            {{ form_start(form, {method: 'POST', action: path('profile_edit')}) }}
-                            <h2 class="ui header">Editar perfil</h2>
+                            {{ form_start(form, {method: 'POST', action: path('profile_register')}) }}
+                            <h2 class="ui header">Crear perfil</h2>
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
@@ -126,10 +116,6 @@
                             <div class="ui divider"></div>
 
                             <div class="ui submit button">Guardar</div>
-                            <div class="ui negative labeled icon button" id="remove">
-                                <i class="warning icon"></i>
-                                Borrar usuario
-                            </div>
 
                             {{ form_widget(form._token) }}
                             {{ form_end(form, {'render_rest': false}) }}
