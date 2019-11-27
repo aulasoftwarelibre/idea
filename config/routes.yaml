@@ -9,3 +9,19 @@ help:
         template:  'frontend/static/help.html.twig'
         maxAge:    86400
         sharedAge: 86400
+
+cookies:
+    path: /cookies
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template:  'frontend/static/cookies.html.twig'
+        maxAge:    86400
+        sharedAge: 86400
+
+terms:
+    path: /terms
+    controller:    Symfony\Bundle\FrameworkBundle\Controller\TemplateController::templateAction
+    defaults:
+        template:  'frontend/static/terms.html.twig'
+        maxAge:    86400
+        sharedAge: 86400
