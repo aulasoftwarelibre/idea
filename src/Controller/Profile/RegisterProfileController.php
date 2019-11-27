@@ -14,7 +14,6 @@ declare(strict_types=1);
 namespace App\Controller\Profile;
 
 use App\Entity\User;
-use App\Form\Type\ProfileType;
 use App\Form\Type\RegisterType;
 use App\MessageBus\CommandBus;
 use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;

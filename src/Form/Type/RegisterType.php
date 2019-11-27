@@ -19,7 +19,6 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
@@ -82,8 +81,8 @@ class RegisterType extends AbstractType
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
-                    new IsTrue(['message' => 'Debe aceptar los términos de uso'])
-                ]
+                    new IsTrue(['message' => 'Debe aceptar los términos de uso']),
+                ],
             ])
         ;
     }

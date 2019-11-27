@@ -15,7 +15,6 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\Type\ProfileType;
-use App\MessageBus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

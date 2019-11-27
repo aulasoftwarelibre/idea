@@ -22,7 +22,6 @@ use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
@@ -45,7 +44,7 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
      */
     private $queryBus;
     /**
-     * @var Session
+     * @var SessionInterface
      */
     private $session;
 
@@ -95,6 +94,10 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {
             $event->setResponse(new RedirectResponse($this->router->generate('profile_register')));
+
+            if (!method_exists($this->session, 'getFlashBag')) {
+                return;
+            }
             $this->session->getFlashBag()->add(
                 'warning',
                 'Se debe aceptar la politica de privacidad'

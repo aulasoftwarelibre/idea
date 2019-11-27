@@ -137,7 +137,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     protected function getTargetPath(Request $request, string $providerKey): ?string
     {
-        if (null === $request->getSession()) {
+        if (!$request->hasSession()) {
             return null;
         }
 
