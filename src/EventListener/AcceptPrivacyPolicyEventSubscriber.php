@@ -13,7 +13,7 @@ declare(strict_types=1);
 
 namespace App\EventListener;
 
-use App\Controller\Profile\EditProfileController;
+use App\Controller\Profile\RegisterProfileController;
 use App\Controller\Profile\RemoveProfileController;
 use App\Controller\Security\LogoutController;
 use App\Entity\User;
@@ -88,13 +88,13 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
 
         if (
             false === $userHasAccepted
-            && EditProfileController::class !== $controller
+            && RegisterProfileController::class !== $controller
             && RemoveProfileController::class !== $controller
             && LogoutController::class !== $controller
             && TemplateController::class . '::templateAction' !== $controller
             && HttpKernel::MASTER_REQUEST === $event->getRequestType()
         ) {
-            $event->setResponse(new RedirectResponse($this->router->generate('profile_edit')));
+            $event->setResponse(new RedirectResponse($this->router->generate('profile_register')));
             $this->session->getFlashBag()->add(
                 'warning',
                 'Se debe aceptar la politica de privacidad'
