@@ -26,6 +26,11 @@ body {
     margin: 5px 10px 0 15px;
 }
 
+.help-text {
+    font-size: 10px;
+    padding-top: 5px;
+}
+
 .ui.counter.segment {
     padding: 0;
 }
@@ -33,7 +38,6 @@ body {
 .ui.vertical.stripe {
     padding: 4.5em 0em 5em;
 }
-
 
 .top.fixed.menu .topmenu.button {
     height: 40px;
