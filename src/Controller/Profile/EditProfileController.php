@@ -46,7 +46,6 @@ class EditProfileController extends AbstractController
 
             return $this->redirectToRoute('homepage');
         }
-        $manager->detach($user);
 
         return $this->render('/frontend/profile/edit.html.twig', [
             'form' => $form->createView(),

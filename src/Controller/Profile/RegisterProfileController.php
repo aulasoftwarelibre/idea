@@ -16,14 +16,11 @@ namespace App\Controller\Profile;
 use App\Entity\User;
 use App\Form\Type\RegisterType;
 use App\MessageBus\CommandBus;
-use App\MessageBus\QueryBus;
-use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -32,21 +29,13 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RegisterProfileController extends AbstractController
 {
-    public function __invoke(Request $request, CommandBus $commandBus, QueryBus $queryBus): Response
+    public function __invoke(Request $request, CommandBus $commandBus): Response
     {
         /** @var User $user */
         $user = $this->getUser();
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
-
-        $userHasAccepted = $queryBus->query(
-            new CheckUserAcceptLastPolicyVersionQuery($user)
-        );
-
-        if ($userHasAccepted) {
-            throw new NotFoundHttpException('404 not found');
-        }
 
         $manager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
@@ -63,7 +52,6 @@ class RegisterProfileController extends AbstractController
 
             return $this->redirectToRoute('homepage');
         }
-        $manager->detach($user);
 
         return $this->render('/frontend/profile/register.html.twig', [
             'form' => $form->createView(),
