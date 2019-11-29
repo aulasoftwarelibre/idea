@@ -43,8 +43,6 @@ class RegisterProfileController extends AbstractController
 
         $manager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setHasProfile(true);
-
             $commandBus->dispatch(
                 new UserAcceptedLastPolicyVersionCommand($user)
             );

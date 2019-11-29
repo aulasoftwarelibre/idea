@@ -67,12 +67,6 @@ class User extends BaseUser implements EquatableInterface
     protected $isExternal;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    protected $hasProfile = false;
-
-    /**
      * @var string|null
      * @ORM\Column(type="string", length=32)
      * @Assert\NotBlank()
@@ -253,24 +247,6 @@ class User extends BaseUser implements EquatableInterface
     public function equalsTo(self $user): bool
     {
         return $this->getId() === $user->getId();
-    }
-
-    /**
-     * @return bool
-     */
-    public function getHasProfile(): bool
-    {
-        return $this->hasProfile;
-    }
-
-    /**
-     * @return User
-     */
-    public function setHasProfile(bool $hasProfile): self
-    {
-        $this->hasProfile = $hasProfile;
-
-        return $this;
     }
 
     /**

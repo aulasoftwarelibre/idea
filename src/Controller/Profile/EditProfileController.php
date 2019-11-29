@@ -37,8 +37,6 @@ class EditProfileController extends AbstractController
 
         $manager = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setHasProfile(true);
-
             $manager->persist($user);
             $manager->flush();
 
