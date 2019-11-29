@@ -1,6 +1,0 @@
-botman:
-    drivers:
-        telegram:
-            class: 'App\BotMan\Drivers\Telegram\TelegramDriver'
-            parameters:
-                token: '%env(TELEGRAM_BOT_API)%'

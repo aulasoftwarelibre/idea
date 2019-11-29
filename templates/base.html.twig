@@ -18,26 +18,23 @@
     {% endblock %}
 </head>
 
-
 <body id="body">
-<!-- Sidebar Menu -->
-<div class="ui left vertical inverted menu sidebar">
-    {{ knp_menu_render('sidebarMenu', {'bare': true, 'dropdown': false}) }}
-</div>
-
 <!-- Page Contents -->
-<div class="pusher">
-    <div class="ui large secondary pointing fixed menu">
-        <div class="ui container">
-            <a class="toc item"><i class="sidebar icon"></i></a>
+<div id="page-container">
+    <div class="ui top fixed huge menu">
+        <div class="ui fluid container">
             <a class="logo" href="{{ path('homepage') }}"></a>
 
-            {{ knp_menu_render('mainMenu', {'bare': true, 'allow_safe_labels': true}) }}
+            {{ render(controller('App\\Controller\\Profile\\ShowGroupMenuEmbedController')) }}
 
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
+                {{ render(controller('App\\Controller\\Profile\\ShowMenuProfileEmbedController')) }}
             {% else %}
-                <a class="floated right item" href="{{ path('connect_uco_start') }}"><i class="sign in icon"></i> Conectar</a>
+            <div class="floated right borderless item">
+                <a class="tiny ui primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
+                    <i class="sign in icon"></i> Conectar
+                </a>
+            </div>
             {% endif %}
         </div>
     </div>
@@ -45,12 +42,11 @@
     <div class="full height">
         <div class="ui main container">
             <div id="main" class="ui vertical stripe segment">
-
                 <div class="ui right dividing rail">
                     <div class="ui vertical stripe">
                         {% block side_menu %}
-                        {{ render(controller('App\\Controller\\IdeaController::getNextScheduledIdeas')) }}
-                        {{ render(controller('App\\Controller\\IdeaController::getMoreVotesPendingIdeas')) }}
+                        {{ render(controller('App\\Controller\\Idea\\NextScheduledIdeasEmbedController')) }}
+                        {{ render(controller('App\\Controller\\Idea\\MoreVotesPendingIdeasEmbedController')) }}
                         {% endblock %}
                     </div>
                 </div>
@@ -70,20 +66,18 @@
                 {% block body %}{% endblock %}
             </div>
         </div>
-
     </div>
 
-    <div class="ui inverted vertical footer segment">
+    <footer class="ui inverted vertical footer segment">
         <div class="ui container">
             <p>
                 Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a>.
                 Hospedado por el <a href="https://consejo-eps.uco.es/">CEEPS</a>.
             </p>
         </div>
-    </div>
-
-    {% block modal %}{% endblock %}
+    </footer>
 </div>
+{% block modal %}{% endblock %}
 </body>
 
 {% block javascripts %}

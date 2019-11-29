@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -26,11 +25,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
  *
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
- * @ApiResource(
- *     collectionOperations={},
- *     itemOperations={"get"},
- *     normalizationContext={"idea"}
- * )
  */
 class Group extends BaseGroup
 {
@@ -47,6 +41,12 @@ class Group extends BaseGroup
      * @Groups("idea")
      */
     protected $name;
+
+    /**
+     * @var string
+     * @ORM\Column(length=32)
+     */
+    private $icon;
 
     /**
      * @var string
@@ -103,5 +103,23 @@ class Group extends BaseGroup
     public function getSlug(): string
     {
         return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getIcon(): string
+    {
+        return (string) $this->icon;
+    }
+
+    /**
+     * @return Group
+     */
+    public function setIcon(string $icon): self
+    {
+        $this->icon = $icon;
+
+        return $this;
     }
 }

@@ -1,7 +1,11 @@
 {% import 'widgets/buttons.html.twig' as buttons %}
 
 <div class="row">
-    <div class="ui idea fluid card">
+    <div class="ui idea fluid card"
+     {% if complete is not defined %}
+     style="cursor: pointer" onclick="location.href='{{ path('idea_show', {'slug': idea.slug }) }}'"
+     {% endif %}
+    >
         <div class="content">
             <!-- vote box -->
             <div class="ui vote basic compact floated left segment center aligned">
@@ -13,32 +17,36 @@
                 {% if idea.closed %}
                     {{ buttons.simple_label('closed', 'red') }}
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('connect_uco_start')) }}
+                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('login')) }}
                 {% elseif is_granted('OWNER', idea) %}
                     {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
                 {% elseif is_voted(idea) %}
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
                 {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
                     {{ buttons.simple_label('full', 'red') }}
-                {% else %}
+                {% elseif is_granted('IDEA_JOIN', idea) %}
                     {{ buttons.js_animated_button(null, 'plus', 'join', null, idea.slug, 'join idea') }}
+                {% else %}
+                    {{ buttons.simple_label('blocked', 'red') }}
                 {% endif %}
             </div>
             <!-- end vote box -->
 
             <!-- vote body -->
             <div class="meta send by">
-                <span class="group">{{ idea.group }}</span> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
+                <a class="group" href="{{ path('idea_group_index', {'slug': idea.group.slug}) }}">{{ idea.group }}</a> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
             </div>
-            <a class="header" href="{{ path('idea_show', {'slug': idea.slug}) }}">{{ idea.title }}</a>
 
             {% if complete is defined %}
+                <h1 class="header">{{ idea.title }}</h1>
                 <div class="description">{{ idea.description | purify }}</div>
             {% else %}
+                <a class="header" href="{{ path('idea_show', {'slug': idea.slug}) }}">{{ idea.title }}</a>
                 <div class="description">
                     <div class="summary">{{ idea.description | purify('summary') }}</div>
                 </div>
             {% endif %}
+
             <!-- end vote body -->
         </div>
         <div class="extra content">
@@ -100,7 +108,11 @@
                                 {% else %}
                                     <img src="{{ asset('assets/images/default.png') }}">
                                 {% endif %}
+                                {% if is_granted('ROLE_ADMIN') %}
                                 {{ user.username }}
+                                {% else %}
+                                {{ user.alias }}
+                                {% endif %}
                             </a>
                         {% else %}
                             <span class="ui label">No hay participantes</span>
@@ -125,7 +137,7 @@
                                     ¿Quieres participar?
                                 </div>
                                 <p>
-                                    <a href="{{ path('connect_uco_start') }}">Inicia sesión</a> para dejar un comentario.
+                                    <a href="{{ path('login') }}">Inicia sesión</a> para dejar un comentario.
                                 </p>
                             </div>
                         </div>

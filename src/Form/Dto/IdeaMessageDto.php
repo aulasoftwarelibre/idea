@@ -35,7 +35,7 @@ final class IdeaMessageDto
     }
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getMessage(): string
     {
@@ -53,7 +53,7 @@ final class IdeaMessageDto
     }
 
     /**
-     * @return bool|null
+     * @return bool
      */
     public function getIsTest(): bool
     {

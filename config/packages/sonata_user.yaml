@@ -1,11 +1,13 @@
 sonata_user:
-  security_acl: false
-  manager_type: 'orm' # can be orm or mongodb
-  admin:
-    user:
-      class:    'App\Admin\UserAdmin'
-  class:
-    user:         'App\Entity\User'
-    group:         'App\Entity\Group'
-  impersonating:
-    route: sonata_admin_dashboard
+    security_acl: false
+    manager_type: 'orm' # can be orm or mongodb
+    admin:
+        user:
+            class:    'App\Admin\UserAdmin'
+        group:
+            class:    'App\Admin\GroupAdmin'
+    class:
+        user:         'App\Entity\User'
+        group:         'App\Entity\Group'
+    impersonating:
+        route: sonata_admin_dashboard

@@ -62,14 +62,10 @@ class ReportActivitiesCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $template = $input->getArgument('template');
-
-        if (false === file_exists($template)) {
-            throw new InvalidArgumentException("Plantilla no existe: {$template}");
-        }
+        $template = $this->getTemplate($input);
 
         $activities = $this->activityRepository->findAll();
 
@@ -86,6 +82,8 @@ class ReportActivitiesCommand extends Command
         }
 
         $io->success('Hecho.');
+
+        return 0;
     }
 
     protected function generateActivityReport(Spreadsheet $report, Activity $activity): void
@@ -148,5 +146,22 @@ class ReportActivitiesCommand extends Command
         $date = $activity->getOccurredOn()->format('Ymd');
         $writer = IOFactory::createWriter($report, 'Xlsx');
         $writer->save("var/report/{$date}-{$slug}.xlsx");
+    }
+
+    /**
+     * @return mixed|string|string[]|null
+     */
+    protected function getTemplate(InputInterface $input)
+    {
+        $template = $input->getArgument('template');
+        if (is_array($template)) {
+            $template = $template[0];
+        }
+
+        if (false === file_exists((string) $template)) {
+            throw new InvalidArgumentException("Plantilla no existe: {$template}");
+        }
+
+        return $template;
     }
 }

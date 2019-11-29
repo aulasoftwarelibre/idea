@@ -18,7 +18,6 @@ use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -30,7 +29,15 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        /** @var User $profile */
+        $profile = $builder->getData();
+
         $builder
+            ->add('alias', null, [
+                'label' => 'Alias',
+                'required' => true,
+                'help' => 'form.help_alias',
+            ])
             ->add('firstname', null, [
                 'label' => 'Nombre',
                 'required' => true,
@@ -49,15 +56,12 @@ class ProfileType extends AbstractType
                 'image_uri' => false,
                 'imagine_pattern' => 'squared_thumbnail',
             ])
-            ->add('biography', TextareaType::class, [
-                'label' => 'Biografía',
-                'required' => false,
-            ])
             ->add('collective', ChoiceType::class, [
                 'label' => 'Colectivo',
                 'required' => true,
                 'placeholder' => 'Selecciona tu colectivo',
                 'choices' => User::getCollectives(),
+                'disabled' => $profile->isExternal(),
             ])
             ->add('degree', EntityType::class, [
                 'label' => 'Estudios',
@@ -72,16 +76,6 @@ class ProfileType extends AbstractType
                 'label' => 'Año de ingreso',
             ])
         ;
-
-        /** @var User $profile */
-        $profile = $builder->getData();
-
-        if ($profile->getTelegramChat()) {
-            $builder
-                ->add('telegramChat', ProfileTelegramOptionsType::class, [
-                ])
-            ;
-        }
     }
 
     /**

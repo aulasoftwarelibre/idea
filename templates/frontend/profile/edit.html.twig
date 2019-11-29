@@ -1,3 +1,4 @@
+
 {% extends "base.html.twig" %}
 
 {% block vich_image_widget %}
@@ -8,17 +9,6 @@
         <div class="row">
             <div class="ui idea fluid card">
                 <div class="content">
-                    {% if app.user.collective is empty %}
-                        <div class="ui floating warning icon message">
-                            <i class="exclamation icon"></i>
-                            <div class="content">
-                                <div class="header">
-                                    Debes registrarte antes de seguir.
-                                </div>
-                                Completa el siguiente formulario.
-                            </div>
-                        </div>
-                    {% endif %}
                     <div class="ui grid">
                         <div class="two column">
                             {{ form_start(form, {method: 'POST', action: path('profile_edit')}) }}
@@ -26,25 +16,29 @@
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
-                            <div class="two fields">
+
+                            <div class="three fields">
+                                {{ form_row(form.alias) }}
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}
                             </div>
                             {{ form_row(form.imageFile) }}
-                            {{ form_row(form.biography) }}
                             {{ form_row(form.collective) }}
-                            {{ form_row(form.degree) }}
-                            <a class="ui basic button" id="clear-degree">Borrar selección</a>
-                            {{ form_row(form.year) }}
-
-                            {# Configuración de telegram #}
-                            {% if app.user.telegramChat is not null %}
-                                {{ form_row(form.telegramChat) }}
+                            {% if not app.user.isExternal %}
+                                <div class="two fields">
+                                    {{ form_row(form.degree) }}
+                                    {{ form_row(form.year) }}
+                                </div>
+                                <a class="ui basic button" id="clear-degree">Borrar selección</a>
                             {% endif %}
-                            Actívalos para recibir comentarios en las ideas que has creado.
 
                             <div class="ui divider"></div>
+
                             <div class="ui submit button">Guardar</div>
+                            <div class="ui negative labeled icon button" id="remove">
+                                <i class="warning icon"></i>
+                                Borrar usuario
+                            </div>
 
                             {{ form_widget(form._token) }}
                             {{ form_end(form, {'render_rest': false}) }}
@@ -52,6 +46,32 @@
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block modal %}
+    <div class="ui remove tiny modal">
+        <div class="header">Borrar usuario</div>
+        <div class="content">
+            <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
+                a las actividades que haya asistido.</p>
+            <p>Escriba "Estoy seguro" y pulse Confirmar para continuar.</p>
+            <div class="ui input">
+                <input name="iamsure" type="text" placeholder="Estoy seguro">
+            </div>
+        </div>
+        <div class="actions">
+            <form action="{{ path('profile_remove') }}" method="post" >
+                <input type="hidden" name="token" value="{{ csrf_token('delete') }}" />
+                <div class="ui black deny button">
+                    Cancelar
+                </div>
+                <button type="submit" class="ui disabled positive right labeled icon button">
+                    Confirmar
+                    <i class="checkmark icon"></i>
+                </button>
+            </form>
         </div>
     </div>
 {% endblock %}
@@ -78,6 +98,18 @@
                 on: 'blur',
                 inline : true,
                 fields: {
+                    profile_alias: {
+                        identifier: 'profile_alias',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica un alias'
+                        },
+                            {
+                                type: 'regExp',
+                                value: /^[\w\d_]{3,16}$/i,
+                                prompt: 'El formato no es correcto'
+                            }]
+                    },
                     profile_firstname: {
                         identifier: 'profile_firstname',
                         rules: [{
@@ -118,5 +150,25 @@
                 }
             })
         ;
+
+        $('.remove.modal')
+            .modal('attach events', '#remove', 'show')
+        ;
+
+        $('input[name=iamsure]').on('input', function(e) {
+            const button = $('.remove.modal button');
+            const message = $(this).val()
+
+            if (message === "Estoy seguro") {
+                button.removeClass('disabled');
+                return;
+            }
+
+            if (button.hasClass('disabled')) {
+                return;
+            }
+
+            button.addClass('disabled');
+        })
     </script>
 {% endblock %}

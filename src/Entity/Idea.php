@@ -13,11 +13,6 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use ApiPlatform\Core\Annotation\ApiFilter;
-use ApiPlatform\Core\Annotation\ApiProperty;
-use ApiPlatform\Core\Annotation\ApiResource;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,14 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\IdeaRepository")
  * @ORM\Table()
- * @ApiResource(
- *     attributes={"pagination_items_per_page"=10},
- *     collectionOperations={"get"},
- *     itemOperations={"get"},
- *     normalizationContext={"groups"={"read","idea"}}
- * )
- * @ApiFilter(BooleanFilter::class, properties={"closed"})
- * @ApiFilter(SearchFilter::class, properties={"state": "exact"})
  */
 class Idea
 {
@@ -51,7 +38,6 @@ class Idea
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
-     * @ApiProperty(identifier=false)
      */
     private $id;
 
@@ -96,7 +82,6 @@ class Idea
      * @ORM\Column(length=255, unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
      * @Groups("read")
-     * @ApiProperty(identifier=true)
      */
     private $slug;
 
@@ -146,6 +131,14 @@ class Idea
     private $numSeats;
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", name="external_num_seats")
+     * @Assert\Range(min=0)
+     * @Groups("read")
+     */
+    private $externalNumSeats;
+
+    /**
      * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
@@ -182,6 +175,7 @@ class Idea
         $this->private = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
+        $this->externalNumSeats = 0;
     }
 
     public static function getStates(): array
@@ -382,6 +376,16 @@ class Idea
     }
 
     /**
+     * @return Collection
+     */
+    public function getExternalVotes(): Collection
+    {
+        return $this->votes->filter(function (Vote $vote) {
+            return $vote->getUser()->isExternal();
+        });
+    }
+
+    /**
      * @return Idea
      */
     public function addVote(Vote $vote): self
@@ -421,6 +425,24 @@ class Idea
     public function setNumSeats(int $numSeats): self
     {
         $this->numSeats = $numSeats;
+
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getExternalNumSeats(): int
+    {
+        return $this->externalNumSeats;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setExternalNumSeats(int $externalNumSeats): self
+    {
+        $this->externalNumSeats = $externalNumSeats;
 
         return $this;
     }

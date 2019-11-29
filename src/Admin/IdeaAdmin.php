@@ -82,11 +82,17 @@ class IdeaAdmin extends AbstractAdmin
             ->end()
             ->with('block.votes', ['class' => 'col-md-12'])
                 ->add('numSeats', null, [
+                    'help' => 'Indique 0 para plazas ilimitadas.',
+                ])
+                ->add('externalNumSeats', null, [
+                    'help' => 'Indique 0 para actividades internas',
                 ])
                 ->add('votes', SonataVoteType::class, [
                     'multiple' => true,
                     'required' => false,
-            ]);
+                ])
+            ->end()
+        ;
 
         $form
             ->getFormBuilder()

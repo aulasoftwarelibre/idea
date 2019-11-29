@@ -13,10 +13,10 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Ramsey\Uuid\Uuid;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -31,7 +31,19 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
+ * @ORM\AttributeOverrides({
+ *     @ORM\AttributeOverride(name="emailCanonical",
+ *         column=@ORM\Column(
+ *              name="email_canonical",
+ *              type="string",
+ *              length=255,
+ *              nullable=true,
+ *              unique=false,
+ *         )
+ *     )
+ * })
  * @Vich\Uploadable()
+ * @Validator\Alias()
  */
 class User extends BaseUser implements EquatableInterface
 {
@@ -49,34 +61,19 @@ class User extends BaseUser implements EquatableInterface
     protected $id;
 
     /**
-     * @var string
-     * @ORM\Column(name="ssp_id", type="string", length=50, unique=true, nullable=true)
+     * @var bool
+     * @ORM\Column(type="boolean")
      */
-    protected $ssp_id;
-
-    /**
-     * @var string
-     */
-    protected $sspAccessToken;
-
-    /**
-     * @var TelegramChatPrivate|null
-     * @ORM\OneToOne(targetEntity="App\Entity\TelegramChatPrivate", inversedBy="user")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    protected $telegramChat;
+    protected $isExternal;
 
     /**
      * @var string|null
-     * @ORM\Column(length=100, nullable=true)
+     * @ORM\Column(type="string", length=32)
+     * @Assert\NotBlank()
+     * @Assert\Length(min=3, max=16)
+     * @Assert\Regex("/[\w\d_]/u", message="form.label_alias_invalid")
      */
-    protected $telegramSecretToken;
-
-    /**
-     * @var \DateTime|null
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    protected $telegramSecretTokenExpiresAt;
+    protected $alias = '';
 
     /**
      * @var string|null
@@ -108,25 +105,66 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @var Participation[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Participation",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $participations;
 
     /**
      * @var Idea[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="owner", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Idea",
+     *     mappedBy="owner",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $ideas;
 
     /**
      * @var Vote[]|Collection
-     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="user", cascade={"persist", "remove"}, orphanRemoval=true)
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Vote",
+     *     mappedBy="user",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
      */
     private $votes;
 
     /**
+     * @var LogPolicy[]|Collection
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\LogPolicy",
+     *     mappedBy="user"
+     * )
+     */
+    private $versions;
+
+    /**
+     * @var Comment[]|Collection
+     * @ORM\OneToMany(
+     *     targetEntity="App\Entity\Comment",
+     *     mappedBy="author",
+     *     cascade={"persist", "remove"},
+     *     orphanRemoval=true
+     * )
+     */
+    private $comments;
+
+    /**
      * @var File|UploadedFile|null
-     * @Vich\UploadableField(mapping="avatars", fileNameProperty="image.name", size="image.size", mimeType="image.mimeType", originalName="image.originalName")
+     * @Vich\UploadableField(
+     *     mapping="avatars",
+     *     fileNameProperty="image.name",
+     *     size="image.size",
+     *     mimeType="image.mimeType",
+     *     originalName="image.originalName"
+     * )
      */
     private $imageFile;
 
@@ -147,6 +185,35 @@ class User extends BaseUser implements EquatableInterface
      * )
      */
     protected $groups;
+
+    public static function createUcoUser(string $username): self
+    {
+        $user = new self();
+        $user
+            ->setUsername($username)
+            ->setEmail("{$username}@uco.es")
+            ->setPassword('!')
+            ->setIsExternal(false)
+            ->setEnabled(true)
+        ;
+
+        return $user;
+    }
+
+    public static function createExternalUser(string $email): self
+    {
+        $user = new self();
+        $user
+            ->setUsername($email)
+            ->setEmail($email)
+            ->setPassword('!')
+            ->setIsExternal(true)
+            ->setEnabled(true)
+            ->setCollective(self::EXTERNAL)
+        ;
+
+        return $user;
+    }
 
     /**
      * User constructor.
@@ -183,20 +250,19 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return string
+     * @return bool
      */
-    public function getSspId(): string
+    public function isExternal(): bool
     {
-        return $this->ssp_id;
+        return $this->isExternal;
     }
 
     /**
      * @return User
      */
-    public function setSspId(string $ssp_id): self
+    public function setIsExternal(bool $isExternal): self
     {
-        $this->ssp_id = $ssp_id;
-        $this->username = $ssp_id;
+        $this->isExternal = $isExternal;
 
         return $this;
     }
@@ -204,63 +270,17 @@ class User extends BaseUser implements EquatableInterface
     /**
      * @return string
      */
-    public function getSspAccessToken(): string
+    public function getAlias(): string
     {
-        return $this->sspAccessToken;
+        return (string) $this->alias;
     }
 
     /**
      * @return User
      */
-    public function setSspAccessToken(string $sspAccessToken): self
+    public function setAlias(?string $alias): self
     {
-        $this->sspAccessToken = $sspAccessToken;
-
-        return $this;
-    }
-
-    /**
-     * @return TelegramChatPrivate|null
-     */
-    public function getTelegramChat(): ?TelegramChat
-    {
-        return $this->telegramChat;
-    }
-
-    /**
-     * @return User
-     */
-    public function setTelegramChat(?TelegramChatPrivate $telegramChat): self
-    {
-        $this->telegramChat = $telegramChat;
-        $this->telegramSecretToken = null;
-
-        return $this;
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getTelegramSecretToken(): ?string
-    {
-        return $this->telegramSecretToken;
-    }
-
-    /**
-     * @return \DateTime|null
-     */
-    public function getTelegramSecretTokenExpiresAt(): ?\DateTime
-    {
-        return $this->telegramSecretTokenExpiresAt;
-    }
-
-    /**
-     * Create new token.
-     */
-    public function generateNewSecretToken(): self
-    {
-        $this->telegramSecretToken = trim(base64_encode(Uuid::uuid4()->toString()), '=');
-        $this->telegramSecretTokenExpiresAt = new \DateTime('+10 minutes'); // 10 minutes
+        $this->alias = $alias;
 
         return $this;
     }
@@ -347,6 +367,25 @@ class User extends BaseUser implements EquatableInterface
     public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
+    }
+
+    /**
+     * @return Collection|LogPolicy[]
+     */
+    public function getVersions(): Collection
+    {
+        return $this->versions;
+    }
+
+    /**
+     * @return User
+     */
+    public function addVersion(LogPolicy $version): self
+    {
+        $version->setUser($this);
+        $this->versions[] = $version;
+
+        return $this;
     }
 
     /**
@@ -474,6 +513,14 @@ class User extends BaseUser implements EquatableInterface
     public function removeParticipation(Participation $participation): void
     {
         $this->participations->removeElement($participation);
+    }
+
+    /**
+     * @return Comment[]|Collection
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 
     public function isEqualTo(UserInterface $user): bool
