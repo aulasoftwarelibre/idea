@@ -14,6 +14,7 @@ declare(strict_types=1);
 namespace App\Messenger\User;
 
 use App\Entity\User;
+use App\Exception\UserNotFoundException;
 use App\MessageBus\CommandHandlerInterface;
 use FOS\UserBundle\Model\UserManagerInterface;
 
@@ -33,9 +34,12 @@ class RemoveUserHandler implements CommandHandlerInterface
     {
         $user = $this->userManager->findUserByUsername($command->getUsername());
         if (!$user instanceof User) {
-            return;
+            throw new UserNotFoundException('usuario no encontrado');
         }
 
+        if ($command->isHardDelete()) {
+            $user->setDeletedAt(new \DateTime());
+        }
         $this->userManager->deleteUser($user);
     }
 }
