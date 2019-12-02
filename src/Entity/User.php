@@ -87,6 +87,13 @@ class User extends BaseUser implements EquatableInterface
     protected $alias = '';
 
     /**
+     * @var int
+     * @ORM\Version()
+     * @ORM\Column(type="integer")
+     */
+    private $version = 1;
+
+    /**
      * @var string|null
      * @ORM\Column(length=32, nullable=true)
      * @Assert\Choice(callback="getCollectives")
@@ -560,5 +567,21 @@ class User extends BaseUser implements EquatableInterface
     public function setDeletedAt(?\DateTimeInterface $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    /**
+     * @param int $version
+     */
+    public function setVersion(int $version): void
+    {
+        $this->version = $version;
     }
 }
