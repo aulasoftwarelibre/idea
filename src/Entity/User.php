@@ -17,6 +17,7 @@ use App\Validator;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -40,8 +41,18 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *              nullable=true,
  *              unique=false,
  *         )
+ *     ),
+ *     @ORM\AttributeOverride(name="usernameCanonical",
+ *         column=@ORM\Column(
+ *              name="username_canonical",
+ *              type="string",
+ *              length=255,
+ *              nullable=true,
+ *              unique=false,
+ *         )
  *     )
  * })
+ * @Gedmo\SoftDeleteable()
  * @Vich\Uploadable()
  * @Validator\Alias()
  */
@@ -99,7 +110,7 @@ class User extends BaseUser implements EquatableInterface
 
     /**
      * @var string|null
-     * @ORM\Column(length=32, unique=true, nullable=true)
+     * @ORM\Column(length=32, unique=false, nullable=true)
      */
     private $nic;
 
@@ -185,6 +196,12 @@ class User extends BaseUser implements EquatableInterface
      * )
      */
     protected $groups;
+
+    /**
+     * @var \DateTimeInterface | null
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deletedAt;
 
     public static function createUcoUser(string $username): self
     {
@@ -527,5 +544,21 @@ class User extends BaseUser implements EquatableInterface
     {
         return $user instanceof self
             && $user->getId() === $this->getId();
+    }
+
+    /**
+     * @return \DateTimeInterface|null
+     */
+    public function getDeletedAt(): ?\DateTimeInterface
+    {
+        return $this->deletedAt;
+    }
+
+    /**
+     * @param \DateTimeInterface|null $deletedAt
+     */
+    public function setDeletedAt(?\DateTimeInterface $deletedAt): void
+    {
+        $this->deletedAt = $deletedAt;
     }
 }
