@@ -17,26 +17,25 @@ use App\MessageBus\CommandBus;
 use App\Messenger\User\RemoveUserCommand;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
-class IdeaUserRemoveCommand extends Command
+class IdeaUserPurgeCommand extends Command
 {
     /**
      * @var string
      */
-    protected static $defaultName = 'idea:user:remove';
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    protected static $defaultName = 'idea:user:purge';
     /**
      * @var CommandBus
      */
     private $commandBus;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
 
     public function __construct(EntityManagerInterface $manager, CommandBus $commandBus)
     {
@@ -47,31 +46,28 @@ class IdeaUserRemoveCommand extends Command
 
     protected function configure(): void
     {
-        $this
-            ->setDescription('Softdelete an user by passing username')
-            ->addArgument('username', InputArgument::REQUIRED, 'Debe ser un nombre de usuario')
-        ;
+        $this->setDescription('Purge all users who has been softdeleted');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
-        /** @var string $username */
-        $username = $input->getArgument('username');
-
-        if ($username) {
-            $io->note(sprintf('You passed an argument: %s', $username));
-        }
 
         try {
             $this->manager->getFilters()->disable('softdeleteable');
-            $this->commandBus->dispatch(
-                new RemoveUserCommand(
-                    $username,
-                    true
-                )
-            );
-            $io->success('');
+            $users = $this->findAllSoftDeletedUsers();
+
+            foreach ($users as $user) {
+                $username = $user->getUsername();
+                $this->commandBus->dispatch(
+                    new RemoveUserCommand(
+                        $username,
+                        true
+                    )
+                );
+            }
+
+            $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
         } catch (HandlerFailedException $e) {
             if (!$e->getPrevious() instanceof \Exception) {
                 $io->error($e->getMessage());
@@ -85,5 +81,12 @@ class IdeaUserRemoveCommand extends Command
         }
 
         return 0;
+    }
+
+    public function findAllSoftDeletedUsers(): array
+    {
+        $qb = $this->manager->createQuery('SELECT u FROM \App\Entity\User u WHERE u.deletedAt IS NOT   NULL');
+
+        return $qb->getResult();
     }
 }
