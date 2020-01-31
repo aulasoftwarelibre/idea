@@ -30,6 +30,7 @@ final class Version20191129105233 extends AbstractMigration
         $this->addSql('DROP INDEX UNIQ_957A6479A0D96FBF ON fos_user');
         $this->addSql('DROP INDEX UNIQ_957A647941DC10D3 ON fos_user');
         $this->addSql('ALTER TABLE fos_user ADD is_external TINYINT(1) NOT NULL DEFAULT 0, ADD alias VARCHAR(32) NOT NULL, DROP telegram_chat_id, DROP telegram_secret_token, DROP telegram_secret_token_expires_at, DROP ssp_id, CHANGE email_canonical email_canonical VARCHAR(255) DEFAULT NULL');
+        $this->addSql('UPDATE fos_user SET alias = username');
         $this->addSql('ALTER TABLE idea ADD external_num_seats INT NOT NULL');
         $this->addSql('ALTER TABLE fos_group ADD icon VARCHAR(32) NOT NULL');
     }
