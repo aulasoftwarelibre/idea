@@ -15,12 +15,12 @@ namespace App\Messenger\LogPolicy;
 
 use App\Entity\LogPolicy;
 use App\MessageBus\CommandHandlerInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class UserAcceptedLastPolicyVersionHandler implements CommandHandlerInterface
 {
     /**
-     * @var ObjectManager
+     * @var EntityManagerInterface
      */
     private $manager;
 
@@ -29,7 +29,7 @@ class UserAcceptedLastPolicyVersionHandler implements CommandHandlerInterface
      */
     private $policyVersion;
 
-    public function __construct(ObjectManager $manager, string $policyVersion)
+    public function __construct(EntityManagerInterface $manager, string $policyVersion)
     {
         $this->manager = $manager;
         $this->policyVersion = $policyVersion;
