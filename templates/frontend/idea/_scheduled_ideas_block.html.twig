@@ -2,8 +2,8 @@
     <div class="header active item">{{ title }}</div>
     {% for idea in ideas %}
         <a class="item" href="{{ path('idea_show',{'slug': idea.slug}) }}">
-            {{ idea.title | truncate(25) }}
-            <div class="ui label">{{ idea.startsAt|date('d/m') }}</div>
+            <span class="activity description">{{ idea.title }}</span>
+            <span class="ui label">{{ idea.startsAt|date('d/m') }}</span>
         </a>
     {% else %}
         <a class="item">No hay ideas programadas.</a>

@@ -57,6 +57,14 @@ body {
     white-space: nowrap;
 }
 
+.activity.description {
+    text-overflow: ellipsis;
+    max-width: 160px;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
 #add {
     margin: auto 0;
     padding: 13px 0;

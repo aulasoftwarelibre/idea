@@ -2,8 +2,8 @@
     <div class="header active item">{{ title }}</div>
     {% for idea in ideas %}
         <a class="item" href="{{ path('idea_show',{'slug': idea[0].slug}) }}">
-            {{ idea[0].title | truncate(25) }}
-            <div class="ui label">{{ idea['votes'] }}</div>
+            <span class="activity description">{{ idea[0].title }}</span>
+            <span class="ui label">{{ idea['votes'] }}</span>
         </a>
     {% else %}
         <a class="item">No hay ideas pendientes de aprobar.</a>
