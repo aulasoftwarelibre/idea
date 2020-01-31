@@ -1,4 +1,5 @@
 <div class="right menu">
+    {% if not app.user.external %}
     <a class="ui small  basic icon button" id="add" href="{{ path('idea_new') }}"
        data-tooltip="Añadir nueva idea"
        data-position="bottom center"
@@ -6,6 +7,7 @@
     >
         <i class="add icon"></i>
     </a>
+    {% endif %}
     <div class="ui compact dropdown topmenu basic button item" id="login">
             {% if profile.image.name is not empty %}
             <img class="avatar ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
