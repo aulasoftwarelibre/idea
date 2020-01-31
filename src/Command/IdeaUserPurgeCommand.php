@@ -15,6 +15,7 @@ namespace App\Command;
 
 use App\MessageBus\CommandBus;
 use App\Messenger\User\RemoveUserCommand;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -36,17 +37,25 @@ class IdeaUserPurgeCommand extends Command
      * @var EntityManagerInterface
      */
     private $manager;
+    /**
+     * @var UserRepository
+     */
+    private $userRepository;
 
-    public function __construct(EntityManagerInterface $manager, CommandBus $commandBus)
+    public function __construct(CommandBus $commandBus, EntityManagerInterface $manager, UserRepository $userRepository)
     {
         parent::__construct();
-        $this->manager = $manager;
+
         $this->commandBus = $commandBus;
+        $this->manager = $manager;
+        $this->userRepository = $userRepository;
     }
 
     protected function configure(): void
     {
-        $this->setDescription('Purge all users who has been softdeleted');
+        $this
+            ->setDescription('Purge all users who has been deleted more than one year ago.')
+        ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -55,10 +64,11 @@ class IdeaUserPurgeCommand extends Command
 
         try {
             $this->manager->getFilters()->disable('softdeleteable');
-            $users = $this->findAllSoftDeletedUsers();
+            $users = $this->userRepository->findAllDeletedUsers();
 
             foreach ($users as $user) {
                 $username = $user->getUsername();
+                $io->comment("Removing $username...");
                 $this->commandBus->dispatch(
                     new RemoveUserCommand(
                         $username,
@@ -67,7 +77,7 @@ class IdeaUserPurgeCommand extends Command
                 );
             }
 
-            $io->success('You have a new command! Now make it your own! Pass --help to see your options.');
+            $io->success('All users have been removed.');
         } catch (HandlerFailedException $e) {
             if (!$e->getPrevious() instanceof \Exception) {
                 $io->error($e->getMessage());
@@ -81,12 +91,5 @@ class IdeaUserPurgeCommand extends Command
         }
 
         return 0;
-    }
-
-    public function findAllSoftDeletedUsers(): array
-    {
-        $qb = $this->manager->createQuery('SELECT u FROM \App\Entity\User u WHERE u.deletedAt IS NOT   NULL');
-
-        return $qb->getResult();
     }
 }
