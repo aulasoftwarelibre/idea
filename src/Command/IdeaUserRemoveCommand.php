@@ -29,27 +29,28 @@ class IdeaUserRemoveCommand extends Command
      * @var string
      */
     protected static $defaultName = 'idea:user:remove';
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+
     /**
      * @var CommandBus
      */
     private $commandBus;
+    /**
+     * @var EntityManagerInterface
+     */
+    private $manager;
 
-    public function __construct(EntityManagerInterface $manager, CommandBus $commandBus)
+    public function __construct(CommandBus $commandBus, EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->manager = $manager;
         $this->commandBus = $commandBus;
+        $this->manager = $manager;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Softdelete an user by passing username')
-            ->addArgument('username', InputArgument::REQUIRED, 'Debe ser un nombre de usuario')
+            ->setDescription('Remove and purge an user by passing username')
+            ->addArgument('username', InputArgument::REQUIRED, 'Username to search')
         ;
     }
 
@@ -59,19 +60,16 @@ class IdeaUserRemoveCommand extends Command
         /** @var string $username */
         $username = $input->getArgument('username');
 
-        if ($username) {
-            $io->note(sprintf('You passed an argument: %s', $username));
-        }
-
         try {
             $this->manager->getFilters()->disable('softdeleteable');
+
             $this->commandBus->dispatch(
                 new RemoveUserCommand(
                     $username,
                     true
                 )
             );
-            $io->success('');
+            $io->success('User was removed and purged.');
         } catch (HandlerFailedException $e) {
             if (!$e->getPrevious() instanceof \Exception) {
                 $io->error($e->getMessage());
@@ -82,6 +80,8 @@ class IdeaUserRemoveCommand extends Command
             $io->error($e->getPrevious()->getMessage());
 
             return 2;
+        } finally {
+            $this->manager->getFilters()->enable('softdeleteable');
         }
 
         return 0;

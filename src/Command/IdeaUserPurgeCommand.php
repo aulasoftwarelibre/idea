@@ -88,6 +88,8 @@ class IdeaUserPurgeCommand extends Command
             $io->error($e->getPrevious()->getMessage());
 
             return 2;
+        } finally {
+            $this->manager->getFilters()->enable('softdeleteable');
         }
 
         return 0;
