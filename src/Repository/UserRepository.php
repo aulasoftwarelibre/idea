@@ -82,4 +82,19 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
+
+    public function findAllDeletedUsers(): array
+    {
+        $qb = $this->getEntityManager()
+            ->createQuery('
+                SELECT u 
+                FROM App\Entity\User u 
+                WHERE u.deletedAt IS NOT NULL
+                AND u.deletedAt < :oneYearAgo
+            ')
+            ->setParameter('oneYearAgo', new \DateTime('1 year ago'))
+        ;
+
+        return $qb->getResult();
+    }
 }

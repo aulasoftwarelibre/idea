@@ -19,10 +19,15 @@ final class RemoveUserCommand
      * @var string
      */
     private $username;
+    /**
+     * @var bool
+     */
+    private $hardDelete;
 
-    public function __construct(string $username)
+    public function __construct(string $username, bool $hardDelete = false)
     {
         $this->username = $username;
+        $this->hardDelete = $hardDelete;
     }
 
     /**
@@ -31,5 +36,13 @@ final class RemoveUserCommand
     public function getUsername(): string
     {
         return $this->username;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isHardDelete(): bool
+    {
+        return $this->hardDelete;
     }
 }

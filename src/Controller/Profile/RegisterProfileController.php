@@ -19,6 +19,7 @@ use App\MessageBus\CommandBus;
 use App\MessageBus\QueryBus;
 use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use App\Messenger\LogPolicy\UserAcceptedLastPolicyVersionCommand;
+use Doctrine\ORM\OptimisticLockException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -42,17 +43,22 @@ class RegisterProfileController extends AbstractController
         $this->checkUserHasAcceptedTerms($queryBus, $user);
 
         $manager = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $commandBus->dispatch(
-                new UserAcceptedLastPolicyVersionCommand($user)
-            );
 
-            $manager->persist($user);
-            $manager->flush();
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $commandBus->dispatch(
+                    new UserAcceptedLastPolicyVersionCommand($user)
+                );
 
-            $this->addFlash('positive', 'Su perfil se ha creado correctamente');
+                $manager->persist($user);
+                $manager->flush();
 
-            return $this->redirectToRoute('homepage');
+                $this->addFlash('positive', 'Su perfil se ha creado correctamente');
+
+                return $this->redirectToRoute('homepage');
+            }
+        } catch (OptimisticLockException $e) {
+            $this->addFlash('error', 'Error al registrar. Intentelo de nuevo');
         }
 
         return $this->render('/frontend/profile/register.html.twig', [

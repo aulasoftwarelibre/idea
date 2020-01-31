@@ -15,6 +15,7 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\Type\ProfileType;
+use Doctrine\ORM\OptimisticLockException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -36,13 +37,18 @@ class EditProfileController extends AbstractController
         $form->handleRequest($request);
 
         $manager = $this->getDoctrine()->getManager();
-        if ($form->isSubmitted() && $form->isValid()) {
-            $manager->persist($user);
-            $manager->flush();
 
-            $this->addFlash('positive', 'Su perfil ha sido actualizado');
+        try {
+            if ($form->isSubmitted() && $form->isValid()) {
+                $manager->persist($user);
+                $manager->flush();
 
-            return $this->redirectToRoute('homepage');
+                $this->addFlash('positive', 'Su perfil ha sido actualizado');
+
+                return $this->redirectToRoute('homepage');
+            }
+        } catch (OptimisticLockException $e) {
+            $this->addFlash('error', 'Error al guardar. Intentelo de nuevo');
         }
 
         return $this->render('/frontend/profile/edit.html.twig', [

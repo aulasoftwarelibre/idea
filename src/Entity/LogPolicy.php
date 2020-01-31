@@ -49,12 +49,13 @@ class LogPolicy
     /**
      * @var User|null
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255,)
      */
     private $tag;
 
