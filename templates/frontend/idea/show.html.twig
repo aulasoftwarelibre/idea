@@ -20,21 +20,31 @@
                     <span class="ui {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</span>
                 </h1>
 
-
                 {% if idea.closed %}
-                    {{ buttons.simple_label('closed', 'red') }}
+                    <div class="ui right floated red basic button">
+                        {{ 'closed' | trans | upper }}
+                    </div>
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('login')) }}
+                    <a class="ui right floated sign-in primary basic button" href="{{ path('login') }}">
+                        <i class="sign-in icon"></i>
+                        {{ 'join' | trans | upper }}
+                    </a>
                 {% elseif is_granted('OWNER', idea) %}
-                    {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
+                    <a class="ui right floated green basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
+                        {{ 'edit' | trans | upper }}
+                    </a>
                 {% elseif is_voted(idea) %}
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
                 {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
-                    {{ buttons.simple_label('full', 'red') }}
+                    <div class="ui right floated red basic button">
+                        {{ 'full' | trans | upper }}
+                    </div>
                 {% elseif is_granted('IDEA_JOIN', idea) %}
-                    {{ buttons.js_button('join', 'plus', idea.slug, 'primary join idea') }}
+                    {{ buttons.js_button('join', 'sign-in', idea.slug, 'primary join idea') }}
                 {% else %}
-                    {{ buttons.simple_label('blocked', 'red') }}
+                    <div class="ui right floated red basic button">
+                        {{ 'blocked' | trans | upper }}
+                    </div>
                 {% endif %}
 
                 <h3 class="ui header">
@@ -51,8 +61,20 @@
             </div>
         </div>
         <div class="ui container">
-            <div class="ui grid">
+            <div class="ui stackable mobile reversed grid">
                 <div class="eleven wide column">
+
+                    {% block flash_messages %}
+                        {% if app.session is not null and app.session.started %}
+                            {% for type, messages in app.flashes %}
+                                {% for message in messages %}
+                                    <div class="ui {{ type }} floating message">
+                                        {{- message -}}
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endblock flash_messages %}
 
                     <div class="ui fluid card">
                         <div class="content">
@@ -153,9 +175,8 @@
 
                 </div> <!-- column -->
 
-
                 <div class="five wide column">
-                    <div class="ui segment">
+                    <div class="ui top attached segment">
                         <h4 class="ui header">
                             <i class="{{ idea.group.icon }} icon"></i>
                             <div class="content">
@@ -166,7 +187,7 @@
                             </div>
                         </h4>
                     </div>
-                    <div class="ui segment">
+                    <div class="ui attached segment">
                         <div class="ui relaxed list">
                             <div class="item">
                                 <i class="large clock middle aligned icon"></i>
