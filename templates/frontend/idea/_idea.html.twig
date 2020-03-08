@@ -12,23 +12,8 @@
                 <div class="ui top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
                 <div class="ui tiny statistic">
                     <div class="value">{{ idea.votes | length }}</div>
-                    <div class="label">votos</div>
+                    <div class="label">personas</div>
                 </div>
-                {% if idea.closed %}
-                    {{ buttons.simple_label('closed', 'red') }}
-                {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    {{ buttons.animated_button(null, 'plus', 'connect', null, path('login')) }}
-                {% elseif is_granted('OWNER', idea) %}
-                    {{ buttons.simple_button('edit', path('idea_edit', {slug: idea.slug}), 'green') }}
-                {% elseif is_voted(idea) %}
-                    {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
-                {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
-                    {{ buttons.simple_label('full', 'red') }}
-                {% elseif is_granted('IDEA_JOIN', idea) %}
-                    {{ buttons.js_animated_button(null, 'plus', 'join', null, idea.slug, 'join idea') }}
-                {% else %}
-                    {{ buttons.simple_label('blocked', 'red') }}
-                {% endif %}
             </div>
             <!-- end vote box -->
 

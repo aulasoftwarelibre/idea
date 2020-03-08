@@ -2,9 +2,9 @@
   "entrypoints": {
     "app": {
       "js": [
-        "/aulasoftwarelibre/actividades/build/runtime.17a0c997.js",
-        "/aulasoftwarelibre/actividades/build/0.1911a509.js",
-        "/aulasoftwarelibre/actividades/build/app.ac7d5b46.js"
+        "/aulasoftwarelibre/actividades/build/runtime.d0e65e7d.js",
+        "/aulasoftwarelibre/actividades/build/0.004528bc.js",
+        "/aulasoftwarelibre/actividades/build/app.0983eeb7.js"
       ],
       "css": [
         "/aulasoftwarelibre/actividades/build/0.3a7b7c8f.css",
@@ -13,9 +13,9 @@
     },
     "login": {
       "js": [
-        "/aulasoftwarelibre/actividades/build/runtime.17a0c997.js",
-        "/aulasoftwarelibre/actividades/build/0.1911a509.js",
-        "/aulasoftwarelibre/actividades/build/login.6394a964.js"
+        "/aulasoftwarelibre/actividades/build/runtime.d0e65e7d.js",
+        "/aulasoftwarelibre/actividades/build/0.004528bc.js",
+        "/aulasoftwarelibre/actividades/build/login.c90b66c2.js"
       ],
       "css": [
         "/aulasoftwarelibre/actividades/build/0.3a7b7c8f.css",
