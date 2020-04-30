@@ -3,7 +3,7 @@
         "@symfony/webpack-encore": "^0.28.0",
         "clipboard": "^2.0.4",
         "core-js": "^3.3.2",
-        "jquery": "^3.4.1",
+        "jquery": "^3.5.0",
         "semantic-ui-css": "2.4.1",
         "webpack-notifier": "^1.8.0"
     },
