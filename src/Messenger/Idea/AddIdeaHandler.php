@@ -43,7 +43,7 @@ class AddIdeaHandler implements CommandHandlerInterface
         $vote = new Vote();
         $vote->setUser($user);
 
-        $idea = new Idea($title, $description, $user, $group);
+        $idea = Idea::with($title, $description, $user, $group);
         $idea->addVote($vote);
 
         $this->repository->add($idea);
