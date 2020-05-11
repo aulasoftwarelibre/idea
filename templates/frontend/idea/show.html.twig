@@ -26,7 +26,7 @@
                     </div>
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
                     <a class="ui right floated sign-in primary basic button" href="{{ path('login') }}">
-                        <i class="sign-in icon"></i>
+                        <i class="sign in alternate icon"></i>
                         {{ 'join' | trans | upper }}
                     </a>
                 {% elseif is_granted('OWNER', idea) %}
@@ -40,7 +40,7 @@
                         {{ 'full' | trans | upper }}
                     </div>
                 {% elseif is_granted('IDEA_JOIN', idea) %}
-                    {{ buttons.js_button('join', 'sign-in', idea.slug, 'primary join idea') }}
+                    {{ buttons.js_button('join', 'sign in alternate', idea.slug, 'primary join idea') }}
                 {% else %}
                     <div class="ui right floated red basic button">
                         {{ 'blocked' | trans | upper }}
@@ -190,11 +190,25 @@
                     <div class="ui attached segment">
                         <div class="ui relaxed list">
                             <div class="item">
-                                <i class="large clock middle aligned icon"></i>
+                                <i class="large calendar alternate middle aligned icon"></i>
                                 <div class="content">
                                     <div class="description">
                                         {% if idea.startsAt %}
                                             {{ idea.startsAt | format_date(pattern="eeee, d 'de' MMMM 'de' yyyy") }}
+                                        {% else %}
+                                            TBA
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <i class="large clock middle aligned icon"></i>
+                                <div class="content">
+                                    <div class="description">
+                                        {% if idea.startsAt and idea.endsAt %}
+                                            de {{ idea.startsAt | date('H:i') }} a {{ idea.endsAt | date('H:i') }}
+                                        {% elseif idea.startsAt %}
+                                            de {{ idea.startsAt | date('H:i') }}
                                         {% else %}
                                             TBA
                                         {% endif %}
@@ -211,7 +225,7 @@
                                 </div>
                             </div>
                             <div class="item">
-                                <i class="large camera alternate middle aligned icon"></i>
+                                <i class="large video middle aligned icon"></i>
                                 <div class="content">
                                     <div class="description">
                                         <a class="ui label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
@@ -220,9 +234,6 @@
                                     </div>
                                 </div>
                             </div>
-
-
-
                             {% else %}
                             <div class="item">
                                 <i class="large map marker alternate middle aligned icon"></i>
@@ -239,7 +250,7 @@
                             {% endif %}
                             {% if idea.startsAt and idea.endsAt %}
                             <div class="item">
-                                <i class="large calendar alternate middle aligned icon"></i>
+                                <i class="large calendar plus middle aligned icon"></i>
                                 <div class="content">
                                     <a class="ui label" href="{{ calendar_url(idea) }}">
                                         Añadir a Google Calendar

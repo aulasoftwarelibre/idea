@@ -41,16 +41,17 @@ class ShowIdeaJitsiRoomController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($idea->isJitsiRoomOpen()) {
-            $url = $this->queryBus->query(
-                new GetIdeaJitsiRoomUrlQuery($idea)
-            );
+        $url = $this->queryBus->query(
+            new GetIdeaJitsiRoomUrlQuery($idea)
+        );
 
+        if ($idea->isJitsiRoomOpen()) {
             return $this->redirect($url);
         }
 
         return $this->render('frontend/idea/jitsi.html.twig', [
             'idea' => $idea,
+            'url' => $url,
         ]);
     }
 }
