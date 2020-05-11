@@ -79,6 +79,10 @@ class IdeaAdmin extends AbstractAdmin
                     'format' => 'd/M/y HH:mm',
                     'required' => false,
                 ])
+                ->add('endsAt', DateTimePickerType::class, [
+                    'format' => 'd/M/y HH:mm',
+                    'required' => false,
+                ])
             ->end()
             ->with('block.votes', ['class' => 'col-md-12'])
                 ->add('numSeats', null, [

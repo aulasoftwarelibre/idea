@@ -25,6 +25,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\IdeaRepository")
  * @ORM\Table()
+ * @Assert\Expression(
+ *     "(this.getStartsAt() === this.getEndsAt()) or (this.getStartsAt() !== null and this.getEndsAt() > this.getStartsAt())",
+ *     message="error.idea_end_date"
+ * )
  */
 class Idea
 {
@@ -145,6 +149,14 @@ class Idea
      * @Groups("read")
      */
     protected $startsAt;
+
+    /**
+     * @var \DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
+     * @Groups("read")
+     */
+    protected $endsAt;
 
     /**
      * @var string|null
@@ -461,6 +473,26 @@ class Idea
     public function setStartsAt(?\DateTime $startsAt): self
     {
         $this->startsAt = $startsAt;
+
+        return $this;
+    }
+
+    /**
+     * @return \DateTime|null
+     */
+    public function getEndsAt(): ?\DateTime
+    {
+        return $this->endsAt;
+    }
+
+    /**
+     * @param \DateTime|null $endsAt
+     *
+     * @return Idea
+     */
+    public function setEndsAt(?\DateTime $endsAt): self
+    {
+        $this->endsAt = $endsAt;
 
         return $this;
     }

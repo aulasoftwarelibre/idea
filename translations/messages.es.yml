@@ -110,9 +110,10 @@ form.label_alias: Alias
 form.label_closed: Cerrado
 form.label_created_at: Fecha creación
 form.label_description: Descripción
+form.label_ends_at: Día y hora finalización
 form.label_external_num_seats: Plazas externas
 form.label_location: Lugar
-form.label_starts_at: Día y hora
+form.label_starts_at: Día y hora comienzo
 form.label_group: Grupo
 form.label_message: Mensaje
 form.label_message_test: Enviar una prueba
