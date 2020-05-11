@@ -201,6 +201,29 @@
                                     </div>
                                 </div>
                             </div>
+                            {% if idea.isOnline %}
+                            <div class="item">
+                                <i class="large map marker alternate middle aligned icon"></i>
+                                <div class="content">
+                                    <div class="description">
+                                        Evento Online
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <i class="large camera alternate middle aligned icon"></i>
+                                <div class="content">
+                                    <div class="description">
+                                        <a class="ui label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
+                                            Ir a la videoconferencia
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+                            {% else %}
                             <div class="item">
                                 <i class="large map marker alternate middle aligned icon"></i>
                                 <div class="content">
@@ -213,7 +236,8 @@
                                     </div>
                                 </div>
                             </div>
-                            {% if idea.startsAt and idea.endsAt and idea.location %}
+                            {% endif %}
+                            {% if idea.startsAt and idea.endsAt %}
                             <div class="item">
                                 <i class="large calendar alternate middle aligned icon"></i>
                                 <div class="content">
