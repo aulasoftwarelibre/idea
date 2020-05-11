@@ -15,10 +15,6 @@ body {
     bottom: 0;
 }
 
-#main {
-    margin-right: 318px;
-}
-
 .logo {
     background: url("../images/ideas-small.png") no-repeat;
     width: 66px;
@@ -233,16 +229,6 @@ a.ui.basic.proposed.label:hover {
 @media (min-height: 320px) {
     #page-container {
         padding-bottom: 30px;
-    }
-}
-
-@media only screen and (max-width: 992px) {
-    #main {
-        margin-right: unset;
-    }
-
-    #main > .right.rail {
-        display: none;
     }
 }
 

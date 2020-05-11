@@ -18,10 +18,13 @@ use App\Entity\Thread;
 use App\Entity\User;
 use App\Repository\ThreadRepository;
 use App\Repository\VoteRepository;
+use Spatie\CalendarLinks\Link;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Translation\TranslatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class IdeaExtension extends \Twig_Extension
+class IdeaExtension extends AbstractExtension
 {
     /**
      * @var ThreadRepository
@@ -58,8 +61,9 @@ class IdeaExtension extends \Twig_Extension
     public function getFunctions()
     {
         return [
-            new \Twig_SimpleFunction('idea_count_comments', [$this, 'getIdeaCountComments']),
-            new \Twig_SimpleFunction('is_voted', [$this, 'testLoggedUserVotes']),
+            new TwigFunction('idea_count_comments', [$this, 'getIdeaCountComments']),
+            new TwigFunction('is_voted', [$this, 'testLoggedUserVotes']),
+            new TwigFunction('calendar_url', [$this, 'calendarUrl'])
         ];
     }
 
@@ -88,5 +92,18 @@ class IdeaExtension extends \Twig_Extension
         }
 
         return $this->translator->transChoice('idea_num_comments', $count, ['%count%' => $count]);
+    }
+
+    public function calendarUrl(Idea $idea): string
+    {
+        return (new Link(
+            $idea->getTitle(),
+            $idea->getStartsAt(),
+            $idea->getEndsAt()
+        ))
+            ->address($idea->getLocation())
+            ->google()
+            ;
+
     }
 }

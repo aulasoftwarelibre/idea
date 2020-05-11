@@ -1,4 +1,5 @@
 global.$ = global.jQuery = require('jquery');
 
-require('semantic-ui-css');
+require('fomantic-ui-css/semantic.css')
+require('fomantic-ui-css/semantic');
 require('../css/login.css');
