@@ -18,6 +18,8 @@
                         <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
                         <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir sala</button>
                     </form>
+                    <div class="ui divider"></div>
+                    <a href="{{ url }}" class="ui label">Ir a la sala de videoconferencia</a>
                 {% else %}
                     <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
                 {% endif %}
