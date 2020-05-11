@@ -14,9 +14,10 @@ declare(strict_types=1);
 namespace App\Admin;
 
 use App\Entity\Idea;
-use App\Form\DataMapper\GenericDataMapper;
 use App\Form\Type\SonataVoteType;
+use Knp\Menu\ItemInterface as MenuItemInterface;
 use Sonata\AdminBundle\Admin\AbstractAdmin;
+use Sonata\AdminBundle\Admin\AdminInterface;
 use Sonata\AdminBundle\Datagrid\DatagridMapper;
 use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
@@ -47,7 +48,7 @@ class IdeaAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->with('block.content', ['class' => 'col-md-8'])
+            ->with('block.content', ['class' => 'col-md-12'])
                 ->add('title', null, [
                 ])
                 ->add('description', SimpleFormatterType::class, [
@@ -74,6 +75,7 @@ class IdeaAdmin extends AbstractAdmin
             ->with('block.location', ['class' => 'col-md-4'])
                 ->add('location', null, [
                     'required' => false,
+                    'help' => 'form.help_location',
                 ])
                 ->add('startsAt', DateTimePickerType::class, [
                     'format' => 'd/M/y HH:mm',
@@ -81,6 +83,19 @@ class IdeaAdmin extends AbstractAdmin
                 ])
                 ->add('endsAt', DateTimePickerType::class, [
                     'format' => 'd/M/y HH:mm',
+                    'required' => false,
+                ])
+            ->end()
+            ->with('block.online', ['class' => 'col-md-4'])
+                ->add('isOnline', null, [
+                    'required' => false,
+                ])
+                ->add('jitsiLocatorRoom', null, [
+                    'required' => false,
+                    'help' => 'form.help_jitsi_locator_room',
+                    'disabled' => true,
+                ])
+                ->add('isJitsiRoomOpen', null, [
                     'required' => false,
                 ])
             ->end()
@@ -97,11 +112,6 @@ class IdeaAdmin extends AbstractAdmin
                 ])
             ->end()
         ;
-
-        $form
-            ->getFormBuilder()
-            ->setEmptyData(null)
-            ->setDataMapper(new GenericDataMapper(Idea::class));
     }
 
     /**
@@ -186,5 +196,22 @@ class IdeaAdmin extends AbstractAdmin
         }
 
         return $actions;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
+    {
+        if (!in_array($action, ['edit', 'show'], true)) {
+            return;
+        }
+
+        $id = $this->getRequest()->get('id');
+        $object = $this->getObject($id);
+
+        $menu->addChild('Ver en el portal', [
+            'uri' => $this->getConfigurationPool()->getContainer()->get('router')->generate('idea_show', ['slug' => $object->getSlug()]),
+        ]);
     }
 }
