@@ -1,17 +1,21 @@
-{% extends 'base.html.twig' %}
+{% extends 'login/layout.html.twig' %}
 
-{% block content %}
-    <div class="ui two column centered grid">
+{% block body %}
+    <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <div class="ui placeholder segment">
+            <div class="ui segment">
+                <img src="{{ asset('assets/images/logoasl.png') }}" alt="Logo del Aula de Software Libre" class="ui centered small image" id="logo">
+
                 <div class="ui icon header">
                     <i class="video icon"></i>
                     {{ idea.title }}
-                    <div class="sub header">
-                        La sala de videoconferencia aún no está disponible. Se suele abrir unos 10-15 minutos
-                        antes de que empiece la conferencia.
-                    </div>
+                    <div class="ui sub header">Acceso a la videoconferencia</div>
                 </div>
+
+                <p>
+                    La sala de videoconferencia aún no está disponible. <br/> Se suele abrir unos 10-15 minutos
+                    antes de que empiece la conferencia.
+                </p>
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <form class="inline" method="post" action="{{ url('idea_open_jitsi', { slug: idea.slug }) }}">
