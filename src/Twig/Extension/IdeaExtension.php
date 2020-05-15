@@ -15,13 +15,10 @@ namespace App\Twig\Extension;
 
 use App\Entity\Idea;
 use App\Entity\Thread;
-use App\Entity\User;
 use App\Repository\ThreadRepository;
-use App\Repository\VoteRepository;
 use Spatie\CalendarLinks\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -37,29 +34,17 @@ class IdeaExtension extends AbstractExtension
      */
     private $translator;
     /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-    /**
-     * @var VoteRepository
-     */
-    private $voteRepository;
-    /**
      * @var RouterInterface
      */
     private $router;
 
     public function __construct(
-        VoteRepository $voteRepository,
         ThreadRepository $threadRepository,
         TranslatorInterface $translator,
-        TokenStorageInterface $tokenStorage,
         RouterInterface $router
     ) {
         $this->threadRepository = $threadRepository;
         $this->translator = $translator;
-        $this->tokenStorage = $tokenStorage;
-        $this->voteRepository = $voteRepository;
         $this->router = $router;
     }
 
@@ -70,22 +55,8 @@ class IdeaExtension extends AbstractExtension
     {
         return [
             new TwigFunction('idea_count_comments', [$this, 'getIdeaCountComments']),
-            new TwigFunction('is_voted', [$this, 'testLoggedUserVotes']),
             new TwigFunction('calendar_url', [$this, 'calendarUrl']),
         ];
-    }
-
-    public function testLoggedUserVotes(Idea $idea): bool
-    {
-        $token = $this->tokenStorage->getToken();
-
-        if (!$token || !$token->getUser() instanceof User) {
-            return false;
-        }
-
-        $vote = $this->voteRepository->findOneBy(['idea' => $idea, 'user' => $token->getUser()]);
-
-        return (bool) $vote;
     }
 
     public function getIdeaCountComments(Idea $idea): string
