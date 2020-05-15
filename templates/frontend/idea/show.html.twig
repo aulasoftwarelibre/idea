@@ -228,9 +228,15 @@
                                 <i class="large video middle aligned icon"></i>
                                 <div class="content">
                                     <div class="description">
+                                        {% if is_granted('IDEA_MEMBER', idea) %}
                                         <a class="ui label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
                                             Ir a la videoconferencia
                                         </a>
+                                        {% else %}
+                                        <span class="ui label">
+                                            Únete para ver la videoconferencia
+                                        </span>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>
@@ -248,7 +254,7 @@
                                 </div>
                             </div>
                             {% endif %}
-                            {% if idea.startsAt and idea.endsAt %}
+                            {% if idea.startsAt and idea.endsAt and is_granted('IDEA_MEMBER', idea) %}
                             <div class="item">
                                 <i class="large calendar plus middle aligned icon"></i>
                                 <div class="content">

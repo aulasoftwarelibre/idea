@@ -16,6 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
 use App\Messenger\Idea\GetIdeaJitsiRoomUrlQuery;
+use App\Security\Voter\MemberIdeaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -38,6 +39,10 @@ class ShowIdeaJitsiRoomController extends AbstractController
     public function __invoke(Idea $idea): Response
     {
         if (!$idea->isOnline()) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$this->isGranted(MemberIdeaVoter::MEMBER, $idea)) {
             throw $this->createNotFoundException();
         }
 
