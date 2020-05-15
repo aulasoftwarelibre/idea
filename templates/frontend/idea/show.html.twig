@@ -33,7 +33,7 @@
                     <a class="ui right floated green basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
                         {{ 'edit' | trans | upper }}
                     </a>
-                {% elseif is_voted(idea) %}
+                {% elseif is_granted('IDEA_MEMBER', idea) %}
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
                 {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
                     <div class="ui right floated red basic button">
@@ -208,7 +208,7 @@
                                         {% if idea.startsAt and idea.endsAt %}
                                             de {{ idea.startsAt | date('H:i') }} a {{ idea.endsAt | date('H:i') }}
                                         {% elseif idea.startsAt %}
-                                            de {{ idea.startsAt | date('H:i') }}
+                                            a las {{ idea.startsAt | date('H:i') }} horas
                                         {% else %}
                                             TBA
                                         {% endif %}
