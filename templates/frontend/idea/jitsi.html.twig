@@ -20,7 +20,18 @@
                 {% if is_granted('ROLE_ADMIN') %}
                     <form class="inline" method="post" action="{{ url('idea_open_jitsi', { slug: idea.slug }) }}">
                         <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
-                        <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir sala</button>
+                        <div class="ui button room">Abrir sala</div>
+                        <div class="ui flowing popup top left transition hidden">
+                            <div class="column">
+                                <div class="ui header">Abrir sala</div>
+                                {% if date('60 minutes') > idea.startsAt %}
+                                <p>¡Ojo! No abras la sala antes de tiempo. Se enviará un correo a los usuarios.</p>
+                                <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir</button>
+                                {% else %}
+                                <p>¡Ojo! La sala no puede abrirse hasta una hora antes del evento.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </form>
                     <div class="ui divider"></div>
                     <a href="{{ url }}" class="ui label">Ir a la sala de videoconferencia</a>
@@ -42,4 +53,15 @@
             justify-content: center;
         }
     </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.ui.button.room')
+        .popup({
+            hoverable: true,
+            inline: true
+        })
+    </script>
 {% endblock %}
