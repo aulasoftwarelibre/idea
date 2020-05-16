@@ -60,7 +60,7 @@ class IdeaAdmin extends AbstractAdmin
                     'placeholder' => 'Seleccione un grupo',
                 ])
             ->end()
-            ->with('block.state', ['class' => 'col-md-4'])
+            ->with('block.state', ['class' => 'col-md-6'])
                 ->add('closed', null, [
                 ])
                 ->add('private', null, [
@@ -72,7 +72,18 @@ class IdeaAdmin extends AbstractAdmin
                     'placeholder' => 'Seleccione un usuario',
                 ])
             ->end()
-            ->with('block.location', ['class' => 'col-md-4'])
+            ->with('block.seats', ['class' => 'col-md-6'])
+                ->add('internal', null, [
+                    'help' => 'Activa esta casilla para actividades exclusivas UCO',
+                ])
+                ->add('numSeats', null, [
+                    'help' => 'Número de plazas de la actividad. Pon 0 para ilimitadas.',
+                ])
+                ->add('externalNumSeats', null, [
+                    'help' => 'Límite de plazas externas. Pon 0 para ilimitadas (o hasta llenar el límite)',
+                ])
+            ->end()
+            ->with('block.location', ['class' => 'col-md-6'])
                 ->add('location', null, [
                     'required' => false,
                     'help' => 'form.help_location',
@@ -86,7 +97,7 @@ class IdeaAdmin extends AbstractAdmin
                     'required' => false,
                 ])
             ->end()
-            ->with('block.online', ['class' => 'col-md-4'])
+            ->with('block.online', ['class' => 'col-md-6'])
                 ->add('isOnline', null, [
                     'required' => false,
                 ])
@@ -100,12 +111,6 @@ class IdeaAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('block.votes', ['class' => 'col-md-12'])
-                ->add('numSeats', null, [
-                    'help' => 'Indique 0 para plazas ilimitadas.',
-                ])
-                ->add('externalNumSeats', null, [
-                    'help' => 'Indique 0 para actividades internas',
-                ])
                 ->add('votes', SonataVoteType::class, [
                     'multiple' => true,
                     'required' => false,
