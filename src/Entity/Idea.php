@@ -37,6 +37,7 @@ class Idea
     public const STATE_PROPOSED = 'proposed';
     public const STATE_REJECTED = 'rejected';
     public const STATE_APPROVED = 'approved';
+    public const LIMITLESS = 0;
 
     /**
      * @var int
@@ -46,7 +47,12 @@ class Idea
      */
     private $id;
 
-    public const LIMITLESS = 0;
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Version()
+     */
+    private $version;
 
     /**
      * @var string
@@ -211,6 +217,7 @@ class Idea
         $this->isOnline = false;
         $this->jitsiLocatorRoom = null;
         $this->isJitsiRoomOpen = false;
+        $this->version = 1;
     }
 
     public static function with(string $title, string $description, User $owner, Group $group): self
@@ -248,6 +255,24 @@ class Idea
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setVersion(int $version): self
+    {
+        $this->version = $version;
+
+        return $this;
     }
 
     /**
