@@ -37,6 +37,8 @@ class Idea
     public const STATE_PROPOSED = 'proposed';
     public const STATE_REJECTED = 'rejected';
     public const STATE_APPROVED = 'approved';
+    public const UNLIMITED_SEATS = PHP_INT_MAX;
+    public const LIMITLESS = 0;
 
     /**
      * @var int
@@ -46,7 +48,12 @@ class Idea
      */
     private $id;
 
-    public const LIMITLESS = 0;
+    /**
+     * @var int
+     * @ORM\Column(type="integer", nullable=false)
+     * @ORM\Version()
+     */
+    private $version;
 
     /**
      * @var string
@@ -194,6 +201,12 @@ class Idea
     private $private;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $internal;
+
+    /**
      * Idea constructor.
      */
     public function __construct()
@@ -205,12 +218,14 @@ class Idea
         $this->votes = new ArrayCollection();
         $this->closed = false;
         $this->private = false;
+        $this->internal = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
         $this->externalNumSeats = 0;
         $this->isOnline = false;
         $this->jitsiLocatorRoom = null;
         $this->isJitsiRoomOpen = false;
+        $this->version = 1;
     }
 
     public static function with(string $title, string $description, User $owner, Group $group): self
@@ -248,6 +263,24 @@ class Idea
     public function getId(): int
     {
         return $this->id;
+    }
+
+    /**
+     * @return int
+     */
+    public function getVersion(): int
+    {
+        return $this->version;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setVersion(int $version): self
+    {
+        $this->version = $version;
+
+        return $this;
     }
 
     /**
@@ -310,6 +343,21 @@ class Idea
     public function getState(): string
     {
         return $this->state;
+    }
+
+    public function isApproved(): bool
+    {
+        return self::STATE_APPROVED === $this->state;
+    }
+
+    public function isProposed(): bool
+    {
+        return self::STATE_PROPOSED === $this->state;
+    }
+
+    public function isRejected(): bool
+    {
+        return self::STATE_REJECTED === $this->state;
     }
 
     /**
@@ -476,6 +524,20 @@ class Idea
         return $this;
     }
 
+    public function hasLimitedSeats(): bool
+    {
+        return 0 !== $this->numSeats;
+    }
+
+    public function countFreeSeats(): int
+    {
+        if (!$this->hasLimitedSeats()) {
+            return self::UNLIMITED_SEATS;
+        }
+
+        return $this->numSeats - $this->votes->count();
+    }
+
     /**
      * @return int
      */
@@ -492,6 +554,35 @@ class Idea
         $this->externalNumSeats = $externalNumSeats;
 
         return $this;
+    }
+
+    public function hasLimitedSeatsToExternal(): bool
+    {
+        if ($this->isInternal()) {
+            return true;
+        }
+
+        if ($this->getExternalNumSeats() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function countFreeExternalSeats(): int
+    {
+        if ($this->isInternal()) {
+            return 0;
+        }
+
+        if (!$this->hasLimitedSeatsToExternal()) {
+            return $this->countFreeSeats();
+        }
+
+        $maxAvailableExternalSeats = $this->externalNumSeats - $this->getExternalVotes()->count();
+        $remainingSeats = $this->countFreeSeats();
+
+        return $maxAvailableExternalSeats < $remainingSeats ? $maxAvailableExternalSeats : $remainingSeats;
     }
 
     /**
@@ -624,6 +715,18 @@ class Idea
     public function setPrivate(bool $private): self
     {
         $this->private = $private;
+
+        return $this;
+    }
+
+    public function isInternal(): bool
+    {
+        return $this->internal;
+    }
+
+    public function setInternal(bool $internal): self
+    {
+        $this->internal = $internal;
 
         return $this;
     }
