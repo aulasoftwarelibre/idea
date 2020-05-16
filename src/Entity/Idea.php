@@ -200,6 +200,12 @@ class Idea
     private $private;
 
     /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $internal;
+
+    /**
      * Idea constructor.
      */
     public function __construct()
@@ -211,6 +217,7 @@ class Idea
         $this->votes = new ArrayCollection();
         $this->closed = false;
         $this->private = false;
+        $this->internal = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
         $this->externalNumSeats = 0;
@@ -649,6 +656,18 @@ class Idea
     public function setPrivate(bool $private): self
     {
         $this->private = $private;
+
+        return $this;
+    }
+
+    public function isInternal(): bool
+    {
+        return $this->internal;
+    }
+
+    public function setInternal(bool $internal): self
+    {
+        $this->internal = $internal;
 
         return $this;
     }
