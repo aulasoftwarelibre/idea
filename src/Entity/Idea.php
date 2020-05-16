@@ -37,6 +37,7 @@ class Idea
     public const STATE_PROPOSED = 'proposed';
     public const STATE_REJECTED = 'rejected';
     public const STATE_APPROVED = 'approved';
+    public const UNLIMITED_SEATS = PHP_INT_MAX;
     public const LIMITLESS = 0;
 
     /**
@@ -344,6 +345,21 @@ class Idea
         return $this->state;
     }
 
+    public function isApproved(): bool
+    {
+        return self::STATE_APPROVED === $this->state;
+    }
+
+    public function isProposed(): bool
+    {
+        return self::STATE_PROPOSED === $this->state;
+    }
+
+    public function isRejected(): bool
+    {
+        return self::STATE_REJECTED === $this->state;
+    }
+
     /**
      * @return Idea
      */
@@ -508,6 +524,20 @@ class Idea
         return $this;
     }
 
+    public function hasLimitedSeats(): bool
+    {
+        return 0 !== $this->numSeats;
+    }
+
+    public function countFreeSeats(): int
+    {
+        if (!$this->hasLimitedSeats()) {
+            return self::UNLIMITED_SEATS;
+        }
+
+        return $this->numSeats - $this->votes->count();
+    }
+
     /**
      * @return int
      */
@@ -524,6 +554,35 @@ class Idea
         $this->externalNumSeats = $externalNumSeats;
 
         return $this;
+    }
+
+    public function hasLimitedSeatsToExternal(): bool
+    {
+        if ($this->isInternal()) {
+            return true;
+        }
+
+        if ($this->getExternalNumSeats() > 0) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function countFreeExternalSeats(): int
+    {
+        if ($this->isInternal()) {
+            return 0;
+        }
+
+        if (!$this->hasLimitedSeatsToExternal()) {
+            return $this->countFreeSeats();
+        }
+
+        $maxAvailableExternalSeats = $this->externalNumSeats - $this->getExternalVotes()->count();
+        $remainingSeats = $this->countFreeSeats();
+
+        return $maxAvailableExternalSeats < $remainingSeats ? $maxAvailableExternalSeats : $remainingSeats;
     }
 
     /**

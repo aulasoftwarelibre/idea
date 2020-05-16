@@ -35,7 +35,7 @@
                     </a>
                 {% elseif is_granted('IDEA_MEMBER', idea) %}
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
-                {% elseif idea.numSeats > 0 and idea.votes.count >= idea.numSeats %}
+                {% elseif idea.countFreeSeats < 1 %}
                     <div class="ui right floated red basic button">
                         {{ 'full' | trans | upper }}
                     </div>
