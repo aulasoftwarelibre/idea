@@ -98,7 +98,6 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
     {
         $email = (new TemplatedEmail())
             ->from($this->mailFrom)
-            ->to($this->mailFrom)
             ->subject('[AulaSL] ' . $idea->getTitle())
             ->embedFromPath($this->assetsPath . '/images/logo-horizontal-transparente.png', 'logo')
             ->embedFromPath($this->assetsPath . '/images/icon_facebook.png', 'facebook')
@@ -113,14 +112,15 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             ]);
 
         if ($isTest) {
-            $loggedUserEmail = $token->getUsername() . '@uco.es';
-            $email->bcc($loggedUserEmail);
+            $loggedUserEmail = $token->getUser()->getEmail();
+            $email->to($loggedUserEmail);
             $this->logger->debug('[MAIL TO] Enviada prueba');
         } else {
             $toUsers = $idea->getVotes()->map(static function (Vote $vote) {
-                return $vote->getUser()->getUsername() . '@uco.es';
+                return $vote->getUser()->getEmail();
             })->toArray();
 
+            $email->to($this->mailFrom);
             $email->bcc(...$toUsers);
             $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
         }
