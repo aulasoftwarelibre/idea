@@ -35,7 +35,3 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.logpolicy }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
-
-twig:
-    form_themes:
-        - 'SonataCoreBundle:Form:datepicker.html.twig'
