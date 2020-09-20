@@ -7,6 +7,6 @@ twig:
     form_themes:
         - '@SonataForm/Form/datepicker.html.twig'
         - '@SonataFormatter/Form/formatter.html.twig'
-        - '@HarmonyUiBundle/Resources/views/form/semantic_2_layout.html.twig'
+        - '@SemanticUi/form/semantic_2_layout.html.twig'
         - '/form/vich_widget.html.twig'
         - '/form/semantic_ui.html.twig'
