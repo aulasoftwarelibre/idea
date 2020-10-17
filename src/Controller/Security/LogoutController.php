@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Controller\Security;
 
+use RuntimeException;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -22,6 +23,6 @@ class LogoutController
 {
     public function __invoke(): void
     {
-        throw new \RuntimeException('This method should not be called.');
+        throw new RuntimeException('This method should not be called.');
     }
 }

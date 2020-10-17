@@ -21,7 +21,7 @@ final class OpenIdeaJitsiRoomCommandHandler
     {
         $idea = $command->getIdea();
 
-        if (!$idea->isOnline()) {
+        if (! $idea->isOnline()) {
             return;
         }
 

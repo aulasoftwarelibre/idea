@@ -16,7 +16,11 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\CommentBundle\Entity\Comment as BaseComment;
 use FOS\CommentBundle\Model\SignedCommentInterface;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
+
+use function get_class;
+use function sprintf;
 
 /**
  * @ORM\Entity
@@ -25,18 +29,21 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class Comment extends BaseComment implements SignedCommentInterface
 {
     /**
-     * @var int
      * @ORM\Id
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @inheritdoc
      */
     protected $id;
 
     /**
      * Thread of this comment.
      *
-     * @var Thread
      * @ORM\ManyToOne(targetEntity="App\Entity\Thread")
+     *
+     * @var Thread
+     * @inheritdoc
      */
     protected $thread;
 
@@ -49,36 +56,27 @@ class Comment extends BaseComment implements SignedCommentInterface
      */
     protected $author;
 
-    /**
-     * {@inheritdoc}
-     */
     public function setAuthor(UserInterface $author): void
     {
-        if (!$author instanceof User) {
-            throw new \InvalidArgumentException(sprintf(
+        if (! $author instanceof User) {
+            throw new InvalidArgumentException(sprintf(
                 'Expected \'%s\' instance, \'%s\' given.',
                 User::class,
-                \get_class($author)
+                get_class($author)
             ));
         }
 
         $this->author = $author;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthor(): ?UserInterface
     {
         return $this->author;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getAuthorName(): string
     {
-        if (null === $this->getAuthor()) {
+        if ($this->getAuthor() === null) {
             return 'Anonymous';
         }
 

@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,126 +28,105 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Activity
 {
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue("AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
      * @ORM\Column(length=255)
+     *
      * @Assert\Length(min="3", max="255")
      * @Assert\NotBlank()
      */
-    private $title;
+    private string $title;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="date")
+     *
      * @Assert\NotBlank()
      */
-    private $occurredOn;
+    private DateTime $occurredOn;
 
     /**
-     * @var string
      * @ORM\Column(length=32)
+     *
      * @Assert\NotBlank()
      * @Regex("/\d{4}\/\d{4}/")
      */
-    private $academicYear;
+    private string $academicYear;
 
     /**
-     * @var int
      * @ORM\Column(type="integer")
+     *
      * @Assert\NotBlank()
      * @Assert\Range(min="1")
      */
-    private $duration;
+    private int $duration;
 
     /**
-     * @var string
      * @ORM\Column(length=255, unique=true)
+     *
      * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
      */
-    private $slug;
+    private string $slug;
 
     /**
-     * @var Participation[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="activity", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var Participation[]|Collection
      */
-    private $participations;
+    private Collection $participations;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
 
-    /**
-     * Activity constructor.
-     */
-    public function __construct(string $title, \DateTime $occurredOn, string $academicYear, int $duration)
+    public function __construct(string $title, DateTime $occurredOn, string $academicYear, int $duration)
     {
-        $this->title = $title;
-        $this->occurredOn = $occurredOn;
-        $this->academicYear = $academicYear;
-        $this->duration = $duration;
+        $this->title          = $title;
+        $this->occurredOn     = $occurredOn;
+        $this->academicYear   = $academicYear;
+        $this->duration       = $duration;
         $this->participations = new ArrayCollection();
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->getTitle() ?? '';
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
@@ -162,10 +142,7 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getOccurredOn(): \DateTime
+    public function getOccurredOn(): DateTime
     {
         return $this->occurredOn;
     }
@@ -173,16 +150,13 @@ class Activity
     /**
      * @return Activity
      */
-    public function setOccurredOn(\DateTime $occurredOn): self
+    public function setOccurredOn(DateTime $occurredOn): self
     {
         $this->occurredOn = $occurredOn;
 
         return $this;
     }
 
-    /**
-     * @return int
-     */
     public function getDuration(): ?int
     {
         return $this->duration;
@@ -217,17 +191,11 @@ class Activity
         return $this;
     }
 
-    /**
-     * @param Participation $participant
-     */
     public function removeParticipation(Participation $participant): void
     {
         $this->participations->removeElement($participant);
     }
 
-    /**
-     * @return string
-     */
     public function getAcademicYear(): string
     {
         return $this->academicYear;

@@ -18,9 +18,10 @@ use App\Entity\User;
 use App\Repository\UserRepository;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
 
 /**
  * @Route("/profile", name="profile_show", methods={"GET"})
@@ -28,29 +29,26 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ShowProfileController extends AbstractController
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
         $this->userRepository = $userRepository;
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
-        /** @var User $profile */
+        assert($user instanceof User);
         $profile = $this->userRepository->getProfile($user->getId());
+        assert($profile instanceof User);
 
         $academicYears = [];
-        $activities = 0;
-        $hours = 0;
+        $activities    = 0;
+        $hours         = 0;
 
         $profile->getParticipations()->map(static function (Participation $participation) use (&$academicYears, &$activities, &$hours): void {
-            $academicYear = $participation->getActivity()->getAcademicYear();
+            $academicYear                   = $participation->getActivity()->getAcademicYear();
             $academicYears[$academicYear][] = $participation;
 
             ++$activities;

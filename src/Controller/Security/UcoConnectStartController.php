@@ -34,16 +34,18 @@ class UcoConnectStartController extends AbstractController
 
         return $clientRegistry
             ->getClient('uco')
-            ->redirect([
-                'openid',
-            ], []);
+            ->redirect(['openid'], []);
     }
 
     private function storeTargetPath(Request $request): void
     {
         $targetPath = $request->query->get('_target_path');
-        if ($targetPath && $request->hasSession() && ($session = $request->getSession()) instanceof SessionInterface) {
-            $this->saveTargetPath($session, 'main', $targetPath);
+        $session    = $request->getSession();
+
+        if (! $targetPath || ! $request->hasSession() || ! $session instanceof SessionInterface) {
+            return;
         }
+
+        $this->saveTargetPath($session, 'main', $targetPath);
     }
 }

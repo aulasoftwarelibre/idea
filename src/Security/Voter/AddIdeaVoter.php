@@ -18,6 +18,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use function assert;
+
 class AddIdeaVoter extends Voter
 {
     public const ADD = 'IDEA_ADD';
@@ -27,7 +29,7 @@ class AddIdeaVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return self::ADD === $attribute;
+        return $attribute === self::ADD;
     }
 
     /**
@@ -35,13 +37,13 @@ class AddIdeaVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        /** @var User $user */
         $user = $token->getUser();
+        assert($user instanceof User);
         // if the user is anonymous, do not grant access
-        if (!$user instanceof UserInterface) {
+        if (! $user instanceof UserInterface) {
             return false;
         }
 
-        return false === $user->isExternal();
+        return $user->isExternal() === false;
     }
 }

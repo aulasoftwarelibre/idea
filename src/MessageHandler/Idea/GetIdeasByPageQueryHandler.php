@@ -19,14 +19,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class GetIdeasByPageQueryHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $repository;
+    private IdeaRepository $repository;
 
-    /**
-     * GetIdeaPaginatorHandler constructor.
-     */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;
@@ -34,7 +28,7 @@ class GetIdeasByPageQueryHandler
 
     public function __invoke(GetIdeasByPageQuery $query): Paginator
     {
-        $page = $query->getPage();
+        $page         = $query->getPage();
         $showPrivates = $query->getShowPrivates();
 
         return $this->repository->findLatest($page, $showPrivates);

@@ -15,7 +15,7 @@ namespace App\Message\Idea;
 
 use App\Entity\Idea;
 
-final class ApproveIdeaCommand
+final class OpenIdeaCommand
 {
     private Idea $idea;
 

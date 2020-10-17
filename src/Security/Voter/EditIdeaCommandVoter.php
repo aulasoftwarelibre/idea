@@ -20,11 +20,10 @@ use App\Message\Idea\UpdateIdeaCommand;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
+
 class EditIdeaCommandVoter extends Voter
 {
-    /**
-     * @var string
-     */
     public const HANDLE = 'handle';
 
     /**
@@ -32,19 +31,11 @@ class EditIdeaCommandVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (static::HANDLE !== $attribute) {
+        if ($attribute !== self::HANDLE) {
             return false;
         }
 
-        if ($subject instanceof CloseIdeaCommand) {
-            return true;
-        }
-
-        if ($subject instanceof UpdateIdeaCommand) {
-            return true;
-        }
-
-        return false;
+        return $subject instanceof CloseIdeaCommand || $subject instanceof UpdateIdeaCommand;
     }
 
     /**
@@ -54,15 +45,14 @@ class EditIdeaCommandVoter extends Voter
     {
         $user = $token->getUser();
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return false;
         }
 
-        /** @var Idea $idea */
         $idea = $subject->getIdea();
+        assert($idea instanceof Idea);
 
         return $user->equalsTo($idea->getOwner())
-            || $user->hasRole('ROLE_ADMIN')
-            ;
+            || $user->hasRole('ROLE_ADMIN');
     }
 }

@@ -18,22 +18,13 @@ use Symfony\Component\EventDispatcher\Event;
 
 class AbstractIdeaEvent extends Event
 {
-    /**
-     * @var Idea
-     */
-    private $idea;
+    private Idea $idea;
 
-    /**
-     * AbstractIdeaEvent constructor.
-     */
     public function __construct(Idea $idea)
     {
         $this->idea = $idea;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;

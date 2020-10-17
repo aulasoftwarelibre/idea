@@ -14,8 +14,8 @@ declare(strict_types=1);
 namespace App\Controller\Idea;
 
 use App\Entity\Idea;
-use App\MessageBus\QueryBus;
 use App\Message\Idea\GetIdeaJitsiRoomUrlQuery;
+use App\MessageBus\QueryBus;
 use App\Security\Voter\MemberIdeaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -26,10 +26,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ShowIdeaJitsiRoomController extends AbstractController
 {
-    /**
-     * @var QueryBus
-     */
-    private $queryBus;
+    private QueryBus $queryBus;
 
     public function __construct(QueryBus $queryBus)
     {
@@ -38,11 +35,11 @@ class ShowIdeaJitsiRoomController extends AbstractController
 
     public function __invoke(Idea $idea): Response
     {
-        if (!$idea->isOnline()) {
+        if (! $idea->isOnline()) {
             throw $this->createNotFoundException();
         }
 
-        if (!$this->isGranted(MemberIdeaVoter::MEMBER, $idea)) {
+        if (! $this->isGranted(MemberIdeaVoter::MEMBER, $idea)) {
             throw $this->createNotFoundException();
         }
 

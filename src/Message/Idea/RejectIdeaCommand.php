@@ -17,22 +17,13 @@ use App\Entity\Idea;
 
 final class RejectIdeaCommand
 {
-    /**
-     * @var Idea
-     */
-    private $idea;
+    private Idea $idea;
 
-    /**
-     * RejectIdeaCommand constructor.
-     */
     public function __construct(Idea $idea)
     {
         $this->idea = $idea;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;

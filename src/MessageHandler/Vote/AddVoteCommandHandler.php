@@ -18,12 +18,11 @@ use App\Exception\NoMoreSeatsLeftException;
 use App\Message\Vote\AddVoteCommand;
 use App\Repository\VoteRepository;
 
+use function assert;
+
 class AddVoteCommandHandler
 {
-    /**
-     * @var VoteRepository
-     */
-    private $repository;
+    private VoteRepository $repository;
 
     public function __construct(VoteRepository $repository)
     {
@@ -35,17 +34,17 @@ class AddVoteCommandHandler
         $idea = $command->getIdea();
         $user = $command->getUser();
 
-        /** @var Vote $vote */
         $vote = $this->repository->findOneBy([
             'user' => $user,
             'idea' => $idea,
         ]);
+        assert($vote instanceof Vote);
 
         if ($vote instanceof Vote) {
             return;
         }
 
-        $count = $idea->getVotes()->count();
+        $count    = $idea->getVotes()->count();
         $numSeats = $idea->getNumSeats();
 
         if ($numSeats > 0 && $count >= $numSeats) {

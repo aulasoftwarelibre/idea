@@ -18,11 +18,10 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
+
 class OwnerIdeaVoter extends Voter
 {
-    /**
-     * @var string
-     */
     public const OWNER = 'OWNER';
 
     /**
@@ -30,15 +29,11 @@ class OwnerIdeaVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (self::OWNER !== $attribute) {
+        if ($attribute !== self::OWNER) {
             return false;
         }
 
-        if ($subject instanceof Idea) {
-            return true;
-        }
-
-        return false;
+        return $subject instanceof Idea;
     }
 
     /**
@@ -46,10 +41,10 @@ class OwnerIdeaVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        /** @var User $user */
         $user = $token->getUser();
+        assert($user instanceof User);
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return false;
         }
 

@@ -4,7 +4,7 @@
     "type": "project",
     "license": "AGPL-3.0-or-later",
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "ext-curl": "*",
         "ext-iconv": "*",
         "ext-json": "*",
@@ -29,6 +29,7 @@
         "phpdocumentor/reflection-docblock": "^5.1",
         "phpoffice/phpspreadsheet": "^1.4",
         "sensio/framework-extra-bundle": "^5.1",
+        "sensiolabs/security-checker": "^6.0",
         "sonata-project/admin-bundle": "^3.38",
         "sonata-project/doctrine-orm-admin-bundle": "^3.6",
         "sonata-project/formatter-bundle": "^4.1",
@@ -48,7 +49,7 @@
         "symfony/process": "*",
         "symfony/property-access": "4.4.*",
         "symfony/property-info": "4.4.*",
-        "symfony/security-bundle": "*",
+        "symfony/security-bundle": "4.4.*",
         "symfony/serializer": "4.4.*",
         "symfony/translation": "*",
         "symfony/twig-bundle": "*",
@@ -63,9 +64,10 @@
         "vich/uploader-bundle": "^1.8"
     },
     "require-dev": {
-        "phpstan/phpstan": "^0.11.19",
-        "phpstan/phpstan-doctrine": "^0.11.6",
-        "phpstan/phpstan-symfony": "^0.11.6",
+        "doctrine/coding-standard": "^8.1",
+        "overtrue/phplint": "^2.1",
+        "phpmd/phpmd": "^2.9",
+        "psalm/plugin-symfony": "^1.5",
         "symfony/browser-kit": "^4.4",
         "symfony/css-selector": "^4.4",
         "symfony/debug-bundle": "^4.4",
@@ -75,7 +77,7 @@
         "symfony/var-dumper": "^4.4",
         "symfony/web-profiler-bundle": "^4.4",
         "symfony/web-server-bundle": "*",
-        "symplify/easy-coding-standard": "^6.1.0"
+        "vimeo/psalm": "^3.17"
     },
     "config": {
         "platform": {
@@ -108,7 +110,8 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "ckeditor:install --clear=drop": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd",
+            "security-checker security:check": "script"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -116,9 +119,20 @@
         "post-update-cmd": [
             "@auto-scripts"
         ],
-        "check-cs": "vendor/bin/ecs check src",
-        "fix-cs": "vendor/bin/ecs check --fix src",
-        "phpstan": "vendor/bin/phpstan analyse src --level max"
+        "test": [
+            "@phplint",
+            "@phpcs",
+            "@psalm",
+            "@phpunit",
+            "@security"
+        ],
+        "security": "security-checker security:check",
+        "phplint": "phplint",
+        "phpcs": "phpcs",
+        "phpcbf": "phpcbf",
+        "phpmd": "phpmd src,tests text phpmd.xml --exclude 'src/Kernel.php'",
+        "psalm": "psalm --show-info=false",
+        "phpunit": "simple-phpunit"
     },
     "conflict": {
         "symfony/symfony": "*"

@@ -18,22 +18,10 @@ use App\Entity\Idea;
 
 final class UpdateIdeaCommand
 {
-    /**
-     * @var Idea
-     */
-    private $idea;
-    /**
-     * @var string
-     */
-    private $title;
-    /**
-     * @var string
-     */
-    private $description;
-    /**
-     * @var Group
-     */
-    private $group;
+    private Idea $idea;
+    private string $title;
+    private string $description;
+    private Group $group;
 
     public function __construct(
         Idea $idea,
@@ -41,39 +29,27 @@ final class UpdateIdeaCommand
         string $description,
         Group $group
     ) {
-        $this->idea = $idea;
-        $this->title = $title;
+        $this->idea        = $idea;
+        $this->title       = $title;
         $this->description = $description;
-        $this->group = $group;
+        $this->group       = $group;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->title;
     }
 
-    /**
-     * @return string
-     */
     public function getDescription(): string
     {
         return $this->description;
     }
 
-    /**
-     * @return Group
-     */
     public function getGroup(): Group
     {
         return $this->group;

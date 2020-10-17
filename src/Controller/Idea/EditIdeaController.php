@@ -15,8 +15,8 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\Form\Type\IdeaType;
-use App\MessageBus\CommandBus;
 use App\Message\Idea\UpdateIdeaCommand;
+use App\MessageBus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -29,10 +29,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class EditIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         CommandBus $commandBus

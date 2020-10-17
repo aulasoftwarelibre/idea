@@ -20,7 +20,7 @@ use App\Repository\ThreadRepository;
 
 use function assert;
 
-class CloseIdeaCommandHandler
+class OpenIdeaCommandHandler
 {
     private IdeaRepository $ideaRepository;
     private ThreadRepository $threadRepository;
@@ -34,13 +34,13 @@ class CloseIdeaCommandHandler
     public function __invoke(CloseIdeaCommand $command): void
     {
         $idea = $command->getIdea();
-        $idea->setClosed(true);
+        $idea->setClosed(false);
 
         $this->ideaRepository->add($idea);
 
         $thread = $this->threadRepository->find($idea->getId());
         assert($thread instanceof Thread);
-        $thread->setCommentable(false);
+        $thread->setCommentable(true);
 
         $this->threadRepository->add($thread);
     }

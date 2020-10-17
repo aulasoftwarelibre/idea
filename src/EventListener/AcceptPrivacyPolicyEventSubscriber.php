@@ -17,8 +17,8 @@ use App\Controller\Profile\RegisterProfileController;
 use App\Controller\Profile\RemoveProfileController;
 use App\Controller\Security\LogoutController;
 use App\Entity\User;
-use App\MessageBus\QueryBus;
 use App\Message\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
+use App\MessageBus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -29,24 +29,15 @@ use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
+use function assert;
+use function method_exists;
+
 class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
 {
-    /**
-     * @var RouterInterface
-     */
-    private $router;
-    /**
-     * @var TokenStorageInterface
-     */
-    private $tokenStorage;
-    /**
-     * @var QueryBus
-     */
-    private $queryBus;
-    /**
-     * @var SessionInterface
-     */
-    private $session;
+    private RouterInterface $router;
+    private TokenStorageInterface $tokenStorage;
+    private QueryBus $queryBus;
+    private SessionInterface $session;
 
     public function __construct(
         RouterInterface $router,
@@ -54,10 +45,10 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
         QueryBus $queryBus,
         SessionInterface $session
     ) {
-        $this->router = $router;
+        $this->router       = $router;
         $this->tokenStorage = $tokenStorage;
-        $this->queryBus = $queryBus;
-        $this->session = $session;
+        $this->queryBus     = $queryBus;
+        $this->session      = $session;
     }
 
     /**
@@ -65,43 +56,44 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
      */
     public static function getSubscribedEvents()
     {
-        return [
-            KernelEvents::REQUEST => 'onKernelRequest',
-        ];
+        return [KernelEvents::REQUEST => 'onKernelRequest'];
     }
 
     public function onKernelRequest(RequestEvent $event): void
     {
         $token = $this->tokenStorage->getToken();
-        if (!$token || !$token->getUser() instanceof User) {
+        if (! $token || ! $token->getUser() instanceof User) {
             return;
         }
 
         $controller = $event->getRequest()->attributes->get('_controller');
-        /** @var User $user */
-        $user = $token->getUser();
+        $user       = $token->getUser();
+        assert($user instanceof User);
 
         $userHasAccepted = $this->queryBus->query(
             new CheckUserAcceptLastPolicyVersionQuery($user)
         );
 
         if (
-            false === $userHasAccepted
-            && RegisterProfileController::class !== $controller
-            && RemoveProfileController::class !== $controller
-            && LogoutController::class !== $controller
-            && TemplateController::class . '::templateAction' !== $controller
-            && HttpKernel::MASTER_REQUEST === $event->getRequestType()
+            $userHasAccepted !== false
+            || $controller === RegisterProfileController::class
+            || $controller === RemoveProfileController::class
+            || $controller === LogoutController::class
+            || TemplateController::class . '::templateAction' === $controller
+            || $event->getRequestType() !== HttpKernel::MASTER_REQUEST
         ) {
-            $event->setResponse(new RedirectResponse($this->router->generate('profile_register')));
-
-            if (!method_exists($this->session, 'getFlashBag')) {
-                return;
-            }
-            $this->session->getFlashBag()->add(
-                'warning',
-                'Se debe aceptar la politica de privacidad'
-            );
+            return;
         }
+
+        $event->setResponse(new RedirectResponse($this->router->generate('profile_register')));
+
+        if (! method_exists($this->session, 'getFlashBag')) {
+            return;
+        }
+
+        $this->session->getFlashBag()->add(
+            'warning',
+            'Se debe aceptar la politica de privacidad'
+        );
     }
 }

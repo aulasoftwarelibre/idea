@@ -15,16 +15,13 @@ namespace App\MessageHandler\User;
 
 use App\Entity\User;
 use App\Exception\UserNotFoundException;
-use App\MessageBus\CommandHandlerInterface;
 use App\Message\User\RemoveUserCommand;
+use DateTime;
 use FOS\UserBundle\Model\UserManagerInterface;
 
 class RemoveUserCommandHandler
 {
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
+    private UserManagerInterface $userManager;
 
     public function __construct(UserManagerInterface $userManager)
     {
@@ -34,13 +31,14 @@ class RemoveUserCommandHandler
     public function __invoke(RemoveUserCommand $command): void
     {
         $user = $this->userManager->findUserByUsername($command->getUsername());
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             throw new UserNotFoundException('usuario no encontrado');
         }
 
         if ($command->isHardDelete()) {
-            $user->setDeletedAt(new \DateTime());
+            $user->setDeletedAt(new DateTime());
         }
+
         $this->userManager->deleteUser($user);
     }
 }

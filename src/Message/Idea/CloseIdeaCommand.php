@@ -17,37 +17,15 @@ use App\Entity\Idea;
 
 final class CloseIdeaCommand
 {
-    /**
-     * @var Idea
-     */
-    private $idea;
-    /**
-     * @var bool
-     */
-    private $closed;
+    private Idea $idea;
 
-    /**
-     * CloseIdeaCommand constructor.
-     */
-    public function __construct(Idea $idea, bool $closed = true)
+    public function __construct(Idea $idea)
     {
         $this->idea = $idea;
-        $this->closed = $closed;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isClosed(): bool
-    {
-        return $this->closed;
     }
 }

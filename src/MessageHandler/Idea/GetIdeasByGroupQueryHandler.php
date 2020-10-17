@@ -19,14 +19,8 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class GetIdeasByGroupQueryHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $repository;
+    private IdeaRepository $repository;
 
-    /**
-     * GetIdeaPaginatorHandler constructor.
-     */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;
@@ -34,7 +28,7 @@ class GetIdeasByGroupQueryHandler
 
     public function __invoke(GetIdeasByGroupQuery $query): Paginator
     {
-        $page = $query->getPage();
+        $page  = $query->getPage();
         $group = $query->getGroup();
 
         return $this->repository->findByGroup($group, $page);

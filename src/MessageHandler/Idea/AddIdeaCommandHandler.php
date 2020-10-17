@@ -20,14 +20,8 @@ use App\Repository\IdeaRepository;
 
 class AddIdeaCommandHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $repository;
+    private IdeaRepository $repository;
 
-    /**
-     * AddIdeaHandler constructor.
-     */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;
@@ -35,10 +29,10 @@ class AddIdeaCommandHandler
 
     public function __invoke(AddIdeaCommand $command): Idea
     {
-        $title = $command->getTitle();
+        $title       = $command->getTitle();
         $description = $command->getDescription();
-        $user = $command->getUser();
-        $group = $command->getGroup();
+        $user        = $command->getUser();
+        $group       = $command->getGroup();
 
         $vote = new Vote();
         $vote->setUser($user);

@@ -16,6 +16,7 @@ namespace App\Twig\Extension;
 use App\Entity\Idea;
 use App\Entity\Thread;
 use App\Repository\ThreadRepository;
+use DateTimeImmutable;
 use Spatie\CalendarLinks\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -25,18 +26,9 @@ use Twig\TwigFunction;
 
 class IdeaExtension extends AbstractExtension
 {
-    /**
-     * @var ThreadRepository
-     */
-    private $threadRepository;
-    /**
-     * @var TranslatorInterface
-     */
-    private $translator;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private ThreadRepository $threadRepository;
+    private TranslatorInterface $translator;
+    private RouterInterface $router;
 
     public function __construct(
         ThreadRepository $threadRepository,
@@ -44,8 +36,8 @@ class IdeaExtension extends AbstractExtension
         RouterInterface $router
     ) {
         $this->threadRepository = $threadRepository;
-        $this->translator = $translator;
-        $this->router = $router;
+        $this->translator       = $translator;
+        $this->router           = $router;
     }
 
     /**
@@ -64,13 +56,9 @@ class IdeaExtension extends AbstractExtension
         $ideaId = $idea->getId();
         $thread = $this->threadRepository->find($ideaId);
 
-        if (!$thread instanceof Thread) {
-            $count = 0;
-        } else {
-            $count = $thread->getNumComments();
-        }
+        $count = ! $thread instanceof Thread ? 0 : $thread->getNumComments();
 
-        return $this->translator->transChoice('idea_num_comments', $count, ['%count%' => $count]);
+        return $this->translator->trans('idea_num_comments', ['%count%' => $count]);
     }
 
     public function calendarUrl(Idea $idea): string
@@ -81,12 +69,11 @@ class IdeaExtension extends AbstractExtension
         }
 
         return (new Link(
-            $idea->getTitle(),
-            $idea->getStartsAt(),
-            $idea->getEndsAt()
+            (string) $idea->getTitle(),
+            $idea->getStartsAt() ?? new DateTimeImmutable(),
+            $idea->getEndsAt() ?? new DateTimeImmutable()
         ))
-            ->address($address)
-            ->google()
-            ;
+            ->address((string) $address)
+            ->google();
     }
 }

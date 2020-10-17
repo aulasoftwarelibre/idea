@@ -19,14 +19,8 @@ use App\Repository\VoteRepository;
 
 class RemoveVoteCommandHandler
 {
-    /**
-     * @var VoteRepository
-     */
-    private $repository;
+    private VoteRepository $repository;
 
-    /**
-     * RemoveVoteHandler constructor.
-     */
     public function __construct(VoteRepository $repository)
     {
         $this->repository = $repository;
@@ -34,17 +28,19 @@ class RemoveVoteCommandHandler
 
     public function __invoke(RemoveVoteCommand $command): void
     {
-        $idea = $command->getIdea();
+        $idea  = $command->getIdea();
         $owner = $idea->getOwner();
-        $user = $command->getUser();
+        $user  = $command->getUser();
 
         $vote = $this->repository->findOneBy([
             'user' => $user,
             'idea' => $idea,
         ]);
 
-        if ($vote instanceof Vote && false === $owner->equalsTo($user)) {
-            $this->repository->remove($vote);
+        if (! ($vote instanceof Vote) || $owner->equalsTo($user) !== false) {
+            return;
         }
+
+        $this->repository->remove($vote);
     }
 }

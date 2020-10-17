@@ -18,9 +18,6 @@ use Sonata\UserBundle\Admin\Model\GroupAdmin as BaseGroupAdmin;
 
 final class GroupAdmin extends BaseGroupAdmin
 {
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
@@ -30,7 +27,6 @@ final class GroupAdmin extends BaseGroupAdmin
                 ->with('General', ['class' => 'col-md-6'])
                     ->add('icon')
                 ->end()
-            ->end()
-        ;
+            ->end();
     }
 }

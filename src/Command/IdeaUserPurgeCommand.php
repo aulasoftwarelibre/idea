@@ -13,49 +13,39 @@ declare(strict_types=1);
 
 namespace App\Command;
 
-use App\MessageBus\CommandBus;
 use App\Message\User\RemoveUserCommand;
+use App\MessageBus\CommandBus;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
+use function sprintf;
+
 class IdeaUserPurgeCommand extends Command
 {
-    /**
-     * @var string
-     */
-    protected static $defaultName = 'idea:user:purge';
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private CommandBus $commandBus;
+    private EntityManagerInterface $manager;
+    private UserRepository $userRepository;
 
     public function __construct(CommandBus $commandBus, EntityManagerInterface $manager, UserRepository $userRepository)
     {
         parent::__construct();
 
-        $this->commandBus = $commandBus;
-        $this->manager = $manager;
+        $this->commandBus     = $commandBus;
+        $this->manager        = $manager;
         $this->userRepository = $userRepository;
     }
 
     protected function configure(): void
     {
         $this
-            ->setDescription('Purge all users who has been deleted more than one year ago.')
-        ;
+            ->setName('idea:user:purge')
+            ->setDescription('Purge all users who has been deleted more than one year ago.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -68,7 +58,7 @@ class IdeaUserPurgeCommand extends Command
 
             foreach ($users as $user) {
                 $username = $user->getUsername();
-                $io->comment("Removing $username...");
+                $io->comment(sprintf('Removing %s...', $username));
                 $this->commandBus->dispatch(
                     new RemoveUserCommand(
                         $username,
@@ -79,7 +69,7 @@ class IdeaUserPurgeCommand extends Command
 
             $io->success('All users have been removed.');
         } catch (HandlerFailedException $e) {
-            if (!$e->getPrevious() instanceof \Exception) {
+            if (! $e->getPrevious() instanceof Exception) {
                 $io->error($e->getMessage());
 
                 return 1;

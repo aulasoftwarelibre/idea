@@ -17,15 +17,16 @@ use App\Entity\Idea;
 use App\Entity\User;
 use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
-use App\MessageBus\CommandBus;
 use App\Message\Vote\AddVoteCommand;
+use App\MessageBus\CommandBus;
 use App\Security\Voter\JoinIdeaVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
 
 /**
  * @Route("/idea/{slug}/join", name="idea_join", options={"expose"=true}, methods={"POST"})
@@ -33,30 +34,24 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class JoinIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $eventDispatcher;
+    private CommandBus $commandBus;
+    private EventDispatcherInterface $eventDispatcher;
 
     public function __construct(
         CommandBus $commandBus,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->commandBus = $commandBus;
+        $this->commandBus      = $commandBus;
         $this->eventDispatcher = $eventDispatcher;
     }
 
-    public function __invoke(Idea $idea, Request $request): Response
+    public function __invoke(Idea $idea): Response
     {
         $this->denyAccessUnlessGranted(JoinIdeaVoter::JOIN, $idea);
 
         try {
-            /** @var User $user */
             $user = $this->getUser();
+            assert($user instanceof User);
 
             $this->commandBus->dispatch(
                 new AddVoteCommand(

@@ -26,12 +26,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function assert;
+use function file_exists;
+use function is_array;
+use function is_dir;
+use function mkdir;
+use function sprintf;
+use function unlink;
+
 class ReportCommand extends Command
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     public function __construct(UserRepository $userRepository)
     {
@@ -40,9 +45,6 @@ class ReportCommand extends Command
         $this->userRepository = $userRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -56,23 +58,22 @@ class ReportCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        $io       = new SymfonyStyle($input, $output);
         $filename = $this->getFilename($input);
 
         $this->warmUp($filename);
 
         $report = new Spreadsheet();
-        $sheet = $report->getActiveSheet();
+        $sheet  = $report->getActiveSheet();
 
-        $users = $this->userRepository->findBy([], [
-            'lastname' => 'ASC',
-        ]);
+        $users = $this->userRepository->findBy([], ['lastname' => 'ASC']);
 
         $row = 0;
 
-        /** @var User $user */
         foreach ($users as $user) {
-            if (User::STUDENT !== $user->getCollective() || $user->getParticipations()->isEmpty()
+            assert($user instanceof User);
+            if (
+                $user->getCollective() !== User::STUDENT || $user->getParticipations()->isEmpty()
             ) {
                 continue;
             }
@@ -86,16 +87,16 @@ class ReportCommand extends Command
 
             ++$row;
             $sheet->setCellValueByColumnAndRow(1, $row, $student);
-            $sheet->mergeCells("A{$row}:C{$row}");
-            $sheet->getStyle("A{$row}")->getFont()->setBold(true);
+            $sheet->mergeCells('A' . $row . ':C' . $row);
+            $sheet->getStyle('A' . $row)->getFont()->setBold(true);
 
             $participations = $user->getParticipations();
-            $totalHours = 0;
+            $totalHours     = 0;
 
-            /** @var Participation $participation */
             foreach ($participations as $participation) {
-                $activity = $participation->getActivity();
-                $duration = $activity->getDuration();
+                assert($participation instanceof Participation);
+                $activity    = $participation->getActivity();
+                $duration    = $activity->getDuration();
                 $totalHours += $duration;
 
                 ++$row;
@@ -104,12 +105,12 @@ class ReportCommand extends Command
             }
 
             ++$row;
-            $sheet->mergeCells("A{$row}:B{$row}");
-            $sheet->getStyle("A{$row}")->getAlignment()->applyFromArray([
+            $sheet->mergeCells('A' . $row . ':B' . $row);
+            $sheet->getStyle('A' . $row)->getAlignment()->applyFromArray([
                 'horizontal' => Alignment::HORIZONTAL_RIGHT,
             ]);
-            $sheet->setCellValue("A{$row}", 'Total horas:');
-            $sheet->setCellValue("C{$row}", $totalHours);
+            $sheet->setCellValue('A' . $row, 'Total horas:');
+            $sheet->setCellValue('C' . $row, $totalHours);
         }
 
         $write = IOFactory::createWriter($report, 'Xlsx');
@@ -122,12 +123,15 @@ class ReportCommand extends Command
 
     protected function warmUp(string $filename): void
     {
-        if (!mkdir('var/report') && !is_dir('var/report')) {
+        if (! mkdir('var/report') && ! is_dir('var/report')) {
             throw new RuntimeException(sprintf('Directory "%s" was not created', 'var/report'));
         }
-        if (file_exists($filename)) {
-            unlink($filename);
+
+        if (! file_exists($filename)) {
+            return;
         }
+
+        unlink($filename);
     }
 
     /**
@@ -139,8 +143,7 @@ class ReportCommand extends Command
         if (is_array($filename)) {
             $filename = $filename[0];
         }
-        $filename = "var/report/{$filename}.xlsx";
 
-        return $filename;
+        return sprintf('var/report/%s.xlsx', $filename);
     }
 }

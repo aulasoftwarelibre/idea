@@ -14,14 +14,16 @@ declare(strict_types=1);
 namespace App\Controller\Profile;
 
 use App\Entity\User;
-use App\MessageBus\CommandBus;
 use App\Message\User\RemoveUserCommand;
+use App\MessageBus\CommandBus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+
+use function assert;
 
 /**
  * @Route("/profile/remove", name="profile_remove", methods={"POST"})
@@ -34,18 +36,19 @@ class RemoveProfileController extends AbstractController
         Request $request,
         TokenStorageInterface $tokenStorage
     ): Response {
-        if (!$this->isCsrfTokenValid('delete', $request->request->get('token'))) {
+        if (! $this->isCsrfTokenValid('delete', $request->request->get('token'))) {
             $this->addFlash('error', 'Token CSRF inválido');
 
             return $this->redirectToRoute('profile_show');
         }
 
-        /** @var User $user */
         $user = $this->getUser();
+        assert($user instanceof User);
 
         $commandBus->dispatch(
             new RemoveUserCommand(
-                $user->getUsername()
+                $user->getUsername(),
+                false
             )
         );
 

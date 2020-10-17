@@ -15,32 +15,20 @@ namespace App\Message\User;
 
 final class RemoveUserCommand
 {
-    /**
-     * @var string
-     */
-    private $username;
-    /**
-     * @var bool
-     */
-    private $hardDelete;
+    private string $username;
+    private bool $hardDelete;
 
-    public function __construct(string $username, bool $hardDelete = false)
+    public function __construct(string $username, bool $hardDelete)
     {
-        $this->username = $username;
+        $this->username   = $username;
         $this->hardDelete = $hardDelete;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return $this->username;
     }
 
-    /**
-     * @return bool
-     */
     public function isHardDelete(): bool
     {
         return $this->hardDelete;

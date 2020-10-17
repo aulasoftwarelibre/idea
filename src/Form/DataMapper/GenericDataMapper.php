@@ -13,16 +13,24 @@ declare(strict_types=1);
 
 namespace App\Form\DataMapper;
 
+use ReflectionClass;
+use ReflectionException;
+use ReflectionParameter;
 use Symfony\Component\Form\Exception\RuntimeException;
 use Symfony\Component\Form\Extension\Core\DataMapper\PropertyPathMapper;
 use Symfony\Component\Form\FormInterface;
+use Traversable;
+
+use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function implode;
+use function iterator_to_array;
+use function sprintf;
 
 class GenericDataMapper extends PropertyPathMapper
 {
-    /**
-     * @var string
-     */
-    private $entityClass;
+    private string $entityClass;
 
     public function __construct(string $entityClass)
     {
@@ -32,11 +40,12 @@ class GenericDataMapper extends PropertyPathMapper
     }
 
     /**
+     * @psalm-suppress ParamNameMismatch
      * {@inheritdoc}
      */
     public function mapFormsToData($forms, &$data): void
     {
-        if (null === $data) {
+        if ($data === null) {
             $data = $this->createInstance($forms);
         }
 
@@ -44,27 +53,27 @@ class GenericDataMapper extends PropertyPathMapper
     }
 
     /**
-     * @param FormInterface[]|\Traversable $forms A list of {@link FormInterface} instances
+     * @param FormInterface[]|Traversable $forms A list of {@link FormInterface} instances
      */
-    private function createInstance($forms): object
+    private function createInstance(Traversable $forms): object
     {
         $forms = iterator_to_array($forms);
 
         try {
-            $instance = new \ReflectionClass($this->entityClass);
-        } catch (\ReflectionException $e) {
-            throw new \RuntimeException(sprintf(
+            $instance = new ReflectionClass($this->entityClass);
+        } catch (ReflectionException $e) {
+            throw new RuntimeException(sprintf(
                 'Exception creating instance for \'%s\': %s',
                 $this->entityClass,
                 $e->getMessage()
             ));
         }
 
-        $parameters = null !== $instance->getConstructor() ? $instance->getConstructor()->getParameters() : [];
-        $args = array_map(function (\ReflectionParameter $parameter) use ($forms) {
+        $parameters = $instance->getConstructor() !== null ? $instance->getConstructor()->getParameters() : [];
+        $args       = array_map(function (ReflectionParameter $parameter) use ($forms) {
             $name = $parameter->getName();
 
-            if (!array_key_exists($name, $forms)) {
+            if (! array_key_exists($name, $forms)) {
                 throw new RuntimeException(sprintf(
                     'Expected form field \'%s\' to construct class \'%s\' does not exists. Required fields are: %s.',
                     $name,

@@ -15,16 +15,18 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\Form\Type\RegisterType;
-use App\MessageBus\CommandBus;
-use App\MessageBus\QueryBus;
 use App\Message\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use App\Message\LogPolicy\UserAcceptedLastPolicyVersionCommand;
+use App\MessageBus\CommandBus;
+use App\MessageBus\QueryBus;
 use Doctrine\ORM\OptimisticLockException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
 
 /**
  * @Route("/profile/register", name="profile_register", methods={"GET", "POST"})
@@ -34,8 +36,8 @@ class RegisterProfileController extends AbstractController
 {
     public function __invoke(Request $request, CommandBus $commandBus, QueryBus $queryBus): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
+        assert($user instanceof User);
         $form = $this->createForm(RegisterType::class, $user);
 
         $form->handleRequest($request);
@@ -66,10 +68,6 @@ class RegisterProfileController extends AbstractController
         ]);
     }
 
-    /**
-     * @param QueryBus $queryBus
-     * @param User     $user
-     */
     private function checkUserHasAcceptedTerms(QueryBus $queryBus, User $user): void
     {
         $userHasAccepted = $queryBus->query(

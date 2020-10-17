@@ -14,6 +14,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Validator;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -27,9 +29,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+use function sprintf;
+
 /**
- * Class User.
- *
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  * @ORM\Table(name="fos_user")
  * @ORM\AttributeOverrides({
@@ -52,127 +54,127 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *         )
  *     )
  * })
+ *
  * @Gedmo\SoftDeleteable()
  * @Vich\Uploadable()
  * @Validator\Alias()
  */
 class User extends BaseUser implements EquatableInterface
 {
-    public const STUDENT = 'student';
-    public const STAFF = 'staff';
-    public const TEACHER = 'teacher';
+    public const STUDENT  = 'student';
+    public const STAFF    = 'staff';
+    public const TEACHER  = 'teacher';
     public const EXTERNAL = 'external';
 
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
+     * @inheritdoc
      */
     protected $id;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    protected $isExternal;
+    /** @ORM\Column(type="boolean") */
+    protected bool $isExternal;
 
     /**
-     * @var string|null
      * @ORM\Column(type="string", length=32)
+     *
      * @Assert\NotBlank()
      * @Assert\Length(min=3, max=16)
      * @Assert\Regex("/[\w\d_]/u", message="form.label_alias_invalid")
      */
-    protected $alias = '';
+    protected ?string $alias = '';
 
     /**
-     * @var int
      * @ORM\Version()
      * @ORM\Column(type="integer")
      */
-    private $version = 1;
+    private int $version = 1;
 
     /**
-     * @var string|null
      * @ORM\Column(length=32, nullable=true)
+     *
      * @Assert\Choice(callback="getCollectives")
      * @Assert\NotBlank()
      */
-    private $collective;
+    private ?string $collective = null;
 
     /**
-     * @var Degree|null
      * @ORM\ManyToOne(targetEntity="App\Entity\Degree")
      * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
      */
-    private $degree;
+    private ?Degree $degree = null;
 
     /**
-     * @var string|null
      * @ORM\Column(length=4, nullable=true)
+     *
      * @Assert\Regex("/\d{4}/")
      */
-    private $year;
+    private ?string $year = null;
+
+    /** @ORM\Column(length=32, unique=false, nullable=true) */
+    private ?string $nic = null;
 
     /**
-     * @var string|null
-     * @ORM\Column(length=32, unique=false, nullable=true)
-     */
-    private $nic;
-
-    /**
-     * @var Participation[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Participation",
      *     mappedBy="user",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     *
+     * @var Participation[]|Collection
      */
-    private $participations;
+    private Collection $participations;
 
     /**
-     * @var Idea[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Idea",
      *     mappedBy="owner",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     *
+     * @var Idea[]|Collection
      */
-    private $ideas;
+    private Collection $ideas;
 
     /**
-     * @var Vote[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Vote",
      *     mappedBy="user",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     *
+     * @var Vote[]|Collection
      */
-    private $votes;
+    private Collection $votes;
 
     /**
-     * @var LogPolicy[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\LogPolicy",
      *     mappedBy="user"
      * )
+     *
+     * @var LogPolicy[]|Collection
      */
-    private $versions;
+    private Collection $versions;
 
     /**
-     * @var Comment[]|Collection
      * @ORM\OneToMany(
      *     targetEntity="App\Entity\Comment",
      *     mappedBy="author",
      *     cascade={"persist", "remove"},
      *     orphanRemoval=true
      * )
+     *
+     * @var Comment[]|Collection
      */
-    private $comments;
+    private Collection $comments;
 
     /**
      * @var File|UploadedFile|null
@@ -186,40 +188,33 @@ class User extends BaseUser implements EquatableInterface
      */
     private $imageFile;
 
-    /**
-     * @ORM\Embedded(class="Vich\UploaderBundle\Entity\File")
-     *
-     * @var EmbeddedFile
-     */
-    private $image;
+    /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
+    private EmbeddedFile $image;
 
     /**
-     * @var Group[]|Collection
-     *
      * @ORM\ManyToMany(targetEntity="App\Entity\Group")
      * @ORM\JoinTable(name="fos_user_user_group",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
      * )
+     *
+     * @var Collection<int,Group>
+     * @inheritdoc
      */
     protected $groups;
 
-    /**
-     * @var \DateTimeInterface | null
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $deletedAt;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private ?DateTimeInterface $deletedAt = null;
 
     public static function createUcoUser(string $username): self
     {
         $user = new self();
         $user
             ->setUsername($username)
-            ->setEmail("{$username}@uco.es")
+            ->setEmail($username . '@uco.es')
             ->setPassword('!')
             ->setIsExternal(false)
-            ->setEnabled(true)
-        ;
+            ->setEnabled(true);
 
         return $user;
     }
@@ -233,28 +228,21 @@ class User extends BaseUser implements EquatableInterface
             ->setPassword('!')
             ->setIsExternal(true)
             ->setEnabled(true)
-            ->setCollective(self::EXTERNAL)
-        ;
+            ->setCollective(self::EXTERNAL);
 
         return $user;
     }
 
-    /**
-     * User constructor.
-     */
     public function __construct()
     {
         parent::__construct();
 
-        $this->ideas = new ArrayCollection();
-        $this->votes = new ArrayCollection();
+        $this->ideas          = new ArrayCollection();
+        $this->votes          = new ArrayCollection();
         $this->participations = new ArrayCollection();
-        $this->image = new EmbeddedFile();
+        $this->image          = new EmbeddedFile();
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return sprintf(
@@ -265,25 +253,20 @@ class User extends BaseUser implements EquatableInterface
         );
     }
 
-    /**
-     * @param User $user
-     */
-    public function equalsTo(self $user): bool
+    public function equalsTo(?self $user): bool
     {
+        if (! $user instanceof self) {
+            return false;
+        }
+
         return $this->getId() === $user->getId();
     }
 
-    /**
-     * @return bool
-     */
     public function isExternal(): bool
     {
         return $this->isExternal;
     }
 
-    /**
-     * @return User
-     */
     public function setIsExternal(bool $isExternal): self
     {
         $this->isExternal = $isExternal;
@@ -291,17 +274,11 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getAlias(): string
     {
         return (string) $this->alias;
     }
 
-    /**
-     * @return User
-     */
     public function setAlias(?string $alias): self
     {
         $this->alias = $alias;
@@ -310,29 +287,23 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public static function getCollectives(): array
     {
         return [
-            'Estudiante' => static::STUDENT,
-            'PDI' => static::TEACHER,
-            'PAS' => static::STAFF,
-            'Otros' => static::EXTERNAL,
+            'Estudiante' => self::STUDENT,
+            'PDI' => self::TEACHER,
+            'PAS' => self::STAFF,
+            'Otros' => self::EXTERNAL,
         ];
     }
 
-    /**
-     * @return string|null
-     */
     public function getCollective(): ?string
     {
         return $this->collective;
     }
 
-    /**
-     * @return User
-     */
     public function setCollective(?string $collective): self
     {
         $this->collective = $collective;
@@ -341,16 +312,13 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return Idea[]|Collection
+     * @return Collection<int,Idea>
      */
     public function getIdeas(): Collection
     {
         return $this->ideas;
     }
 
-    /**
-     * @return User
-     */
     public function addIdea(Idea $idea): self
     {
         $this->ideas[] = $idea;
@@ -358,25 +326,19 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @param Idea $idea
-     */
     public function removeIdea(Idea $idea): void
     {
         $this->ideas->removeElement($idea);
     }
 
     /**
-     * @return Vote[]|Collection
+     * @return Collection<int,Vote>
      */
     public function getVotes(): Collection
     {
         return $this->votes;
     }
 
-    /**
-     * @return User
-     */
     public function addVote(Vote $vote): self
     {
         $vote->setUser($this);
@@ -385,25 +347,19 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @param Vote $vote
-     */
     public function removeVote(Vote $vote): void
     {
         $this->votes->removeElement($vote);
     }
 
     /**
-     * @return Collection|LogPolicy[]
+     * @return Collection<int,LogPolicy>
      */
     public function getVersions(): Collection
     {
         return $this->versions;
     }
 
-    /**
-     * @return User
-     */
     public function addVersion(LogPolicy $version): self
     {
         $version->setUser($this);
@@ -412,17 +368,11 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @return Degree|null
-     */
     public function getDegree(): ?Degree
     {
         return $this->degree;
     }
 
-    /**
-     * @return User
-     */
     public function setDegree(?Degree $degree): self
     {
         $this->degree = $degree;
@@ -430,17 +380,11 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getYear(): ?string
     {
         return $this->year;
     }
 
-    /**
-     * @return User
-     */
     public function setYear(?string $year): self
     {
         $this->year = $year;
@@ -461,24 +405,20 @@ class User extends BaseUser implements EquatableInterface
     {
         $this->imageFile = $image;
 
-        if ($image) {
-            // It is required that at least one field changes if you are using doctrine
-            // otherwise the event listeners won't be called and the file is lost
-            $this->updatedAt = new \DateTime();
+        if (! $image) {
+            return;
         }
+
+        // It is required that at least one field changes if you are using doctrine
+        // otherwise the event listeners won't be called and the file is lost
+        $this->updatedAt = new DateTime();
     }
 
-    /**
-     * @return File|null
-     */
     public function getImageFile(): ?File
     {
         return $this->imageFile;
     }
 
-    /**
-     * @return User
-     */
     public function setImage(EmbeddedFile $image): self
     {
         $this->image = $image;
@@ -486,25 +426,16 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @return EmbeddedFile
-     */
     public function getImage(): EmbeddedFile
     {
         return $this->image;
     }
 
-    /**
-     * @return string|null
-     */
     public function getNic(): ?string
     {
         return $this->nic;
     }
 
-    /**
-     * @return User
-     */
     public function setNic(?string $nic): self
     {
         $this->nic = $nic;
@@ -513,16 +444,13 @@ class User extends BaseUser implements EquatableInterface
     }
 
     /**
-     * @return Participation[]|Collection
+     * @return Collection<int,Participation>
      */
     public function getParticipations(): Collection
     {
         return $this->participations;
     }
 
-    /**
-     * @return User
-     */
     public function addParticipation(Participation $participation): self
     {
         $participation->setUser($this);
@@ -531,18 +459,15 @@ class User extends BaseUser implements EquatableInterface
         return $this;
     }
 
-    /**
-     * @param Participation $participation
-     */
     public function removeParticipation(Participation $participation): void
     {
         $this->participations->removeElement($participation);
     }
 
     /**
-     * @return Comment[]|Collection
+     * @return Collection<int,Comment>
      */
-    public function getComments()
+    public function getComments(): Collection
     {
         return $this->comments;
     }
@@ -553,33 +478,21 @@ class User extends BaseUser implements EquatableInterface
             && $user->getId() === $this->getId();
     }
 
-    /**
-     * @return \DateTimeInterface|null
-     */
-    public function getDeletedAt(): ?\DateTimeInterface
+    public function getDeletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
 
-    /**
-     * @param \DateTimeInterface|null $deletedAt
-     */
-    public function setDeletedAt(?\DateTimeInterface $deletedAt): void
+    public function setDeletedAt(?DateTimeInterface $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
 
-    /**
-     * @return int
-     */
     public function getVersion(): int
     {
         return $this->version;
     }
 
-    /**
-     * @param int $version
-     */
     public function setVersion(int $version): void
     {
         $this->version = $version;

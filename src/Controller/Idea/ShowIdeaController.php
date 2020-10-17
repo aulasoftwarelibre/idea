@@ -20,15 +20,16 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use function assert;
+use function mb_substr;
+use function strip_tags;
+
 /**
  * @Route("/idea/{slug}", name="idea_show")
  */
 class ShowIdeaController extends AbstractController
 {
-    /**
-     * @var SeoGeneratorProvider
-     */
-    private $seoGeneratorProvider;
+    private SeoGeneratorProvider $seoGeneratorProvider;
 
     public function __construct(
         SeoGeneratorProvider $seoGeneratorProvider
@@ -38,8 +39,6 @@ class ShowIdeaController extends AbstractController
 
     public function __invoke(Idea $idea): Response
     {
-        $seo = 'basic';
-
         $this->configureSeoProvider($idea, 'basic');
         $this->configureSeoProvider($idea, 'og');
         $this->configureSeoProvider($idea, 'twitter');
@@ -52,11 +51,11 @@ class ShowIdeaController extends AbstractController
 
     private function configureSeoProvider(Idea $idea, string $seo): void
     {
-        $title = $idea->getTitle();
+        $title       = $idea->getTitle();
         $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
 
-        /** @var BasicSeoGenerator $basicSeoGenerator */
         $basicSeoGenerator = $this->seoGeneratorProvider->get($seo);
+        assert($basicSeoGenerator instanceof BasicSeoGenerator);
         $basicSeoGenerator
             ->setTitle($title)
             ->setDescription($description);

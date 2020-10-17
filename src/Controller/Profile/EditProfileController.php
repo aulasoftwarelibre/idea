@@ -22,6 +22,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+use function assert;
+
 /**
  * @Route("/profile/edit", name="profile_edit", methods={"GET", "POST"})
  * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
@@ -30,8 +32,8 @@ class EditProfileController extends AbstractController
 {
     public function __invoke(Request $request): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
+        assert($user instanceof User);
         $form = $this->createForm(ProfileType::class, $user);
 
         $form->handleRequest($request);

@@ -26,20 +26,13 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+use function strtr;
+
 class GoogleAuthenticator extends SocialAuthenticator
 {
-    /**
-     * @var ClientRegistry
-     */
-    private $clientRegistry;
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private ClientRegistry $clientRegistry;
+    private UserManagerInterface $userManager;
+    private RouterInterface $router;
 
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -47,8 +40,8 @@ class GoogleAuthenticator extends SocialAuthenticator
         RouterInterface $router
     ) {
         $this->clientRegistry = $clientRegistry;
-        $this->userManager = $userManager;
-        $this->router = $router;
+        $this->userManager    = $userManager;
+        $this->router         = $router;
     }
 
     /**
@@ -56,7 +49,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'connect_google_check' === $request->attributes->get('_route');
+        return $request->attributes->get('_route') === 'connect_google_check';
     }
 
     /**
@@ -72,13 +65,13 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        $userResource = $this
+        $userResource   = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
         $userResourceId = $userResource->getId() . '@google.com';
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
-        if (!$user) {
+        if (! $user) {
             $user = User::createExternalUser($userResourceId);
         }
 
@@ -106,7 +99,7 @@ class GoogleAuthenticator extends SocialAuthenticator
     {
         $targetPath = $this->getTargetPath($request, $providerKey);
 
-        if (!$targetPath) {
+        if (! $targetPath) {
             // Change it to your default target
             $targetPath = $this->router->generate('homepage');
         }
@@ -137,7 +130,7 @@ class GoogleAuthenticator extends SocialAuthenticator
      */
     protected function getTargetPath(Request $request, string $providerKey): ?string
     {
-        if (!$request->hasSession()) {
+        if (! $request->hasSession()) {
             return null;
         }
 

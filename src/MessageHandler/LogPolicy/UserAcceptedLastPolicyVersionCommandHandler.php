@@ -14,34 +14,28 @@ declare(strict_types=1);
 namespace App\MessageHandler\LogPolicy;
 
 use App\Entity\LogPolicy;
-use App\MessageBus\CommandHandlerInterface;
 use App\Message\LogPolicy\UserAcceptedLastPolicyVersionCommand;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserAcceptedLastPolicyVersionCommandHandler
 {
-    /**
-     * @var EntityManagerInterface
-     */
-    private $manager;
+    private EntityManagerInterface $manager;
 
-    /**
-     * @var string
-     */
-    private $policyVersion;
+    private string $policyVersion;
 
     public function __construct(EntityManagerInterface $manager, string $policyVersion)
     {
-        $this->manager = $manager;
+        $this->manager       = $manager;
         $this->policyVersion = $policyVersion;
     }
 
     public function __invoke(UserAcceptedLastPolicyVersionCommand $command): void
     {
-        $user = $command->getUser();
+        $user      = $command->getUser();
         $logPolicy = new LogPolicy();
         $logPolicy->setVersion($this->policyVersion);
-        $logPolicy->setCreateAt(new \DateTime());
+        $logPolicy->setCreateAt(new DateTime());
 
         $user->addVersion($logPolicy);
         $this->manager->persist($logPolicy);

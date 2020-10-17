@@ -17,19 +17,13 @@ use App\Entity\Idea;
 
 final class GetIdeaJitsiRoomUrlQuery
 {
-    /**
-     * @var Idea
-     */
-    private $idea;
+    private Idea $idea;
 
     public function __construct(Idea $idea)
     {
         $this->idea = $idea;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;

@@ -24,50 +24,43 @@ use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
 use Sonata\AdminBundle\Route\RouteCollection;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use function assert;
+
 class ParticipationAdmin extends AbstractAdmin
 {
     public function getNewInstance(): ?Participation
     {
-        /** @var null|ActivityAdmin $parent */
         $parent = $this->getParent();
+        assert($parent === null || $parent instanceof ActivityAdmin);
 
-        if (!$parent) {
+        if (! $parent) {
             return null;
         }
 
-        /** @var Activity $activity */
         $activity = $parent->getSubject();
+        assert($activity instanceof Activity);
 
         return new Participation(new User(), $activity);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->add('user', ModelAutocompleteType::class, [
                 'property' => ['firstname', 'lastname', 'username'],
             ])
-            ->add('activity', null, [
-            ])
+            ->add('activity', null, [])
             ->add('role', ChoiceType::class, [
                 'choices' => Participation::getRoles(),
             ])
-            ->add('isReported', null, [
-            ]);
+            ->add('isReported', null, []);
 
         $form
             ->getFormBuilder()
             ->setEmptyData(null)
-            ->setDataMapper(new GenericDataMapper(Participation::class))
-        ;
+            ->setDataMapper(new GenericDataMapper(Participation::class));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list

@@ -26,10 +26,13 @@ use Sonata\Form\Type\DateTimePickerType;
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
+use function in_array;
+
 class IdeaAdmin extends AbstractAdmin
 {
     /**
-     * {@inheritdoc}
+     * @var array<string, mixed>
+     * @inheritdoc
      */
     protected $datagridValues = [
         '_page' => 1,
@@ -42,46 +45,30 @@ class IdeaAdmin extends AbstractAdmin
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
             ->with('block.content', ['class' => 'col-md-12'])
-                ->add('title', null, [
-                ])
+                ->add('title', null, [])
                 ->add('description', SimpleFormatterType::class, [
                     'format' => 'richhtml',
                     'ckeditor_context' => 'simple_toolbar',
                     'attr' => ['rows' => 20],
                 ])
-                ->add('group', null, [
-                    'placeholder' => 'Seleccione un grupo',
-                ])
+                ->add('group', null, ['placeholder' => 'Seleccione un grupo'])
             ->end()
             ->with('block.state', ['class' => 'col-md-6'])
-                ->add('closed', null, [
-                ])
-                ->add('private', null, [
-                ])
+                ->add('closed', null, [])
+                ->add('private', null, [])
                 ->add('state', ChoiceType::class, [
                     'choices' => Idea::getStates(),
                 ])
-                ->add('owner', null, [
-                    'placeholder' => 'Seleccione un usuario',
-                ])
+                ->add('owner', null, ['placeholder' => 'Seleccione un usuario'])
             ->end()
             ->with('block.seats', ['class' => 'col-md-6'])
-                ->add('internal', null, [
-                    'help' => 'Activa esta casilla para actividades exclusivas UCO',
-                ])
-                ->add('numSeats', null, [
-                    'help' => 'Número de plazas de la actividad. Pon 0 para ilimitadas.',
-                ])
-                ->add('externalNumSeats', null, [
-                    'help' => 'Límite de plazas externas. Pon 0 para ilimitadas (o hasta llenar el límite)',
-                ])
+                ->add('internal', null, ['help' => 'Activa esta casilla para actividades exclusivas UCO'])
+                ->add('numSeats', null, ['help' => 'Número de plazas de la actividad. Pon 0 para ilimitadas.'])
+                ->add('externalNumSeats', null, ['help' => 'Límite de plazas externas. Pon 0 para ilimitadas (o hasta llenar el límite)'])
             ->end()
             ->with('block.location', ['class' => 'col-md-6'])
                 ->add('location', null, [
@@ -98,44 +85,31 @@ class IdeaAdmin extends AbstractAdmin
                 ])
             ->end()
             ->with('block.online', ['class' => 'col-md-6'])
-                ->add('isOnline', null, [
-                    'required' => false,
-                ])
+                ->add('isOnline', null, ['required' => false])
                 ->add('jitsiLocatorRoom', null, [
                     'required' => false,
                     'help' => 'form.help_jitsi_locator_room',
                     'disabled' => true,
                 ])
-                ->add('isJitsiRoomOpen', null, [
-                    'required' => false,
-                ])
+                ->add('isJitsiRoomOpen', null, ['required' => false])
             ->end()
             ->with('block.votes', ['class' => 'col-md-12'])
                 ->add('votes', SonataVoteType::class, [
                     'multiple' => true,
                     'required' => false,
                 ])
-            ->end()
-        ;
+            ->end();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('title', null, [
                 'route' => ['name' => 'show'],
             ])
-            ->add('closed', null, [
-            ])
-            ->add('state', null, [
-                'template' => '/backend/Idea/list_field_state.html.twig',
-            ])
-            ->add('createdAt', null, [
-                'locale' => 'es',
-            ])
+            ->add('closed', null, [])
+            ->add('state', null, ['template' => '/backend/Idea/list_field_state.html.twig'])
+            ->add('createdAt', null, ['locale' => 'es'])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -144,50 +118,33 @@ class IdeaAdmin extends AbstractAdmin
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('title', null, [
-            ])
-            ->add('owner', null, [
-            ])
-            ->add('group', null, [
-            ])
+            ->add('title', null, [])
+            ->add('owner', null, [])
+            ->add('group', null, [])
             ->add('state', 'doctrine_orm_choice', [], ChoiceType::class, [
                 'choices' => Idea::getStates(),
             ])
-            ->add('closed')
-        ;
+            ->add('closed');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('title', null, [
-            ])
-            ->add('description', null, [
-                'safe' => true,
-            ])
+            ->add('title', null, [])
+            ->add('description', null, ['safe' => true])
             ->add('owner', null, [
                 'route' => ['name' => 'show'],
             ])
             ->add('group', null, [
                 'route' => ['name' => 'show'],
             ])
-            ->add('closed', null, [
-            ])
-            ->add('state', null, [
-            ])
-            ->add('createdAt', null, [
-            ])
-            ->add('updatedAt', null, [
-            ]);
+            ->add('closed', null, [])
+            ->add('state', null, [])
+            ->add('createdAt', null, [])
+            ->add('updatedAt', null, []);
     }
 
     /**
@@ -196,7 +153,7 @@ class IdeaAdmin extends AbstractAdmin
     protected function configureBatchActions($actions)
     {
         if ($this->hasAccess('edit')) {
-            $actions['open'] = [];
+            $actions['open']  = [];
             $actions['close'] = [];
         }
 
@@ -208,11 +165,11 @@ class IdeaAdmin extends AbstractAdmin
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
     {
-        if (!in_array($action, ['edit', 'show'], true)) {
+        if (! in_array($action, ['edit', 'show'], true)) {
             return;
         }
 
-        $id = $this->getRequest()->get('id');
+        $id     = $this->getRequest()->get('id');
         $object = $this->getObject($id);
 
         $menu->addChild('Ver en el portal', [

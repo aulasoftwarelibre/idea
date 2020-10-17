@@ -14,41 +14,28 @@ declare(strict_types=1);
 namespace App\MessageHandler\Email;
 
 use App\Entity\Idea;
+use App\Entity\User;
 use App\Entity\Vote;
 use App\Message\Email\SendEmailCommand;
 use App\Repository\IdeaRepository;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 
+use function implode;
+use function sprintf;
+
 class SendEmailCommandHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $ideaRepository;
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-    /**
-     * @var MailerInterface
-     */
-    private $mailer;
-    /**
-     * @var string
-     */
-    private $assetsPath;
-    /**
-     * @var string
-     */
-    private $mailFrom;
-    /**
-     * @var TokenStorageInterface
-     */
-    private $token;
+    private IdeaRepository $ideaRepository;
+    private LoggerInterface $logger;
+    private MailerInterface $mailer;
+    private string $assetsPath;
+    private string $mailFrom;
+    private TokenStorageInterface $token;
 
     public function __construct(
         IdeaRepository $ideaRepository,
@@ -59,42 +46,40 @@ class SendEmailCommandHandler
         string $mailFrom
     ) {
         $this->ideaRepository = $ideaRepository;
-        $this->logger = $logger;
-        $this->mailer = $mailer;
-        $this->token = $token;
-        $this->assetsPath = $assetsPath;
-        $this->mailFrom = $mailFrom;
+        $this->logger         = $logger;
+        $this->mailer         = $mailer;
+        $this->token          = $token;
+        $this->assetsPath     = $assetsPath;
+        $this->mailFrom       = $mailFrom;
     }
 
     public function __invoke(SendEmailCommand $command): void
     {
-        $ideaId = $command->getIdeaId();
+        $ideaId  = $command->getIdeaId();
         $message = $command->getMessage();
-        $isTest = $command->isTest();
+        $isTest  = $command->isTest();
 
         $idea = $this->ideaRepository->find($ideaId);
 
-        if (!$idea instanceof Idea) {
-            throw new \InvalidArgumentException("Idea {$ideaId} not found");
+        if (! $idea instanceof Idea) {
+            throw new InvalidArgumentException(sprintf('Idea %s not found', $ideaId));
         }
 
         $token = $this->token->getToken();
-        if (!$token instanceof TokenInterface) {
+        if (! $token instanceof TokenInterface) {
             return;
         }
 
-        $email = $this->createEmail($idea, $message, $isTest, $token);
+        $user = $token->getUser();
+        if (! $user instanceof User) {
+            return;
+        }
+
+        $email = $this->createEmail($idea, $message, $isTest, $user);
         $this->mailer->send($email);
     }
 
-    /**
-     * @param Idea   $idea
-     * @param string $message
-     * @param bool   $isTest
-     *
-     * @return TemplatedEmail
-     */
-    private function createEmail(Idea $idea, string $message, bool $isTest, TokenInterface $token): TemplatedEmail
+    private function createEmail(Idea $idea, string $message, bool $isTest, User $user): TemplatedEmail
     {
         $email = (new TemplatedEmail())
             ->from($this->mailFrom)
@@ -112,18 +97,20 @@ class SendEmailCommandHandler
             ]);
 
         if ($isTest) {
-            $loggedUserEmail = $token->getUser()->getEmail();
+            $loggedUserEmail = (string) $user->getEmail();
             $email->to($loggedUserEmail);
             $this->logger->debug('[MAIL TO] Enviada prueba');
-        } else {
-            $toUsers = $idea->getVotes()->map(static function (Vote $vote) {
-                return $vote->getUser()->getEmail();
-            })->toArray();
 
-            $email->to($this->mailFrom);
-            $email->bcc(...$toUsers);
-            $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
+            return $email;
         }
+
+        $toUsers = $idea->getVotes()->map(static function (Vote $vote) {
+            return $vote->getUser()->getEmail();
+        })->toArray();
+
+        $email->to($this->mailFrom);
+        $email->bcc(...$toUsers);
+        $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
 
         return $email;
     }

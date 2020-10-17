@@ -15,12 +15,11 @@ namespace App\MessageHandler\Idea;
 
 use App\Message\Idea\GetIdeaJitsiRoomUrlQuery;
 
+use function sprintf;
+
 final class GetIdeaJitsiRoomUrlQueryHandler
 {
-    /**
-     * @var string
-     */
-    private $jitsiPrefix;
+    private string $jitsiPrefix;
 
     public function __construct(string $jitsiPrefix)
     {
@@ -31,7 +30,7 @@ final class GetIdeaJitsiRoomUrlQueryHandler
     {
         $idea = $query->getIdea();
 
-        if (!$idea->isOnline()) {
+        if (! $idea->isOnline()) {
             return null;
         }
 

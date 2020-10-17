@@ -24,7 +24,8 @@ use Sonata\AdminBundle\Show\ShowMapper;
 class DegreeAdmin extends AbstractAdmin
 {
     /**
-     * {@inheritdoc}
+     * @var array<string, mixed>
+     * @inheritdoc
      */
     protected $datagridValues = [
         '_page' => 1,
@@ -37,14 +38,10 @@ class DegreeAdmin extends AbstractAdmin
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('name', null, [
-            ]);
+            ->add('name', null, []);
 
         $form
             ->getFormBuilder()
@@ -52,9 +49,6 @@ class DegreeAdmin extends AbstractAdmin
             ->setDataMapper(new GenericDataMapper(Degree::class));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
@@ -69,20 +63,12 @@ class DegreeAdmin extends AbstractAdmin
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('name', null, [
-                'show_filter' => true,
-            ]);
+            ->add('name', null, ['show_filter' => true]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureShowFields(ShowMapper $show): void
     {
         $show

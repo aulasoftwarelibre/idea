@@ -14,12 +14,13 @@ declare(strict_types=1);
 namespace App\Controller\Idea;
 
 use App\Entity\Group;
-use App\Entity\Idea;
-use App\MessageBus\QueryBus;
 use App\Message\Idea\GetIdeasByGroupQuery;
+use App\MessageBus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function ceil;
 
 /**
  * @Route("/idea/group/{slug}", defaults={"page": "1"}, name="idea_group_index")
@@ -27,10 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ListGroupIdeaController extends AbstractController
 {
-    /**
-     * @var QueryBus
-     */
-    private $queryBus;
+    private QueryBus $queryBus;
 
     public function __construct(
         QueryBus $queryBus
@@ -48,7 +46,7 @@ class ListGroupIdeaController extends AbstractController
         );
 
         $itemsPerPage = $ideas->getQuery()->getMaxResults();
-        $numPages = ceil($ideas->count() / $itemsPerPage);
+        $numPages     = ceil($ideas->count() / $itemsPerPage);
 
         return $this->render('frontend/idea/index_group.html.twig', [
             'ideas' => $ideas,

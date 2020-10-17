@@ -15,35 +15,20 @@ namespace App\Message\Idea;
 
 final class GetIdeasByPageQuery
 {
-    /**
-     * @var int
-     */
-    private $page;
-    /**
-     * @var bool
-     */
-    private $showPrivates;
+    private int $page;
+    private bool $showPrivates;
 
-    /**
-     * GetIdeaPageQuery constructor.
-     */
-    public function __construct(int $page = 1, bool $showPrivates = false)
+    public function __construct(int $page, bool $showPrivates)
     {
-        $this->page = $page;
+        $this->page         = $page;
         $this->showPrivates = $showPrivates;
     }
 
-    /**
-     * @return int
-     */
     public function getPage(): int
     {
         return $this->page;
     }
 
-    /**
-     * @return bool
-     */
     public function getShowPrivates(): bool
     {
         return $this->showPrivates;

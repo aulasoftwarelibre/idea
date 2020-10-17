@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace App\Controller\Idea;
 
-use App\Entity\Idea;
-use App\MessageBus\QueryBus;
 use App\Message\Idea\GetIdeasByPageQuery;
+use App\MessageBus\QueryBus;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
+use function ceil;
 
 /**
  * @Route("/idea", defaults={"page": "1"}, name="idea_index")
@@ -29,16 +31,16 @@ class ListIdeaController extends AbstractController
 {
     public function __invoke(int $page, QueryBus $queryBus): Response
     {
-        /** @var Paginator $ideas */
         $ideas = $queryBus->query(
             new GetIdeasByPageQuery(
                 $page,
                 $this->isGranted('ROLE_ADMIN')
             )
         );
+        assert($ideas instanceof Paginator);
 
         $itemsPerPage = $ideas->getQuery()->getMaxResults();
-        $numPages = ceil($ideas->count() / $itemsPerPage);
+        $numPages     = ceil($ideas->count() / $itemsPerPage);
 
         return $this->render('frontend/idea/index.html.twig', [
             'ideas' => $ideas,

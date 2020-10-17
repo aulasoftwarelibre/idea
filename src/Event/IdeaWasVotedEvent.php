@@ -19,10 +19,7 @@ use App\Event\Abstracts\AbstractIdeaEvent;
 
 final class IdeaWasVotedEvent extends AbstractIdeaEvent
 {
-    /**
-     * @var User
-     */
-    private $voter;
+    private User $voter;
 
     public function __construct(Idea $idea, User $voter)
     {
@@ -30,9 +27,6 @@ final class IdeaWasVotedEvent extends AbstractIdeaEvent
         $this->voter = $voter;
     }
 
-    /**
-     * @return User
-     */
     public function getVoter(): User
     {
         return $this->voter;

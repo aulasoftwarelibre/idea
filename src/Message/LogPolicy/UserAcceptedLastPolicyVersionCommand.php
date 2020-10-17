@@ -17,19 +17,13 @@ use App\Entity\User;
 
 final class UserAcceptedLastPolicyVersionCommand
 {
-    /**
-     * @var User
-     */
-    private $user;
+    private User $user;
 
     public function __construct(User $user)
     {
         $this->user = $user;
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;

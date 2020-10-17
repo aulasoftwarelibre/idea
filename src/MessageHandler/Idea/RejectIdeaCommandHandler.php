@@ -19,14 +19,8 @@ use App\Repository\IdeaRepository;
 
 final class RejectIdeaCommandHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $repository;
+    private IdeaRepository $repository;
 
-    /**
-     * RejectIdeaHandler constructor.
-     */
     public function __construct(IdeaRepository $repository)
     {
         $this->repository = $repository;

@@ -18,12 +18,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Form\DataTransformerInterface;
 
+use function assert;
+
 class ArrayToVoteTransform implements DataTransformerInterface
 {
-    /**
-     * @var UserRepository
-     */
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(UserRepository $repository)
     {
@@ -37,8 +36,8 @@ class ArrayToVoteTransform implements DataTransformerInterface
     {
         $users = [];
         if ($votes) {
-            /** @var Vote $vote */
             foreach ($votes as $vote) {
+                assert($vote instanceof Vote);
                 $users[] = $vote->getUser()->getId();
             }
         }

@@ -19,10 +19,7 @@ use App\Repository\IdeaRepository;
 
 class UpdateIdeaCommandHandler
 {
-    /**
-     * @var IdeaRepository
-     */
-    private $repository;
+    private IdeaRepository $repository;
 
     public function __construct(IdeaRepository $repository)
     {
@@ -31,10 +28,10 @@ class UpdateIdeaCommandHandler
 
     public function __invoke(UpdateIdeaCommand $command): Idea
     {
-        $idea = $command->getIdea();
-        $title = $command->getTitle();
+        $idea        = $command->getIdea();
+        $title       = $command->getTitle();
         $description = $command->getDescription();
-        $group = $command->getGroup();
+        $group       = $command->getGroup();
 
         $idea
             ->setTitle($title)

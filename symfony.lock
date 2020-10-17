@@ -1,4 +1,10 @@
 {
+    "amphp/amp": {
+        "version": "v2.5.0"
+    },
+    "amphp/byte-stream": {
+        "version": "v1.8.0"
+    },
     "antishov/doctrine-extensions-bundle": {
         "version": "1.4",
         "recipe": {
@@ -24,10 +30,16 @@
         "version": "2.0.0"
     },
     "composer/semver": {
-        "version": "1.4.2"
+        "version": "3.2.2"
     },
     "composer/xdebug-handler": {
-        "version": "1.2.0"
+        "version": "1.4.3"
+    },
+    "dealerdirect/phpcodesniffer-composer-installer": {
+        "version": "v0.7.0"
+    },
+    "dnoegel/php-xdg-base-dir": {
+        "version": "v0.1.1"
     },
     "doctrine/annotations": {
         "version": "1.0",
@@ -40,6 +52,9 @@
     },
     "doctrine/cache": {
         "version": "v1.7.1"
+    },
+    "doctrine/coding-standard": {
+        "version": "8.1.0"
     },
     "doctrine/collections": {
         "version": "v1.5.0"
@@ -110,17 +125,14 @@
     "ezyang/htmlpurifier": {
         "version": "v4.10.0"
     },
+    "felixfbecker/advanced-json-rpc": {
+        "version": "v3.1.1"
+    },
+    "felixfbecker/language-server-protocol": {
+        "version": "v1.4.0"
+    },
     "fgrosse/phpasn1": {
         "version": "2.0.1"
-    },
-    "friendsofphp/php-cs-fixer": {
-        "version": "2.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "2.2",
-            "ref": "bb31a3bbec00a8fc8aa1c9fbf9b0ef9fc492f93d"
-        }
     },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "1.1.0"
@@ -166,9 +178,6 @@
     },
     "informaticauco/oauth2-uco": {
         "version": "0.3.0"
-    },
-    "jean85/pretty-package-versions": {
-        "version": "1.2"
     },
     "jms/metadata": {
         "version": "1.6.0"
@@ -263,29 +272,11 @@
     "myclabs/php-enum": {
         "version": "1.7.6"
     },
-    "nette/bootstrap": {
-        "version": "v2.4.6"
+    "n98/junit-xml": {
+        "version": "1.0.0"
     },
-    "nette/di": {
-        "version": "v2.4.13"
-    },
-    "nette/finder": {
-        "version": "v2.4.2"
-    },
-    "nette/neon": {
-        "version": "v2.4.3"
-    },
-    "nette/php-generator": {
-        "version": "v3.0.5"
-    },
-    "nette/robot-loader": {
-        "version": "v3.0.4"
-    },
-    "nette/schema": {
-        "version": "v1.0.1"
-    },
-    "nette/utils": {
-        "version": "v2.5.2"
+    "netresearch/jsonmapper": {
+        "version": "v2.1.0"
     },
     "nikic/php-parser": {
         "version": "v4.0.1"
@@ -296,11 +287,17 @@
     "ocramius/proxy-manager": {
         "version": "2.2.0"
     },
+    "openlss/lib-array2xml": {
+        "version": "1.0.0"
+    },
+    "overtrue/phplint": {
+        "version": "2.1.0"
+    },
+    "pdepend/pdepend": {
+        "version": "2.8.0"
+    },
     "php": {
         "version": "7.4.10"
-    },
-    "php-cs-fixer/diff": {
-        "version": "v1.3.0"
     },
     "phpdocumentor/reflection-common": {
         "version": "1.0.1"
@@ -311,6 +308,9 @@
     "phpdocumentor/type-resolver": {
         "version": "0.4.0"
     },
+    "phpmd/phpmd": {
+        "version": "2.9.1"
+    },
     "phpoffice/phpspreadsheet": {
         "version": "1.2.1"
     },
@@ -318,16 +318,10 @@
         "version": "1.5.0"
     },
     "phpstan/phpdoc-parser": {
-        "version": "0.3"
+        "version": "0.4.9"
     },
-    "phpstan/phpstan": {
-        "version": "0.10.3"
-    },
-    "phpstan/phpstan-doctrine": {
-        "version": "0.10"
-    },
-    "phpstan/phpstan-symfony": {
-        "version": "0.10.1"
+    "psalm/plugin-symfony": {
+        "version": "v1.5.0"
     },
     "psr/cache": {
         "version": "1.0.1"
@@ -359,6 +353,9 @@
     "ralouphie/getallheaders": {
         "version": "2.0.5"
     },
+    "sebastian/diff": {
+        "version": "4.0.3"
+    },
     "sensio/framework-extra-bundle": {
         "version": "5.2",
         "recipe": {
@@ -368,8 +365,20 @@
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
     },
+    "sensiolabs/security-checker": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "master",
+            "version": "4.0",
+            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
+        },
+        "files": [
+            "config/packages/security_checker.yaml"
+        ]
+    },
     "slevomat/coding-standard": {
-        "version": "4.6.3"
+        "version": "6.4.1"
     },
     "sonata-project/admin-bundle": {
         "version": "3.31",
@@ -429,7 +438,13 @@
         "version": "v1.0.2"
     },
     "squizlabs/php_codesniffer": {
-        "version": "3.3.1"
+        "version": "3.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "master",
+            "version": "3.0",
+            "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
+        }
     },
     "swiftmailer/swiftmailer": {
         "version": "v6.1.2"
@@ -523,6 +538,9 @@
             "version": "3.3",
             "ref": "87c585d24de9f43bca80ebcfd5cf5cb39445d95f"
         }
+    },
+    "symfony/http-client": {
+        "version": "v4.4.15"
     },
     "symfony/http-client-contracts": {
         "version": "v2.3.1"
@@ -758,15 +776,6 @@
     "symfony/yaml": {
         "version": "v4.1.3"
     },
-    "symplify/coding-standard": {
-        "version": "v4.6.1"
-    },
-    "symplify/easy-coding-standard": {
-        "version": "v4.6.1"
-    },
-    "symplify/package-builder": {
-        "version": "v4.6.1"
-    },
     "thecodingmachine/safe": {
         "version": "v1.2.0"
     },
@@ -806,6 +815,9 @@
             "ref": "c4f5755b37fb65b9c6a3cbdae91205c15a137ed4"
         }
     },
+    "vimeo/psalm": {
+        "version": "3.17.2"
+    },
     "web-token/jwt-framework": {
         "version": "v2.0.13"
     },
@@ -814,6 +826,12 @@
     },
     "webmozart/assert": {
         "version": "1.3.0"
+    },
+    "webmozart/glob": {
+        "version": "4.1.0"
+    },
+    "webmozart/path-util": {
+        "version": "2.3.0"
     },
     "willdurand/jsonp-callback-validator": {
         "version": "v1.1.0"

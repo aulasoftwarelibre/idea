@@ -18,10 +18,7 @@ use App\Message\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 
 class CheckUserAcceptLastPolicyVersionQueryHandler
 {
-    /**
-     * @var string
-     */
-    private $policyVersion;
+    private string $policyVersion;
 
     public function __construct(string $policyVersion)
     {
@@ -38,6 +35,6 @@ class CheckUserAcceptLastPolicyVersionQueryHandler
 
         $isFound = $versions->filter($foundCurrentPolicyVersion)->isEmpty();
 
-        return false === $isFound;
+        return $isFound === false;
     }
 }

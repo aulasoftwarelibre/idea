@@ -18,6 +18,7 @@ use FOS\UserBundle\Model\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
 use League\OAuth2\Client\Token\AccessTokenInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -28,20 +29,15 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
+use function array_reduce;
+use function assert;
+use function strtr;
+
 class GithubAuthenticator extends SocialAuthenticator
 {
-    /**
-     * @var ClientRegistry
-     */
-    private $clientRegistry;
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private ClientRegistry $clientRegistry;
+    private UserManagerInterface $userManager;
+    private RouterInterface $router;
 
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -49,8 +45,8 @@ class GithubAuthenticator extends SocialAuthenticator
         RouterInterface $router
     ) {
         $this->clientRegistry = $clientRegistry;
-        $this->userManager = $userManager;
-        $this->router = $router;
+        $this->userManager    = $userManager;
+        $this->router         = $router;
     }
 
     /**
@@ -58,7 +54,7 @@ class GithubAuthenticator extends SocialAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'connect_github_check' === $request->attributes->get('_route');
+        return $request->attributes->get('_route') === 'connect_github_check';
     }
 
     /**
@@ -74,14 +70,14 @@ class GithubAuthenticator extends SocialAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var GithubResourceOwner $userResource */
         $userResource = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
+        assert($userResource instanceof GithubResourceOwner);
         $userResourceId = $userResource->getId() . '@github.com';
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
-        if (!$user) {
+        if (! $user) {
             $user = User::createExternalUser($userResourceId);
         }
 
@@ -109,7 +105,7 @@ class GithubAuthenticator extends SocialAuthenticator
     {
         $targetPath = $this->getTargetPath($request, $providerKey);
 
-        if (!$targetPath) {
+        if (! $targetPath) {
             // Change it to your default target
             $targetPath = $this->router->generate('homepage');
         }
@@ -140,7 +136,7 @@ class GithubAuthenticator extends SocialAuthenticator
      */
     protected function getTargetPath(Request $request, string $providerKey): ?string
     {
-        if (!$request->hasSession()) {
+        if (! $request->hasSession()) {
             return null;
         }
 
@@ -150,12 +146,12 @@ class GithubAuthenticator extends SocialAuthenticator
     /**
      * @param AccessTokenInterface|string $credentials
      *
-     * @throws \League\OAuth2\Client\Provider\Exception\IdentityProviderException
+     * @throws IdentityProviderException
      */
     private function getEmailFromGithub($credentials): string
     {
         $provider = $this->getClient()->getOAuth2Provider();
-        $request = $provider->getAuthenticatedRequest(
+        $request  = $provider->getAuthenticatedRequest(
             'GET',
             'https://api.github.com/user/emails',
             $credentials
