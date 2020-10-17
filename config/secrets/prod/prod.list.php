@@ -10,5 +10,4 @@ return array (
   'CLIENT_UCO_SECRET' => NULL,
   'DATABASE_URL' => NULL,
   'MAILER_DSN' => NULL,
-  'TELEGRAM_BOT_API' => NULL,
 );

@@ -11,6 +11,22 @@ ARG APACHE_VERSION=2.4
 ARG NODE_VERSION=14
 
 ###############################################
+# "node" stage
+FROM node:${NODE_VERSION} AS idea_node
+
+WORKDIR /srv/app
+
+COPY package.json yarn.lock webpack.config.js ./
+
+RUN set -eux; \
+    yarn install;
+
+COPY assets assets/
+
+RUN set -eux; \
+    yarn run build --mode production
+
+###############################################
 # "php" stage
 FROM php:${PHP_VERSION}-fpm-alpine AS idea_php
 
@@ -86,18 +102,27 @@ WORKDIR /srv/app
 
 # build for production
 ENV APP_ENV=prod
+ENV ROUTER_REQUEST_CONTEXT_HOST=ideas.aulasoftwarelibre.uco.es
 
 COPY composer.json composer.lock symfony.lock ./
+RUN set -eux; \
+	composer install --no-dev --prefer-dist --no-progress --no-scripts --no-interaction; \
+	composer clear-cache
+
+COPY .env ./
+COPY bin bin/
+COPY config config/
+COPY migrations migrations/
+COPY public public/
+COPY assets assets/
+COPY --from=idea_node /srv/app/public/build public/build/
+COPY templates templates/
+COPY translations translations/
+COPY src src/
 
 RUN set -eux; \
 	mkdir -p var/cache var/log; \
-	composer install --no-dev --prefer-dist --no-progress --no-scripts --no-interaction;
-
-COPY . .
-
-RUN set -eux; \
 	composer dump-autoload --classmap-authoritative --no-scripts --no-dev --optimize; \
-	composer symfony:dump-env prod; \
 	composer run-script post-install-cmd --no-dev; sync
 
 VOLUME ["/srv/app/var", "/srv/app/public/cache", "/srv/app/public/images"]
@@ -110,25 +135,9 @@ HEALTHCHECK --interval=10s --timeout=3s --retries=3 CMD ["docker-healthcheck"]
 # entrypoint
 COPY docker/php/docker-entrypoint.sh /usr/local/bin/docker-entrypoint
 RUN chmod +x /usr/local/bin/docker-entrypoint
+
 ENTRYPOINT ["docker-entrypoint"]
-
 CMD ["php-fpm"]
-
-###############################################
-# "node" stage
-FROM node:${NODE_VERSION} AS idea_node
-
-WORKDIR /srv/app
-
-COPY assets package.json yarn.lock ./
-
-RUN set -eux; \
-    yarn install;
-
-COPY . .
-
-RUN set -eux; \
-    yarn run build --mode production
 
 ###############################################
 # "apache" stage
@@ -146,4 +155,3 @@ COPY docker/httpd/conf.d/httpd.conf /usr/local/apache2/conf/httpd.conf
 WORKDIR /srv/app
 
 COPY --from=idea_php /srv/app/public public/
-COPY --from=idea_node /srv/app/public/build public/build/

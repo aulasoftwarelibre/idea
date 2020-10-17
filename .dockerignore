@@ -24,6 +24,7 @@
 Dockerfile
 bin/*
 !bin/console
+config/secrets/prod/prod.decrypt.private.php
 docker/db/data/
 helm/
 node_modules/
