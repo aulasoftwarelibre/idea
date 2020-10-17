@@ -16,7 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Group;
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
-use App\Messenger\Idea\GetIdeasByGroupQuery;
+use App\Message\Idea\GetIdeasByGroupQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

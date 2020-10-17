@@ -16,7 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\Entity\User;
 use App\MessageBus\CommandBus;
-use App\Messenger\Vote\RemoveVoteCommand;
+use App\Message\Vote\RemoveVoteCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

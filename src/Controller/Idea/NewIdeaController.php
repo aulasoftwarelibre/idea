@@ -18,7 +18,7 @@ use App\Entity\User;
 use App\Event\IdeaWasCreatedEvent;
 use App\Form\Type\IdeaType;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\AddIdeaCommand;
+use App\Message\Idea\AddIdeaCommand;
 use App\Security\Voter\AddIdeaVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

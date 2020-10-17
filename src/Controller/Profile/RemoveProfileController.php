@@ -15,7 +15,7 @@ namespace App\Controller\Profile;
 
 use App\Entity\User;
 use App\MessageBus\CommandBus;
-use App\Messenger\User\RemoveUserCommand;
+use App\Message\User\RemoveUserCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

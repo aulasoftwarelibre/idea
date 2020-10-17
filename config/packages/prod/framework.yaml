@@ -1,0 +1,6 @@
+
+framework:
+    router:
+        host: 'ideas.aulasoftwarelibre.uco.es'
+        scheme: 'https'
+        base_url: '/'

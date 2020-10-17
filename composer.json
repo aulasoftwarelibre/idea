@@ -20,7 +20,7 @@
         "friendsofsymfony/ckeditor-bundle": "^1.0",
         "friendsofsymfony/comment-bundle": "^2.2",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
-        "informaticauco/oauth2-uco": "^0.4.0",
+        "informaticauco/oauth2-uco": "^0.5.0",
         "knpuniversity/oauth2-client-bundle": "^1.28",
         "league/oauth2-github": "^2.0",
         "league/oauth2-google": "^3.0",
@@ -108,7 +108,7 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "ckeditor:install --clear=drop": "symfony-cmd",
-            "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"

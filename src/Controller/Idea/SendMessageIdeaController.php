@@ -17,7 +17,7 @@ use App\Entity\Idea;
 use App\Form\Dto\IdeaMessageDto;
 use App\Form\Type\IdeaMessageType;
 use App\MessageBus\CommandBus;
-use App\Messenger\IdeaMessage\SendIdeaMessageCommand;
+use App\Message\Email\SendEmailCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -50,7 +50,7 @@ class SendMessageIdeaController extends AbstractController
             $message = $form->getData();
 
             $this->commandBus->dispatch(
-                new SendIdeaMessageCommand(
+                new SendEmailCommand(
                     $idea->getId(),
                     $message->getMessage(),
                     $message->getIsTest()

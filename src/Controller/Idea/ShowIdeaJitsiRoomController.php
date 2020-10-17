@@ -15,7 +15,7 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
-use App\Messenger\Idea\GetIdeaJitsiRoomUrlQuery;
+use App\Message\Idea\GetIdeaJitsiRoomUrlQuery;
 use App\Security\Voter\MemberIdeaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

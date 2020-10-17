@@ -16,7 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\Event\IdeaWasApprovedEvent;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\ApproveIdeaCommand;
+use App\Message\Idea\ApproveIdeaCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

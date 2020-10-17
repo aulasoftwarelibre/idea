@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Command;
 
 use App\MessageBus\CommandBus;
-use App\Messenger\User\RemoveUserCommand;
+use App\Message\User\RemoveUserCommand;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;

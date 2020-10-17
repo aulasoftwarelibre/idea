@@ -206,6 +206,12 @@
             "config/packages/knpu_oauth2_client.yaml"
         ]
     },
+    "laminas/laminas-code": {
+        "version": "3.4.1"
+    },
+    "laminas/laminas-eventmanager": {
+        "version": "3.3.0"
+    },
     "laminas/laminas-zendframework-bridge": {
         "version": "1.1.1"
     },
@@ -467,9 +473,6 @@
             "ref": "f8863cbad2f2e58c4b65fa1eac892ab189971bea"
         }
     },
-    "symfony/debug-pack": {
-        "version": "v1.0.6"
-    },
     "symfony/dependency-injection": {
         "version": "v4.1.3"
     },
@@ -520,6 +523,9 @@
             "version": "3.3",
             "ref": "87c585d24de9f43bca80ebcfd5cf5cb39445d95f"
         }
+    },
+    "symfony/http-client-contracts": {
+        "version": "v2.3.1"
     },
     "symfony/http-foundation": {
         "version": "v4.1.3"
@@ -581,9 +587,6 @@
     "symfony/options-resolver": {
         "version": "v4.1.3"
     },
-    "symfony/orm-pack": {
-        "version": "v1.0.5"
-    },
     "symfony/phpunit-bridge": {
         "version": "4.1",
         "recipe": {
@@ -619,9 +622,6 @@
     },
     "symfony/process": {
         "version": "v4.1.3"
-    },
-    "symfony/profiler-pack": {
-        "version": "v1.0.3"
     },
     "symfony/property-access": {
         "version": "v4.1.3"
@@ -665,9 +665,6 @@
     "symfony/serializer": {
         "version": "v4.1.3"
     },
-    "symfony/serializer-pack": {
-        "version": "v1.0.1"
-    },
     "symfony/service-contracts": {
         "version": "v2.0.0"
     },
@@ -679,9 +676,6 @@
     },
     "symfony/templating": {
         "version": "v4.1.3"
-    },
-    "symfony/test-pack": {
-        "version": "v1.0.2"
     },
     "symfony/translation": {
         "version": "3.3",

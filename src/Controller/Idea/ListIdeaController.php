@@ -15,7 +15,7 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
-use App\Messenger\Idea\GetIdeasByPageQuery;
+use App\Message\Idea\GetIdeasByPageQuery;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;

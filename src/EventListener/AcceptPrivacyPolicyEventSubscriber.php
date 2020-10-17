@@ -18,7 +18,7 @@ use App\Controller\Profile\RemoveProfileController;
 use App\Controller\Security\LogoutController;
 use App\Entity\User;
 use App\MessageBus\QueryBus;
-use App\Messenger\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
+use App\Message\LogPolicy\CheckUserAcceptLastPolicyVersionQuery;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

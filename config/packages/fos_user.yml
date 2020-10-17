@@ -3,7 +3,7 @@ fos_user:
     user_class: 'App\Entity\User'
     firewall_name: main
     from_email:
-        address: 'infoasl@uco.es'
+        address: '%mail_from%'
         sender_name: 'Aula de Software Libre'
     group:
         group_class: 'App\Entity\Group'

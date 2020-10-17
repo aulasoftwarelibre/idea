@@ -18,7 +18,7 @@ use App\Entity\User;
 use App\Event\IdeaWasVotedEvent;
 use App\Exception\NoMoreSeatsLeftException;
 use App\MessageBus\CommandBus;
-use App\Messenger\Vote\AddVoteCommand;
+use App\Message\Vote\AddVoteCommand;
 use App\Security\Voter\JoinIdeaVoter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

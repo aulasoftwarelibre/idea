@@ -9,10 +9,9 @@ imports:
 
 parameters:
     locale: 'es'
-    router.request_context.host: '%env(ROUTER_REQUEST_CONTEXT_HOST)%'
-    router.request_context.scheme: 'https'
-    router.request_context.base_url: '%env(ROUTER_REQUEST_CONTEXT_BASE_URL)%'
-    mail_from: '%env(MAIL_FROM)%'
+    mail_from: 'aulasoftwalibre@uco.es'
+    policy_version: '20191126161857'
+    jitsi_prefix: 'AulaSoftwareLibre'
 
 services:
     # default configuration for services in *this* file
@@ -23,14 +22,21 @@ services:
             $assetsPath: '%kernel.project_dir%/assets'
             $mailFrom: '%mail_from%'
             $telegramPurifier: '@exercise_html_purifier.telegram'
-            $policyVersion: '%env(POLICY_VERSION)%'
-            $jitsiPrefix: '%env(JITSI_PREFIX)%'
+            $policyVersion: '%policy_version%'
+            $jitsiPrefix: '%jitsi_prefix%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
     App\:
-        resource: '../src/*'
-        exclude: '../src/{Admin,DependencyInjection,Entity,Menu,Migrations,Tests,Kernel.php}'
+        resource: '../src/'
+        exclude:
+            - '../src/Admin/'
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+            - '../src/Menu/'
+            - '../src/Tests/'
+
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
@@ -41,11 +47,19 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    App\MessageBus\CommandBus:
-        arguments: ['@messenger.bus.commands']
-    App\MessageBus\QueryBus:
-        arguments: ['@messenger.bus.queries']
-    App\MessageBus\EventBus:
-        arguments: ['@messenger.bus.events']
+
+    command_handlers:
+        namespace: App\MessageHandler\
+        resource: '%kernel.project_dir%/src/MessageHandler/**/*CommandHandler.php'
+        autoconfigure: false
+        tags:
+            - { name: messenger.message_handler, bus: command.bus }
+
+    query_handlers:
+        namespace: App\MessageHandler\
+        resource: '%kernel.project_dir%/src/MessageHandler/**/*QueryHandler.php'
+        autoconfigure: false
+        tags:
+            - { name: messenger.message_handler, bus: query.bus }
 
     Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'

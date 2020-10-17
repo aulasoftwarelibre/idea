@@ -15,8 +15,8 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\OpenIdeaJitsiRoomCommand;
-use App\Messenger\IdeaMessage\SendIdeaMessageCommand;
+use App\Message\Idea\OpenIdeaJitsiRoomCommand;
+use App\Message\Email\SendEmailCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -53,7 +53,7 @@ final class OpenIdeaJitsiRoomController extends AbstractController
 EOF;
 
         $this->commandBus->dispatch(
-            new SendIdeaMessageCommand(
+            new SendEmailCommand(
                 $idea->getId(),
                 $message,
                 false

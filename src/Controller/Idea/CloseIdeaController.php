@@ -15,7 +15,7 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\CloseIdeaCommand;
+use App\Message\Idea\CloseIdeaCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
