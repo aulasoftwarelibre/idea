@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\MessageHandler\Idea;
 
 use App\Entity\Thread;
-use App\Message\Idea\CloseIdeaCommand;
+use App\Message\Idea\OpenIdeaCommand;
 use App\Repository\IdeaRepository;
 use App\Repository\ThreadRepository;
 
@@ -31,7 +31,7 @@ class OpenIdeaCommandHandler
         $this->threadRepository = $threadRepository;
     }
 
-    public function __invoke(CloseIdeaCommand $command): void
+    public function __invoke(OpenIdeaCommand $command): void
     {
         $idea = $command->getIdea();
         $idea->setClosed(false);
