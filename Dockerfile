@@ -45,13 +45,14 @@ RUN set -eux; \
 	apk add --no-cache --virtual .build-deps \
 	$PHPIZE_DEPS \
 	icu-dev \
+	libjpeg-turbo-dev \
 	libpng-dev \
 	libzip-dev \
 	zlib-dev \
 	libxslt-dev \
 	; \
 	\
-	docker-php-ext-configure gd; \
+	docker-php-ext-configure gd  --with-jpeg; \
 	docker-php-ext-configure zip; \
 	docker-php-ext-install -j$(nproc) \
 	gd \
