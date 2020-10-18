@@ -29,6 +29,7 @@ docker/db/data/
 helm/
 node_modules/
 public/build/
+public/cache/
 public/images/
 var/
 vendor/
