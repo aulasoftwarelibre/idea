@@ -19,6 +19,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 
+use function assert;
+
 final class ShowGroupMenuEmbedController extends AbstractController
 {
     public function __invoke(RequestStack $requestStack, GroupRepository $groupRepository): Response
@@ -26,12 +28,12 @@ final class ShowGroupMenuEmbedController extends AbstractController
         $icon = 'home';
         $name = 'Inicio';
 
-        if (null !== $requestStack->getMasterRequest()) {
+        if ($requestStack->getMasterRequest() !== null) {
             $attributes = $requestStack->getMasterRequest()->attributes;
 
             if ($attributes->has('group')) {
-                /** @var Group $group */
                 $group = $attributes->get('group');
+                assert($group instanceof Group);
                 $icon = $group->getIcon();
                 $name = $group->getName();
             }

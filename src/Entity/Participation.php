@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -23,78 +24,66 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Participation
 {
-    public const ATTENDEE = 'attendee';
+    public const ATTENDEE  = 'attendee';
     public const PRESENTER = 'presenter';
     public const ORGANIZER = 'organizer';
 
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue("AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var string
      * @ORM\Column(length=16)
+     *
      * @Assert\Choice(callback="getRoles")
      */
-    private $role;
+    private string $role;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $isReported;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $isReported;
-
-    /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
 
     /**
-     * @var User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="participations")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $user;
+    private User $user;
 
     /**
-     * @var Activity
      * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="participations")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
      */
-    private $activity;
+    private Activity $activity;
 
     public function __construct(User $user, Activity $activity, string $role = self::ATTENDEE)
     {
-        $this->role = $role;
-        $this->user = $user;
-        $this->activity = $activity;
+        $this->role       = $role;
+        $this->user       = $user;
+        $this->activity   = $activity;
         $this->isReported = false;
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
@@ -110,9 +99,6 @@ class Participation
         return $this;
     }
 
-    /**
-     * @return Activity
-     */
     public function getActivity(): Activity
     {
         return $this->activity;
@@ -129,20 +115,17 @@ class Participation
     }
 
     /**
-     * @return array
+     * @return array<string, string>
      */
     public static function getRoles(): array
     {
         return [
-            'Asistente' => static::ATTENDEE,
-            'Organizador' => static::ORGANIZER,
-            'Ponente' => static::PRESENTER,
+            'Asistente' => self::ATTENDEE,
+            'Organizador' => self::ORGANIZER,
+            'Ponente' => self::PRESENTER,
         ];
     }
 
-    /**
-     * @return string
-     */
     public function getRole(): string
     {
         return $this->role;
@@ -158,9 +141,6 @@ class Participation
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsReported(): bool
     {
         return $this->isReported;
@@ -176,34 +156,22 @@ class Participation
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getTitle(): string
     {
         return $this->getActivity()->getTitle();
     }
 
-    /**
-     * @return int
-     */
     public function getDuration(): ?int
     {
         return $this->getActivity()->getDuration();
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }

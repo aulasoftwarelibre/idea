@@ -2,9 +2,6 @@
 
 namespace App;
 
-use App\MessageBus\CommandHandlerInterface;
-use App\MessageBus\EventHandlerInterface;
-use App\MessageBus\QueryHandlerInterface;
 use Symfony\Bundle\FrameworkBundle\Kernel\MicroKernelTrait;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Resource\FileResource;
@@ -36,11 +33,12 @@ class Kernel extends BaseKernel
     protected function configureContainer(ContainerBuilder $container, LoaderInterface $loader): void
     {
         $container->addResource(new FileResource($this->getProjectDir().'/config/bundles.php'));
-        $container->setParameter('container.dumper.inline_class_loader', true);
+        $container->setParameter('container.dumper.inline_class_loader', \PHP_VERSION_ID < 70400 || $this->debug);
+        $container->setParameter('container.dumper.inline_factories', true);
         $confDir = $this->getProjectDir().'/config';
 
         $loader->load($confDir.'/{packages}/*'.self::CONFIG_EXTS, 'glob');
-        $loader->load($confDir.'/{packages}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, 'glob');
+        $loader->load($confDir.'/{packages}/'.$this->environment.'/*'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}'.self::CONFIG_EXTS, 'glob');
         $loader->load($confDir.'/{services}_'.$this->environment.self::CONFIG_EXTS, 'glob');
     }
@@ -49,24 +47,8 @@ class Kernel extends BaseKernel
     {
         $confDir = $this->getProjectDir().'/config';
 
-        $routes->import($confDir.'/{routes}/'.$this->environment.'/**/*'.self::CONFIG_EXTS, '/', 'glob');
+        $routes->import($confDir.'/{routes}/'.$this->environment.'/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}/*'.self::CONFIG_EXTS, '/', 'glob');
         $routes->import($confDir.'/{routes}'.self::CONFIG_EXTS, '/', 'glob');
-    }
-
-    protected function build(ContainerBuilder $container)
-    {
-        $container
-            ->registerForAutoconfiguration(CommandHandlerInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'messenger.bus.commands']);
-
-        $container
-            ->registerForAutoconfiguration(EventHandlerInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'messenger.bus.events']);
-
-        $container
-            ->registerForAutoconfiguration(QueryHandlerInterface::class)
-            ->addTag('messenger.message_handler', ['bus' => 'messenger.bus.queries']);
-
     }
 }

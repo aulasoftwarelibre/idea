@@ -16,13 +16,15 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\Form\Dto\IdeaMessageDto;
 use App\Form\Type\IdeaMessageType;
+use App\Message\Email\SendEmailCommand;
 use App\MessageBus\CommandBus;
-use App\Messenger\IdeaMessage\SendIdeaMessageCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
 
 /**
  * @Route("/idea/{slug}/message", name="idea_send_message", methods={"GET", "POST"})
@@ -30,10 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class SendMessageIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(CommandBus $commandBus)
     {
@@ -46,18 +45,18 @@ class SendMessageIdeaController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var IdeaMessageDto $message */
             $message = $form->getData();
+            assert($message instanceof IdeaMessageDto);
 
             $this->commandBus->dispatch(
-                new SendIdeaMessageCommand(
+                new SendEmailCommand(
                     $idea->getId(),
                     $message->getMessage(),
                     $message->getIsTest()
                 )
             );
 
-            if (false === $message->getIsTest()) {
+            if ($message->getIsTest() === false) {
                 $this->addFlash('positive', 'Mensaje enviado');
 
                 return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);

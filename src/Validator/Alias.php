@@ -22,14 +22,9 @@ use Symfony\Component\Validator\Constraint;
  */
 class Alias extends Constraint
 {
-    /**
-     * @var string message
-     */
-    public $message = 'El alias ya está reservado por otro usuario.';
+    /** @var string message */
+    public string $message = 'El alias ya está reservado por otro usuario.';
 
-    /**
-     * {@inheritdoc}
-     */
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

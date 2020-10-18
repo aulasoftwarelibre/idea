@@ -15,6 +15,7 @@ namespace App\Repository;
 
 use App\Entity\Group;
 use App\Entity\Idea;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
@@ -45,8 +46,7 @@ class IdeaRepository extends ServiceEntityRepository
 
         $paginator->getQuery()
             ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit)
-        ;
+            ->setMaxResults($limit);
 
         return $paginator;
     }
@@ -58,7 +58,7 @@ class IdeaRepository extends ServiceEntityRepository
             ->leftJoin('i.owner', 'o')
             ->orderBy('i.createdAt', 'DESC');
 
-        if (false === $showPrivates) {
+        if ($showPrivates === false) {
             $qb->andWhere('i.private = :false')
                 ->setParameter('false', false);
         }
@@ -84,6 +84,9 @@ class IdeaRepository extends ServiceEntityRepository
         return $this->createPaginator($query, $page);
     }
 
+    /**
+     * @return array<Idea>
+     */
     public function findFilteredByVotes(): array
     {
         return $this->getEntityManager()
@@ -101,6 +104,9 @@ class IdeaRepository extends ServiceEntityRepository
             ->execute();
     }
 
+    /**
+     * @return array<Idea>
+     */
     public function findNextScheduled(): array
     {
         return $this->getEntityManager()
@@ -111,7 +117,7 @@ class IdeaRepository extends ServiceEntityRepository
                 AND i.startsAt > :now
                 AND i.state = :approved
             ')
-            ->setParameter('now', new \DateTime())
+            ->setParameter('now', new DateTime())
             ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();

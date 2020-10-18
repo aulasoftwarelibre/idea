@@ -17,26 +17,17 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class IdeaMessageDto
 {
-    /**
-     * @var string|null
-     * @Assert\NotBlank()
-     */
-    private $message;
+    /** @Assert\NotBlank() */
+    private ?string $message = null;
 
-    /**
-     * @var bool|null
-     */
-    private $isTest;
+    private ?bool $isTest = null;
 
     public function __construct()
     {
         $this->message = '';
-        $this->isTest = true;
+        $this->isTest  = true;
     }
 
-    /**
-     * @return string
-     */
     public function getMessage(): string
     {
         return (string) $this->message;
@@ -52,9 +43,6 @@ final class IdeaMessageDto
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function getIsTest(): bool
     {
         return (bool) $this->isTest;

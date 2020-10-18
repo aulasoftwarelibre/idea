@@ -22,8 +22,6 @@ class ShowMenuProfileEmbedController extends AbstractController
     {
         $user = $this->getUser();
 
-        return $this->render('/frontend/profile/_menu.html.twig', [
-            'profile' => $user,
-        ]);
+        return $this->render('/frontend/profile/_menu.html.twig', ['profile' => $user]);
     }
 }

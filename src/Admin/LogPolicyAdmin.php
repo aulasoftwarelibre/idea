@@ -36,11 +36,8 @@ class LogPolicyAdmin extends AbstractAdmin
             ->addIdentifier('version', null, [
                 'route' => ['version' => 'show'],
             ])
-            ->add('mandatory', null, [
-            ])
-            ->add('createAt', null, [
-                'format' => 'y/M/d',
-            ])
+            ->add('mandatory', null, [])
+            ->add('createAt', null, ['format' => 'y/M/d'])
             ->add('User', null)
             ->add('_action', 'actions', [
                 'actions' => [
@@ -54,11 +51,7 @@ class LogPolicyAdmin extends AbstractAdmin
         parent::configureDatagridFilters($filterMapper);
 
         $filterMapper
-            ->add('User', null, [
-                'show_filter' => true,
-            ])
-            ->add('version', null, [
-                'show_filter' => true,
-            ]);
+            ->add('User', null, ['show_filter' => true])
+            ->add('version', null, ['show_filter' => true]);
     }
 }

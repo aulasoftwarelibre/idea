@@ -14,11 +14,10 @@ declare(strict_types=1);
 namespace App\Controller\Idea;
 
 use App\Entity\Idea;
+use App\Message\Idea\OpenIdeaCommand;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\CloseIdeaCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -28,10 +27,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class OpenIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         CommandBus $commandBus
@@ -39,12 +35,11 @@ class OpenIdeaController extends AbstractController
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(Idea $idea, Request $request): Response
+    public function __invoke(Idea $idea): Response
     {
         $this->commandBus->dispatch(
-            new CloseIdeaCommand(
-                $idea,
-                false
+            new OpenIdeaCommand(
+                $idea
             )
         );
 

@@ -17,6 +17,7 @@ use App\Entity\Activity;
 use App\Entity\Participation;
 use App\Entity\User;
 use App\Repository\ActivityRepository;
+use ArrayIterator;
 use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -29,28 +30,26 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
+use function assert;
+use function file_exists;
+use function is_array;
+use function iterator_to_array;
+use function mb_strtoupper;
+use function sprintf;
+
 class ReportActivitiesCommand extends Command
 {
-    /**
-     * @var ActivityRepository
-     */
-    private $activityRepository;
-    /**
-     * @var Slugify
-     */
-    private $slugify;
+    private ActivityRepository $activityRepository;
+    private Slugify $slugify;
 
     public function __construct(ActivityRepository $activityRepository)
     {
         parent::__construct();
 
         $this->activityRepository = $activityRepository;
-        $this->slugify = new Slugify();
+        $this->slugify            = new Slugify();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configure(): void
     {
         $this
@@ -64,18 +63,18 @@ class ReportActivitiesCommand extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $io = new SymfonyStyle($input, $output);
+        $io       = new SymfonyStyle($input, $output);
         $template = $this->getTemplate($input);
 
         $activities = $this->activityRepository->findAll();
 
-        /** @var Activity $activity */
         foreach ($activities as $activity) {
+            assert($activity instanceof Activity);
             if ($activity->getParticipations()->isEmpty()) {
                 continue;
             }
 
-            $io->comment("Generando actas de {$activity->getTitle()}.");
+            $io->comment(sprintf('Generando actas de %s.', $activity->getTitle()));
 
             $report = IOFactory::load($template);
             $this->generateActivityReport($report, $activity);
@@ -88,29 +87,28 @@ class ReportActivitiesCommand extends Command
 
     protected function generateActivityReport(Spreadsheet $report, Activity $activity): void
     {
-        /** @var User $organizer */
         $organizer = $activity
             ->getParticipations()
-            ->filter(function (Participation $participation) {
-                return Participation::ORGANIZER === $participation->getRole();
+            ->filter(static function (Participation $participation) {
+                return $participation->getRole() === Participation::ORGANIZER;
             })
             ->first()
             ->getUser();
+        assert($organizer instanceof User);
 
         $students = $activity
             ->getParticipations()
-            ->map(function (Participation $participation) {
+            ->map(static function (Participation $participation) {
                 return $participation->getUser();
             })
-            ->filter(function (User $user) {
-                return
-                    User::STUDENT === $user->getCollective()
+            ->filter(static function (User $user) {
+                return $user->getCollective() === User::STUDENT
                     && $user->getNic();
             });
 
-        /** @var \ArrayIterator $iterator */
         $iterator = $students->getIterator();
-        $iterator->uasort(function (User $first, User $second) {
+        assert($iterator instanceof ArrayIterator);
+        $iterator->uasort(static function (User $first, User $second) {
             return $first->getLastname() <=> $second->getLastname();
         });
         $students = new ArrayCollection(iterator_to_array($iterator));
@@ -119,18 +117,18 @@ class ReportActivitiesCommand extends Command
 
         $sheet->setCellValue('B3', mb_strtoupper($activity->getTitle()));
         $sheet->setCellValue('C6', $activity->getOccurredOn()->format('d/m/Y'));
-        $sheet->setCellValue('C7', mb_strtoupper("{$organizer->getFullname()}"));
+        $sheet->setCellValue('C7', mb_strtoupper($organizer->getFullname()));
         $sheet->setCellValue('C8', $activity->getDuration());
 
         $row = 13;
-        /** @var User $student */
         foreach ($students as $student) {
-            $sheet->setCellValue("A{$row}", mb_strtoupper($student->getNic() ?? ''));
-            $sheet->setCellValue("B{$row}", mb_strtoupper($student->getLastname()));
-            $sheet->setCellValue("C{$row}", mb_strtoupper($student->getFirstname()));
-            $sheet->setCellValue("D{$row}", 10);
+            assert($student instanceof User);
+            $sheet->setCellValue('A' . $row, mb_strtoupper($student->getNic() ?? ''));
+            $sheet->setCellValue('B' . $row, mb_strtoupper($student->getLastname()));
+            $sheet->setCellValue('C' . $row, mb_strtoupper($student->getFirstname()));
+            $sheet->setCellValue('D' . $row, 10);
 
-            $sheet->getStyle("A{$row}:D{$row}")
+            $sheet->getStyle('A' . $row . ':D' . $row)
                 ->getBorders()
                 ->getBottom()
                 ->setBorderStyle(Border::BORDER_THIN);
@@ -140,12 +138,12 @@ class ReportActivitiesCommand extends Command
 
         ++$row;
 
-        $sheet->setCellValue("B{$row}", mb_strtoupper("Fdo.: {$organizer->getFullname()}"));
+        $sheet->setCellValue('B' . $row, mb_strtoupper('Fdo.: ' . $organizer->getFullname()));
 
-        $slug = $this->slugify->slugify($activity->getTitle());
-        $date = $activity->getOccurredOn()->format('Ymd');
+        $slug   = $this->slugify->slugify($activity->getTitle());
+        $date   = $activity->getOccurredOn()->format('Ymd');
         $writer = IOFactory::createWriter($report, 'Xlsx');
-        $writer->save("var/report/{$date}-{$slug}.xlsx");
+        $writer->save(sprintf('var/report/%s-%s.xlsx', $date, $slug));
     }
 
     /**
@@ -158,8 +156,8 @@ class ReportActivitiesCommand extends Command
             $template = $template[0];
         }
 
-        if (false === file_exists((string) $template)) {
-            throw new InvalidArgumentException("Plantilla no existe: {$template}");
+        if (file_exists((string) $template) === false) {
+            throw new InvalidArgumentException(sprintf('Plantilla no existe: %s', $template));
         }
 
         return $template;

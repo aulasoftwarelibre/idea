@@ -19,11 +19,10 @@ use App\Entity\Vote;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
+
 class ShowIdeaVoter extends Voter
 {
-    /**
-     * @var string
-     */
     public const SHOW = 'SHOW';
 
     /**
@@ -31,15 +30,11 @@ class ShowIdeaVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        if (self::SHOW !== $attribute) {
+        if ($attribute !== self::SHOW) {
             return false;
         }
 
-        if ($subject instanceof Idea) {
-            return true;
-        }
-
-        return false;
+        return $subject instanceof Idea;
     }
 
     /**
@@ -47,15 +42,15 @@ class ShowIdeaVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
-        /** @var User $user */
         $user = $token->getUser();
+        assert($user instanceof User);
 
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return false;
         }
 
         return $user->hasRole('ROLE_ADMIN')
-            || $subject->getVotes()->exists(function (Vote $vote) use ($user) {
+            || $subject->getVotes()->exists(static function (Vote $vote) use ($user) {
                 return $vote->getUser()->equalsTo($user);
             });
     }

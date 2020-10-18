@@ -15,12 +15,11 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\Event\IdeaWasApprovedEvent;
+use App\Message\Idea\ApproveIdeaCommand;
 use App\MessageBus\CommandBus;
-use App\Messenger\Idea\ApproveIdeaCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -30,14 +29,8 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ApproveIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
-    /**
-     * @var EventDispatcherInterface
-     */
-    private $dispatcher;
+    private CommandBus $commandBus;
+    private EventDispatcherInterface $dispatcher;
 
     public function __construct(
         CommandBus $commandBus,
@@ -47,7 +40,7 @@ class ApproveIdeaController extends AbstractController
         $this->dispatcher = $dispatcher;
     }
 
-    public function __invoke(Idea $idea, Request $request): Response
+    public function __invoke(Idea $idea): Response
     {
         $this->commandBus->dispatch(
             new ApproveIdeaCommand(

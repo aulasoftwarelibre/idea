@@ -19,6 +19,8 @@ use Sonata\AdminBundle\Datagrid\ProxyQueryInterface;
 use Sonata\AdminBundle\Exception\ModelManagerException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 
+use function assert;
+
 class IdeaCRUDController extends CRUDController
 {
     public function batchActionOpen(ProxyQueryInterface $query): RedirectResponse
@@ -30,8 +32,8 @@ class IdeaCRUDController extends CRUDController
         try {
             $modelManager = $this->admin->getModelManager();
 
-            /** @var Idea $selectedIdea */
             foreach ($selectedIdeas as $selectedIdea) {
+                assert($selectedIdea instanceof Idea);
                 $selectedIdea->setClosed(false);
                 $modelManager->update($selectedIdea);
             }
@@ -57,8 +59,8 @@ class IdeaCRUDController extends CRUDController
         try {
             $modelManager = $this->admin->getModelManager();
 
-            /** @var Idea $selectedIdea */
             foreach ($selectedIdeas as $selectedIdea) {
+                assert($selectedIdea instanceof Idea);
                 $selectedIdea->setClosed(true);
                 $modelManager->update($selectedIdea);
             }

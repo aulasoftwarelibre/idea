@@ -13,6 +13,12 @@ declare(strict_types=1);
 
 namespace App\Utils;
 
+use function array_fill;
+use function array_map;
+use function implode;
+use function mb_strlen;
+use function random_int;
+
 final class StringUtils
 {
     public static function locator(
@@ -22,7 +28,7 @@ final class StringUtils
         return implode(
             '',
             array_map(
-                function ($i) use ($characters) {
+                static function ($i) use ($characters) {
                     return $characters[random_int(0, mb_strlen($characters) - 1)];
                 },
                 array_fill(0, $length, 0)

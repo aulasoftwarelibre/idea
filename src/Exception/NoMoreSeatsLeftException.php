@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace App\Exception;
 
-class NoMoreSeatsLeftException extends \Exception
+use Exception;
+
+class NoMoreSeatsLeftException extends Exception
 {
 }

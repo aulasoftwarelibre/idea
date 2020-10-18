@@ -1,17 +1,16 @@
 framework:
     messenger:
-        transports:
-            # Uncomment the following line to enable a transport named "amqp"
-            # amqp: '%env(MESSENGER_TRANSPORT_DSN)%'
-
-        routing:
-            # Route your messages to the transports
-            # 'App\Message\YourMessage': amqp
-        default_bus: messenger.bus.commands
+        # The bus that is going to be injected when injecting MessageBusInterface
+        default_bus: command.bus
         buses:
-            messenger.bus.commands:
+            command.bus:
                 middleware:
-                    # Using the default configured entity manager name
+                    - validation
                     - doctrine_transaction
-            messenger.bus.queries: ~
-            messenger.bus.events: ~
+            query.bus:
+                middleware:
+                    - validation
+            event.bus:
+                default_middleware: allow_no_handlers
+                middleware:
+                    - validation

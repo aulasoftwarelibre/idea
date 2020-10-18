@@ -15,13 +15,14 @@ namespace App\Controller\Idea;
 
 use App\Entity\Idea;
 use App\Entity\User;
+use App\Message\Vote\RemoveVoteCommand;
 use App\MessageBus\CommandBus;
-use App\Messenger\Vote\RemoveVoteCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+
+use function assert;
 
 /**
  * @Route("/idea/{slug}/leave", name="idea_leave", options={"expose"=true}, methods={"POST"})
@@ -29,10 +30,7 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class LeaveIdeaController extends AbstractController
 {
-    /**
-     * @var CommandBus
-     */
-    private $commandBus;
+    private CommandBus $commandBus;
 
     public function __construct(
         CommandBus $commandBus
@@ -40,10 +38,10 @@ class LeaveIdeaController extends AbstractController
         $this->commandBus = $commandBus;
     }
 
-    public function __invoke(Idea $idea, Request $request): Response
+    public function __invoke(Idea $idea): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
+        assert($user instanceof User);
 
         $this->commandBus->dispatch(
             new RemoveVoteCommand(
