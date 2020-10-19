@@ -1,3 +1,4 @@
+.phpcs-cache
 /public/cache/
 /public/images/
 

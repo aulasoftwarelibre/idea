@@ -53,3 +53,5 @@ jobs:
                     target: idea_httpd
                     tags: |
                         ghcr.io/aulasoftwarelibre/idea-httpd:latest
+                    cache-from: type=local,src=/tmp/.buildx-cache
+                    cache-to: type=local,dest=/tmp/.buildx-cache
