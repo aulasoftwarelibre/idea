@@ -43,6 +43,8 @@ jobs:
                     target: idea_php
                     tags: |
                         ghcr.io/aulasoftwarelibre/idea-php:latest
+                    cache-from: type=local,src=/tmp/.buildx-cache
+                    cache-to: type=local,dest=/tmp/.buildx-cache
             -
                 name: Build and push httpd
                 uses: docker/build-push-action@v2
