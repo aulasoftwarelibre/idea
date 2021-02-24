@@ -22,6 +22,7 @@ security:
                     - 'App\Security\Guard\UcoAuthenticator'
                     - 'App\Security\Guard\GoogleAuthenticator'
                     - 'App\Security\Guard\GithubAuthenticator'
+                    - 'App\Security\Guard\DiscordAuthenticator'
                 entry_point: 'App\Security\Guard\UcoAuthenticator'
             logout:
                 path: '/logout'
@@ -31,8 +32,8 @@ security:
 
     access_control:
         - { path: '^/login$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
-        - { path: '^/connect/(uco|google)$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
-        - { path: '^/connect/(uco|google)/check', role: 'ROLE_USER' }
+        - { path: '^/connect/(uco|google|discord|github)$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
+        - { path: '^/connect/(uco|google|discord|github)/check', role: 'ROLE_USER' }
         - { path: '^/admin', role: 'ROLE_SONATA_ADMIN' }
         - { path: '^/api/threads', role: 'ROLE_USER' }
         - { path: '^/api', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }

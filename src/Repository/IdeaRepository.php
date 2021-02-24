@@ -17,9 +17,9 @@ use App\Entity\Group;
 use App\Entity\Idea;
 use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Doctrine\Persistence\ManagerRegistry;
 
 class IdeaRepository extends ServiceEntityRepository
 {
