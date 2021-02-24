@@ -20,9 +20,6 @@
     "behat/transliterator": {
         "version": "v1.2.0"
     },
-    "brick/math": {
-        "version": "0.9.1"
-    },
     "cocur/slugify": {
         "version": "v4.0.0"
     },
@@ -105,7 +102,7 @@
         "version": "v1.0.0"
     },
     "doctrine/reflection": {
-        "version": "v1.0.0"
+        "version": "1.2.2"
     },
     "doctrine/sql-formatter": {
         "version": "1.1.1"
@@ -130,9 +127,6 @@
     },
     "felixfbecker/language-server-protocol": {
         "version": "v1.4.0"
-    },
-    "fgrosse/phpasn1": {
-        "version": "2.0.1"
     },
     "friendsofsymfony/ckeditor-bundle": {
         "version": "1.1.0"
@@ -329,9 +323,6 @@
     "psr/container": {
         "version": "1.0.0"
     },
-    "psr/event-dispatcher": {
-        "version": "1.0.0"
-    },
     "psr/http-client": {
         "version": "1.0.0"
     },
@@ -364,18 +355,6 @@
             "version": "5.2",
             "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
         }
-    },
-    "sensiolabs/security-checker": {
-        "version": "4.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "4.0",
-            "ref": "160c9b600564faa1224e8f387d49ef13ceb8b793"
-        },
-        "files": [
-            "config/packages/security_checker.yaml"
-        ]
     },
     "slevomat/coding-standard": {
         "version": "6.4.1"
@@ -431,12 +410,6 @@
     "spatie/calendar-links": {
         "version": "1.2.4"
     },
-    "spomky-labs/aes-key-wrap": {
-        "version": "v3.0.3"
-    },
-    "spomky-labs/base64url": {
-        "version": "v1.0.2"
-    },
     "squizlabs/php_codesniffer": {
         "version": "3.0",
         "recipe": {
@@ -445,9 +418,6 @@
             "version": "3.0",
             "ref": "0dc9cceda799fd3a08b96987e176a261028a3709"
         }
-    },
-    "swiftmailer/swiftmailer": {
-        "version": "v6.1.2"
     },
     "symfony/asset": {
         "version": "v4.1.3"
@@ -490,6 +460,9 @@
     },
     "symfony/dependency-injection": {
         "version": "v4.1.3"
+    },
+    "symfony/deprecation-contracts": {
+        "version": "v2.2.0"
     },
     "symfony/doctrine-bridge": {
         "version": "v4.1.3"
@@ -538,9 +511,6 @@
             "version": "3.3",
             "ref": "87c585d24de9f43bca80ebcfd5cf5cb39445d95f"
         }
-    },
-    "symfony/http-client": {
-        "version": "v4.4.15"
     },
     "symfony/http-client-contracts": {
         "version": "v2.3.1"
@@ -776,9 +746,6 @@
     "symfony/yaml": {
         "version": "v4.1.3"
     },
-    "thecodingmachine/safe": {
-        "version": "v1.2.0"
-    },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.2"
     },
@@ -817,12 +784,6 @@
     },
     "vimeo/psalm": {
         "version": "3.17.2"
-    },
-    "web-token/jwt-framework": {
-        "version": "v2.0.13"
-    },
-    "webimpress/safe-writer": {
-        "version": "2.1.0"
     },
     "webmozart/assert": {
         "version": "1.3.0"

@@ -13,6 +13,7 @@
         "codedmonkey/semantic-ui-bundle": "^2.0",
         "composer/package-versions-deprecated": "^1.11",
         "doctrine/annotations": "^1.0",
+        "doctrine/common": "^2",
         "doctrine/doctrine-bundle": "^2.1",
         "doctrine/doctrine-migrations-bundle": "^2.0",
         "doctrine/orm": "^2.7",
@@ -29,7 +30,6 @@
         "phpdocumentor/reflection-docblock": "^5.1",
         "phpoffice/phpspreadsheet": "^1.4",
         "sensio/framework-extra-bundle": "^5.1",
-        "sensiolabs/security-checker": "^6.0",
         "sonata-project/admin-bundle": "^3.38",
         "sonata-project/doctrine-orm-admin-bundle": "^3.6",
         "sonata-project/formatter-bundle": "^4.1",
@@ -110,8 +110,7 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "ckeditor:install --clear=drop": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "security-checker security:check": "script"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
             "@auto-scripts"
@@ -123,10 +122,8 @@
             "@phplint",
             "@phpcs",
             "@psalm",
-            "@phpunit",
-            "@security"
+            "@phpunit"
         ],
-        "security": "security-checker security:check",
         "phplint": "phplint",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf",
