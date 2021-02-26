@@ -1,9 +1,12 @@
 {
     "devDependencies": {
+        "@commitlint/cli": "^12.0.0",
+        "@commitlint/config-conventional": "^12.0.0",
         "@symfony/webpack-encore": "^0.31.0",
         "clipboard": "^2.0.4",
         "core-js": "^3.3.2",
         "fomantic-ui-css": "^2.8.4",
+        "husky": "^5.1.1",
         "jquery": "^3.4.1",
         "webpack-notifier": "^1.8.0"
     },
@@ -14,5 +17,10 @@
         "dev": "encore dev",
         "watch": "encore dev --watch",
         "build": "encore production"
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
     }
 }
