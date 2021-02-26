@@ -1,0 +1,7 @@
+<ul>
+{% for logPolicy in field.value %}
+    <li>{{ logPolicy.version }} ({{ logPolicy.createAt | date('d-m-Y H:i') }})</li>
+{% else %}
+    <li>No ha aceptado ninguna política de uso</li>
+{% endfor %}
+</ul>

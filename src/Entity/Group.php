@@ -68,6 +68,12 @@ class Group
         return (string) $this->name;
     }
 
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+
     /**
      * @return Idea[]|Collection
      */
