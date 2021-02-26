@@ -16,8 +16,8 @@ namespace App\MessageHandler\User;
 use App\Entity\User;
 use App\Exception\UserNotFoundException;
 use App\Message\User\RemoveUserCommand;
+use App\Security\User\UserManagerInterface;
 use DateTime;
-use FOS\UserBundle\Model\UserManagerInterface;
 
 class RemoveUserCommandHandler
 {
@@ -30,7 +30,8 @@ class RemoveUserCommandHandler
 
     public function __invoke(RemoveUserCommand $command): void
     {
-        $user = $this->userManager->findUserByUsername($command->getUsername());
+        $user = $this->userManager->findUserBy(['username' => $command->getUsername()]);
+
         if (! $user instanceof User) {
             throw new UserNotFoundException('usuario no encontrado');
         }

@@ -20,7 +20,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Sonata\UserBundle\Entity\BaseUser;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\EquatableInterface;
@@ -33,33 +32,13 @@ use function sprintf;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="fos_user")
- * @ORM\AttributeOverrides({
- *     @ORM\AttributeOverride(name="emailCanonical",
- *         column=@ORM\Column(
- *              name="email_canonical",
- *              type="string",
- *              length=255,
- *              nullable=true,
- *              unique=false,
- *         )
- *     ),
- *     @ORM\AttributeOverride(name="usernameCanonical",
- *         column=@ORM\Column(
- *              name="username_canonical",
- *              type="string",
- *              length=255,
- *              nullable=true,
- *              unique=false,
- *         )
- *     )
- * })
+ * @ORM\Table(name="fos_user", indexes={@ORM\Index(columns={"username"}), @ORM\Index(columns={"email"})})
  *
  * @Gedmo\SoftDeleteable()
  * @Vich\Uploadable()
  * @Validator\Alias()
  */
-class User extends BaseUser implements EquatableInterface
+class User implements EquatableInterface, UserInterface
 {
     public const STUDENT  = 'student';
     public const STAFF    = 'staff';
@@ -67,17 +46,40 @@ class User extends BaseUser implements EquatableInterface
     public const EXTERNAL = 'external';
 
     /**
-     * @ORM\Id()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
-     * @inheritdoc
      */
-    protected $id;
+    private ?int $id = null;
 
     /** @ORM\Column(type="boolean") */
     protected bool $isExternal;
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=180)
+     */
+    private ?string $username = null;
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(min=1, max=180)
+     * @Assert\Email()
+     */
+    private ?string $email = null;
+
+    /**
+     * @ORM\Column(type="array")
+     *
+     * @Assert\Choice({"ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN"}, multiple=true)
+     *
+     * @var string[]
+     */
+    private array $roles = [];
 
     /**
      * @ORM\Column(type="string", length=32)
@@ -206,13 +208,49 @@ class User extends BaseUser implements EquatableInterface
     /** @ORM\Column(type="datetime", nullable=true) */
     private ?DateTimeInterface $deletedAt = null;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $firstname;
+
+    /**
+     * @ORM\Column(type="string", length=64, nullable=true)
+     */
+    private $lastname;
+
+    /**
+     * @ORM\Column(type="string", length=1000, nullable=true)
+     */
+    private $biography;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="create")
+     */
+    private $createdAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     * @Gedmo\Timestampable(on="update")
+     */
+    private $updatedAt;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $lastLogin;
+
     public static function createUcoUser(string $username): self
     {
         $user = new self();
         $user
             ->setUsername($username)
             ->setEmail($username . '@uco.es')
-            ->setPassword('!')
             ->setIsExternal(false)
             ->setEnabled(true);
 
@@ -225,7 +263,6 @@ class User extends BaseUser implements EquatableInterface
         $user
             ->setUsername($email)
             ->setEmail($email)
-            ->setPassword('!')
             ->setIsExternal(true)
             ->setEnabled(true)
             ->setCollective(self::EXTERNAL);
@@ -235,8 +272,6 @@ class User extends BaseUser implements EquatableInterface
 
     public function __construct()
     {
-        parent::__construct();
-
         $this->ideas          = new ArrayCollection();
         $this->votes          = new ArrayCollection();
         $this->participations = new ArrayCollection();
@@ -251,6 +286,84 @@ class User extends BaseUser implements EquatableInterface
             $this->getLastname(),
             $this->getUsername()
         );
+    }
+
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUsername(): string
+    {
+        return (string) $this->username;
+    }
+
+    public function setUsername(string $username): self
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+    /**
+     * @param string[] $roles
+     */
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): void
+    {
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function getSalt(): void
+    {
+    }
+
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
     }
 
     public function equalsTo(?self $user): bool
@@ -496,5 +609,89 @@ class User extends BaseUser implements EquatableInterface
     public function setVersion(int $version): void
     {
         $this->version = $version;
+    }
+
+    public function getEnabled(): ?bool
+    {
+        return $this->enabled;
+    }
+
+    public function setEnabled(bool $enabled): self
+    {
+        $this->enabled = $enabled;
+
+        return $this;
+    }
+
+    public function getFirstname(): ?string
+    {
+        return $this->firstname;
+    }
+
+    public function setFirstname(?string $firstname): self
+    {
+        $this->firstname = $firstname;
+
+        return $this;
+    }
+
+    public function getLastname(): ?string
+    {
+        return $this->lastname;
+    }
+
+    public function setLastname(?string $lastname): self
+    {
+        $this->lastname = $lastname;
+
+        return $this;
+    }
+
+    public function getBiography(): ?string
+    {
+        return $this->biography;
+    }
+
+    public function setBiography(string $biography): self
+    {
+        $this->biography = $biography;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
     }
 }

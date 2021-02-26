@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Security\Guard;
 
 use App\Entity\User;
-use FOS\UserBundle\Model\UserManagerInterface;
+use App\Security\User\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;

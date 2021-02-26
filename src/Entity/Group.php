@@ -17,31 +17,21 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Sonata\UserBundle\Entity\BaseGroup;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
  */
-class Group extends BaseGroup
+class Group
 {
     /**
-     * @ORM\Id()
+     * @ORM\Id
+     * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     *
-     * @var int
-     * @inheritdoc
      */
-    protected $id;
-
-    /**
-     * @Groups("idea")
-     * @var string
-     * @inheritdoc
-     */
-    protected $name;
+    private ?int $id = null;
 
     /** @ORM\Column(length=32) */
     private string $icon;
@@ -61,13 +51,21 @@ class Group extends BaseGroup
     private Collection $ideas;
 
     /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private string $name;
+
+    /**
      * {@inheritdoc}
      */
     public function __construct($name, array $roles = [])
     {
-        parent::__construct($name, $roles);
-
         $this->ideas = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->name;
     }
 
     /**
@@ -103,6 +101,18 @@ class Group extends BaseGroup
     public function setIcon(string $icon): self
     {
         $this->icon = $icon;
+
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(string $name): self
+    {
+        $this->name = $name;
 
         return $this;
     }
