@@ -17,8 +17,6 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
@@ -50,9 +48,7 @@ class Group
      */
     private Collection $ideas;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    /** @ORM\Column(type="string", length=180, unique=true) */
     private string $name;
 
     /**
@@ -72,7 +68,6 @@ class Group
     {
         return $this->id;
     }
-
 
     /**
      * @return Idea[]|Collection

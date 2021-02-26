@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Degree;
@@ -20,19 +22,20 @@ class DegreeCrudController extends AbstractCrudController
     {
         return $crud
             ->setEntityLabelInPlural('Degrees')
-            ->setEntityLabelInSingular('Degree')
-            ;
+            ->setEntityLabelInSingular('Degree');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');
         yield IdField::new('id')
-            ->onlyOnIndex()
-        ;
+            ->onlyOnIndex();
+
         yield TextField::new('name');
         yield TextField::new('slug')
-            ->onlyOnDetail()
-        ;
+            ->onlyOnDetail();
     }
 }

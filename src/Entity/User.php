@@ -28,6 +28,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
+use function array_unique;
 use function sprintf;
 
 /**
@@ -208,42 +209,34 @@ class User implements EquatableInterface, UserInterface
     /** @ORM\Column(type="datetime", nullable=true) */
     private ?DateTimeInterface $deletedAt = null;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $enabled;
+    /** @ORM\Column(type="boolean") */
+    private bool $enabled = true;
 
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $firstname;
+    /** @ORM\Column(type="string", length=64, nullable=true) */
+    private ?string $firstname;
 
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     */
-    private $lastname;
+    /** @ORM\Column(type="string", length=64, nullable=true) */
+    private ?string $lastname;
 
-    /**
-     * @ORM\Column(type="string", length=1000, nullable=true)
-     */
-    private $biography;
+    /** @ORM\Column(type="string", length=1000, nullable=true) */
+    private ?string $biography;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private ?DateTime $createdAt;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private ?DateTime $updatedAt;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
-    private $lastLogin;
+    /** @ORM\Column(type="datetime", nullable=true) */
+    private ?DateTime $lastLogin;
 
     public static function createUcoUser(string $username): self
     {
@@ -287,7 +280,6 @@ class User implements EquatableInterface, UserInterface
             $this->getUsername()
         );
     }
-
 
     public function getId(): ?int
     {
@@ -659,36 +651,36 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeInterface
+    public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function setCreatedAt(\DateTimeInterface $createdAt): self
+    public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
 
         return $this;
     }
 
-    public function getUpdatedAt(): ?\DateTimeInterface
+    public function getUpdatedAt(): ?DateTimeInterface
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?\DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTimeInterface
+    public function getLastLogin(): ?DateTimeInterface
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?\DateTimeInterface $lastLogin): self
+    public function setLastLogin(?DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
 

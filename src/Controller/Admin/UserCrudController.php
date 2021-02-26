@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ArrayField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
@@ -23,23 +24,22 @@ class UserCrudController extends AbstractCrudController
         return User::class;
     }
 
-
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setEntityLabelInPlural('Users')
-            ->setEntityLabelInSingular('User')
-        ;
+            ->setEntityLabelInSingular('User');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');
         yield TextField::new('username');
         yield TextField::new('email')
-            ->hideOnIndex()
-        ;
-
+            ->hideOnIndex();
 
         yield FormField::addPanel('Security');
         yield BooleanField::new('enabled');
@@ -49,8 +49,8 @@ class UserCrudController extends AbstractCrudController
                 'Gestor' => 'ROLE_ADMIN',
                 'Administrador' => 'ROLE_SUPER_ADMIN',
             ])
-            ->allowMultipleChoices()
-        ;
+            ->allowMultipleChoices();
+
         yield AssociationField::new('versions')
             ->setLabel('Policies')
             ->setTemplatePath('admin/user/policies.html.twig')
@@ -58,31 +58,30 @@ class UserCrudController extends AbstractCrudController
 
         yield FormField::addPanel('Profile');
         yield IdField::new('id')
-            ->onlyOnIndex()
-        ;
+            ->onlyOnIndex();
+
         yield TextField::new('firstname');
         yield TextField::new('lastname');
         yield ChoiceField::new('collective')
-            ->setChoices(User::getCollectives())
-        ;
+            ->setChoices(User::getCollectives());
+
         yield TextField::new('nic')
-            ->hideOnIndex()
-        ;
+            ->hideOnIndex();
+
         yield AssociationField::new('degree')
-            ->hideOnIndex()
-        ;
+            ->hideOnIndex();
+
         yield TextField::new('year')
-            ->hideOnIndex()
-        ;
+            ->hideOnIndex();
+
         yield TextareaField::new('imageFile')
             ->setFormType(VichImageType::class)
-            ->onlyOnForms()
-        ;
+            ->onlyOnForms();
+
         yield ImageField::new('image.name')
             ->setBasePath('/images/avatars')
             ->setCssClass('ea-vich-image')
-            ->onlyOnDetail()
-        ;
+            ->onlyOnDetail();
     }
 
     /*

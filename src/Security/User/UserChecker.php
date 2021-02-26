@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security\User;
-
 
 use App\Entity\User;
 use Symfony\Component\Security\Core\Exception\AccountExpiredException;
@@ -16,7 +16,7 @@ final class UserChecker implements UserCheckerInterface
      */
     public function checkPreAuth(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return;
         }
     }
@@ -26,11 +26,11 @@ final class UserChecker implements UserCheckerInterface
      */
     public function checkPostAuth(UserInterface $user)
     {
-        if (!$user instanceof User) {
+        if (! $user instanceof User) {
             return;
         }
 
-        if (!$user->getEnabled()) {
+        if (! $user->getEnabled()) {
             throw new AccountExpiredException('Cuenta desactivada');
         }
     }

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Security\User;
-
 
 use App\Entity\User;
 use App\Repository\UserRepository;
@@ -16,21 +16,24 @@ class UserManager implements UserManagerInterface
     public function __construct(UserRepository $userRepository, EntityManagerInterface $manager)
     {
         $this->userRepository = $userRepository;
-        $this->manager = $manager;
+        $this->manager        = $manager;
     }
 
-    public function findUserBy(array $criteria)
+    /**
+     * @inheritDoc
+     */
+    public function findUserBy(array $criteria): ?User
     {
         return $this->userRepository->findOneBy($criteria);
     }
 
-    public function updateUser(User $user)
+    public function updateUser(User $user): void
     {
         $this->manager->persist($user);
         $this->manager->flush();
     }
 
-    public function deleteUser(User $user)
+    public function deleteUser(User $user): void
     {
         $this->manager->remove($user);
         $this->manager->flush();

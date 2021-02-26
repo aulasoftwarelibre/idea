@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Entity\Degree;
@@ -36,10 +38,12 @@ class DashboardController extends AbstractDashboardController
     public function configureActions(): Actions
     {
         return parent::configureActions()
-            ->add(Crud::PAGE_INDEX, Action::DETAIL)
-        ;
+            ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
@@ -53,13 +57,11 @@ class DashboardController extends AbstractDashboardController
     {
         $userMenu = parent::configureUserMenu($user);
 
-        /** @var User $user */
-        if (!$user->getImage()) {
+        if (! $user instanceof User || ! $user->getImage()) {
             return $userMenu;
         }
 
         return $userMenu
-            ->setAvatarUrl('/images/avatars/'.$user->getImage()->getName())
-        ;
+            ->setAvatarUrl('/images/avatars/' . $user->getImage()->getName());
     }
 }
