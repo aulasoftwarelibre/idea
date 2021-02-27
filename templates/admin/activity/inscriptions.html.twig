@@ -1,0 +1,7 @@
+<ul>
+    {% for inscription in field.value | sort((a,b) => a.user.fullname <=> b.user.fullname) %}
+        <li>{{ inscription.user.fullname }} ({{ inscription.user.username }})</li>
+    {% else %}
+        <li>No hay inscripciones</li>
+    {% endfor %}
+</ul>

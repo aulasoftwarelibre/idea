@@ -33,17 +33,17 @@ class Participation
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue("AUTO")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(length=16)
      *
      * @Assert\Choice(callback="getRoles")
      */
-    private string $role;
+    private string $role = self::ATTENDEE;
 
     /** @ORM\Column(type="boolean") */
-    private bool $isReported;
+    private bool $isReported = false;
 
     /**
      * @ORM\Column(type="datetime")
@@ -71,15 +71,7 @@ class Participation
      */
     private Activity $activity;
 
-    public function __construct(User $user, Activity $activity, string $role = self::ATTENDEE)
-    {
-        $this->role       = $role;
-        $this->user       = $user;
-        $this->activity   = $activity;
-        $this->isReported = false;
-    }
-
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

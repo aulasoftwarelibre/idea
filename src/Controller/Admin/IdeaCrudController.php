@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Admin;
 
 use App\Admin\Field\VoteField;
@@ -31,8 +33,7 @@ class IdeaCrudController extends AbstractCrudController
             ->setEntityLabelInPlural('Ideas')
             ->setEntityLabelInSingular('Idea')
             ->setDefaultSort(['createdAt' => 'DESC'])
-            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig')
-        ;
+            ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig');
     }
 
     /**
@@ -40,16 +41,17 @@ class IdeaCrudController extends AbstractCrudController
      */
     public function configureFields(string $pageName): iterable
     {
-        if (Crud::PAGE_INDEX === $pageName) {
+        if ($pageName === Crud::PAGE_INDEX) {
             yield IdField::new('id');
             yield TextField::new('title');
             yield BooleanField::new('closed')
-                ->renderAsSwitch(false)
-            ;
+                ->renderAsSwitch(false);
+
             yield BooleanField::new('private')
-                ->renderAsSwitch(false)
-            ;
+                ->renderAsSwitch(false);
+
             yield DateField::new('createdAt');
+
             return;
         }
 
@@ -65,22 +67,25 @@ class IdeaCrudController extends AbstractCrudController
         yield ChoiceField::new('state')
             ->setChoices(Idea::getStates())
             ->setTemplatePath('/admin/idea/state.html.twig');
+
         yield AssociationField::new('owner');
 
         yield FormField::addPanel('block.seats');
         yield BooleanField::new('internal')
             ->setHelp('Activa esta casilla para actividades exclusivas UCO');
+
         yield NumberField::new('numSeats')
             ->setHelp('Número de plazas de la actividad. Pon 0 para ilimitadas.');
+
         yield NumberField::new('externalNumSeats')
             ->setHelp('Límite de plazas externas. Pon 0 para ilimitadas (o hasta llenar el límite');
 
         yield FormField::addPanel('block.location');
         yield TextField::new('location')
-            ->setHelp('form.help_location')
-        ;
-        yield DateTimeField::new('startsAt')
-        ;
+            ->setHelp('form.help_location');
+
+        yield DateTimeField::new('startsAt');
+
         yield DateTimeField::new('endsAt');
 
         yield FormField::addPanel('block.online');

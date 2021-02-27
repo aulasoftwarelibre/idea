@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\Admin\Field;
-
 
 use App\Form\Type\VoteType;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
@@ -12,7 +12,7 @@ final class VoteField implements FieldInterface
 {
     use FieldTrait;
 
-    public static function new(string $propertyName, ?string $label = null)
+    public static function new(string $propertyName, ?string $label = null): VoteField
     {
         return (new self())
             ->setProperty($propertyName)
@@ -20,7 +20,6 @@ final class VoteField implements FieldInterface
             ->setTemplatePath('admin/idea/votes.html.twig')
             ->setFormType(VoteType::class)
             ->setFormTypeOption('multiple', true)
-            ->setFormTypeOption('attr.data-widget', 'select2')
-        ;
+            ->setFormTypeOption('attr.data-widget', 'select2');
     }
 }
