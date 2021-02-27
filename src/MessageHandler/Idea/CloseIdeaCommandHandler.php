@@ -22,7 +22,7 @@ class CloseIdeaCommandHandler
 
     public function __construct(IdeaRepository $ideaRepository)
     {
-        $this->ideaRepository   = $ideaRepository;
+        $this->ideaRepository = $ideaRepository;
     }
 
     public function __invoke(CloseIdeaCommand $command): void

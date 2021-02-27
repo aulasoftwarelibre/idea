@@ -19,7 +19,7 @@
 
             <!-- vote body -->
             <div class="meta send by">
-                <a class="group" href="{{ path('idea_group_index', {'slug': idea.group.slug}) }}">{{ idea.group }}</a> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | time_diff}) }}
+                <a class="group" href="{{ path('idea_group_index', {'slug': idea.group.slug}) }}">{{ idea.group }}</a> {{ 'send_by' | trans({'%owner%': idea.owner.username, '%when%': idea.createdAt | ago}) }}
             </div>
 
             {% if complete is defined %}

@@ -1,11 +1,10 @@
 exercise_html_purifier:
-    # full configuration reference: http://htmlpurifier.org/live/configdoc/plain.html
-    default:
-        # the charset used by the original contents
-        Core.Encoding: 'UTF-8'
-        Cache.SerializerPath: '%kernel.cache_dir%/htmlpurifier'
-    summary:
-        HTML.ForbiddenElements: ['a']
-    telegram:
-        HTML.AllowedElements: ['b','i','a', 'code', 'pre']
+    default_cache_serializer_path: '%kernel.cache_dir%/htmlpurifier'
+    html_profiles:
+        default:
+            config:
+                Core.Encoding: 'UTF-8'
+        summary:
+            config:
+                HTML.ForbiddenElements: ['a']
 

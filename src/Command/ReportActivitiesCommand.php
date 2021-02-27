@@ -18,7 +18,6 @@ use App\Entity\Participation;
 use App\Entity\User;
 use App\Repository\ActivityRepository;
 use ArrayIterator;
-use Cocur\Slugify\Slugify;
 use Doctrine\Common\Collections\ArrayCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
@@ -29,6 +28,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function assert;
 use function file_exists;
@@ -40,14 +40,14 @@ use function sprintf;
 class ReportActivitiesCommand extends Command
 {
     private ActivityRepository $activityRepository;
-    private Slugify $slugify;
+    private SluggerInterface $slugger;
 
-    public function __construct(ActivityRepository $activityRepository)
+    public function __construct(ActivityRepository $activityRepository, SluggerInterface $slugger)
     {
         parent::__construct();
 
         $this->activityRepository = $activityRepository;
-        $this->slugify            = new Slugify();
+        $this->slugger            = $slugger;
     }
 
     protected function configure(): void
@@ -140,7 +140,7 @@ class ReportActivitiesCommand extends Command
 
         $sheet->setCellValue('B' . $row, mb_strtoupper('Fdo.: ' . $organizer->getFullname()));
 
-        $slug   = $this->slugify->slugify($activity->getTitle());
+        $slug   = $this->slugger->slug($activity->getTitle());
         $date   = $activity->getOccurredOn()->format('Ymd');
         $writer = IOFactory::createWriter($report, 'Xlsx');
         $writer->save(sprintf('var/report/%s-%s.xlsx', $date, $slug));

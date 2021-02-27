@@ -10,7 +10,7 @@
     </issueHandlers>
     <plugins>
         <pluginClass class="Psalm\SymfonyPsalmPlugin\Plugin">
-            <containerXml>var/cache/dev/srcApp_KernelDevDebugContainer.xml</containerXml>
+            <containerXml>var/cache/dev/App_KernelDevDebugContainer.xml</containerXml>
         </pluginClass>
     </plugins>
     <projectFiles>

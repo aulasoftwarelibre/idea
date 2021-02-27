@@ -14,7 +14,7 @@ declare(strict_types=1);
 namespace App\Event\Abstracts;
 
 use App\Entity\Idea;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AbstractIdeaEvent extends Event
 {

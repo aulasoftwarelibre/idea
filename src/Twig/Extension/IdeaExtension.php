@@ -18,21 +18,17 @@ use DateTimeImmutable;
 use Spatie\CalendarLinks\Link;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class IdeaExtension extends AbstractExtension
 {
-    private TranslatorInterface $translator;
     private RouterInterface $router;
 
     public function __construct(
-        TranslatorInterface $translator,
         RouterInterface $router
     ) {
-        $this->translator       = $translator;
-        $this->router           = $router;
+        $this->router = $router;
     }
 
     /**

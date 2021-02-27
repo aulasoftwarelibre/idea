@@ -22,7 +22,7 @@ class OpenIdeaCommandHandler
 
     public function __construct(IdeaRepository $ideaRepository)
     {
-        $this->ideaRepository   = $ideaRepository;
+        $this->ideaRepository = $ideaRepository;
     }
 
     public function __invoke(OpenIdeaCommand $command): void
