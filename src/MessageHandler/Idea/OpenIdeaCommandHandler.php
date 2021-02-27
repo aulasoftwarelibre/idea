@@ -13,22 +13,16 @@ declare(strict_types=1);
 
 namespace App\MessageHandler\Idea;
 
-use App\Entity\Thread;
 use App\Message\Idea\OpenIdeaCommand;
 use App\Repository\IdeaRepository;
-use App\Repository\ThreadRepository;
-
-use function assert;
 
 class OpenIdeaCommandHandler
 {
     private IdeaRepository $ideaRepository;
-    private ThreadRepository $threadRepository;
 
-    public function __construct(IdeaRepository $ideaRepository, ThreadRepository $threadRepository)
+    public function __construct(IdeaRepository $ideaRepository)
     {
         $this->ideaRepository   = $ideaRepository;
-        $this->threadRepository = $threadRepository;
     }
 
     public function __invoke(OpenIdeaCommand $command): void
@@ -37,11 +31,5 @@ class OpenIdeaCommandHandler
         $idea->setClosed(false);
 
         $this->ideaRepository->add($idea);
-
-        $thread = $this->threadRepository->find($idea->getId());
-        assert($thread instanceof Thread);
-        $thread->setCommentable(true);
-
-        $this->threadRepository->add($thread);
     }
 }

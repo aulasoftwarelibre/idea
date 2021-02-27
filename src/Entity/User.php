@@ -168,18 +168,6 @@ class User implements EquatableInterface, UserInterface
     private Collection $versions;
 
     /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Comment",
-     *     mappedBy="author",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @var Comment[]|Collection
-     */
-    private Collection $comments;
-
-    /**
      * @var File|UploadedFile|null
      * @Vich\UploadableField(
      *     mapping="avatars",
@@ -567,14 +555,6 @@ class User implements EquatableInterface, UserInterface
     public function removeParticipation(Participation $participation): void
     {
         $this->participations->removeElement($participation);
-    }
-
-    /**
-     * @return Collection<int,Comment>
-     */
-    public function getComments(): Collection
-    {
-        return $this->comments;
     }
 
     public function isEqualTo(UserInterface $user): bool

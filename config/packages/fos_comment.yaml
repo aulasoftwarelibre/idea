@@ -1,6 +1,0 @@
-fos_comment:
-    db_driver: orm
-    class:
-        model:
-            comment: App\Entity\Comment
-            thread: App\Entity\Thread

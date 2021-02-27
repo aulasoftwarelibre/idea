@@ -82,14 +82,20 @@
                         </div>
 
                         <div class="extra content">
-                            <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">
-                                <i class="comment icon"></i>
-                                {{ idea_count_comments(idea) }}
-                            </a>
                             {% if idea.numSeats > 0 %}
                                 <span>
                                     <i class="add user icon"></i>
-                                    {{ 'idea_num_seats' | transchoice(idea.numSeats, {'%count%': idea.numSeats}) }}
+                                    {{ 'idea_num_seats' | trans({'%count%': idea.numSeats}) }}
+                                </span>
+                            {% elseif idea.online %}
+                                <span>
+                                    <i class="laptop house icon"></i>
+                                    Evento online
+                                </span>
+                            {% else %}
+                                <span>
+                                    <i class="add user icon"></i>
+                                    Plazas ilimitadas
                                 </span>
                             {% endif %}
                         </div>
@@ -159,31 +165,6 @@
                             <span class="ui label">No hay participantes</span>
                         {% endfor %}
                     </div>
-
-                    <div class="ui segment">
-                        <div class="row">
-                            <div class="column">
-                                <h3 class="ui dividing header">Comentarios</h3>
-                            </div>
-
-                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                                {% include '@FOSComment/Thread/async.html.twig' with {'id': idea.id} %}
-                            {% else %}
-                                <div class="ui icon message">
-                                    <i class="add user icon"></i>
-                                    <div class="content">
-                                        <div class="header">
-                                            ¿Quieres participar?
-                                        </div>
-                                        <p>
-                                            <a href="{{ path('login') }}">Inicia sesión</a> para dejar un comentario.
-                                        </p>
-                                    </div>
-                                </div>
-                            {% endif %}
-                        </div>
-                    </div>
-
                 </div> <!-- column -->
 
                 <div class="six wide column">

@@ -35,14 +35,20 @@
             <!-- end vote body -->
         </div>
         <div class="extra content">
-            <a href="{{ path('idea_show', {slug: idea.slug}) }}#comments">
-                <i class="comment icon"></i>
-                {{ idea_count_comments(idea) }}
-            </a>
             {% if idea.numSeats > 0 %}
                 <span>
                     <i class="add user icon"></i>
-                    {{ 'idea_num_seats' | transchoice(idea.numSeats, {'%count%': idea.numSeats}) }}
+                    {{ 'idea_num_seats' | trans({'%count%': idea.numSeats}) }}
+                </span>
+            {% elseif idea.online %}
+                <span>
+                    <i class="laptop house icon"></i>
+                    Evento online
+                </span>
+            {% else %}
+                <span>
+                    <i class="add user icon"></i>
+                    Plazas ilimitadas
                 </span>
             {% endif %}
         </div>
