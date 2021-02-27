@@ -81,117 +81,38 @@ flash_batch_close_success: Se han cerrado las ideas seleccionadas
 flash_batch_open_error: Hubo un error al abrir las ideas seleccionadas
 flash_batch_open_success: Se han abierto las ideas seleccionadas
 
-filter.label__action: Acción
-filter.label_closed: Cerrado
-filter.label_created_at: Fecha creación
-filter.label_description: Descripción
-filter.label_group: Grupo
-filter.label_name: Nombre
-filter.label_owner: Propietario
-filter.label_state: Estado
-filter.label_title: Título
-filter.label_updated_at: Fecha actualización
-filter.label_votes: Votos
-filter.label_num_seats: Límite
-filter.label_occurred_on: Fecha de celebración
-filter.label_duration: Duración
-filter.label_academic_year: Año académico
-filter.label_user: Usuario
-filter.label_user_fullname: Nombre completo
-filter.label_role: Rol
-filter.label_is_reported: Informe
-filter.label_id: Id.
-filter.label_private: Privado
-filter.label_version: Versión
-
 form.help_alias: Selecciona un nombre de usuario para tu cuenta (máximo 16 caracteres entre letras, números y _).
 form.help_jitsi_locator_room: Se genera un localizador nuevo al activar el evento online y se elimina al desactivarlo.
 form.help_location: Se ignora si el evento es online
 
-form.label__action: Acción
-form.label_activity: Actividad
-form.label_alias: Alias
-form.label_closed: Cerrado
-form.label_created_at: Fecha creación
-form.label_description: Descripción
-form.label_ends_at: Día y hora finalización
-form.label_external_num_seats: Plazas externas
-form.label_internal:  Interno
-form.label_is_jitsi_room_open: Sala abierta
-form.label_is_online: Evento online
-form.label_jitsi_locator_room: Localizador de sala
-form.label_location: Lugar
-form.label_starts_at: Día y hora comienzo
-form.label_group: Grupo
-form.label_message: Mensaje
-form.label_message_test: Enviar una prueba
-form.label_name: Nombre
-form.label_owner: Propietario
-form.label_state: Estado
-form.label_title: Título
-form.label_updated_at: Fecha actualización
-form.label_votes: Votos
-form.label_num_seats: Límite
-form.label_occurred_on: Fecha de celebración
-form.label_duration: Duración
-form.label_academic_year: Año académico
-form.label_user: Usuario
-form.label_user_fullname: Nombre completo
-form.label_role: Rol
-form.label_is_reported: Informe
-form.label_id: Id.
-form.label_private: Privado
-
-list.label__action: Acción
-list.label_id: Id.
-list.label_closed: Cerrado
-list.label_created_at: Fecha creación
-list.label_description: Descripción
-list.label_group: Grupo
-list.label_name: Nombre
-list.label_owner: Propietario
-list.label_state: Estado
-list.label_title: Título
-list.label_updated_at: Fecha actualización
-list.label_votes: Votos
-list.label_num_seats: Límite
-list.label_occurred_on: Fecha de celebración
-list.label_duration: Duración
-list.label_academic_year: Año académico
-list.label_user: Usuario
-list.label_user_email: Correo
-list.label_user_fullname: Nombre completo
-list.label_user_nic: Id.
-list.label_role: Rol
-list.label_is_reported: Informe
-list.label_private: Privado
-list.label_tag: Tag
-list.label_version: Versión
-list.label_create_at: Fecha de creación
-list.label_mandatory: Obligatorio
-
-show.label__action: Acción
-show.label_closed: Cerrado
-show.label_created_at: Fecha creación
-show.label_description: Descripción
-show.label_group: Grupo
-show.label_name: Nombre
-show.label_owner: Propietario
-show.label_state: Estado
-show.label_title: Título
-show.label_updated_at: Fecha actualización
-show.label_votes: Votos
-show.label_num_seats: Límite
-show.label_occurred_on: Fecha de celebración
-show.label_duration: Duración
-show.label_academic_year: Año académico
-show.label_user: Usuario
-show.label_user_fullname: Nombre completo
-show.label_role: Rol
-show.label_is_reported: Informe
-show.label_participations: Participaciones
-show.label_id: Id.
-show.label_private: Privado
+Activity: Actividad
+Alias: Alias
+Closed: Cerrada
+Created At: Fecha creación
+Description: Descripción
+Ends At: Día y hora finalización
+External Num Seats: Plazas externas
+Internal:  Interno
+Is Jitsi Room Open: Sala abierta
+Is Online: Evento online
+Jitsi Locator Room: Localizador de sala
+Location: Lugar
+Starts At: Día y hora comienzo
+Message: Mensaje
+Message Test: Enviar una prueba
+Name: Nombre
+Owner: Propietario
+State: Estado
+Updated At: Fecha actualización
+Votes: Votos
+Num Seats: Límite
+Occurred On: Fecha de celebración
+Duration: Duración
+Academic Year: Año académico
+User: Usuario
+User Fullname: Nombre completo
+Role: Rol
+Is Reported: Informe
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.

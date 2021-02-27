@@ -47,7 +47,7 @@ class Idea
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="integer", nullable=false)
@@ -240,7 +240,7 @@ class Idea
         return $this->title;
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

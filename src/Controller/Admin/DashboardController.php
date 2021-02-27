@@ -6,9 +6,11 @@ namespace App\Controller\Admin;
 
 use App\Entity\Degree;
 use App\Entity\Group;
+use App\Entity\Idea;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -51,6 +53,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Groups', 'fas fa-users', Group::class);
         yield MenuItem::linkToCrud('Degrees', 'fas fa-graduation-cap', Degree::class);
+        yield MenuItem::section('Activities');
+        yield MenuItem::linkToCrud('Ideas', 'fas fa-lightbulb', Idea::class);
     }
 
     public function configureUserMenu(UserInterface $user): UserMenu

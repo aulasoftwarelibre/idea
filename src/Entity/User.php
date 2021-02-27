@@ -639,6 +639,11 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
+    public function getFullname(): ?string
+    {
+        return $this->firstname . ' ' . $this->lastname;
+    }
+
     public function getBiography(): ?string
     {
         return $this->biography;

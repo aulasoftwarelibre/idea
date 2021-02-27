@@ -1,0 +1,7 @@
+<ul>
+{% for vote in field.value | sort((a, b) => a.__toString <=> b.__toString) %}
+    <li>{{ vote }}</li>
+{% else %}
+    <li>No hay votos</li>
+{% endfor %}
+</ul>
