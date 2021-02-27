@@ -1,0 +1,6 @@
+.badge.badge-proposed { color: #fff; background-color: #f39c12; }
+.badge.badge-approved { color: #fff; background-color: #0ea432; }
+.badge.badge-rejected { color: #fff; background-color: #dd4b39; }
+.select2-selection__choice {
+    white-space: pre-wrap;
+}

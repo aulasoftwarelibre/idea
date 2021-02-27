@@ -5,6 +5,7 @@
         "@symfony/webpack-encore": "^0.31.0",
         "clipboard": "^2.0.4",
         "core-js": "^3.3.2",
+        "flatpickr": "^4.6.9",
         "fomantic-ui-css": "^2.8.4",
         "husky": "^5.1.1",
         "jquery": "^3.4.1",
