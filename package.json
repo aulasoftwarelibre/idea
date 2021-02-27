@@ -2,13 +2,16 @@
     "devDependencies": {
         "@commitlint/cli": "^12.0.0",
         "@commitlint/config-conventional": "^12.0.0",
-        "@symfony/webpack-encore": "^0.31.0",
+        "@symfony/webpack-encore": "^1.0.0",
+        "ckeditor4": "^4.16.0",
         "clipboard": "^2.0.4",
-        "core-js": "^3.3.2",
+        "core-js": "^3.0.0",
+        "file-loader": "^6.0.0",
         "flatpickr": "^4.6.9",
         "fomantic-ui-css": "^2.8.4",
         "husky": "^5.1.1",
         "jquery": "^3.4.1",
+        "regenerator-runtime": "^0.13.2",
         "webpack-notifier": "^1.8.0"
     },
     "license": "MIT",

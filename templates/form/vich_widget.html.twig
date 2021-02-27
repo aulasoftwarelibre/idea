@@ -1,7 +1,7 @@
 {% extends "@VichUploader/Form/fields.html.twig" %}
 
 {% block vich_image_widget %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="ui grid">
             <div class="two wide computer four wide mobile column">
                 {% if image_uri %}
@@ -20,6 +20,5 @@
                 {% endif %}
             </div>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock %}
-

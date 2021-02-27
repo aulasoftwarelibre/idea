@@ -27,7 +27,7 @@ final class IdeaMessageType extends AbstractType
     {
         $builder
             ->add('message', CKEditorType::class, [
-                'label' => 'form.label_message',
+                'label' => 'Mensaje',
                 'required' => true,
                 'purify_html' => true,
                 'attr' => ['rows' => 20],

@@ -1,8 +1,0 @@
-# config/services_dev.yaml
-services:
-    mailer.dev.set_recipients:
-        class: Symfony\Component\Mailer\EventListener\EnvelopeListener
-        tags: ['kernel.event_subscriber']
-        arguments:
-            $sender: '%mail_from%'
-            $recipients: ['%mail_from%']

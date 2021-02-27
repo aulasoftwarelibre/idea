@@ -1,4 +1,6 @@
 fos_ck_editor:
+    base_path: "build/ckeditor4"
+    js_path:   "build/ckeditor4/ckeditor.js"
     default_config: simple_toolbar
     configs:
         simple_toolbar:
