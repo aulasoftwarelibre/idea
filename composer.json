@@ -58,6 +58,7 @@
         "twig/extensions": "^1.5",
         "twig/extra-bundle": "^2.12",
         "twig/inky-extra": "^2.12",
+        "twig/intl-extra": "^3.3",
         "vich/uploader-bundle": "^1.8",
         "wohali/oauth2-discord-new": "^1.1"
     },
