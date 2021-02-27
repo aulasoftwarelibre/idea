@@ -112,7 +112,14 @@
                                             {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
                                                 {{ buttons.js_icon_button('reject_idea', 'thumbs down outline', idea.slug, 'reject idea') }}
                                             {% endif %}
-                                            {{ buttons.icon_button('edit_idea', 'pencil', path('admin_app_idea_edit', {id: idea.id})) }}
+                                            {%  set idea_url =
+                                                ea_url()
+                                                    .setController('App\\Controller\\Admin\\IdeaCrudController')
+                                                    .setAction('edit')
+                                                    .setEntityId(idea.id)
+                                                    .generateUrl()
+                                             %}
+                                            {{ buttons.icon_button('edit_idea', 'pencil', idea_url) }}
                                             {{ buttons.icon_button('idea_send_message', 'mail', path('idea_send_message', {slug: idea.slug})) }}
                                         </div>
                                     </div>
@@ -133,7 +140,11 @@
                             {% set user = vote.user %}
                             <a class="ui basic image label"
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    href="{{ path('admin_app_user_show', {'id': user.id}) }}"
+                                    href="{{ ea_url()
+                                        .setController('App\\Controller\\Admin\\UserCrudController')
+                                        .setAction('detail')
+                                        .setEntityId(user.id)
+                                        .generateUrl() }}"
                                     data-tooltip="{{ user.username ~ ' - ' ~ user.fullname }}"
                                 {% endif %}
                             >
