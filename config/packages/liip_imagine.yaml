@@ -1,46 +1,46 @@
 liip_imagine:
-  # valid drivers options include "gd" or "gmagick" or "imagick"
-  driver: "gd"
+    # valid drivers options include "gd" or "gmagick" or "imagick"
+    driver: "gd"
 
-  cache:                default
-  data_loader:          default
-  default_image:        'assets/images/default.png'
-  controller:
-    filter_action:         liip_imagine.controller:filterAction
-    filter_runtime_action: liip_imagine.controller:filterRuntimeAction
+    cache: default
+    data_loader: default
+    default_image: 'assets/images/default.png'
+    controller:
+        filter_action: liip_imagine.controller:filterAction
+        filter_runtime_action: liip_imagine.controller:filterRuntimeAction
 
-  # define your filter sets under this option
-  filter_sets:
+    # define your filter sets under this option
+    filter_sets:
 
-    # an example thumbnail transformation definition
-    # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails
-    squared_thumbnail:
+        # an example thumbnail transformation definition
+        # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails
+        squared_thumbnail:
 
-      # set your image quality defaults
-      jpeg_quality:          85
-      png_compression_level: 8
+            # set your image quality defaults
+            jpeg_quality: 85
+            png_compression_level: 8
 
-      # setup the filter steps to apply for this transformation
-      filters:
+            # setup the filter steps to apply for this transformation
+            filters:
 
-        # auto rotate the image using EXIF metadata
-        auto_rotate: ~
+                # auto rotate the image using EXIF metadata
+                auto_rotate: ~
 
-        # strip the image of all metadata
-        strip: ~
+                # strip the image of all metadata
+                strip: ~
 
-        # scale and square the image to the given dimensions
-        thumbnail:
-          size:          [80, 80]
-          mode:          outbound
-          allow_upscale: true
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size: [ 80, 80 ]
+                    mode: outbound
+                    allow_upscale: true
 
-  loaders:
-    default:
-      filesystem:
-        data_root: '%kernel.project_dir%/public'
-  resolvers:
-    default:
-      web_path:
-        web_root: '%kernel.project_dir%/public'
-        cache_prefix: cache/
+    loaders:
+        default:
+            filesystem:
+                data_root: '%kernel.project_dir%/public'
+    resolvers:
+        default:
+            web_path:
+                web_root: '%kernel.project_dir%/public'
+                cache_prefix: cache/

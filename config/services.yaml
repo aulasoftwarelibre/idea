@@ -3,9 +3,7 @@
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
-
 parameters:
-    locale: 'es'
     mail_from: 'aulasoftwalibre@uco.es'
     policy_version: '20191126161857'
     jitsi_prefix: 'AulaSoftwareLibre'
@@ -26,18 +24,15 @@ services:
     App\:
         resource: '../src/'
         exclude:
-            - '../src/Admin/'
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Menu/'
             - '../src/Tests/'
-
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
     App\Controller\:
-        resource: '../src/Controller'
+        resource: '../src/Controller/'
         tags: ['controller.service_arguments']
 
     # add more service definitions when explicit configuration is needed
@@ -57,5 +52,3 @@ services:
         autoconfigure: false
         tags:
             - { name: messenger.message_handler, bus: query.bus }
-
-    Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'

@@ -1,6 +1,6 @@
 #index:
 #    path: /
-#    defaults: { _controller: 'App\Controller\DefaultController::index' }
+#    controller: App\Controller\DefaultController::index
 
 help:
     path: /help
