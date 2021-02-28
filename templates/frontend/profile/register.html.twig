@@ -11,7 +11,7 @@
                 <div class="content">
                     <div class="ui grid">
                         <div class="two column">
-                            {{ form_start(form, {method: 'POST', action: path('profile_register')}) }}
+                            {{ form_start(form, {attr: {id: 'register-profile'}, method: 'POST', action: path('profile_register')}) }}
                             <h2 class="ui header">Registrar usuario</h2>
 
                             <div class="ui divider"></div>
@@ -113,83 +113,5 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>
-        $('select')
-            .dropdown({ fullTextSearch: true })
-        ;
-        $('#clear-degree').click(function() {
-            $('#register_degree').dropdown('clear')
-        })
-
-        $.fn.form.settings.rules.collective = function(value, required) {
-            var collective = $('.ui.form').form('get value', 'register[collective]');
-
-            return collective !== required || value;
-        };
-
-        $('.ui.form')
-            .form({
-                on: 'blur',
-                inline : true,
-                fields: {
-                    register_alias: {
-                        identifier: 'register_alias',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica un alias'
-                        },
-                        {
-                            type: 'regExp',
-                            value: /^[\w\d_]{3,16}$/i,
-                            prompt: 'El formato no es correcto'
-                        }]
-                    },
-                    register_firstname: {
-                        identifier: 'register_firstname',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tu nombre'
-                        }]
-                    },
-                    register_lastname: {
-                        identifier: 'register_lastname',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tus apellidos'
-                        }]
-                    },
-                    register_collective: {
-                        identifier: 'register_collective',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tu colectivo'
-                        }]
-                    },
-                    register_degree: {
-                        identifier: 'register_degree',
-                        depends: 'register_collective',
-                        rules: [{
-                            type: 'collective[student]',
-                            prompt: 'Si eres alumno indica tus estudios'
-                        }]
-                    },
-                    register_year: {
-                        identifier: 'register_year',
-                        depends: 'register_collective',
-                        rules: [{
-                            type: 'collective[student]',
-                            prompt: 'Indica el año de ingreso a tus estudios actuales'
-                        }]
-                    },
-                    register_terms: {
-                        identifier: 'register_terms',
-                        rules: [{
-                            type: 'checked',
-                            prompt: 'Debes aceptar las condiciones para continuar'
-                        }]
-                    }
-                }
-            })
-        ;
-    </script>
+    {{ encore_entry_script_tags('profile') }}
 {% endblock %}

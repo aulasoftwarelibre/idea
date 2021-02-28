@@ -11,7 +11,7 @@
                 <div class="content">
                     <div class="ui grid">
                         <div class="two column">
-                            {{ form_start(form, {method: 'POST', action: path('profile_edit')}) }}
+                            {{ form_start(form, {attr: {id: 'edit-profile'}, method: 'POST', action: path('profile_edit')}) }}
                             <h2 class="ui header">Editar perfil</h2>
 
                             <div class="ui divider"></div>
@@ -79,96 +79,5 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>
-        $('select')
-            .dropdown({ fullTextSearch: true })
-        ;
-        $('#clear-degree').click(function() {
-            $('#profile_degree').dropdown('clear')
-        })
-
-        $.fn.form.settings.rules.collective = function(value, required) {
-            var collective = $('.ui.form').form('get value', 'profile[collective]');
-
-            return collective !== required || value;
-        };
-
-        $('.ui.form')
-            .form({
-                on: 'blur',
-                inline : true,
-                fields: {
-                    profile_alias: {
-                        identifier: 'profile_alias',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica un alias'
-                        },
-                            {
-                                type: 'regExp',
-                                value: /^[\w\d_]{3,16}$/i,
-                                prompt: 'El formato no es correcto'
-                            }]
-                    },
-                    profile_firstname: {
-                        identifier: 'profile_firstname',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tu nombre'
-                        }]
-                    },
-                    profile_lastname: {
-                        identifier: 'profile_lastname',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tus apellidos'
-                        }]
-                    },
-                    profile_collective: {
-                        identifier: 'profile_collective',
-                        rules: [{
-                            type: 'empty',
-                            prompt: 'Indica tu colectivo'
-                        }]
-                    },
-                    profile_degree: {
-                        identifier: 'profile_degree',
-                        depends: 'profile_collective',
-                        rules: [{
-                            type: 'collective[student]',
-                            prompt: 'Si eres alumno indica tus estudios'
-                        }]
-                    },
-                    profile_year: {
-                        identifier: 'profile_year',
-                        depends: 'profile_collective',
-                        rules: [{
-                            type: 'collective[student]',
-                            prompt: 'Indica el año de ingreso a tus estudios actuales'
-                        }]
-                    }
-                }
-            })
-        ;
-
-        $('.remove.modal')
-            .modal('attach events', '#remove', 'show')
-        ;
-
-        $('input[name=iamsure]').on('input', function(e) {
-            const button = $('.remove.modal button');
-            const message = $(this).val()
-
-            if (message === "Estoy seguro") {
-                button.removeClass('disabled');
-                return;
-            }
-
-            if (button.hasClass('disabled')) {
-                return;
-            }
-
-            button.addClass('disabled');
-        })
-    </script>
+    {{ encore_entry_script_tags('profile') }}
 {% endblock %}

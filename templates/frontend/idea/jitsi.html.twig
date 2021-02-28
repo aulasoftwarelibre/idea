@@ -42,26 +42,3 @@
         </div>
     </div>
 {% endblock %}
-
-
-{% block stylesheets %}
-    {{ parent() }}
-    <style>
-        #page-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-{% endblock %}
-
-{% block javascripts %}
-    {{ parent() }}
-    <script>
-        $('.ui.button.room')
-        .popup({
-            hoverable: true,
-            inline: true
-        })
-    </script>
-{% endblock %}

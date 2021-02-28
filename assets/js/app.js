@@ -18,7 +18,6 @@ function actions(button, url) {
 }
 
 $(document).ready(function () {
-
     $("a.close.idea").click(function () {
         actions($(this), 'idea_close');
     });
@@ -37,4 +36,42 @@ $(document).ready(function () {
     $("a.leave.idea").click(function () {
         actions($(this), 'idea_leave');
     });
+
+    $('.ui.form').form();
+
+    $('.dropdown')
+        .dropdown({
+            on: 'hover'
+        })
+    ;
+
+
+    $('#idea_form')
+        .form({
+            on: 'blur',
+            inline : true,
+            fields: {
+                idea_title: {
+                    identifier: 'idea_title',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Indica un título'
+                    }, {
+                        type: 'minLength[10]',
+                        prompt: '{name} debe tener al menos {ruleValue} caracteres'
+                    }, {
+                        type: 'maxLength[255]',
+                        prompt: '{name} no debe tener más de {ruleValue} caracteres'
+                    }]
+                },
+                idea_group: {
+                    identifier: 'idea_group',
+                    rules: [{
+                        type: 'empty',
+                        prompt: 'Indica un grupo'
+                    }]
+                }
+            }
+        })
+    ;
 });
