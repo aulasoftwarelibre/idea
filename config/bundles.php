@@ -25,4 +25,5 @@ return [
     Knp\Bundle\MenuBundle\KnpMenuBundle::class => ['all' => true],
     Knp\Bundle\TimeBundle\KnpTimeBundle::class => ['all' => true],
     Symfony\Bundle\MonologBundle\MonologBundle::class => ['all' => true],
+    Uco\OAuth2\ClientBundle\UcoOAuth2ClientBundle::class => ['all' => true],
 ];

@@ -65,6 +65,9 @@
     "doctrine/dbal": {
         "version": "2.12.1"
     },
+    "doctrine/deprecations": {
+        "version": "v0.5.3"
+    },
     "doctrine/doctrine-bundle": {
         "version": "2.0",
         "recipe": {
@@ -204,6 +207,9 @@
     "informaticauco/oauth2-uco": {
         "version": "0.5.1"
     },
+    "informaticauco/oauth2-uco-bundle": {
+        "version": "0.1.1"
+    },
     "jms/metadata": {
         "version": "2.4.0"
     },
@@ -289,9 +295,6 @@
     "myclabs/php-enum": {
         "version": "1.8.0"
     },
-    "n98/junit-xml": {
-        "version": "1.0.0"
-    },
     "netresearch/jsonmapper": {
         "version": "v2.1.0"
     },
@@ -306,9 +309,6 @@
     },
     "openlss/lib-array2xml": {
         "version": "1.0.0"
-    },
-    "overtrue/phplint": {
-        "version": "2.3.5"
     },
     "paragonie/random_compat": {
         "version": "v9.99.100"

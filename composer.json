@@ -20,12 +20,11 @@
         "friendsofsymfony/ckeditor-bundle": "^2.3",
         "friendsofsymfony/jsrouting-bundle": "^2.2",
         "friendsofsymfony/rest-bundle": "^3.0",
-        "informaticauco/oauth2-uco": "^0.5.0",
+        "informaticauco/oauth2-uco-bundle": "^0.1.1",
         "knplabs/knp-menu-bundle": "^3.1",
         "knplabs/knp-time-bundle": "^1.15",
-        "knpuniversity/oauth2-client-bundle": "^2.7",
         "league/oauth2-github": "^2.0",
-        "league/oauth2-google": "^3.0",
+        "league/oauth2-google": "^3.0|^4.0",
         "leogout/seo-bundle": "dev-master",
         "liip/imagine-bundle": "^2.1",
         "phpdocumentor/reflection-docblock": "^5.2",
@@ -68,7 +67,6 @@
     },
     "require-dev": {
         "doctrine/coding-standard": "^8.1",
-        "overtrue/phplint": "^2.1",
         "phpmd/phpmd": "^2.9",
         "psalm/plugin-symfony": "^2.0",
         "symfony/browser-kit": "^5.2",
@@ -115,12 +113,10 @@
             "@auto-scripts"
         ],
         "test": [
-            "@phplint",
             "@phpcs",
             "@psalm",
             "@phpunit"
         ],
-        "phplint": "phplint",
         "phpcs": "phpcs",
         "phpcbf": "phpcbf",
         "phpmd": "phpmd src,tests text phpmd.xml --exclude 'src/Kernel.php'",

@@ -23,11 +23,11 @@ security:
             pattern: '^/'
             guard:
                 authenticators:
-                    - 'App\Security\Guard\UcoAuthenticator'
+                    - 'uco_oauth2_client.security_guard.uco_authenticator'
                     - 'App\Security\Guard\GoogleAuthenticator'
                     - 'App\Security\Guard\GithubAuthenticator'
                     - 'App\Security\Guard\DiscordAuthenticator'
-                entry_point: 'App\Security\Guard\UcoAuthenticator'
+                entry_point: 'uco_oauth2_client.security_guard.uco_authenticator'
             logout:
                 path: '/logout'
                 target: '/'
