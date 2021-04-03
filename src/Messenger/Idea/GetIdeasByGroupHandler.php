@@ -15,7 +15,7 @@ namespace App\Messenger\Idea;
 
 use App\MessageBus\QueryHandlerInterface;
 use App\Repository\IdeaRepository;
-use Pagerfanta\Pagerfanta;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class GetIdeasByGroupHandler implements QueryHandlerInterface
 {
@@ -32,7 +32,7 @@ class GetIdeasByGroupHandler implements QueryHandlerInterface
         $this->repository = $repository;
     }
 
-    public function __invoke(GetIdeasByGroupQuery $query): Pagerfanta
+    public function __invoke(GetIdeasByGroupQuery $query): Paginator
     {
         $page = $query->getPage();
         $group = $query->getGroup();

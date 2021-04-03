@@ -54,11 +54,10 @@ class ReportCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output)
     {
         $io = new SymfonyStyle($input, $output);
-        $filename = $input->getArgument('filename');
-        $filename = "var/report/{$filename}.xlsx";
+        $filename = $this->getFilename($input);
 
         $this->warmUp($filename);
 
@@ -117,6 +116,8 @@ class ReportCommand extends Command
         $write->save($filename);
 
         $io->success('Hecho.');
+
+        return 0;
     }
 
     protected function warmUp(string $filename): void
@@ -127,5 +128,19 @@ class ReportCommand extends Command
         if (file_exists($filename)) {
             unlink($filename);
         }
+    }
+
+    /**
+     * @return mixed|string|string[]|null
+     */
+    protected function getFilename(InputInterface $input)
+    {
+        $filename = $input->getArgument('filename');
+        if (is_array($filename)) {
+            $filename = $filename[0];
+        }
+        $filename = "var/report/{$filename}.xlsx";
+
+        return $filename;
     }
 }

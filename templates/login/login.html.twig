@@ -1,0 +1,50 @@
+{% extends 'login/layout.html.twig' %}
+
+{% block body %}
+    {% set referer = app.request.headers.get('referer') ?: app.session.get('_security.main.target_path') | default('/') %}
+
+    <div class="ui middle aligned center aligned grid">
+        <div class="column">
+                <div class="ui segment">
+                    <img src="{{ asset('assets/images/logoasl.png') }}" alt="Logo del Aula de Software Libre" class="ui centered small image" id="logo">
+                    <h2 class="ui header">
+                        Iniciar sesión en
+                        <div class="ui sub header">Ideas</div>
+                    </h2>
+                    <div class="ui hidden divider"></div>
+
+                    <div class="ui huge vertical buttons">
+                        <a href="{{ path('connect_uco_start') }}?_target_path={{ referer }}" class="ui fluid labeled icon button">
+                            <i class="ui icon">
+                                <img src="{{ asset('assets/images/login/icono-uco.svg') }}" style="height: 32px; margin-top: 10px">
+                            </i> @uco.es
+                        </a>
+                        <a href="{{ path('connect_google_start') }}?_target_path={{ referer }}" class="ui google plus fluid labeled icon button">
+                            <i class="ui google icon"></i>Google
+                        </a>
+                        <a href="{{ path('connect_github_start') }}?_target_path={{ referer }}" class="ui black fluid labeled icon button">
+                            <i class="ui github icon"></i>Github
+                        </a>
+                    </div>
+
+                    <div class="ui divider" style="margin: 40px 0"></div>
+
+                    <p>
+                        Inicia sesión en la Universidad de Córdoba para tener acceso a todas las actividades.
+                    </p>
+                </div>
+
+                {% block error %}
+                    {% if error is defined and error %}
+                        <div class="ui negative icon message">
+                            <i class="ban icon"></i>
+                            <div class="content">
+                                <div class="header">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+                                <p style="text-align: left;">Esta aplicación require que sea de dado de alta previamente, contacte con el administrador de la aplicación.</p>
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endblock %}
+        </div>
+    </div>
+{% endblock body %}

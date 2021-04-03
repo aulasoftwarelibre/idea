@@ -16,19 +16,23 @@ namespace App\Security\Guard;
 use App\Entity\User;
 use FOS\UserBundle\Model\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\OAuth2Client;
+use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Uco\OAuth2\Client\Provider\UcoResourceOwner;
 
 class UcoAuthenticator extends SocialAuthenticator
 {
+    use TargetPathTrait;
+
     /**
      * @var ClientRegistry
      */
@@ -81,15 +85,7 @@ class UcoAuthenticator extends SocialAuthenticator
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
         if (!$user) {
-            /** @var User $user */
-            $user = $this->userManager->createUser();
-
-            $user
-                ->setUsername($userResourceId)
-                ->setSspId($userResourceId)
-                ->setEmail("${userResourceId}@uco.es")
-                ->setPassword('!')
-                ->setEnabled(true);
+            $user = User::createUcoUser($userResourceId);
         }
 
         $this->userManager->updateUser($user);
@@ -112,11 +108,14 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $targetPath = $this->getTargetPath($request, $providerKey);
+        $homepagePath = $this->router->generate('homepage');
+        if (!$request->getSession() instanceof Session) {
+            return new RedirectResponse($homepagePath);
+        }
 
+        $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
         if (!$targetPath) {
-            // Change it to your default target
-            $targetPath = $this->router->generate('homepage');
+            return new RedirectResponse($homepagePath);
         }
 
         return new RedirectResponse($targetPath);
@@ -133,22 +132,10 @@ class UcoAuthenticator extends SocialAuthenticator
         );
     }
 
-    private function getClient(): OAuth2Client
+    private function getClient(): OAuth2ClientInterface
     {
         return $this
             ->clientRegistry
             ->getClient('uco');
-    }
-
-    /**
-     * Returns the URL (if any) the user visited that forced them to login.
-     */
-    protected function getTargetPath(Request $request, string $providerKey): ?string
-    {
-        if (null === $request->getSession()) {
-            return null;
-        }
-
-        return $request->getSession()->get('_security.' . $providerKey . '.target_path');
     }
 }

@@ -16,7 +16,7 @@ services:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
     eco.admin.idea:
         class: App\Admin\IdeaAdmin
-        arguments: [~, 'App\Entity\Idea', 'App\Controller\IdeaCRUDController']
+        arguments: [~, 'App\Entity\Idea', 'App\Controller\Sonata\IdeaCRUDController']
         tags:
             - { name: sonata.admin, manager_type: orm, label: menu.idea }
         calls:
@@ -28,28 +28,13 @@ services:
             - { name: sonata.admin, manager_type: orm, label: menu.participation }
         calls:
             - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
-    eco.admin.telegram_chat_private:
-        class: App\Admin\TelegramChatPrivateAdmin
-        arguments: [ ~, App\Entity\TelegramChatPrivate, ~]
+    eco.admin.logpolicy:
+        class: App\Admin\LogPolicyAdmin
+        arguments: [~, App\Entity\LogPolicy, ~]
         tags:
-            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_private }
-    eco.admin.telegram_chat_super_group:
-        class: App\Admin\TelegramChatSuperGroupAdmin
-        arguments: [ ~, App\Entity\TelegramChatSuperGroup, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_super_group }
-    eco.admin.telegram_chat_group:
-        class: App\Admin\TelegramChatGroupAdmin
-        arguments: [ ~, App\Entity\TelegramChatGroup, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_group }
-    eco.admin.telegram_chat_channel:
-        class: App\Admin\TelegramChatChannelAdmin
-        arguments: [ ~, App\Entity\TelegramChatChannel, ~]
-        tags:
-            - { name: sonata.admin, manager_type: orm, label: menu.telegram_chat_channel }
+            - { name: sonata.admin, manager_type: orm, label: menu.logpolicy }
         calls:
-            - [ setBotman, ['@botman']]
+            - [ setLabelTranslatorStrategy, ["@sonata.admin.label.strategy.underscore"]]
 
 twig:
     form_themes:

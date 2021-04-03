@@ -19,11 +19,6 @@
         <!-- ###+ symfony/messenger ### -->
         <!-- MESSENGER_TRANSPORT_DSN=amqp://guest:guest@localhost:5672/%2f/messages -->
         <!-- ###- symfony/messenger ### -->
-
-        <!-- ###+ nelmio/cors-bundle ### -->
-        <env name="CORS_ALLOW_ORIGIN" value="^https?://localhost(:[0-9]+)?$"/>
-        <!-- ###- nelmio/cors-bundle ### -->
-
         <!-- ###+ symfony/mailer ### -->
         <!-- MAILER_DSN=smtp://localhost -->
         <!-- ###- symfony/mailer ### -->

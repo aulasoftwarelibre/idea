@@ -78,17 +78,23 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             throw new \InvalidArgumentException("Idea {$ideaId} not found");
         }
 
-        $email = $this->createEmail($idea, $message, $isTest);
+        $token = $this->token->getToken();
+        if (!$token instanceof TokenInterface) {
+            return;
+        }
+
+        $email = $this->createEmail($idea, $message, $isTest, $token);
         $this->mailer->send($email);
     }
 
     /**
-     * @param Idea $idea
+     * @param Idea   $idea
      * @param string $message
-     * @param bool $isTest
+     * @param bool   $isTest
+     *
      * @return TemplatedEmail
      */
-    private function createEmail(Idea $idea, string $message, bool $isTest): TemplatedEmail
+    private function createEmail(Idea $idea, string $message, bool $isTest, TokenInterface $token): TemplatedEmail
     {
         $email = (new TemplatedEmail())
             ->from($this->mailFrom)
@@ -107,7 +113,7 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             ]);
 
         if ($isTest) {
-            $loggedUserEmail = $this->token->getToken()->getUsername() . '@uco.es';
+            $loggedUserEmail = $token->getUsername() . '@uco.es';
             $email->bcc($loggedUserEmail);
             $this->logger->debug('[MAIL TO] Enviada prueba');
         } else {
@@ -118,6 +124,7 @@ class SendIdeaMessageHandler implements CommandHandlerInterface
             $email->bcc(...$toUsers);
             $this->logger->debug('[MAIL TO] Destinatarios: ' . implode(', ', $toUsers));
         }
+
         return $email;
     }
 }

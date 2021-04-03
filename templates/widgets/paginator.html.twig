@@ -1,0 +1,39 @@
+{% macro pagination(page, numPages, route, routeParams = {}) %}
+    {% if numPages > 1 %}
+        <div class="ui pagination menu">
+            {% if page == 1 %}
+                <div class="item prev disabled"><i class="angle double left icon"></i></div>
+            {% else %}
+                <a class="item prev" href="{{ url(route, {'page': page - 1}|merge(routeParams)) }}"><i class="angle double left icon"></i></a>
+            {% endif %}
+
+            {% for index in 1..numPages %}
+                {% set difference = index > page ? index - page : page - index %}
+
+                {% if index == page %}
+                    <div class="active item">
+                        {{ index }}
+                    </div>
+                {% elseif (index == 2 and page > 4)
+                       or (index == numPages - 1 and page < numPages - 3)
+                %}
+                    <div class="item disabled">…</div>
+                {% elseif (index == 1 or index == numPages)
+                       or (index <= 3 and page <= 4)
+                       or (index >= numPages - 2 and page >= numPages - 3)
+                       or difference == 1
+                %}
+                    <a class="item " href="{{ url(route, {'page': index}|merge(routeParams)) }}">
+                        {{ index }}
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            {% if page == numPages %}
+                <div class="item next disabled"><i class="angle double right icon"></i></div>
+            {% else %}
+                <a class="item next" href="{{ url(route, {'page': page + 1}|merge(routeParams)) }}"><i class="angle double right icon"></i></a>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endmacro %}

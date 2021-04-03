@@ -68,18 +68,33 @@ class UserRepository extends ServiceEntityRepository
             ;
     }
 
-    public function findOneByValidToken(string $token): ?User
+    public function findUsedAliasOrUsername(string $find): ?User
     {
         return $this->getEntityManager()
             ->createQuery('
                 SELECT u
                 FROM App:User u
-                WHERE u.telegramSecretToken = :token
-                      AND u.telegramSecretTokenExpiresAt > :now
+                WHERE u.username = :username
+                   OR u.alias = :alias
             ')
-            ->setParameter('token', $token)
-            ->setParameter('now', new \DateTime())
+            ->setParameter('username', $find)
+            ->setParameter('alias', $find)
             ->getOneOrNullResult()
-            ;
+        ;
+    }
+
+    public function findAllDeletedUsers(): array
+    {
+        $qb = $this->getEntityManager()
+            ->createQuery('
+                SELECT u 
+                FROM App\Entity\User u 
+                WHERE u.deletedAt IS NOT NULL
+                AND u.deletedAt < :oneYearAgo
+            ')
+            ->setParameter('oneYearAgo', new \DateTime('1 year ago'))
+        ;
+
+        return $qb->getResult();
     }
 }
