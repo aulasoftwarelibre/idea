@@ -39,6 +39,7 @@
         </div>
     </div>
 
+    {% block content %}
     <div class="full height">
         <div class="ui main container">
             <div id="main" class="ui vertical stripe segment">
@@ -62,11 +63,11 @@
                         {% endfor %}
                     {% endif %}
                 {% endblock flash_messages %}
-
                 {% block body %}{% endblock %}
             </div>
         </div>
     </div>
+    {% endblock %}
 
     <footer class="ui inverted vertical footer segment">
         <div class="ui container">

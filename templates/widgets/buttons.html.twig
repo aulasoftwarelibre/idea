@@ -1,17 +1,17 @@
 {% macro simple_label(text, classes) %}
-    <div class="ui bottom attached {{ classes }} basic button">
+    <div class="ui right floated {{ classes }} basic button">
         {{ text | trans | upper }}
     </div>
 {% endmacro %}
 
 {% macro simple_button(text, url, classes) %}
-    <a class="ui bottom attached {{ classes }} basic button" href="{{ url }}">
+    <a class="ui right floated {{ classes }} basic button" href="{{ url }}">
         {{ text | trans | upper }}
     </a>
 {% endmacro %}
 
 {% macro animated_button(first, first_icon, second, second_icon, url, classes) %}
-    <a class="ui animated bottom attached {{ classes }} basic button" href="{{ url }}">
+    <a class="ui animated right floated {{ classes }} basic button" href="{{ url }}">
         <div class="visible content">
             {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
             {{ first | trans | upper  }}
@@ -24,7 +24,7 @@
 {% endmacro %}
 
 {% macro js_animated_button(first, first_icon, second, second_icon, data, classes) %}
-    <a class="ui animated bottom attached {{ classes }} basic button" data-slug="{{ data }}">
+    <a class="ui animated right floated {{ classes }} basic button" data-slug="{{ data }}">
         <div class="visible content">
             {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
             {{ first | trans | upper  }}
@@ -33,6 +33,13 @@
             {% if second_icon is not empty %}<i class="{{ second_icon }} icon"></i>{% endif %}
             {{ second | trans | upper }}
         </div>
+    </a>
+{% endmacro %}
+
+{% macro js_button(first, first_icon, data, classes) %}
+    <a class="ui right floated {{ classes }} basic button" data-slug="{{ data }}">
+        {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
+        {{ first | trans | upper  }}
     </a>
 {% endmacro %}
 
