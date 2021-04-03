@@ -3,7 +3,6 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-    <div class="ui grid" id="ideas">
         {% for idea in ideas %}
             {% include('/frontend/idea/_idea.html.twig') %}
         {% else %}
@@ -13,5 +12,4 @@
         <div class="centered aligned row">
             {{ pagination(page, numPages, 'idea_index_paginated') }}
         </div>
-    </div>
 {% endblock %}

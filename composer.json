@@ -28,6 +28,7 @@
         "sonata-project/formatter-bundle": "^4.1",
         "sonata-project/intl-bundle": "^2.5",
         "sonata-project/user-bundle": "^4.2",
+        "spatie/calendar-links": "^1.2",
         "symfony/asset": "*",
         "symfony/console": "*",
         "symfony/dotenv": "*",

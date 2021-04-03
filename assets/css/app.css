@@ -15,10 +15,6 @@ body {
     bottom: 0;
 }
 
-#main {
-    margin-right: 318px;
-}
-
 .logo {
     background: url("../images/ideas-small.png") no-repeat;
     width: 66px;
@@ -36,7 +32,7 @@ body {
 }
 
 .ui.vertical.stripe {
-    padding: 4.5em 0em 5em;
+    padding: 4.5em 0em 3em;
 }
 
 .top.fixed.menu .topmenu.button {
@@ -233,16 +229,6 @@ a.ui.basic.proposed.label:hover {
 @media (min-height: 320px) {
     #page-container {
         padding-bottom: 30px;
-    }
-}
-
-@media only screen and (max-width: 992px) {
-    #main {
-        margin-right: unset;
-    }
-
-    #main > .right.rail {
-        display: none;
     }
 }
 

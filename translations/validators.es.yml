@@ -1,1 +1,2 @@
 form.label_alias_invalid: El alias solo puede contener números, letras y _.
+error.idea_end_date: La fecha final debe ser posterior a la fecha inicial.

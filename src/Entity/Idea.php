@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Utils\StringUtils;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -25,6 +26,10 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\IdeaRepository")
  * @ORM\Table()
+ * @Assert\Expression(
+ *     "(this.getStartsAt() === this.getEndsAt()) or (this.getStartsAt() !== null and this.getEndsAt() > this.getStartsAt())",
+ *     message="error.idea_end_date"
+ * )
  */
 class Idea
 {
@@ -147,12 +152,40 @@ class Idea
     protected $startsAt;
 
     /**
+     * @var \DateTime|null
+     * @ORM\Column(type="datetime", nullable=true)
+     * @Assert\DateTime()
+     * @Groups("read")
+     */
+    protected $endsAt;
+
+    /**
      * @var string|null
      * @ORM\Column(length=255, nullable=true)
      * @Assert\Length(max="255")
      * @Groups("read")
      */
     protected $location;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default"=false})
+     * @Groups("read")
+     */
+    protected $isOnline;
+
+    /**
+     * @var string|null
+     * @ORM\Column(type="string", nullable=true)
+     */
+    protected $jitsiLocatorRoom;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default"=false})
+     * @Groups("read")
+     */
+    protected $isJitsiRoomOpen;
 
     /**
      * @var bool
@@ -163,19 +196,33 @@ class Idea
     /**
      * Idea constructor.
      */
-    public function __construct(string $title, string $description, User $owner, Group $group)
+    public function __construct()
     {
-        $this->title = $title;
-        $this->description = $description;
-        $this->owner = $owner;
-        $this->group = $group;
-
+        $this->title = null;
+        $this->description = null;
+        $this->owner = null;
+        $this->group = null;
         $this->votes = new ArrayCollection();
         $this->closed = false;
         $this->private = false;
         $this->state = static::STATE_PROPOSED;
         $this->numSeats = self::LIMITLESS;
         $this->externalNumSeats = 0;
+        $this->isOnline = false;
+        $this->jitsiLocatorRoom = null;
+        $this->isJitsiRoomOpen = false;
+    }
+
+    public static function with(string $title, string $description, User $owner, Group $group): self
+    {
+        $idea = new self();
+
+        $idea->title = $title;
+        $idea->description = $description;
+        $idea->owner = $owner;
+        $idea->group = $group;
+
+        return $idea;
     }
 
     public static function getStates(): array
@@ -206,7 +253,7 @@ class Idea
     /**
      * @return string
      */
-    public function getTitle(): string
+    public function getTitle(): ?string
     {
         return $this->title;
     }
@@ -224,7 +271,7 @@ class Idea
     /**
      * @return string
      */
-    public function getDescription(): string
+    public function getDescription(): ?string
     {
         return $this->description;
     }
@@ -289,7 +336,7 @@ class Idea
     /**
      * @return string
      */
-    public function getSlug(): string
+    public function getSlug(): ?string
     {
         return $this->slug;
     }
@@ -333,7 +380,7 @@ class Idea
     /**
      * @return User
      */
-    public function getOwner(): User
+    public function getOwner(): ?User
     {
         return $this->owner;
     }
@@ -352,7 +399,7 @@ class Idea
     /**
      * @return Group
      */
-    public function getGroup(): Group
+    public function getGroup(): ?Group
     {
         return $this->group;
     }
@@ -466,6 +513,24 @@ class Idea
     }
 
     /**
+     * @return \DateTime|null
+     */
+    public function getEndsAt(): ?\DateTime
+    {
+        return $this->endsAt;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setEndsAt(?\DateTime $endsAt): self
+    {
+        $this->endsAt = $endsAt;
+
+        return $this;
+    }
+
+    /**
      * @return null|string
      */
     public function getLocation(): ?string
@@ -479,6 +544,68 @@ class Idea
     public function setLocation(?string $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isOnline(): bool
+    {
+        return $this->isOnline;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setIsOnline(bool $isOnline): self
+    {
+        $this->isOnline = $isOnline;
+
+        if ($isOnline && !$this->jitsiLocatorRoom) {
+            $this->jitsiLocatorRoom = StringUtils::locator();
+        }
+
+        if (!$isOnline) {
+            $this->jitsiLocatorRoom = null;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getJitsiLocatorRoom(): ?string
+    {
+        return $this->jitsiLocatorRoom;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setJitsiLocatorRoom(?string $jitsiLocatorRoom): self
+    {
+        $this->jitsiLocatorRoom = $jitsiLocatorRoom;
+
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isJitsiRoomOpen(): bool
+    {
+        return $this->isJitsiRoomOpen;
+    }
+
+    /**
+     * @return Idea
+     */
+    public function setIsJitsiRoomOpen(bool $isJitsiRoomOpen): self
+    {
+        $this->isJitsiRoomOpen = $isJitsiRoomOpen;
 
         return $this;
     }

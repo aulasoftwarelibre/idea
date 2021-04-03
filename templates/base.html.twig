@@ -30,43 +30,45 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {{ render(controller('App\\Controller\\Profile\\ShowMenuProfileEmbedController')) }}
             {% else %}
-            <div class="floated right borderless item">
-                <a class="tiny ui primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
-                    <i class="sign in icon"></i> Conectar
-                </a>
-            </div>
+                <div class="floated right borderless item">
+                    <a class="tiny ui primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
+                        <i class="sign in icon"></i> Conectar
+                    </a>
+                </div>
             {% endif %}
         </div>
     </div>
 
     {% block content %}
-    <div class="full height">
-        <div class="ui main container">
-            <div id="main" class="ui vertical stripe segment">
-                <div class="ui right dividing rail">
-                    <div class="ui vertical stripe">
-                        {% block side_menu %}
-                        {{ render(controller('App\\Controller\\Idea\\NextScheduledIdeasEmbedController')) }}
-                        {{ render(controller('App\\Controller\\Idea\\MoreVotesPendingIdeasEmbedController')) }}
-                        {% endblock %}
+
+        <div class="full height">
+            <div class="ui main container">
+                <div id="main" class="ui vertical stripe segment">
+                    <div class="ui stackable mobile reversed tablet reversed grid">
+                        <div class="sixteen wide tablet ten wide computer column">
+                            {% block flash_messages %}
+                                {% if app.session is not null and app.session.started %}
+                                    {% for type, messages in app.flashes %}
+                                        {% for message in messages %}
+                                            <div class="ui {{ type }} floating message">
+                                                {{- message -}}
+                                            </div>
+                                        {% endfor %}
+                                    {% endfor %}
+                                {% endif %}
+                            {% endblock flash_messages %}
+                            {% block body %}{% endblock %}
+                        </div>
+                        <div class="sixteen wide tablet six wide computer column">
+                            {% block side_menu %}
+                                {{ render(controller('App\\Controller\\Idea\\NextScheduledIdeasEmbedController')) }}
+                                {{ render(controller('App\\Controller\\Idea\\MoreVotesPendingIdeasEmbedController')) }}
+                            {% endblock %}
+                        </div>
                     </div>
                 </div>
-
-                {% block flash_messages %}
-                    {% if app.session is not null and app.session.started %}
-                        {% for type, messages in app.flashes %}
-                            {% for message in messages %}
-                                <div class="ui {{ type }} floating message">
-                                    {{- message -}}
-                                </div>
-                            {% endfor %}
-                        {% endfor %}
-                    {% endif %}
-                {% endblock flash_messages %}
-                {% block body %}{% endblock %}
             </div>
         </div>
-    </div>
     {% endblock %}
 
     <footer class="ui inverted vertical footer segment">

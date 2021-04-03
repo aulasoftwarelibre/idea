@@ -1,9 +1,8 @@
 global.$ = global.jQuery = require('jquery');
 
 require('../css/app.css');
-require('semantic-ui-css/semantic.css');
-require('../css/reponsive-semantic-ui.css');
-require('semantic-ui-css');
+require('fomantic-ui-css/semantic.css')
+require('fomantic-ui-css/semantic');
 
 function actions(button, url) {
     button.addClass('loading');

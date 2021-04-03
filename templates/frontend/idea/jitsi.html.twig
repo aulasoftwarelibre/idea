@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block content %}
+    <div class="ui two column centered grid">
+        <div class="column">
+            <div class="ui placeholder segment">
+                <div class="ui icon header">
+                    <i class="video icon"></i>
+                    {{ idea.title }}
+                    <div class="sub header">
+                        La sala de videoconferencia aún no está disponible. Se suele abrir unos 10-15 minutos
+                        antes de que empiece la conferencia.
+                    </div>
+                </div>
+
+                {% if is_granted('ROLE_ADMIN') %}
+                    <form class="inline" method="post" action="{{ url('idea_open_jitsi', { slug: idea.slug }) }}">
+                        <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
+                        <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir sala</button>
+                    </form>
+                {% else %}
+                    <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        #page-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+{% endblock %}

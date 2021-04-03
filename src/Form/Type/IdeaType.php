@@ -15,27 +15,14 @@ namespace App\Form\Type;
 
 use App\Entity\Group;
 use App\Entity\Idea;
-use App\Entity\User;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\DataMapperInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class IdeaType extends AbstractType implements DataMapperInterface
+class IdeaType extends AbstractType
 {
-    /**
-     * @var TokenStorageInterface
-     */
-    private $token;
-
-    public function __construct(TokenStorageInterface $token)
-    {
-        $this->token = $token;
-    }
-
     /**
      * {@inheritdoc}
      */
@@ -58,52 +45,7 @@ class IdeaType extends AbstractType implements DataMapperInterface
                 'placeholder' => 'Seleccione un grupo donde publicar la idea',
                 'required' => true,
             ])
-            ->setDataMapper($this)
         ;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function mapDataToForms($data, $forms): void
-    {
-        $forms = iterator_to_array($forms);
-
-        $forms['title']->setData($data ? $data->getTitle() : '');
-        $forms['description']->setData($data ? $data->getDescription() : '');
-        $forms['group']->setData($data ? $data->getGroup() : null);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function mapFormsToData($forms, &$data): void
-    {
-        $forms = iterator_to_array($forms);
-
-        $title = $forms['title']->getData();
-        $description = $forms['description']->getData();
-        $group = $forms['group']->getData();
-
-        $user = null !== $this->token->getToken() ? $this->token->getToken()->getUser() : null;
-        if (!$user instanceof User) {
-            throw new \RuntimeException('User not logged');
-        }
-
-        if (!$data instanceof Idea) {
-            $data = new Idea(
-                $title,
-                $description,
-                $user,
-                $group
-            );
-        } else {
-            $data
-                ->setTitle($title)
-                ->setDescription($description)
-                ->setGroup($group)
-            ;
-        }
     }
 
     /**
@@ -114,7 +56,6 @@ class IdeaType extends AbstractType implements DataMapperInterface
         $resolver
             ->setDefaults([
                 'data_class' => Idea::class,
-                'empty_data' => null,
             ])
         ;
     }

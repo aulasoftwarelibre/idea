@@ -39,7 +39,6 @@
                 <i class="comment icon"></i>
                 {{ idea_count_comments(idea) }}
             </a>
-            &nbsp;
             {% if idea.numSeats > 0 %}
                 <span>
                     <i class="add user icon"></i>
@@ -47,88 +46,5 @@
                 </span>
             {% endif %}
         </div>
-
-        {% if is_granted('ROLE_ADMIN') %}
-            <div class="extra content">
-                <div class="row">
-                    <div class="column">
-                        <h4 class="ui dividing header">Administrar</h4>
-
-                        <div class="ui buttons">
-                            {% if idea.closed %}
-                                {{ buttons.js_icon_button('open_idea', 'unlock', idea.slug, 'open idea') }}
-                            {% else %}
-                                {{ buttons.js_icon_button('close_idea', 'lock', idea.slug, 'close idea') }}
-                            {% endif %}
-                            {% if idea.state != constant('App\\Entity\\Idea::STATE_APPROVED') %}
-                                {{ buttons.js_icon_button('approve_idea', 'thumbs up outline', idea.slug, 'approve idea') }}
-                            {% endif %}
-                            {% if idea.state != constant('App\\Entity\\Idea::STATE_REJECTED') %}
-                                {{ buttons.js_icon_button('reject_idea', 'thumbs down outline', idea.slug, 'reject idea') }}
-                            {% endif %}
-                            {{ buttons.icon_button('edit_idea', 'pencil', path('admin_app_idea_edit', {id: idea.id})) }}
-                            {{ buttons.icon_button('idea_send_message', 'mail', path('idea_send_message', {slug: idea.slug})) }}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% endif %}
-
-        {% if complete is defined %}
-            <div class="extra content">
-                <div class="row">
-                    <div class="column">
-                        <h3 class="ui dividing header">Participantes</h3>
-
-                        {% for vote in idea.votes %}
-                            {% set user = vote.user %}
-                            <a class="ui basic image label"
-                                {% if is_granted('ROLE_ADMIN') %}
-                                    href="{{ path('admin_app_user_show', {'id': user.id}) }}"
-                                    data-tooltip="{{ user.fullname }}"
-                                {% endif %}
-                            >
-                                {% if user.image.name is not empty %}
-                                    <img src="{{ vich_uploader_asset(user, 'imageFile') | imagine_filter('squared_thumbnail') }}">
-                                {% else %}
-                                    <img src="{{ asset('assets/images/default.png') }}">
-                                {% endif %}
-                                {% if is_granted('ROLE_ADMIN') %}
-                                {{ user.username }}
-                                {% else %}
-                                {{ user.alias }}
-                                {% endif %}
-                            </a>
-                        {% else %}
-                            <span class="ui label">No hay participantes</span>
-                        {% endfor %}
-                    </div>
-                </div>
-            </div>
-
-            <div class="extra content">
-                <div class="row">
-                    <div class="column">
-                        <h3 class="ui dividing header">Comentarios</h3>
-                    </div>
-
-                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                        {% include '@FOSComment/Thread/async.html.twig' with {'id': idea.id} %}
-                    {% else %}
-                        <div class="ui icon message">
-                            <i class="add user icon"></i>
-                            <div class="content">
-                                <div class="header">
-                                    ¿Quieres participar?
-                                </div>
-                                <p>
-                                    <a href="{{ path('login') }}">Inicia sesión</a> para dejar un comentario.
-                                </p>
-                            </div>
-                        </div>
-                    {% endif %}
-                </div>
-            </div>
-        {% endif %}
     </div>
 </div>
