@@ -13,10 +13,16 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
+use ApiPlatform\Core\Annotation\ApiProperty;
+use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -24,6 +30,14 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Entity(repositoryClass="App\Repository\IdeaRepository")
  * @ORM\Table()
+ * @ApiResource(
+ *     attributes={"pagination_items_per_page"=10},
+ *     collectionOperations={"get"},
+ *     itemOperations={"get"},
+ *     normalizationContext={"groups"={"read","idea"}}
+ * )
+ * @ApiFilter(BooleanFilter::class, properties={"closed"})
+ * @ApiFilter(SearchFilter::class, properties={"state": "exact"})
  */
 class Idea
 {
@@ -39,6 +53,7 @@ class Idea
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     * @ApiProperty(identifier=false)
      */
     private $id;
 
@@ -48,6 +63,7 @@ class Idea
      * @ORM\Column(length=255)
      * @Assert\Length(min="10", max="255")
      * @Assert\NotBlank()
+     * @Groups("read")
      */
     private $title;
 
@@ -56,12 +72,14 @@ class Idea
      * @ORM\Column(type="text")
      * @Assert\Length(min="10")
      * @Assert\NotBlank()
+     * @Groups("read")
      */
     private $description;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean", nullable=true)
+     * @Groups("read")
      */
     private $closed;
 
@@ -69,6 +87,7 @@ class Idea
      * @var string
      * @ORM\Column(length=32)
      * @Assert\Choice(callback="getStates")
+     * @Groups("read")
      */
     private $state;
 
@@ -76,6 +95,8 @@ class Idea
      * @var string
      * @ORM\Column(length=255, unique=true)
      * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
+     * @Groups("read")
+     * @ApiProperty(identifier=true)
      */
     private $slug;
 
@@ -83,6 +104,7 @@ class Idea
      * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="create")
+     * @Groups("read")
      */
     private $createdAt;
 
@@ -90,6 +112,7 @@ class Idea
      * @var \DateTime
      * @ORM\Column(type="datetime")
      * @Gedmo\Timestampable(on="update")
+     * @Groups("read")
      */
     private $updatedAt;
 
@@ -110,6 +133,7 @@ class Idea
      * @var Group
      * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="ideas")
      * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
+     * @Groups("read")
      */
     private $group;
 
@@ -117,6 +141,7 @@ class Idea
      * @var int
      * @ORM\Column(type="integer", name="num_seats")
      * @Assert\Range(min="0")
+     * @Groups("read")
      */
     private $numSeats;
 
@@ -124,6 +149,7 @@ class Idea
      * @var \DateTime|null
      * @ORM\Column(type="datetime", nullable=true)
      * @Assert\DateTime()
+     * @Groups("read")
      */
     protected $startsAt;
 
@@ -131,6 +157,7 @@ class Idea
      * @var string|null
      * @ORM\Column(length=255, nullable=true)
      * @Assert\Length(max="255")
+     * @Groups("read")
      */
     protected $location;
 

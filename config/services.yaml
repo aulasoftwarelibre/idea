@@ -45,8 +45,15 @@ services:
     App\MessageBus\EventBus:
         arguments: ['@messenger.bus.events']
 
+    api_platform.message_bus:
+        alias: 'messenger.bus.commands'
+
     App\Services\Telegram\:
         resource: '%kernel.project_dir%/src/Services/Telegram/'
         public: true
 
     Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider: '@leogout_seo.provider.generator'
+
+    App\DataProvider\IdeaCollectionDataProvider:
+        arguments:
+            $collectionExtensions: !tagged api_platform.doctrine.orm.query_extension.collection
