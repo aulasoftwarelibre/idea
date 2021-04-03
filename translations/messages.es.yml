@@ -73,6 +73,7 @@ block.content: Contenido
 block.state: Estado
 block.location: Lugar
 block.online: Online
+block.seats: Plazas
 block.votes: Votos
 
 flash_batch_close_error: Hubo un error al cerrar las ideas seleccionadas
@@ -115,6 +116,7 @@ form.label_created_at: Fecha creación
 form.label_description: Descripción
 form.label_ends_at: Día y hora finalización
 form.label_external_num_seats: Plazas externas
+form.label_internal:  Interno
 form.label_is_jitsi_room_open: Sala abierta
 form.label_is_online: Evento online
 form.label_jitsi_locator_room: Localizador de sala

@@ -28,8 +28,6 @@ class JoinIdeaVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        // replace with your own logic
-        // https://symfony.com/doc/current/security/voters.html
         return self::JOIN === $attribute
             && $subject instanceof Idea;
     }
@@ -43,12 +41,12 @@ class JoinIdeaVoter extends Voter
     {
         /** @var User $user */
         $user = $token->getUser();
-        // if the user is anonymous, do not grant access
+
         if (!$user instanceof UserInterface) {
             return false;
         }
 
-        if ($subject->isClosed()) {
+        if ($subject->isClosed() || $subject->isRejected()) {
             return false;
         }
 
@@ -57,11 +55,11 @@ class JoinIdeaVoter extends Voter
 
     private function checkUserCanJoin(User $user, Idea $subject): bool
     {
-        if (false === $this->checkFreeSeats($subject)) {
+        if (!$this->checkFreeSeats($subject)) {
             return false;
         }
 
-        if (false === $this->checkOpenForExternal($user, $subject)) {
+        if ($user->isExternal() && !$this->checkFreeSeatsForExternal($user, $subject)) {
             return false;
         }
 
@@ -70,27 +68,15 @@ class JoinIdeaVoter extends Voter
 
     private function checkFreeSeats(Idea $idea): bool
     {
-        if (0 === $idea->getNumSeats()) {
-            return true;
-        }
-
-        if ($idea->getVotes()->count() >= $idea->getNumSeats()) {
-            return false;
-        }
-
-        return true;
+        return $idea->countFreeSeats() > 0;
     }
 
-    private function checkOpenForExternal(User $user, Idea $idea): bool
+    private function checkFreeSeatsForExternal(User $user, Idea $idea): bool
     {
-        if ($user->isExternal() && Idea::STATE_APPROVED !== $idea->getState()) {
+        if ($idea->isInternal()) {
             return false;
         }
 
-        if ($user->isExternal() && $idea->getExternalVotes()->count() >= $idea->getExternalNumSeats()) {
-            return false;
-        }
-
-        return true;
+        return $idea->countFreeExternalSeats() > 0;
     }
 }
