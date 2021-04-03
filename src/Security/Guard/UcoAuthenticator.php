@@ -29,22 +29,16 @@ use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Uco\OAuth2\Client\Provider\UcoResourceOwner;
 
+use function assert;
+use function strtr;
+
 class UcoAuthenticator extends SocialAuthenticator
 {
     use TargetPathTrait;
 
-    /**
-     * @var ClientRegistry
-     */
-    private $clientRegistry;
-    /**
-     * @var UserManagerInterface
-     */
-    private $userManager;
-    /**
-     * @var RouterInterface
-     */
-    private $router;
+    private ClientRegistry $clientRegistry;
+    private UserManagerInterface $userManager;
+    private RouterInterface $router;
 
     public function __construct(
         ClientRegistry $clientRegistry,
@@ -52,8 +46,8 @@ class UcoAuthenticator extends SocialAuthenticator
         RouterInterface $router
     ) {
         $this->clientRegistry = $clientRegistry;
-        $this->userManager = $userManager;
-        $this->router = $router;
+        $this->userManager    = $userManager;
+        $this->router         = $router;
     }
 
     /**
@@ -61,7 +55,7 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function supports(Request $request)
     {
-        return 'connect_uco_check' === $request->attributes->get('_route');
+        return $request->attributes->get('_route') === 'connect_uco_check';
     }
 
     /**
@@ -77,14 +71,14 @@ class UcoAuthenticator extends SocialAuthenticator
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
-        /** @var UcoResourceOwner $userResource */
         $userResource = $this
             ->getClient()
             ->fetchUserFromToken($credentials);
+        assert($userResource instanceof UcoResourceOwner);
         $userResourceId = $userResource->getId();
 
         $user = $this->userManager->findUserBy(['username' => $userResourceId]);
-        if (!$user) {
+        if (! $user) {
             $user = User::createUcoUser($userResourceId);
         }
 
@@ -109,12 +103,12 @@ class UcoAuthenticator extends SocialAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $homepagePath = $this->router->generate('homepage');
-        if (!$request->getSession() instanceof Session) {
+        if (! $request->getSession() instanceof Session) {
             return new RedirectResponse($homepagePath);
         }
 
         $targetPath = $this->getTargetPath($request->getSession(), $providerKey);
-        if (!$targetPath) {
+        if (! $targetPath) {
             return new RedirectResponse($homepagePath);
         }
 

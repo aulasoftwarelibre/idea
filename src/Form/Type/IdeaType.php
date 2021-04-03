@@ -44,19 +44,14 @@ class IdeaType extends AbstractType
                 'class' => Group::class,
                 'placeholder' => 'Seleccione un grupo donde publicar la idea',
                 'required' => true,
-            ])
-        ;
+            ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'data_class' => Idea::class,
-            ])
-        ;
+            ]);
     }
 }

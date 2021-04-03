@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,47 +22,33 @@ use Doctrine\ORM\Mapping as ORM;
 class LogPolicy
 {
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
      */
-    private $id;
+    private int $id;
+
+    /** @ORM\Column(type="datetime") */
+    private DateTimeInterface $createAt;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $mandatory;
+
+    /** @ORM\Column(type="string", length=255) */
+    private string $version;
 
     /**
-     * @var \DateTimeInterface
-     * @ORM\Column(type="datetime")
-     */
-    private $createAt;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean")
-     */
-    private $mandatory;
-
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255)
-     */
-    private $version;
-
-    /**
-     * @var User|null
      * @ORM\ManyToOne(targetEntity="App\Entity\User")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
-    private $user;
+    private ?User $user = null;
 
-    /**
-     * @var string
-     * @ORM\Column(type="string", length=255,)
-     */
-    private $tag;
+    /** @ORM\Column(type="string", length=255,) */
+    private string $tag;
 
     public function __construct()
     {
-        $this->tag = 'general';
+        $this->tag       = 'general';
         $this->mandatory = true;
     }
 
@@ -82,12 +69,12 @@ class LogPolicy
         return $this;
     }
 
-    public function getCreateAt(): ?\DateTimeInterface
+    public function getCreateAt(): ?DateTimeInterface
     {
         return $this->createAt;
     }
 
-    public function setCreateAt(\DateTimeInterface $createAt): self
+    public function setCreateAt(DateTimeInterface $createAt): self
     {
         $this->createAt = $createAt;
 

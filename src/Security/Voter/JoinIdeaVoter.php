@@ -19,6 +19,8 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+use function assert;
+
 class JoinIdeaVoter extends Voter
 {
     public const JOIN = 'IDEA_JOIN';
@@ -28,7 +30,7 @@ class JoinIdeaVoter extends Voter
      */
     protected function supports($attribute, $subject)
     {
-        return self::JOIN === $attribute
+        return $attribute === self::JOIN
             && $subject instanceof Idea;
     }
 
@@ -39,10 +41,10 @@ class JoinIdeaVoter extends Voter
      */
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
     {
-        /** @var User $user */
         $user = $token->getUser();
+        assert($user instanceof User);
 
-        if (!$user instanceof UserInterface) {
+        if (! $user instanceof UserInterface) {
             return false;
         }
 
@@ -55,15 +57,11 @@ class JoinIdeaVoter extends Voter
 
     private function checkUserCanJoin(User $user, Idea $subject): bool
     {
-        if (!$this->checkFreeSeats($subject)) {
+        if (! $this->checkFreeSeats($subject)) {
             return false;
         }
 
-        if ($user->isExternal() && !$this->checkFreeSeatsForExternal($user, $subject)) {
-            return false;
-        }
-
-        return true;
+        return ! $user->isExternal() || $this->checkFreeSeatsForExternal($subject);
     }
 
     private function checkFreeSeats(Idea $idea): bool
@@ -71,7 +69,7 @@ class JoinIdeaVoter extends Voter
         return $idea->countFreeSeats() > 0;
     }
 
-    private function checkFreeSeatsForExternal(User $user, Idea $idea): bool
+    private function checkFreeSeatsForExternal(Idea $idea): bool
     {
         if ($idea->isInternal()) {
             return false;

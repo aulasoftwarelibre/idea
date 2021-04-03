@@ -24,10 +24,14 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 use Sonata\Form\Type\DatePickerType;
 
+use function assert;
+use function in_array;
+
 class ActivityAdmin extends AbstractAdmin
 {
     /**
-     * {@inheritdoc}
+     * @var array<string, mixed>
+     * @inheritdoc
      */
     protected $datagridValues = [
         '_page' => 1,
@@ -40,21 +44,13 @@ class ActivityAdmin extends AbstractAdmin
         return null;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('title', null, [
-            ])
-            ->add('academicYear', null, [
-            ])
-            ->add('occurredOn', DatePickerType::class, [
-                'format' => 'd/M/y',
-            ])
-            ->add('duration', null, [
-            ]);
+            ->add('title', null, [])
+            ->add('academicYear', null, [])
+            ->add('occurredOn', DatePickerType::class, ['format' => 'd/M/y'])
+            ->add('duration', null, []);
 
         $form
             ->getFormBuilder()
@@ -62,20 +58,14 @@ class ActivityAdmin extends AbstractAdmin
             ->setDataMapper(new GenericDataMapper(Activity::class));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $list): void
     {
         $list
             ->addIdentifier('title', null, [
                 'route' => ['name' => 'show'],
             ])
-            ->add('occurredOn', null, [
-                'format' => 'd/M/y',
-            ])
-            ->add('duration', null, [
-            ])
+            ->add('occurredOn', null, ['format' => 'd/M/y'])
+            ->add('duration', null, [])
             ->add('_action', 'actions', [
                 'actions' => [
                     'show' => [],
@@ -84,40 +74,24 @@ class ActivityAdmin extends AbstractAdmin
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('title', null, [
-                'show_filter' => true,
-            ]);
+            ->add('title', null, ['show_filter' => true]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
             ->with('Activities')
-                ->add('title', null, [
-                ])
-                ->add('occurredOn', null, [
-                    'format' => 'd/M/y',
-                ])
-                ->add('duration', null, [
-                ])
-                ->add('createdAt', null, [
-                ])
-                ->add('updatedAt', null, [
-                ])
+                ->add('title', null, [])
+                ->add('occurredOn', null, ['format' => 'd/M/y'])
+                ->add('duration', null, [])
+                ->add('createdAt', null, [])
+                ->add('updatedAt', null, [])
             ->end()
             ->with('Users')
-                ->add('participations', null, [
-                    'template' => '/backend/Activity/show_participation.html.twig',
-                ])
+                ->add('participations', null, ['template' => '/backend/Activity/show_participation.html.twig'])
             ->end();
     }
 
@@ -126,18 +100,20 @@ class ActivityAdmin extends AbstractAdmin
      */
     protected function configureTabMenu(MenuItemInterface $menu, $action, ?AdminInterface $childAdmin = null): void
     {
-        if (!$childAdmin && !\in_array($action, ['edit', 'show'], true)) {
+        if (! $childAdmin && ! in_array($action, ['edit', 'show'], true)) {
             return;
         }
 
-        /** @var AdminInterface $admin */
         $admin = $this->isChild() ? $this->getParent() : $this;
+        assert($admin instanceof AdminInterface);
         $id = $admin->getRequest()->get('id');
 
-        if ($this->isGranted('LIST')) {
-            $menu->addChild('Manage Participations', [
-                'uri' => $admin->generateUrl('eco.admin.participation.list', ['id' => $id]),
-            ]);
+        if (! $this->isGranted('LIST')) {
+            return;
         }
+
+        $menu->addChild('Manage Participations', [
+            'uri' => $admin->generateUrl('eco.admin.participation.list', ['id' => $id]),
+        ]);
     }
 }

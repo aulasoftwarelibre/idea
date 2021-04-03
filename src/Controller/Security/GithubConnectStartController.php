@@ -34,17 +34,18 @@ class GithubConnectStartController extends AbstractController
 
         return $clientRegistry
             ->getClient('github')
-            ->redirect([
-                'user:email',
-            ], [])
-        ;
+            ->redirect(['user:email'], []);
     }
 
     private function storeTargetPath(Request $request): void
     {
         $targetPath = $request->query->get('_target_path');
-        if ($targetPath && $request->hasSession() && ($session = $request->getSession()) instanceof SessionInterface) {
-            $this->saveTargetPath($session, 'main', $targetPath);
+        $session    = $request->getSession();
+
+        if (! $targetPath || ! $request->hasSession() || ! $session instanceof SessionInterface) {
+            return;
         }
+
+        $this->saveTargetPath($session, 'main', $targetPath);
     }
 }

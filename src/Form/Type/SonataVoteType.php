@@ -22,10 +22,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SonataVoteType extends AbstractType
 {
-    /**
-     * @var UserRepository
-     */
-    private $repository;
+    private UserRepository $repository;
 
     public function __construct(UserRepository $repository)
     {
@@ -40,16 +37,12 @@ class SonataVoteType extends AbstractType
         $builder->addModelTransformer(new ArrayToVoteTransform($this->repository));
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'choices' => $this->repository->getChoices(),
-            ])
-        ;
+            ]);
     }
 
     /**

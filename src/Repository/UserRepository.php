@@ -14,8 +14,11 @@ declare(strict_types=1);
 namespace App\Repository;
 
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
+
+use function sprintf;
 
 class UserRepository extends ServiceEntityRepository
 {
@@ -34,6 +37,9 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->remove($user);
     }
 
+    /**
+     * @return array<string, int>
+     */
     public function getChoices(): array
     {
         $users = $this->createQueryBuilder('o')
@@ -43,7 +49,7 @@ class UserRepository extends ServiceEntityRepository
 
         $result = [];
         foreach ($users as $user) {
-            $key = "{$user['firstname']} {$user['lastname']} - {$user['username']}";
+            $key          = sprintf('%s %s - %s', $user['firstname'], $user['lastname'], $user['username']);
             $result[$key] = $user['id'];
         }
 
@@ -64,8 +70,7 @@ class UserRepository extends ServiceEntityRepository
                 ORDER BY a.occurredOn DESC
             ')
             ->setParameter('id', $userId)
-            ->getOneOrNullResult()
-            ;
+            ->getOneOrNullResult();
     }
 
     public function findUsedAliasOrUsername(string $find): ?User
@@ -79,10 +84,12 @@ class UserRepository extends ServiceEntityRepository
             ')
             ->setParameter('username', $find)
             ->setParameter('alias', $find)
-            ->getOneOrNullResult()
-        ;
+            ->getOneOrNullResult();
     }
 
+    /**
+     * @return array<User>
+     */
     public function findAllDeletedUsers(): array
     {
         $qb = $this->getEntityManager()
@@ -92,8 +99,7 @@ class UserRepository extends ServiceEntityRepository
                 WHERE u.deletedAt IS NOT NULL
                 AND u.deletedAt < :oneYearAgo
             ')
-            ->setParameter('oneYearAgo', new \DateTime('1 year ago'))
-        ;
+            ->setParameter('oneYearAgo', new DateTime('1 year ago'));
 
         return $qb->getResult();
     }

@@ -24,6 +24,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
+use function assert;
+
 class RegisterType extends AbstractType
 {
     /**
@@ -31,8 +33,8 @@ class RegisterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var User $profile */
         $profile = $builder->getData();
+        assert($profile instanceof User);
 
         $builder
             ->add('alias', null, [
@@ -70,32 +72,23 @@ class RegisterType extends AbstractType
                 'required' => false,
                 'class' => Degree::class,
                 'placeholder' => 'Selecciona tus estudios',
-                'attr' => [
-                    'class' => 'ui search dropdown',
-                ],
+                'attr' => ['class' => 'ui search dropdown'],
             ])
-            ->add('year', null, [
-                'label' => 'Año de ingreso',
-            ])
+            ->add('year', null, ['label' => 'Año de ingreso'])
             ->add('terms', CheckboxType::class, [
                 'mapped' => false,
                 'required' => true,
                 'constraints' => [
                     new IsTrue(['message' => 'Debe aceptar los términos de uso']),
                 ],
-            ])
-        ;
+            ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'data_class' => User::class,
-            ])
-        ;
+            ]);
     }
 }

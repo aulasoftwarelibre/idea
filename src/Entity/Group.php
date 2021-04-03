@@ -21,45 +21,44 @@ use Sonata\UserBundle\Entity\BaseGroup;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
- * Class Group.
- *
  * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
  * @ORM\Table(name="fos_group")
  */
 class Group extends BaseGroup
 {
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
+     *
+     * @var int
+     * @inheritdoc
      */
     protected $id;
 
     /**
-     * @var string
      * @Groups("idea")
+     * @var string
+     * @inheritdoc
      */
     protected $name;
 
-    /**
-     * @var string
-     * @ORM\Column(length=32)
-     */
-    private $icon;
+    /** @ORM\Column(length=32) */
+    private string $icon;
 
     /**
-     * @var string
      * @ORM\Column(length=255, unique=true)
+     *
      * @Gedmo\Slug(fields={"name"}, unique=true)
      */
-    private $slug;
+    private string $slug;
 
     /**
-     * @var Idea[]|Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Idea", mappedBy="group", cascade={"persist", "remove"}, orphanRemoval=true)
+     *
+     * @var Collection<int,Idea>
      */
-    private $ideas;
+    private Collection $ideas;
 
     /**
      * {@inheritdoc}
@@ -79,9 +78,6 @@ class Group extends BaseGroup
         return $this->ideas;
     }
 
-    /**
-     * @return Group
-     */
     public function addIdea(Idea $idea): self
     {
         $this->ideas[] = $idea;
@@ -89,33 +85,21 @@ class Group extends BaseGroup
         return $this;
     }
 
-    /**
-     * @param Idea $idea
-     */
     public function removeIdea(Idea $idea): void
     {
         $this->ideas->removeElement($idea);
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;
     }
 
-    /**
-     * @return string
-     */
     public function getIcon(): string
     {
         return (string) $this->icon;
     }
 
-    /**
-     * @return Group
-     */
     public function setIcon(string $icon): self
     {
         $this->icon = $icon;

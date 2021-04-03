@@ -35,7 +35,6 @@ final class IdeaMessageType extends AbstractType
             ->add('isTest', CheckboxType::class, [
                 'label' => 'Enviar una prueba',
                 'required' => false,
-            ])
-        ;
+            ]);
     }
 }

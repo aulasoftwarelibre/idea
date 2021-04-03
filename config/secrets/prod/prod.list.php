@@ -2,6 +2,8 @@
 
 return array (
   'APP_SECRET' => NULL,
+  'CLIENT_DISCORD_ID' => NULL,
+  'CLIENT_DISCORD_SECRET' => NULL,
   'CLIENT_GITHUB_ID' => NULL,
   'CLIENT_GITHUB_SECRET' => NULL,
   'CLIENT_GOOGLE_ID' => NULL,
@@ -10,5 +12,4 @@ return array (
   'CLIENT_UCO_SECRET' => NULL,
   'DATABASE_URL' => NULL,
   'MAILER_DSN' => NULL,
-  'TELEGRAM_BOT_API' => NULL,
 );

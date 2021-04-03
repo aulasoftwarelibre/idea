@@ -22,6 +22,8 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
+use function assert;
+
 class ProfileType extends AbstractType
 {
     /**
@@ -29,8 +31,8 @@ class ProfileType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        /** @var User $profile */
         $profile = $builder->getData();
+        assert($profile instanceof User);
 
         $builder
             ->add('alias', null, [
@@ -68,25 +70,16 @@ class ProfileType extends AbstractType
                 'required' => false,
                 'class' => Degree::class,
                 'placeholder' => 'Selecciona tus estudios',
-                'attr' => [
-                    'class' => 'ui search dropdown',
-                ],
+                'attr' => ['class' => 'ui search dropdown'],
             ])
-            ->add('year', null, [
-                'label' => 'Año de ingreso',
-            ])
-        ;
+            ->add('year', null, ['label' => 'Año de ingreso']);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver
             ->setDefaults([
                 'data_class' => User::class,
-            ])
-        ;
+            ]);
     }
 }

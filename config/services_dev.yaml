@@ -4,5 +4,5 @@ services:
         class: Symfony\Component\Mailer\EventListener\EnvelopeListener
         tags: ['kernel.event_subscriber']
         arguments:
-            $sender: '%env(MAIL_FROM)%'
-            $recipients: ['%env(MAIL_TO)%']
+            $sender: '%mail_from%'
+            $recipients: ['%mail_from%']

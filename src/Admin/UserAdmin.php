@@ -24,7 +24,8 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 class UserAdmin extends BaseUserAdmin
 {
     /**
-     * {@inheritdoc}
+     * @var array<string, mixed>
+     * @inheritdoc
      */
     protected $datagridValues = [
         '_page' => 1,
@@ -32,9 +33,6 @@ class UserAdmin extends BaseUserAdmin
         '_sort_by' => 'createdAt',
     ];
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureFormFields(FormMapper $formMapper): void
     {
         parent::configureFormFields($formMapper);
@@ -70,9 +68,6 @@ class UserAdmin extends BaseUserAdmin
             ->end();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureListFields(ListMapper $listMapper): void
     {
         parent::configureListFields($listMapper);
@@ -86,9 +81,6 @@ class UserAdmin extends BaseUserAdmin
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureDatagridFilters(DatagridMapper $filterMapper): void
     {
         parent::configureDatagridFilters($filterMapper);
@@ -97,23 +89,12 @@ class UserAdmin extends BaseUserAdmin
             ->remove('username');
 
         $filterMapper
-            ->add('username', null, [
-                'show_filter' => true,
-            ])
-            ->add('firstname', null, [
-                'show_filter' => true,
-            ])
-            ->add('lastname', null, [
-                'show_filter' => true,
-            ])
-            ->add('nic', null, [
-                'show_filter' => true,
-            ]);
+            ->add('username', null, ['show_filter' => true])
+            ->add('firstname', null, ['show_filter' => true])
+            ->add('lastname', null, ['show_filter' => true])
+            ->add('nic', null, ['show_filter' => true]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function configureShowFields(ShowMapper $showMapper): void
     {
         $showMapper
@@ -133,9 +114,7 @@ class UserAdmin extends BaseUserAdmin
                 ->add('year')
             ->end()
             ->with('Activities')
-                ->add('participations', null, [
-                    'template' => '/backend/User/show_participation.html.twig',
-                ])
+                ->add('participations', null, ['template' => '/backend/User/show_participation.html.twig'])
             ->end();
     }
 }

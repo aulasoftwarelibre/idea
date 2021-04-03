@@ -21,10 +21,7 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AliasValidator extends ConstraintValidator
 {
-    /**
-     * @var UserRepository
-     */
-    private $userRepository;
+    private UserRepository $userRepository;
 
     /**
      * {@inheritdoc}
@@ -35,21 +32,20 @@ class AliasValidator extends ConstraintValidator
     }
 
     /**
-     * @param User|string|null $entity
-     * @param Alias            $constraint
+     * @param User|string|null $value
      */
-    public function validate($entity, Constraint $constraint): void
+    public function validate($value, Constraint $constraint): void
     {
-        if (null === $entity || '' === $entity) {
+        if ($value === null || $value === '' || $constraint instanceof Alias) {
             return;
         }
 
-        if (!$entity instanceof User) {
-            throw new UnexpectedTypeException($entity, User::class);
+        if (! $value instanceof User) {
+            throw new UnexpectedTypeException($value, User::class);
         }
 
-        $user = $this->userRepository->findUsedAliasOrUsername($entity->getAlias());
-        if ((!$user instanceof User) || $user->getId() === $entity->getId()) {
+        $user = $this->userRepository->findUsedAliasOrUsername($value->getAlias());
+        if ((! $user instanceof User) || $user->getId() === $value->getId()) {
             return;
         }
 

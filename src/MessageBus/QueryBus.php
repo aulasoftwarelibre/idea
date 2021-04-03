@@ -17,27 +17,22 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-final class QueryBus
+class QueryBus
 {
     use HandleTrait;
 
-    public function __construct(MessageBusInterface $messageBus)
+    public function __construct(MessageBusInterface $queryBus)
     {
-        $this->messageBus = $messageBus;
+        $this->messageBus = $queryBus;
     }
 
     /**
-     * Dispatches the given message, expecting to be handled by a single handler
-     * and returns the result from the handler returned value.
-     * This behavior is useful for both synchronous command & query buses,
-     * the last one usually returning the handler result.
-     *
-     * @param object|Envelope $message The message or the message pre-wrapped in an envelope
+     * @param object|Envelope $query
      *
      * @return mixed The handler returned value
      */
-    public function query($message)
+    public function query($query)
     {
-        return $this->handle($message);
+        return $this->handle($query);
     }
 }

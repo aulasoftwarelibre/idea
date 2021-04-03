@@ -15,7 +15,7 @@ namespace App\Repository;
 
 use App\Entity\LogPolicy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Common\Persistence\ManagerRegistry;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @method LogPolicy|null find($id, $lockMode = null, $lockVersion = null)

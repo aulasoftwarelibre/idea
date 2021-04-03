@@ -23,53 +23,37 @@ use Gedmo\Mapping\Annotation as Gedmo;
 class Degree
 {
     /**
-     * @var int
      * @ORM\Column(type="integer")
      * @ORM\Id()
      * @ORM\GeneratedValue("AUTO")
      */
-    private $id;
+    private int $id;
+
+    /** @ORM\Column(length=255, unique=true) */
+    private string $name;
 
     /**
-     * @var string
      * @ORM\Column(length=255, unique=true)
-     */
-    private $name;
-
-    /**
-     * @var string
-     * @ORM\Column(length=255, unique=true)
+     *
      * @Gedmo\Slug(fields={"name"}, unique=true)
      */
-    private $slug;
+    private string $slug;
 
-    /**
-     * Degree constructor.
-     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
         return $this->getName();
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getName(): string
     {
         return $this->name;
@@ -85,9 +69,6 @@ class Degree
         return $this;
     }
 
-    /**
-     * @return string
-     */
     public function getSlug(): string
     {
         return $this->slug;

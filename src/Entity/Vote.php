@@ -13,52 +13,51 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
+use function assert;
+use function sprintf;
+
 /**
- * Class Vote.
- *
  * @ORM\Entity(repositoryClass="App\Repository\VoteRepository")
  * @ORM\Table()
  */
 class Vote
 {
     /**
-     * @var int
      * @ORM\Id()
      * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    private int $id;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="create")
      */
-    private $createdAt;
+    private DateTime $createdAt;
 
     /**
-     * @var \DateTime
      * @ORM\Column(type="datetime")
+     *
      * @Gedmo\Timestampable(on="update")
      */
-    private $updatedAt;
+    private DateTime $updatedAt;
 
     /**
-     * @var User
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="votes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     /**
-     * @var Idea
      * @ORM\ManyToOne(targetEntity="App\Entity\Idea", inversedBy="votes")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $idea;
+    private Idea $idea;
 
     /**
      * @return Vote
@@ -72,44 +71,29 @@ class Vote
         return $vote;
     }
 
-    /**
-     * @return string
-     */
     public function __toString(): string
     {
-        /** @var User $user */
         $user = $this->getUser();
+        assert($user instanceof User);
 
-        return "{$user->getFullname()} [{$user->getUsername()}]";
+        return sprintf('%s [%s]', $user->getFullname(), $user->getUsername());
     }
 
-    /**
-     * @return int
-     */
     public function getId(): int
     {
         return $this->id;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getCreatedAt(): \DateTime
+    public function getCreatedAt(): DateTime
     {
         return $this->createdAt;
     }
 
-    /**
-     * @return \DateTime
-     */
-    public function getUpdatedAt(): \DateTime
+    public function getUpdatedAt(): DateTime
     {
         return $this->updatedAt;
     }
 
-    /**
-     * @return User
-     */
     public function getUser(): User
     {
         return $this->user;
@@ -125,9 +109,6 @@ class Vote
         return $this;
     }
 
-    /**
-     * @return Idea
-     */
     public function getIdea(): Idea
     {
         return $this->idea;

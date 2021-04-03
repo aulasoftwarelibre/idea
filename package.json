@@ -1,6 +1,6 @@
 {
     "devDependencies": {
-        "@symfony/webpack-encore": "^0.28.0",
+        "@symfony/webpack-encore": "^0.31.0",
         "clipboard": "^2.0.4",
         "core-js": "^3.3.2",
         "fomantic-ui-css": "^2.8.4",
