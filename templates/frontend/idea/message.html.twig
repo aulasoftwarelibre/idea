@@ -1,0 +1,72 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="ui grid">
+        <div class="row">
+            <div class="ui idea fluid card">
+                <div class="content">
+                    <div class="two column">
+                        {{ form_start(form, {method: 'POST', action: path('idea_send_message', {'slug': idea.slug})}) }}
+                        <h1 class="ui header">
+                            Mandar mensaje
+                            <div class="sub header">{{ idea.title }}</div>
+                        </h1>
+
+                        <div class="ui divider"></div>
+
+                        {{ form_widget(form) }}
+
+                        <div class="ui divider"></div>
+
+                        <div class="ui submit button">Enviar</div>
+                        <a href="{{ path('idea_show', {slug: idea.slug}) }}" class="ui button">Volver</a>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('select')
+            .dropdown({ fullTextSearch: true })
+        ;
+
+        $('.ui.form')
+            .form({
+                on: 'blur',
+                inline : true,
+                fields: {
+                    idea_title: {
+                        identifier: 'idea_title',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica un título'
+                        }, {
+                            type: 'minLength[10]',
+                            prompt: '{name} debe tener al menos {ruleValue} caracteres'
+                        }, {
+                            type: 'maxLength[255]',
+                            prompt: '{name} no debe tener más de {ruleValue} caracteres'
+                        }]
+                    },
+                    idea_group: {
+                        identifier: 'idea_group',
+                        rules: [{
+                            type: 'empty',
+                            prompt: 'Indica un grupo'
+                        }]
+                    }
+                }
+            })
+        ;
+    </script>
+{% endblock %}

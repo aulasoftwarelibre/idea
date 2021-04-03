@@ -22,6 +22,7 @@ open_idea: Abrir idea
 approve_idea: Aprobar idea
 reject_idea: Rechazar idea
 edit_idea: Editar idea
+idea_send_message: Enviar mensaje
 
 breadcrumb.link_activity_list: Lista de actividades
 breadcrumb.link_degree_list: Lista de grados
@@ -104,6 +105,8 @@ form.label_description: Descripción
 form.label_location: Lugar
 form.label_starts_at: Día y hora
 form.label_group: Grupo
+form.label_message: Mensaje
+form.label_message_test: Enviar una prueba
 form.label_name: Nombre
 form.label_owner: Propietario
 form.label_state: Estado
