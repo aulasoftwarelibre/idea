@@ -16,6 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\MessageBus\CommandBus;
 use App\Messenger\Idea\OpenIdeaJitsiRoomCommand;
+use App\Messenger\IdeaMessage\SendIdeaMessageCommand;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -41,6 +42,22 @@ final class OpenIdeaJitsiRoomController extends AbstractController
     {
         $this->commandBus->dispatch(
             new OpenIdeaJitsiRoomCommand($idea)
+        );
+
+        $ideaStartsAt = $idea->getStartsAt()->format('H:i');
+
+        $message = <<<EOF
+<p>¡Hola!</p>
+<p>Te escribimos para informarte de que la sala de la videoconferencia ya está disponible.</p>
+<p>Puedes acceder desde la página de la actividad. La charla empecerá a las ${ideaStartsAt} horas. ¡Te esperamos!</p>
+EOF;
+
+        $this->commandBus->dispatch(
+            new SendIdeaMessageCommand(
+                $idea->getId(),
+                $message,
+                false
+            )
         );
 
         return $this->redirectToRoute('idea_jitsi', [

@@ -1,23 +1,40 @@
-{% extends 'base.html.twig' %}
+{% extends 'login/layout.html.twig' %}
 
-{% block content %}
-    <div class="ui two column centered grid">
+{% block body %}
+    <div class="ui middle aligned center aligned grid">
         <div class="column">
-            <div class="ui placeholder segment">
+            <div class="ui segment">
+                <img src="{{ asset('assets/images/logoasl.png') }}" alt="Logo del Aula de Software Libre" class="ui centered small image" id="logo">
+
                 <div class="ui icon header">
                     <i class="video icon"></i>
                     {{ idea.title }}
-                    <div class="sub header">
-                        La sala de videoconferencia aún no está disponible. Se suele abrir unos 10-15 minutos
-                        antes de que empiece la conferencia.
-                    </div>
+                    <div class="ui sub header">Acceso a la videoconferencia</div>
                 </div>
+
+                <p>
+                    La sala de videoconferencia aún no está disponible. <br/> Se suele abrir unos 10-15 minutos
+                    antes de que empiece la conferencia.
+                </p>
 
                 {% if is_granted('ROLE_ADMIN') %}
                     <form class="inline" method="post" action="{{ url('idea_open_jitsi', { slug: idea.slug }) }}">
                         <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
-                        <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir sala</button>
+                        <div class="ui button room">Abrir sala</div>
+                        <div class="ui flowing popup top left transition hidden">
+                            <div class="column">
+                                <div class="ui header">Abrir sala</div>
+                                {% if date('60 minutes') > idea.startsAt %}
+                                <p>¡Ojo! No abras la sala antes de tiempo. Se enviará un correo a los usuarios.</p>
+                                <button href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui secondary button">Abrir</button>
+                                {% else %}
+                                <p>¡Ojo! La sala no puede abrirse hasta una hora antes del evento.</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </form>
+                    <div class="ui divider"></div>
+                    <a href="{{ url }}" class="ui label">Ir a la sala de videoconferencia</a>
                 {% else %}
                     <a href="{{ url('idea_show', { slug: idea.slug }) }}" class="ui primary button">Volver</a>
                 {% endif %}
@@ -36,4 +53,15 @@
             justify-content: center;
         }
     </style>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $('.ui.button.room')
+        .popup({
+            hoverable: true,
+            inline: true
+        })
+    </script>
 {% endblock %}

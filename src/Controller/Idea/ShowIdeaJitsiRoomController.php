@@ -16,6 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Idea;
 use App\MessageBus\QueryBus;
 use App\Messenger\Idea\GetIdeaJitsiRoomUrlQuery;
+use App\Security\Voter\MemberIdeaVoter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,16 +42,21 @@ class ShowIdeaJitsiRoomController extends AbstractController
             throw $this->createNotFoundException();
         }
 
-        if ($idea->isJitsiRoomOpen()) {
-            $url = $this->queryBus->query(
-                new GetIdeaJitsiRoomUrlQuery($idea)
-            );
+        if (!$this->isGranted(MemberIdeaVoter::MEMBER, $idea)) {
+            throw $this->createNotFoundException();
+        }
 
+        $url = $this->queryBus->query(
+            new GetIdeaJitsiRoomUrlQuery($idea)
+        );
+
+        if ($idea->isJitsiRoomOpen()) {
             return $this->redirect($url);
         }
 
         return $this->render('frontend/idea/jitsi.html.twig', [
             'idea' => $idea,
+            'url' => $url,
         ]);
     }
 }
