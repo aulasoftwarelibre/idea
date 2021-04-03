@@ -22,9 +22,8 @@ use App\Messenger\TelegramChat\GenerateUserTelegramTokenCommand;
 use App\Messenger\TelegramChat\UnregisterUserChatCommand;
 use App\Repository\UserRepository;
 use App\Services\Telegram\TelegramCachedCalls;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,7 +32,7 @@ use Symfony\Component\Routing\Annotation\Route;
 /**
  * @Route("/profile")
  */
-class ProfileController extends Controller
+class ProfileController extends AbstractController
 {
     /**
      * @var UserRepository
@@ -56,8 +55,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/edit", name="profile_edit")
-     * @Method({"GET", "POST"})
+     * @Route("/edit", name="profile_edit", methods={"GET", "POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function editAction(Request $request): Response
@@ -84,8 +82,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/", name="profile_show")
-     * @Method("GET")
+     * @Route("/", name="profile_show", methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function showAction(Request $request): Response
@@ -116,8 +113,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/telegram/disconnect", name="profile_telegram_disconnect", options={"expose" = true})
-     * @Method("POST")
+     * @Route("/telegram/disconnect", name="profile_telegram_disconnect", options={"expose" = true}, methods={"POST"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function disconnectTelegramAction(): JsonResponse
@@ -142,8 +138,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * @Route("/telegram/status", name="profile_telegram_status", options={"expose" = true})
-     * @Method("GET")
+     * @Route("/telegram/status", name="profile_telegram_status", options={"expose" = true}, methods={"GET"})
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      */
     public function getTelegramStatusAction(): JsonResponse

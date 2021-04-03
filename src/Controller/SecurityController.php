@@ -13,17 +13,39 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SecurityController extends Controller
+class SecurityController extends AbstractController
 {
+    /**
+     * @Route("/login", name="connect_uco_start")
+     */
+    public function connect(ClientRegistry $clientRegistry): Response
+    {
+        return $clientRegistry
+            ->getClient('uco')
+            ->redirect([
+                'openid',
+            ]);
+    }
+
+    /**
+     * @Route("/login/check-ssp", name="connect_uco_check")
+     */
+    public function check(): void
+    {
+        throw new RuntimeException('This method should not be called.');
+    }
+
     /**
      * @Route("/logout", name="logout")
      */
     public function logout(): void
     {
-        throw new RuntimeException('La ruta /logout debe estar activa en el cortafuegos.');
+        throw new RuntimeException('This method should not be called.');
     }
 }

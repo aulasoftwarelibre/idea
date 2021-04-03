@@ -37,7 +37,7 @@
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                 {{ render(controller('App\\Controller\\ProfileController::showMenu')) }}
             {% else %}
-                <a class="floated right item" href="{{ path('hwi_oauth_connect') }}"><i class="sign in icon"></i> Conectar</a>
+                <a class="floated right item" href="{{ path('connect_uco_start') }}"><i class="sign in icon"></i> Conectar</a>
             {% endif %}
         </div>
     </div>
@@ -49,6 +49,7 @@
                 <div class="ui right dividing rail">
                     <div class="ui vertical stripe">
                         {% block side_menu %}
+                        {{ render(controller('App\\Controller\\IdeaController::getNextScheduledIdeas')) }}
                         {{ render(controller('App\\Controller\\IdeaController::getMoreVotesPendingIdeas')) }}
                         {% endblock %}
                     </div>

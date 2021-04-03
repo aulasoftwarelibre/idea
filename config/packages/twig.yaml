@@ -4,6 +4,6 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - 'SonataCoreBundle:Form:datepicker.html.twig'
-        - 'SonataFormatterBundle:Form:formatter.html.twig'
+        - '@SonataFormatter/Form/formatter.html.twig'
         - '@HarmonyUiBundle/Resources/views/form/semantic_2_layout.html.twig'
         - '/form/vich_widget.html.twig'
