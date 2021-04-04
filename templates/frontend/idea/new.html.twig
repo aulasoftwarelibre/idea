@@ -3,22 +3,22 @@
 {% block body %}
     <div class="ui grid">
         <div class="row">
-            <div class="ui idea fluid card">
+            <div class="ui inverted idea fluid card">
 
                 <div class="content">
                     <div class="two column">
-                        {{ form_start(form, {attr: {id: 'idea_form'}, method: 'POST', action: path('idea_new')}) }}
-                        <h1 class="ui header">
+                        {{ form_start(form, {attr: {id: 'idea_form', class: 'inverted'}, method: 'POST', action: path('idea_new')}) }}
+                        <h1 class="ui inverted header">
                             Proponer idea
                         </h1>
 
                         <div class="ui divider"></div>
 
-                        {{ form_widget(form) }}
+                        {{ form_widget(form, {attr: {class: 'inverted'}}) }}
 
                         <div class="ui divider"></div>
 
-                        <div class="ui submit button">Enviar</div>
+                        <div class="ui inverted submit button">Enviar</div>
 
                         {{ form_end(form) }}
                     </div>

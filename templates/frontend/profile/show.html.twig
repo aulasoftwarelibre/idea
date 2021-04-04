@@ -3,7 +3,7 @@
 {% block body %}
     <div class="ui grid">
         <div class="row">
-            <div class="ui horizontal fluid card mobile hidden">
+            <div class="ui inverted horizontal fluid card mobile hidden">
                 <div class="image">
                     {% if profile.image.name is not empty %}
                         <img class="right floated mini ui image" src="{{ vich_uploader_asset(profile, 'imageFile') | imagine_filter('squared_thumbnail') }}">
@@ -22,7 +22,7 @@
                 </div>
             </div>
 
-            <div class="ui fluid card mobile only">
+            <div class="ui inverted fluid card mobile only">
                 <div class="content">
                     <span class="header">
                         <span>{{ profile.fullname }}</span>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div class="extra content">
-                    <div class="ui two mini horizontal statistics">
+                    <div class="ui inverted  two mini horizontal statistics">
                         <div class="statistic">
                             <div class="value">
                                 {{ hours }}
@@ -59,8 +59,8 @@
 
         <div class="row">
             {% for academic_year, participations in academic_years %}
-            <h2 class="ui sub header">Curso {{ academic_year }}</h2>
-            <table class="ui compact unstackable table">
+            <h2 class="ui inverted sub header">Curso {{ academic_year }}</h2>
+            <table class="ui inverted compact unstackable table">
                 <thead>
                 <tr>
                     <th>Título de la actividad</th>

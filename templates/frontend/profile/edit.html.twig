@@ -7,12 +7,12 @@
 {% block body %}
     <div class="ui grid">
         <div class="row">
-            <div class="ui idea fluid card">
+            <div class="ui inverted idea fluid card">
                 <div class="content">
                     <div class="ui grid">
                         <div class="two column">
-                            {{ form_start(form, {attr: {id: 'edit-profile'}, method: 'POST', action: path('profile_edit')}) }}
-                            <h2 class="ui header">Editar perfil</h2>
+                            {{ form_start(form, {attr: {id: 'edit-profile', class: 'inverted'}, method: 'POST', action: path('profile_edit')}) }}
+                            <h2 class="ui inverted header">Editar perfil</h2>
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
@@ -29,13 +29,13 @@
                                     {{ form_row(form.degree) }}
                                     {{ form_row(form.year) }}
                                 </div>
-                                <a class="ui basic button" id="clear-degree">Borrar selección</a>
+                                <a class="ui inverted basic button" id="clear-degree">Borrar selección</a>
                             {% endif %}
 
                             <div class="ui divider"></div>
 
-                            <div class="ui submit button">Guardar</div>
-                            <div class="ui negative labeled icon button" id="remove">
+                            <div class="ui inverted submit button">Guardar</div>
+                            <div class="ui inverted negative labeled icon button" id="remove">
                                 <i class="warning icon"></i>
                                 Borrar usuario
                             </div>
@@ -51,7 +51,7 @@
 {% endblock %}
 
 {% block modal %}
-    <div class="ui remove tiny modal">
+    <div class="ui inverted remove tiny modal">
         <div class="header">Borrar usuario</div>
         <div class="content">
             <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros

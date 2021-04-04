@@ -7,12 +7,12 @@
 {% block body %}
     <div class="ui grid">
         <div class="row">
-            <div class="ui idea fluid card">
+            <div class="ui inverted idea fluid card">
                 <div class="content">
                     <div class="ui grid">
                         <div class="two column">
-                            {{ form_start(form, {attr: {id: 'register-profile'}, method: 'POST', action: path('profile_register')}) }}
-                            <h2 class="ui header">Registrar usuario</h2>
+                            {{ form_start(form, {attr: {id: 'register-profile', class: 'inverted'}, method: 'POST', action: path('profile_register')}) }}
+                            <h2 class="ui inverted header">Registrar usuario</h2>
 
                             <div class="ui divider"></div>
                             {{ form_errors(form) }}
@@ -29,7 +29,7 @@
                                     {{ form_row(form.degree) }}
                                     {{ form_row(form.year) }}
                                 </div>
-                                <a class="ui basic button" id="clear-degree">Borrar selección</a>
+                                <a class="ui inverted basic button" id="clear-degree">Borrar selección</a>
                             {% endif %}
 
                             <div class="ui divider"></div>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
 
-                            <table class="ui definition celled compact table">
+                            <table class="ui inverted definition celled compact table">
                                 <tbody>
                                 <tr>
                                     <td>Responsable</td>
@@ -98,7 +98,7 @@
 
                             <div class="ui divider"></div>
 
-                            <div class="ui submit button">Guardar</div>
+                            <div class="ui inverted submit button">Guardar</div>
 
                             {{ form_widget(form._token) }}
                             {{ form_end(form, {'render_rest': false}) }}

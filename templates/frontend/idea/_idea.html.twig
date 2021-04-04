@@ -1,16 +1,16 @@
 {% import 'widgets/buttons.html.twig' as buttons %}
 
 <div class="row">
-    <div class="ui idea fluid card"
+    <div class="ui inverted idea fluid card"
      {% if complete is not defined %}
      style="cursor: pointer" onclick="location.href='{{ path('idea_show', {'slug': idea.slug }) }}'"
      {% endif %}
     >
         <div class="content">
             <!-- vote box -->
-            <div class="ui vote basic compact floated left segment center aligned">
-                <div class="ui top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
-                <div class="ui tiny statistic">
+            <div class="ui inverted vote basic compact floated left segment center aligned">
+                <div class="ui inverted top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
+                <div class="ui inverted tiny statistic">
                     <div class="value">{{ idea.votes | length }}</div>
                     <div class="label">personas</div>
                 </div>

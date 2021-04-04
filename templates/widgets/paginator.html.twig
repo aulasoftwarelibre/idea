@@ -1,6 +1,6 @@
 {% macro pagination(page, numPages, route, routeParams = {}) %}
     {% if numPages > 1 %}
-        <div class="ui pagination menu">
+        <div class="ui inverted pagination menu">
             {% if page == 1 %}
                 <div class="item prev disabled"><i class="angle double left icon"></i></div>
             {% else %}

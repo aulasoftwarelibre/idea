@@ -1,5 +1,5 @@
 {% macro js_animated_button(first, first_icon, second, second_icon, data, classes) %}
-    <a class="ui animated right floated {{ classes }} basic button" data-slug="{{ data }}">
+    <a class="ui inverted animated right floated {{ classes }} basic button" data-slug="{{ data }}">
         <div class="visible content">
             {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
             {{ first | trans | upper  }}
@@ -12,21 +12,21 @@
 {% endmacro %}
 
 {% macro js_button(first, first_icon, data, classes) %}
-    <a class="ui right floated {{ classes }} basic button" data-slug="{{ data }}">
+    <a class="ui inverted right floated {{ classes }} basic button" data-slug="{{ data }}">
         {% if first_icon is not empty %}<i class="{{ first_icon }} icon"></i>{% endif %}
         {{ first | trans | upper  }}
     </a>
 {% endmacro %}
 
 {% macro icon_button(text, icon, url, classes) %}
-    <a class="ui icon {{ classes }} button" href="{{- url -}}">
+    <a class="ui inverted icon {{ classes }} basic button" href="{{- url -}}">
         <i class="{{- icon }} icon"></i>
         <span class="text mobile hidden">{{ text | trans }}</span>
     </a>
 {% endmacro %}
 
 {% macro js_icon_button(text, icon, data, classes) %}
-    <a class="ui icon {{ classes }} button" data-slug="{{- data -}}">
+    <a class="ui inverted icon {{ classes }} basic button" data-slug="{{- data -}}">
         <i class="{{- icon }} icon"></i>
         <span class="text mobile hidden">{{ text | trans }}</span>
     </a>

@@ -10,9 +10,9 @@
 
 {% block content %}
     <div class="full height">
-        <div class="ui main container-fluid segment">
+        <div class="ui inverted main container-fluid segment">
             <div class="ui container vertical stripe">
-                <h1 class="ui header">
+                <h1 class="ui inverted header">
                     {% if idea.startsAt %}
                         <div class="sub header">{{ idea.startsAt | format_date(pattern="eeee, d 'de' MMMM 'de' yyyy") }}</div>
                     {% endif %}
@@ -21,33 +21,33 @@
                 </h1>
 
                 {% if idea.closed %}
-                    <div class="ui right floated red basic button">
+                    <div class="ui inverted right floated red basic button">
                         {{ 'closed' | trans | upper }}
                     </div>
                 {% elseif not is_granted('IS_AUTHENTICATED_FULLY') %}
-                    <a class="ui right floated sign-in primary basic button" href="{{ path('login') }}">
+                    <a class="ui inverted right floated sign-in primary basic button" href="{{ path('login') }}">
                         <i class="sign in alternate icon"></i>
                         {{ 'join' | trans | upper }}
                     </a>
                 {% elseif is_granted('OWNER', idea) %}
-                    <a class="ui right floated green basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
+                    <a class="ui inverted right floated green basic button" href="{{ path('idea_edit', {slug: idea.slug}) }}">
                         {{ 'edit' | trans | upper }}
                     </a>
                 {% elseif is_granted('IDEA_MEMBER', idea) %}
                     {{ buttons.js_animated_button('joined', null, 'leave', null, idea.slug, 'green leave idea') }}
                 {% elseif idea.countFreeSeats < 1 %}
-                    <div class="ui right floated red basic button">
+                    <div class="ui inverted right floated red basic button">
                         {{ 'full' | trans | upper }}
                     </div>
                 {% elseif is_granted('IDEA_JOIN', idea) %}
                     {{ buttons.js_button('join', 'sign in alternate', idea.slug, 'primary join idea') }}
                 {% else %}
-                    <div class="ui right floated red basic button">
+                    <div class="ui inverted right floated red basic button">
                         {{ 'blocked' | trans | upper }}
                     </div>
                 {% endif %}
 
-                <h3 class="ui header">
+                <h3 class="ui inverted  header">
                     {% if idea.owner.image.name is not empty %}
                         <img class="ui avatar image" src="{{ vich_uploader_asset(idea.owner, 'imageFile') | imagine_filter('squared_thumbnail') }}">
                     {% else %}
@@ -76,7 +76,7 @@
                         {% endif %}
                     {% endblock flash_messages %}
 
-                    <div class="ui fluid card">
+                    <div class="ui inverted fluid card">
                         <div class="content">
                             <div class="description">{{ idea.description | purify }}</div>
                         </div>
@@ -104,7 +104,7 @@
                             <div class="extra content">
                                 <div class="row">
                                     <div class="column">
-                                        <h4 class="ui dividing header">Administrar</h4>
+                                        <h4 class="ui inverted dividing header">Administrar</h4>
 
                                         <div class="ui buttons">
                                             {% if idea.closed %}
@@ -134,8 +134,8 @@
                         {% endif %}
                     </div> <!-- card -->
 
-                    <div class="ui segment">
-                        <h3 class="ui dividing header">
+                    <div class="ui inverted segment">
+                        <h3 class="ui inverted dividing header">
                             Participantes
                             <div class="sub header">
                                 {{ idea.votes | length }} personas
@@ -144,7 +144,7 @@
 
                         {% for vote in idea.votes %}
                             {% set user = vote.user %}
-                            <a class="ui basic image label"
+                            <a class="ui inverted secondary basic image label" style="margin-bottom: 5px"
                                 {% if is_granted('ROLE_ADMIN') %}
                                     href="{{ ea_url()
                                         .setController('App\\Controller\\Admin\\UserCrudController')
@@ -162,14 +162,14 @@
                                 {{ user.alias }}
                             </a>
                         {% else %}
-                            <span class="ui label">No hay participantes</span>
+                            <span class="ui inverted label">No hay participantes</span>
                         {% endfor %}
                     </div>
                 </div> <!-- column -->
 
                 <div class="six wide column">
-                    <div class="ui top attached segment">
-                        <h4 class="ui header">
+                    <div class="ui inverted top attached segment">
+                        <h4 class="ui inverted header">
                             <i class="{{ idea.group.icon }} icon"></i>
                             <div class="content">
                                 {{ idea.group }}
@@ -179,8 +179,8 @@
                             </div>
                         </h4>
                     </div>
-                    <div class="ui attached segment">
-                        <div class="ui relaxed list">
+                    <div class="ui inverted attached segment">
+                        <div class="ui inverted  relaxed list">
                             <div class="item">
                                 <i class="large calendar alternate middle aligned icon"></i>
                                 <div class="content">
@@ -221,11 +221,11 @@
                                 <div class="content">
                                     <div class="description">
                                         {% if is_granted('IDEA_MEMBER', idea) %}
-                                        <a class="ui label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
+                                        <a class="ui inverted label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
                                             Ir a la videoconferencia
                                         </a>
                                         {% else %}
-                                        <span class="ui label">
+                                        <span class="ui inverted label">
                                             Únete para ver la videoconferencia
                                         </span>
                                         {% endif %}
@@ -250,7 +250,7 @@
                             <div class="item">
                                 <i class="large calendar plus middle aligned icon"></i>
                                 <div class="content">
-                                    <a class="ui label" href="{{ calendar_url(idea) }}">
+                                    <a class="ui inverted label" href="{{ calendar_url(idea) }}">
                                         Añadir a Google Calendar
                                     </a>
                                 </div>
@@ -268,5 +268,3 @@
 {% block side_menu %}
     {{ parent() }}
 {% endblock %}
-
-{% block extra %}extra{% endblock %}

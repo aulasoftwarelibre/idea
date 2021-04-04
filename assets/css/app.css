@@ -1,12 +1,16 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
 body {
-    background: rgb(218, 224, 230) none repeat scroll 0% 0%;
+    background: rgb(40,40,40) none repeat scroll 0% 0%;
 }
 
 #page-container {
     position: relative;
     min-height: 100vh;
+}
+
+.full.height {
+    margin-bottom: 45px;
 }
 
 .footer.segment {
@@ -16,15 +20,17 @@ body {
 }
 
 .logo {
-    background: url("../images/ideas-small.png") no-repeat;
-    width: 66px;
-    height: 27px;
-    margin: 5px 10px 0 15px;
+    background: url("../images/ideas-imagotipo-blanco.png") no-repeat;
+    background-size: auto 30px;
+    width: 120px;
+    height: 30px;
+    margin: 10px 10px 0 15px;
 }
 
 .help-text {
     font-size: 10px;
     padding-top: 5px;
+    color: #ffffff;
 }
 
 .ui.counter.segment {
@@ -87,61 +93,44 @@ body {
 
 .ui.idea .statistic {
     min-width: 100px;
-    background: #f8f9fa none repeat scroll 0% 0%;
     padding: 12px 0 5px;
     margin: 0;
 }
 
 .ui.basic.approved.label {
-    background-color: #FFFFFF !important;
     color: #21BA45 !important;
-    border-color: #21BA45 !important;
 }
 
 .ui.basic.approved.labels a.label:hover,
 a.ui.basic.approved.label:hover {
-    background-color: #FFFFFF !important;
     color: #16ab39 !important;
-    border-color: #16ab39 !important;
 }
 
 .ui.basic.rejected.label {
-    background-color: #FFFFFF !important;
     color: #DB2828 !important;
-    border-color: #DB2828 !important;
 }
 
 .ui.basic.rejected.labels a.label:hover,
 a.ui.basic.rejected.label:hover {
-    background-color: #FFFFFF !important;
     color: #d01919 !important;
-    border-color: #d01919 !important;
 }
 
 .ui.basic.new.label {
-    background-color: #FFFFFF !important;
     color: #FBBD08 !important;
-    border-color: #FBBD08 !important;
 }
 
 .ui.basic.new.labels a.label:hover,
 a.ui.basic.new.label:hover {
-    background-color: #FFFFFF !important;
     color: #eaae00 !important;
-    border-color: #eaae00 !important;
 }
 
 .ui.basic.proposed.label {
-    background-color: #FFFFFF !important;
     color: #767676 !important;
-    border-color: #767676 !important;
 }
 
 .ui.basic.proposed.labels a.label:hover,
 a.ui.basic.proposed.label:hover {
-    background-color: #FFFFFF !important;
     color: #838383 !important;
-    border-color: #838383 !important;
 }
 
 .summary {
@@ -168,15 +157,14 @@ a.ui.basic.proposed.label:hover {
 /* Card meta */
 
 .ui.idea .meta.send.by .group {
-    background-color: #edeff1;
+    color: #ffffff;
     padding: 0 4px;
     border-radius: 2px;
-    font-weight: 500;
-    color: black;
+    font-weight: 900;
 }
 
 .ui.idea .meta.send.by .group:hover {
-    background-color: #d6d8da;
+    text-decoration: underline;
 }
 
 .ui.idea .meta.send.by {
@@ -218,6 +206,19 @@ a.ui.basic.proposed.label:hover {
     border-radius: 0.30769em 0 0 0.30769em;
 }
 
+.ui.inverted.definition.table > tr > td:first-child:not(.ignored),
+.ui.inverted.definition.table > tbody > tr > td:first-child:not(.ignored),
+.ui.inverted.definition.table > tfoot > tr > td:first-child:not(.ignored),
+.ui.inverted.definition.table tr td.definition {
+    color: #ffffff;
+}
+
+[data-inverted][data-position~="bottom"][data-tooltip]::after {
+    background: #474a46;
+}
+[data-inverted][data-position~="bottom"][data-tooltip]::before {
+    background: #474a46;
+}
 /* Paginator */
 
 #paginator {

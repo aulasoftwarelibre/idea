@@ -30,17 +30,14 @@ class IdeaType extends AbstractType
     {
         $builder
             ->add('title', null, [
-                'label' => 'form.label_title',
                 'required' => true,
             ])
             ->add('description', CKEditorType::class, [
-                'label' => 'form.label_description',
                 'required' => true,
                 'purify_html' => true,
                 'attr' => ['rows' => 20],
             ])
             ->add('group', EntityType::class, [
-                'label' => 'form.label_group',
                 'class' => Group::class,
                 'placeholder' => 'Seleccione un grupo donde publicar la idea',
                 'required' => true,

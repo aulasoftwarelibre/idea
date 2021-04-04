@@ -21,7 +21,7 @@
 <body id="body">
 <!-- Page Contents -->
 <div id="page-container">
-    <div class="ui top fixed huge menu">
+    <div class="ui inverted top fixed huge menu">
         <div class="ui fluid container">
             <a class="logo" href="{{ path('homepage') }}"></a>
 
@@ -31,7 +31,7 @@
                 {{ render(controller('App\\Controller\\Profile\\ShowMenuProfileEmbedController')) }}
             {% else %}
                 <div class="floated right borderless item">
-                    <a class="tiny ui primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
+                    <a class="ui inverted tiny primary button" href="{{ path('login') }}" style="font-size: 0.85714286rem">
                         <i class="sign in icon"></i> Conectar
                     </a>
                 </div>
@@ -73,8 +73,9 @@
 
     <footer class="ui inverted vertical footer segment">
         <div class="ui container">
-            <p>
-                Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a>.
+            <img class="ui small bottom aligned right floated image" src="{{ asset('assets/images/logos-pie.png') }}" alt="Logos Aula y UCO">
+            <p style="padding-top: 30px;">
+             Desarrollado por el <a href="https://www.uco.es/aulasoftwarelibre">Aula de Software Libre</a>.
             </p>
         </div>
     </footer>
