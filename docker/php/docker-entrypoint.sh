@@ -40,6 +40,7 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 	fi
 
 	if ls -A migrations/*.php > /dev/null 2>&1; then
+	    bin/console doctrine:migrations:sync-metadata-storage
 		bin/console doctrine:migrations:migrate --no-interaction
 	fi
 
