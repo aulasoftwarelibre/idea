@@ -29,9 +29,7 @@ class IdeaType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('title', null, [
-                'required' => true,
-            ])
+            ->add('title', null, ['required' => true])
             ->add('description', CKEditorType::class, [
                 'required' => true,
                 'purify_html' => true,

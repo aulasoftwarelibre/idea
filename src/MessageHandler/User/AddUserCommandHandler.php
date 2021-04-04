@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace App\MessageHandler\User;
-
 
 use App\Entity\User;
 use App\Security\User\UserManagerInterface;
@@ -11,9 +11,6 @@ use Uco\OAuth2\ClientBundle\Message\AddUserMessage;
 
 final class AddUserCommandHandler implements MessageHandlerInterface
 {
-    /**
-     * @var UserManagerInterface
-     */
     private UserManagerInterface $userManager;
 
     public function __construct(UserManagerInterface $userManager)
@@ -24,7 +21,7 @@ final class AddUserCommandHandler implements MessageHandlerInterface
     public function __invoke(AddUserMessage $message): User
     {
         $username = $message->getUsername();
-        $user = User::createUcoUser($username);
+        $user     = User::createUcoUser($username);
 
         $this->userManager->updateUser($user);
 
