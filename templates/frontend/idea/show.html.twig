@@ -144,7 +144,7 @@
 
                         {% for vote in idea.votes %}
                             {% set user = vote.user %}
-                            <a class="ui inverted secondary basic image label" style="margin-bottom: 5px"
+                            <a class="ui inverted secondary basic image grey label" style="margin-bottom: 5px"
                                 {% if is_granted('ROLE_ADMIN') %}
                                     href="{{ ea_url()
                                         .setController('App\\Controller\\Admin\\UserCrudController')
@@ -152,6 +152,8 @@
                                         .setEntityId(user.id)
                                         .generateUrl() }}"
                                     data-tooltip="{{ user.username ~ ' - ' ~ user.fullname }}"
+                                    data-inverted=""
+                                    data-position="top center"
                                 {% endif %}
                             >
                                 {% if user.image.name is not empty %}
@@ -162,7 +164,7 @@
                                 {{ user.alias }}
                             </a>
                         {% else %}
-                            <span class="ui inverted label">No hay participantes</span>
+                            <span class="ui inverted grey label">No hay participantes</span>
                         {% endfor %}
                     </div>
                 </div> <!-- column -->
@@ -221,11 +223,11 @@
                                 <div class="content">
                                     <div class="description">
                                         {% if is_granted('IDEA_MEMBER', idea) %}
-                                        <a class="ui inverted label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
+                                        <a class="ui inverted grey label" href="{{ url('idea_jitsi', { slug: idea.slug }) }}">
                                             Ir a la videoconferencia
                                         </a>
                                         {% else %}
-                                        <span class="ui inverted label">
+                                        <span class="ui inverted grey label">
                                             Únete para ver la videoconferencia
                                         </span>
                                         {% endif %}
@@ -250,7 +252,7 @@
                             <div class="item">
                                 <i class="large calendar plus middle aligned icon"></i>
                                 <div class="content">
-                                    <a class="ui inverted label" href="{{ calendar_url(idea) }}">
+                                    <a class="ui inverted grey label" href="{{ calendar_url(idea) }}">
                                         Añadir a Google Calendar
                                     </a>
                                 </div>

@@ -15,3 +15,8 @@ body > .grid {
 .column {
     max-width: 650px;
 }
+
+.ui.github.button {
+    color: #ffffff;
+    background-color: #0366d6!important;
+}

@@ -10,7 +10,7 @@ body {
 }
 
 .full.height {
-    margin-bottom: 45px;
+    margin-bottom: 65px;
 }
 
 .footer.segment {
@@ -213,12 +213,20 @@ a.ui.basic.proposed.label:hover {
     color: #ffffff;
 }
 
-[data-inverted][data-position~="bottom"][data-tooltip]::after {
+[data-inverted][data-position~="bottom"][data-tooltip]::after,
+[data-inverted][data-position~="top"][data-tooltip]::after {
     background: #474a46;
 }
-[data-inverted][data-position~="bottom"][data-tooltip]::before {
+[data-inverted][data-position~="bottom"][data-tooltip]::before,
+[data-inverted][data-position~="top"][data-tooltip]::before {
     background: #474a46;
 }
+
+.ui.form.inverted input  {
+    background-color: #1B1C1D!important;
+    color: rgba(255, 255, 255, 0.8)!important;
+}
+
 /* Paginator */
 
 #paginator {

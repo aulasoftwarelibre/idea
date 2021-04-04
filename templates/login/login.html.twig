@@ -4,7 +4,7 @@
     {% set referer = app.request.headers.get('referer') ?: app.session.get('_security.main.target_path') | default('/') %}
 
     <div class="ui middle aligned center aligned grid">
-        <div class="inverted column">
+        <div class="column">
                 <div class="ui inverted segment">
                     <img src="{{ asset('assets/images/logoasl-white.png') }}" alt="Logo del Aula de Software Libre" class="ui centered small image" id="logo">
                     <h2 class="ui header">
@@ -22,7 +22,7 @@
                         <a href="{{ path('connect_google_start') }}?_target_path={{ referer }}" class="ui google plus fluid labeled icon button">
                             <i class="ui google icon"></i>Google
                         </a>
-                        <a href="{{ path('connect_github_start') }}?_target_path={{ referer }}" class="ui black fluid labeled icon button">
+                        <a href="{{ path('connect_github_start') }}?_target_path={{ referer }}" class="ui github fluid labeled icon button">
                             <i class="ui github icon"></i>Github
                         </a>
                         <a href="{{ path('connect_discord_start') }}?_target_path={{ referer }}" class="ui teal fluid labeled icon button">
@@ -34,7 +34,7 @@
 
                     <p>
                         Algunas actividades pueden ser exclusiva para miembros de la Universidad de Córdoba.
-                        Inicia sesión con <span class="ui inverted secondary label">@uco.es</span> para tener acceso completo a la plataforma.
+                        Inicia sesión con <span class="ui inverted grey label">@uco.es</span> para tener acceso completo a la plataforma.
                     </p>
                 </div>
 
