@@ -39,12 +39,10 @@ class ProfileType extends AbstractType
                 'label' => 'Alias',
                 'required' => true,
                 'help' => 'form.help_alias',
-                'row_attr' => ['class' => 'ui inverted transparent input']
             ])
             ->add('firstname', null, [
                 'label' => 'Nombre',
                 'required' => true,
-                'row_attr' => ['class' => 'ui inverted transparent input']
             ])
             ->add('lastname', null, [
                 'label' => 'Apellidos',
