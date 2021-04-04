@@ -1,3 +1,5 @@
+{% use '@SemanticUi/form/semantic_2_layout.html.twig' %}
+
 {%- block checkbox_row -%}
     <div class="ui checkbox" {{ block('row_attributes') }}>
         {{- form_widget(form) -}}
@@ -22,3 +24,8 @@
     </div>
     {{- form_errors(form) -}}
 {%- endblock form_row -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: ('inverted ' ~ attr.class|default(''))|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
