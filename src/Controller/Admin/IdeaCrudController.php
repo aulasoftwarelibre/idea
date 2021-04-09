@@ -15,10 +15,12 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class IdeaCrudController extends AbstractCrudController
 {
@@ -61,6 +63,15 @@ class IdeaCrudController extends AbstractCrudController
             ->setFormType(CKEditorType::class)
             ->setTemplatePath('/admin/idea/description.html.twig');
 
+        yield TextareaField::new('imageFile')
+            ->setFormType(VichImageType::class)
+            ->onlyOnForms();
+
+        yield ImageField::new('image.name')
+            ->setBasePath('/images/ideas')
+            ->setCssClass('ea-vich-image')
+            ->onlyOnDetail();
+
         yield FormField::addPanel('block.state');
         yield BooleanField::new('closed');
         yield BooleanField::new('private');
@@ -85,9 +96,7 @@ class IdeaCrudController extends AbstractCrudController
             ->setHelp('form.help_location');
 
         yield DateTimeField::new('startsAt');
-
         yield DateTimeField::new('endsAt');
-
         yield FormField::addPanel('block.online');
         yield BooleanField::new('isOnline');
         yield BooleanField::new('isJitsiRoomOpen');

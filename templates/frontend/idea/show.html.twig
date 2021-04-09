@@ -77,6 +77,11 @@
                     {% endblock flash_messages %}
 
                     <div class="ui inverted fluid card">
+                        {% if idea.image.name is not empty %}
+                        <div class="ui image">
+                            <img src="{{ vich_uploader_asset(idea, 'imageFile') }}" alt="">
+                        </div>
+                        {% endif %}
                         <div class="content">
                             <div class="description">{{ idea.description | purify }}</div>
                         </div>
