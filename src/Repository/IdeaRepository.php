@@ -116,6 +116,7 @@ class IdeaRepository extends ServiceEntityRepository
                 WHERE i.startsAt IS NOT NULL
                 AND i.startsAt > :now
                 AND i.state = :approved
+                ORDER BY i.startsAt ASC
             ')
             ->setParameter('now', new DateTime())
             ->setParameter('approved', Idea::STATE_APPROVED)
