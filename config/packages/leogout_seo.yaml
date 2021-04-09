@@ -11,9 +11,9 @@ leogout_seo:
     basic: ~
     og:
         type: 'website'
-        url: 'https://consejo-eps.uco.es/aulasoftwarelibre/actividades/'
-        image: 'https://consejo-eps.uco.es/aulasoftwarelibre/actividades/assets/images/facebook.png'
+        url: 'https://ideas.aulasoftwarelibre.uco.es/'
+        image: 'https://ideas.aulasoftwarelibre.uco.es/assets/images/facebook.png'
     twitter:
         card: 'summary'
         site: '@aulasl'
-        image: 'https://consejo-eps.uco.es/aulasoftwarelibre/actividades/assets/images/twitter.png'
+        image: 'https://ideas.aulasoftwarelibre.uco.es/assets/images/twitter.png'

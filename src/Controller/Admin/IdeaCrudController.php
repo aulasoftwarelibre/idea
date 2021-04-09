@@ -6,6 +6,8 @@ namespace App\Controller\Admin;
 
 use App\Admin\Field\VoteField;
 use App\Entity\Idea;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -15,16 +17,32 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class IdeaCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
         return Idea::class;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $linkToIdea = Action::new('linkAction', 'Abrir', 'fa fa-link')
+            ->linkToRoute('idea_show', static function (Idea $idea) {
+                return [
+                    'slug' => $idea->getSlug(),
+                ];
+            });
+
+        return $actions
+            ->add(Crud::PAGE_EDIT, $linkToIdea)
+            ->add(Crud::PAGE_DETAIL, $linkToIdea);
     }
 
     public function configureCrud(Crud $crud): Crud
@@ -61,6 +79,15 @@ class IdeaCrudController extends AbstractCrudController
             ->setFormType(CKEditorType::class)
             ->setTemplatePath('/admin/idea/description.html.twig');
 
+        yield TextareaField::new('imageFile')
+            ->setFormType(VichImageType::class)
+            ->onlyOnForms();
+
+        yield ImageField::new('image.name')
+            ->setBasePath('/images/ideas')
+            ->setCssClass('ea-vich-image')
+            ->onlyOnDetail();
+
         yield FormField::addPanel('block.state');
         yield BooleanField::new('closed');
         yield BooleanField::new('private');
@@ -85,9 +112,7 @@ class IdeaCrudController extends AbstractCrudController
             ->setHelp('form.help_location');
 
         yield DateTimeField::new('startsAt');
-
         yield DateTimeField::new('endsAt');
-
         yield FormField::addPanel('block.online');
         yield BooleanField::new('isOnline');
         yield BooleanField::new('isJitsiRoomOpen');
