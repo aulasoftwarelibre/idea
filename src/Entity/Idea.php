@@ -157,7 +157,6 @@ class Idea
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\DateTime()
      * @Groups("read")
      */
     protected ?DateTime $startsAt = null;
@@ -165,7 +164,6 @@ class Idea
     /**
      * @ORM\Column(type="datetime", nullable=true)
      *
-     * @Assert\DateTime()
      * @Groups("read")
      */
     protected ?DateTime $endsAt = null;
