@@ -6,6 +6,8 @@ namespace App\Controller\Admin;
 
 use App\Admin\Field\VoteField;
 use App\Entity\Idea;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
@@ -27,6 +29,20 @@ class IdeaCrudController extends AbstractCrudController
     public static function getEntityFqcn(): string
     {
         return Idea::class;
+    }
+
+    public function configureActions(Actions $actions): Actions
+    {
+        $linkToIdea = Action::new('linkAction', 'Abrir', 'fa fa-link')
+            ->linkToRoute('idea_show', static function (Idea $idea) {
+                return [
+                    'slug' => $idea->getSlug(),
+                ];
+            });
+
+        return $actions
+            ->add(Crud::PAGE_EDIT, $linkToIdea)
+            ->add(Crud::PAGE_DETAIL, $linkToIdea);
     }
 
     public function configureCrud(Crud $crud): Crud
