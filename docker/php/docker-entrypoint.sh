@@ -44,6 +44,7 @@ if [ "$1" = 'php-fpm' ] || [ "$1" = 'php' ] || [ "$1" = 'bin/console' ]; then
 		bin/console doctrine:migrations:migrate --no-interaction
 	fi
 
+    bin/console cache:clear --env=prod --no-warmup
     bin/console cache:warmup --env=prod
 fi
 
