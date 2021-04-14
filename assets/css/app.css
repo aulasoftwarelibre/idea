@@ -1,12 +1,9 @@
 @import url('https://fonts.googleapis.com/css?family=Lato');
 
-body {
-    background: rgb(40,40,40) none repeat scroll 0% 0%;
-}
-
 #page-container {
     position: relative;
     min-height: 100vh;
+    background: rgba(40,40,40,1) none repeat scroll 0% 0%;
 }
 
 .full.height {
@@ -22,9 +19,9 @@ body {
 .logo {
     background: url("../images/ideas-imagotipo-blanco.png") no-repeat;
     background-size: auto 30px;
-    width: 120px;
+    width: 110px;
     height: 30px;
-    margin: 10px 10px 0 15px;
+    margin: 10px 20px 0 15px;
 }
 
 .help-text {
@@ -39,24 +36,6 @@ body {
 
 .ui.vertical.stripe {
     padding: 4.5em 0em 3em;
-}
-
-.top.fixed.menu .topmenu.button {
-    height: 40px;
-    min-width: 220px;
-    margin: auto 10px;
-}
-
-.top.fixed.menu .dropdown.icon {
-    position: absolute;
-    right: 15px;
-}
-
-.top.fixed.menu .current {
-    text-overflow: ellipsis;
-    max-width: 180px;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 .activity.description {
@@ -241,22 +220,17 @@ a.ui.basic.proposed.label:hover {
     }
 }
 
-@media only screen and (max-width: 700px) {
-    .top.fixed.menu .topmenu.button {
-        min-width: 0;
-        box-shadow: 0px 0px 0px 0px;
-        border: 0;
-        border-radius: 0;
+.top.menu .toc.item {
+    display: none;
+}
+
+@media only screen and (max-width: 767px) {
+    .top.menu > .item {
+        display: none!important;
     }
-    .ui.menu .item::before {
-        background: none;
-    }
-    .top.fixed.menu .current.text .icon {
-        margin-right: 0;
-    }
-    .top.fixed.menu .current.text .name,
-    .top.fixed.menu .dropdown.icon {
-        display: none;
+    .top.menu .toc.item {
+        display: block!important;
+        margin: auto 0;
     }
 
     .ui.card.vote {

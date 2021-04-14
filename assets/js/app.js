@@ -18,6 +18,10 @@ function actions(button, url) {
 }
 
 $(document).ready(function () {
+    $('.ui.sidebar')
+        .sidebar('attach events', '.toc.item')
+    ;
+
     $("a.close.idea").click(function () {
         actions($(this), 'idea_close');
     });
@@ -49,7 +53,7 @@ $(document).ready(function () {
     $('#idea_form')
         .form({
             on: 'blur',
-            inline : true,
+            inline: true,
             fields: {
                 idea_title: {
                     identifier: 'idea_title',

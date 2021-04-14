@@ -1,4 +1,6 @@
 Action: Acción
+Home: Inicio
+Add idea: Nueva idea
 
 approved: aprobada
 blocked: solo uco
@@ -18,11 +20,11 @@ idea_num_seats: '{0} Plazas ilimitadas|{1} 1 plaza|[2,Inf] %count% plazas'
 
 send_by: 'Enviado por %owner% %when%'
 
-close_idea: Cerrar idea
-open_idea: Abrir idea
-approve_idea: Aprobar idea
-reject_idea: Rechazar idea
-edit_idea: Editar idea
+close_idea: Cerrar
+open_idea: Abrir
+approve_idea: Aprobar
+reject_idea: Rechazar
+edit_idea: Editar
 idea_send_message: Enviar mensaje
 
 breadcrumb.link_activity_list: Lista de actividades

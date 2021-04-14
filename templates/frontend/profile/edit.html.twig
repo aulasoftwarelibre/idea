@@ -1,9 +1,6 @@
 
 {% extends "base.html.twig" %}
 
-{% block vich_image_widget %}
-{% endblock %}
-
 {% block body %}
     <div class="ui grid">
         <div class="row">
@@ -51,7 +48,7 @@
 {% endblock %}
 
 {% block modal %}
-    <div class="ui inverted remove tiny modal">
+    <div class="ui inverted remove tiny modal" style="display: none">
         <div class="header">Borrar usuario</div>
         <div class="content">
             <p>Esta acción es irreversible. Si borra su usuario se eliminarán todos los registros
@@ -78,6 +75,5 @@
 
 {% block javascripts %}
     {{ parent() }}
-
     {{ encore_entry_script_tags('profile') }}
 {% endblock %}

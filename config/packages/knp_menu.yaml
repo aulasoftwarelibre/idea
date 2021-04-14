@@ -1,17 +1,3 @@
 knp_menu:
     twig:
-        template: '@HarmonyUi/menu/semantic_2_menu.html.twig'
-
-services:
-    _defaults:
-        public: true
-        autowire: true
-        autoconfigure: true
-
-    # KnpMenuBundle
-    App\Menu\Builder:
-        arguments: ['@knp_menu.factory']
-        public: true
-        tags:
-        - { name: 'knp_menu.menu_builder', method: 'sidebarMenu', alias: 'sidebarMenu'}
-        - { name: 'knp_menu.menu_builder', method: 'mainMenu', alias: 'mainMenu'}
+        template: '@SemanticUi/menu/semantic_2_menu.html.twig'
