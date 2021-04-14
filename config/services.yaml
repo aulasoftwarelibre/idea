@@ -52,3 +52,11 @@ services:
         autoconfigure: false
         tags:
             - { name: messenger.message_handler, bus: query.bus }
+
+    menu_builder:
+        class: App\Menu\MenuBuilder
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
+            - { name: knp_menu.menu_builder, method: createGroupMenu, alias: groups }
+            - { name: knp_menu.menu_builder, method: profileMenu, alias: profile }
