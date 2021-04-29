@@ -36,12 +36,12 @@ final class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $menu->addChild('<i class="home icon"></i> Home', ['route' => 'idea_index'])
+        $menu->addChild('<i class="home icon"></i> Inicio', ['route' => 'idea_index'])
         ->setExtra('safe_label', true);
 
         $user = $this->token->getToken() ? $this->token->getToken()->getUser() : null;
         if ($user instanceof User && ! $user->isExternal()) {
-            $menu->addChild('<i class="lightbulb icon"></i> Add idea', ['route' => 'idea_new'])
+            $menu->addChild('<i class="lightbulb icon"></i> Añadir idea', ['route' => 'idea_new'])
                 ->setExtra('safe_label', true);
         }
 
