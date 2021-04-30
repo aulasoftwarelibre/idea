@@ -46,6 +46,10 @@ class Idea
     public const STATE_APPROVED     = 'approved';
     public const UNLIMITED_SEATS    = PHP_INT_MAX;
     public const LIMITLESS          = 0;
+    // Format consts
+    public const FACE_TO_FACE = 'FACE_TO_FACE';
+    public const ONLINE       = 'ONLINE';
+    public const STREAMING    = 'STREAMING';
 
     /**
      * @ORM\Id()
@@ -177,11 +181,13 @@ class Idea
     protected ?string $location = null;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=false})
+     * @ORM\Column(type="string")
      *
+     * @Assert\Choice(callback="getFormats")
      * @Groups("read")
+     * @psalm-property Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING
      */
-    protected bool $isOnline;
+    private string $format;
 
     /** @ORM\Column(type="string", nullable=true) */
     protected ?string $jitsiLocatorRoom = null;
@@ -192,6 +198,7 @@ class Idea
      * @Groups("read")
      */
     protected bool $isJitsiRoomOpen;
+
 
     /** @ORM\Column(type="boolean") */
     private bool $private;
@@ -222,8 +229,8 @@ class Idea
         $this->internal         = false;
         $this->state            = self::STATE_PROPOSED;
         $this->numSeats         = self::LIMITLESS;
+        $this->format           = self::FACE_TO_FACE;
         $this->externalNumSeats = 0;
-        $this->isOnline         = false;
         $this->jitsiLocatorRoom = null;
         $this->isJitsiRoomOpen  = false;
         $this->version          = 1;
@@ -250,6 +257,18 @@ class Idea
             'Propuesta' => self::STATE_PROPOSED,
             'Rechazada' => self::STATE_REJECTED,
             'Aceptada' => self::STATE_APPROVED,
+        ];
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    public static function getFormats(): array
+    {
+        return [
+            'Presencial' => self::FACE_TO_FACE,
+            'Online' => self::ONLINE,
+            'Streaming' => self::STREAMING,
         ];
     }
 
@@ -540,21 +559,42 @@ class Idea
         return $this;
     }
 
-    public function isOnline(): bool
+    public function isFaceToFace(): bool
     {
-        return $this->isOnline;
+        return $this->format === self::FACE_TO_FACE;
     }
 
-    public function setIsOnline(bool $isOnline): self
+    public function isOnline(): bool
     {
-        $this->isOnline = $isOnline;
+        return $this->format === self::ONLINE;
+    }
 
-        if ($isOnline && ! $this->jitsiLocatorRoom) {
-            $this->jitsiLocatorRoom = StringUtils::locator();
+    public function isStreaming(): bool
+    {
+        return $this->format === self::STREAMING;
+    }
+
+    /**
+     * @psalm-return Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING
+     */
+    public function getFormat(): string
+    {
+        return $this->format;
+    }
+
+    /**
+     * @psalm-param Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING $format
+     */
+    public function setFormat(string $format): Idea
+    {
+        $this->format = $format;
+
+        if (! $this->jitsiLocatorRoom && $this->isOnline()) {
+            $this->setJitsiLocatorRoom(StringUtils::locator());
         }
 
-        if (! $isOnline) {
-            $this->jitsiLocatorRoom = null;
+        if (! $this->isOnline()) {
+            $this->setJitsiLocatorRoom(null);
         }
 
         return $this;

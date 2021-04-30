@@ -63,10 +63,10 @@ class IdeaCrudController extends AbstractCrudController
             yield IdField::new('id');
             yield TextField::new('title');
             yield BooleanField::new('closed')
-                ->renderAsSwitch(false);
+                ->renderAsSwitch(true);
 
-            yield BooleanField::new('private')
-                ->renderAsSwitch(false);
+            yield ChoiceField::new('format')
+                ->setChoices(Idea::getFormats());
 
             yield DateField::new('createdAt');
 
@@ -107,15 +107,20 @@ class IdeaCrudController extends AbstractCrudController
         yield NumberField::new('externalNumSeats')
             ->setHelp('Límite de plazas externas. Pon 0 para ilimitadas (o hasta llenar el límite');
 
-        yield FormField::addPanel('block.location');
+        yield DateTimeField::new('startsAt');
+        yield DateTimeField::new('endsAt');
+
+        yield FormField::addPanel('block.format');
+        yield ChoiceField::new('format')
+            ->setChoices(Idea::getFormats())
+            ->setTemplatePath('/admin/idea/state.html.twig');
+
         yield TextField::new('location')
             ->setHelp('form.help_location');
 
-        yield DateTimeField::new('startsAt');
-        yield DateTimeField::new('endsAt');
-        yield FormField::addPanel('block.online');
-        yield BooleanField::new('isOnline');
-        yield BooleanField::new('isJitsiRoomOpen');
+        yield BooleanField::new('isJitsiRoomOpen')
+            ->setHelp('form.help_jitsi_room_open');
+
         yield TextField::new('jitsiLocatorRoom')
             ->setHelp('form.help_jitsi_locator_room')
             ->hideOnForm();

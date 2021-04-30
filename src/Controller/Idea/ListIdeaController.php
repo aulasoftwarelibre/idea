@@ -17,24 +17,54 @@ use App\Message\Idea\GetIdeasByPageQuery;
 use App\MessageBus\QueryBus;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 use function ceil;
+use function sprintf;
 
-/**
- * @Route("/idea", defaults={"page": "1"}, name="idea_index")
- * @Route("/idea/page/{page}", requirements={"page": "[1-9]\d*"}, name="idea_index_paginated")
- */
 class ListIdeaController extends AbstractController
 {
-    public function __invoke(int $page, QueryBus $queryBus): Response
+    /**
+     * @Route("/api/ideas", name="api_ideas_get", options={"expose"=true}, methods={"GET"})
+     */
+    public function api(Request $request, QueryBus $queryBus): Response
     {
+        $pattern = $request->query->getAlnum('q');
+
+        $ideas = $queryBus->query(
+            new GetIdeasByPageQuery(
+                1,
+                $this->isGranted('ROLE_ADMIN'),
+                $pattern
+            )
+        );
+        assert($ideas instanceof Paginator);
+
+        return $this->json([
+            'items' => $ideas->getIterator()->getArrayCopy(),
+            'action' => [
+                'url' => $this->generateUrl('idea_index', ['q' => $pattern]),
+                'text' => sprintf('Ver los %d resultados', $ideas->count()),
+            ],
+        ]);
+    }
+
+    /**
+     * @Route("/idea", defaults={"page": "1"}, name="idea_index")
+     * @Route("/idea/page/{page}", requirements={"page": "[1-9]\d*"}, name="idea_index_paginated")
+     */
+    public function __invoke(Request $request, int $page, QueryBus $queryBus): Response
+    {
+        $pattern = $request->query->getAlnum('q');
+
         $ideas = $queryBus->query(
             new GetIdeasByPageQuery(
                 $page,
-                $this->isGranted('ROLE_ADMIN')
+                $this->isGranted('ROLE_ADMIN'),
+                $pattern
             )
         );
         assert($ideas instanceof Paginator);
@@ -46,6 +76,7 @@ class ListIdeaController extends AbstractController
             'ideas' => $ideas,
             'numPages' => $numPages,
             'page' => $page,
+            'pattern' => $pattern,
         ]);
     }
 }

@@ -21,7 +21,20 @@ $(document).ready(function () {
     $('.ui.sidebar')
         .sidebar('attach events', '.toc.item')
     ;
-
+    $('.ui.search')
+        .search({
+            apiSettings: {
+                url: Routing.generate("api_ideas_get") + "?q={query}"
+            },
+            fields: {
+                results : 'items',
+                title   : 'title',
+                url     : 'url',
+            },
+            minCharacters : 3,
+            ignoreDiacritics: true
+        })
+    ;
     $("a.close.idea").click(function () {
         actions($(this), 'idea_close');
     });

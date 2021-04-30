@@ -239,13 +239,28 @@
                                     </div>
                                 </div>
                             </div>
-                            {% else %}
+                            {% elseif idea.isFaceToFace %}
                             <div class="item">
                                 <i class="large map marker alternate middle aligned icon"></i>
                                 <div class="content">
                                     <div class="description">
                                         {% if idea.location %}
                                             {{ idea.location }}
+                                        {% else %}
+                                            TBA
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% elseif idea.isStreaming %}
+                            <div class="item">
+                                <i class="large map youtube alternate middle aligned icon"></i>
+                                <div class="content">
+                                    <div class="description">
+                                        {% if idea.location %}
+                                            <a target="_blank" class="ui link" href="{{ idea.location }}">
+                                                Ir a YouTube
+                                            </a>
                                         {% else %}
                                             TBA
                                         {% endif %}

@@ -17,11 +17,13 @@ final class GetIdeasByPageQuery
 {
     private int $page;
     private bool $showPrivates;
+    private ?string $pattern;
 
-    public function __construct(int $page, bool $showPrivates)
+    public function __construct(int $page, bool $showPrivates, ?string $pattern)
     {
         $this->page         = $page;
         $this->showPrivates = $showPrivates;
+        $this->pattern      = $pattern;
     }
 
     public function getPage(): int
@@ -32,5 +34,10 @@ final class GetIdeasByPageQuery
     public function getShowPrivates(): bool
     {
         return $this->showPrivates;
+    }
+
+    public function getPattern(): ?string
+    {
+        return $this->pattern;
     }
 }

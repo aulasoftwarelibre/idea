@@ -73,8 +73,7 @@ batch.label_close: Cerrar
 
 block.content: Contenido
 block.state: Estado
-block.location: Lugar
-block.online: Online
+block.format: Formato
 block.seats: Plazas
 block.votes: Votos
 
@@ -85,7 +84,8 @@ flash_batch_open_success: Se han abierto las ideas seleccionadas
 
 form.help_alias: Selecciona un nombre de usuario para tu cuenta (máximo 16 caracteres entre letras, números y _).
 form.help_jitsi_locator_room: Se genera un localizador nuevo al activar el evento online y se elimina al desactivarlo.
-form.help_location: Se ignora si el evento es online
+form.help_location: Se ignora si el evento es online. Si es por streaming indicar el enlace de YouTube.
+form.help_jitsi_room_open: Para charlas online, si la sala de videoconferencia de Jitsi está abierta.
 
 Activity: Actividad
 Alias: Alias
@@ -94,6 +94,7 @@ Created At: Fecha creación
 Description: Descripción
 Ends At: Día y hora finalización
 External Num Seats: Plazas externas
+Format: Formato
 Internal:  Interno
 Is Jitsi Room Open: Sala abierta
 Is Online: Evento online
