@@ -30,7 +30,8 @@ class GetIdeasByPageQueryHandler
     {
         $page         = $query->getPage();
         $showPrivates = $query->getShowPrivates();
+        $pattern      = $query->getPattern();
 
-        return $this->repository->findLatest($page, $showPrivates);
+        return $this->repository->findLatest($page, $showPrivates, $pattern);
     }
 }

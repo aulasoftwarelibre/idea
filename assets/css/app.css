@@ -225,6 +225,7 @@ a.ui.basic.proposed.label:hover {
 }
 
 @media only screen and (max-width: 767px) {
+    .right.menu > .search,
     .top.menu > .item {
         display: none!important;
     }

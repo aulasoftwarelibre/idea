@@ -20,6 +20,13 @@
 
 <body id="body">
 <div class="ui vertical inverted sidebar menu">
+    <div class="item">
+        <div class="ui search inverted transparent icon input">
+            <input class="prompt" type="text" placeholder="Buscar ideas...">
+            <i class="search link icon"></i>
+        </div>
+        <div class="results"></div>
+    </div>
     {{ knp_menu_render('main', {'bare': true, 'allow_safe_labels': true}) }}
     {{ knp_menu_render('groups', {'bare': true, 'allow_safe_labels': true}) }}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -48,6 +55,13 @@
             </div>
 
             <div class="right menu">
+                <div class="ui right aligned category search item">
+                    <div class="ui inverted transparent icon input">
+                        <input class="prompt" type="text" placeholder="Buscar ideas...">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div class="ui inverted dropdown item">
                         {% if app.user.image.name is not empty %}

@@ -21,6 +21,8 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ManagerRegistry;
 
+use function strlen;
+
 class IdeaRepository extends ServiceEntityRepository
 {
     public const NUM_ITEMS_PER_PAGE = 5;
@@ -40,18 +42,7 @@ class IdeaRepository extends ServiceEntityRepository
         $this->_em->remove($user);
     }
 
-    private function createPaginator(Query $dql, int $page = 1, int $limit = self::NUM_ITEMS_PER_PAGE): Paginator
-    {
-        $paginator = new Paginator($dql);
-
-        $paginator->getQuery()
-            ->setFirstResult($limit * ($page - 1))
-            ->setMaxResults($limit);
-
-        return $paginator;
-    }
-
-    public function findLatest(int $page, bool $showPrivates): Paginator
+    public function findLatest(int $page, bool $showPrivates, ?string $pattern): Paginator
     {
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.group', 'g')
@@ -61,6 +52,11 @@ class IdeaRepository extends ServiceEntityRepository
         if ($showPrivates === false) {
             $qb->andWhere('i.private = :false')
                 ->setParameter('false', false);
+        }
+
+        if (strlen($pattern) >= 3) {
+            $qb->andWhere($qb->expr()->like('i.title', ':pattern'))
+                ->setParameter('pattern', '%' . $pattern . '%');
         }
 
         $query = $qb->getQuery();
@@ -122,5 +118,16 @@ class IdeaRepository extends ServiceEntityRepository
             ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();
+    }
+
+    private function createPaginator(Query $dql, int $page = 1, int $limit = self::NUM_ITEMS_PER_PAGE): Paginator
+    {
+        $paginator = new Paginator($dql);
+
+        $paginator->getQuery()
+            ->setFirstResult($limit * ($page - 1))
+            ->setMaxResults($limit);
+
+        return $paginator;
     }
 }
