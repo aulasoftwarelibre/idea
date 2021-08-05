@@ -787,6 +787,9 @@
     "symfony/yaml": {
         "version": "v5.2.3"
     },
+    "symplify/config-transformer": {
+        "version": "9.4.23"
+    },
     "tijsverkoyen/css-to-inline-styles": {
         "version": "2.2.3"
     },

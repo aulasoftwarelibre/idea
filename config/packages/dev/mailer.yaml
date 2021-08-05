@@ -1,5 +1,0 @@
-# config/packages/dev/mailer.yaml
-framework:
-    mailer:
-        envelope:
-            recipients: ['%mail_from%']

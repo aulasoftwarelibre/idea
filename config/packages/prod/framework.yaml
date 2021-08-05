@@ -1,3 +1,0 @@
-framework:
-    trusted_proxies: '172.16.8.2'
-    trusted_headers: ['x-forwarded-proto']
