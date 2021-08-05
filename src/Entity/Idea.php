@@ -207,7 +207,6 @@ class Idea
     private bool $internal;
 
     /**
-     * @var File|UploadedFile|null
      * @Vich\UploadableField(
      *     mapping="ideas",
      *     fileNameProperty="image.name",
@@ -216,7 +215,7 @@ class Idea
      *     originalName="image.originalName"
      * )
      */
-    private $imageFile;
+    private File|UploadedFile|null $imageFile = null;
 
     /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
     private EmbeddedFile $image;

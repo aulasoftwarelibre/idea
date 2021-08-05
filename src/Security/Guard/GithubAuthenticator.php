@@ -20,7 +20,6 @@ use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
 use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Provider\GithubResourceOwner;
-use League\OAuth2\Client\Token\AccessTokenInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -144,11 +143,9 @@ class GithubAuthenticator extends SocialAuthenticator
     }
 
     /**
-     * @param AccessTokenInterface|string $credentials
-     *
      * @throws IdentityProviderException
      */
-    private function getEmailFromGithub($credentials): string
+    private function getEmailFromGithub(string $credentials): string
     {
         $provider = $this->getClient()->getOAuth2Provider();
         $request  = $provider->getAuthenticatedRequest(
