@@ -146,10 +146,7 @@ class ReportActivitiesCommand extends Command
         $writer->save(sprintf('var/report/%s-%s.xlsx', $date, $slug));
     }
 
-    /**
-     * @return mixed|string|string[]|null
-     */
-    protected function getTemplate(InputInterface $input)
+    protected function getTemplate(InputInterface $input): mixed
     {
         $template = $input->getArgument('template');
         if (is_array($template)) {
