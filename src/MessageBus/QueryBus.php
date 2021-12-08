@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\MessageBus;
 
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -29,7 +28,7 @@ class QueryBus
     /**
      * @return mixed The handler returned value
      */
-    public function query($query): mixed
+    public function query(object $query): mixed
     {
         return $this->handle($query);
     }
