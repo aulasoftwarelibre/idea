@@ -3,7 +3,6 @@
     errorLevel="7"
     totallyTyped="true"
     strictBinaryOperands="true"
-    allowPhpStormGenerics="true"
     allowStringToStandInForClass="false">
     <issueHandlers>
         <LessSpecificReturnType errorLevel="info" />
