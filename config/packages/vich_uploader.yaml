@@ -1,6 +1,5 @@
 vich_uploader:
     db_driver: orm
-
     mappings:
         avatars:
             uri_prefix: /images/avatars
