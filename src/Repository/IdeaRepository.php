@@ -47,7 +47,8 @@ class IdeaRepository extends ServiceEntityRepository
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.group', 'g')
             ->leftJoin('i.owner', 'o')
-            ->orderBy('i.createdAt', 'DESC');
+            ->orderBy('i.highlight', 'DESC')
+            ->addOrderBy('i.createdAt', 'DESC');
 
         if ($showPrivates === false) {
             $qb->andWhere('i.private = :false')

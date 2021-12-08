@@ -26,6 +26,9 @@
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
+    "composer/pcre": {
+        "version": "1.0.0"
+    },
     "composer/semver": {
         "version": "3.2.4"
     },
@@ -588,6 +591,9 @@
     "symfony/options-resolver": {
         "version": "v5.2.3"
     },
+    "symfony/password-hasher": {
+        "version": "v5.3.4"
+    },
     "symfony/phpunit-bridge": {
         "version": "5.1",
         "recipe": {
@@ -623,6 +629,9 @@
     },
     "symfony/polyfill-php80": {
         "version": "v1.22.1"
+    },
+    "symfony/polyfill-php81": {
+        "version": "v1.23.0"
     },
     "symfony/polyfill-uuid": {
         "version": "v1.22.1"

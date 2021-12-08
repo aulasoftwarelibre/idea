@@ -62,6 +62,9 @@ class IdeaCrudController extends AbstractCrudController
         if ($pageName === Crud::PAGE_INDEX) {
             yield IdField::new('id');
             yield TextField::new('title');
+            yield BooleanField::new('highlight')
+                ->renderAsSwitch(true);
+
             yield BooleanField::new('closed')
                 ->renderAsSwitch(true);
 
@@ -91,6 +94,7 @@ class IdeaCrudController extends AbstractCrudController
         yield FormField::addPanel('block.state');
         yield BooleanField::new('closed');
         yield BooleanField::new('private');
+        yield BooleanField::new('highlight');
         yield ChoiceField::new('state')
             ->setChoices(Idea::getStates())
             ->setTemplatePath('/admin/idea/state.html.twig');

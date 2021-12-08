@@ -8,6 +8,7 @@ closed: cerrada
 connect: conectar
 edit: editar
 full: sin plazas
+highlight: destacada
 join: unirte
 joined: unido
 leave: salir
@@ -95,6 +96,7 @@ Description: Descripción
 Ends At: Día y hora finalización
 External Num Seats: Plazas externas
 Format: Formato
+Highlight: Destacar
 Internal:  Interno
 Is Jitsi Room Open: Sala abierta
 Is Online: Evento online

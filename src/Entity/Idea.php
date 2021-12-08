@@ -181,7 +181,7 @@ class Idea
     protected ?string $location = null;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", options={"default"="FACE_TO_FACE"})
      *
      * @Assert\Choice(callback="getFormats")
      * @Groups("read")
@@ -207,7 +207,6 @@ class Idea
     private bool $internal;
 
     /**
-     * @var File|UploadedFile|null
      * @Vich\UploadableField(
      *     mapping="ideas",
      *     fileNameProperty="image.name",
@@ -216,10 +215,13 @@ class Idea
      *     originalName="image.originalName"
      * )
      */
-    private $imageFile;
+    private File|UploadedFile|null $imageFile = null;
 
     /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
     private EmbeddedFile $image;
+
+    /** @ORM\Column(type="boolean", options={"default"=false}) */
+    private bool $highlight = false;
 
     public function __construct()
     {
@@ -234,6 +236,7 @@ class Idea
         $this->jitsiLocatorRoom = null;
         $this->isJitsiRoomOpen  = false;
         $this->version          = 1;
+        $this->image            = new EmbeddedFile();
     }
 
     public static function with(string $title, string $description, User $owner, Group $group): self
@@ -682,8 +685,20 @@ class Idea
         return $this;
     }
 
-    public function getImage(): EmbeddedFile
+    public function getImage(): ?EmbeddedFile
     {
         return $this->image;
+    }
+
+    public function getHighlight(): ?bool
+    {
+        return $this->highlight;
+    }
+
+    public function setHighlight(bool $highlight): self
+    {
+        $this->highlight = $highlight;
+
+        return $this;
     }
 }

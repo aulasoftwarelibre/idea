@@ -17,18 +17,18 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Config\UserMenu;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
-use EasyCorp\Bundle\EasyAdminBundle\Router\CrudUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    private CrudUrlGenerator $crudUrlGenerator;
+    private AdminUrlGenerator $adminUrlGenerator;
 
-    public function __construct(CrudUrlGenerator $crudUrlGenerator)
+    public function __construct(AdminUrlGenerator $adminUrlGenerator)
     {
-        $this->crudUrlGenerator = $crudUrlGenerator;
+        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
     /**
@@ -36,9 +36,9 @@ class DashboardController extends AbstractDashboardController
      */
     public function index(): Response
     {
-        $ideaListUrl = $this->crudUrlGenerator->build()->setController(IdeaCrudController::class)->generateUrl();
+        $ideaCrudControllerUrl = $this->adminUrlGenerator->setController(IdeaCrudController::class)->generateUrl();
 
-        return $this->redirect($ideaListUrl);
+        return $this->redirect($ideaCrudControllerUrl);
     }
 
     public function configureDashboard(): Dashboard

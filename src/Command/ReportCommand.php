@@ -134,10 +134,7 @@ class ReportCommand extends Command
         unlink($filename);
     }
 
-    /**
-     * @return mixed|string|string[]|null
-     */
-    protected function getFilename(InputInterface $input)
+    protected function getFilename(InputInterface $input): mixed
     {
         $filename = $input->getArgument('filename');
         if (is_array($filename)) {

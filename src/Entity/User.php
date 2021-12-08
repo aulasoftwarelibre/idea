@@ -168,7 +168,6 @@ class User implements EquatableInterface, UserInterface
     private Collection $versions;
 
     /**
-     * @var File|UploadedFile|null
      * @Vich\UploadableField(
      *     mapping="avatars",
      *     fileNameProperty="image.name",
@@ -177,7 +176,7 @@ class User implements EquatableInterface, UserInterface
      *     originalName="image.originalName"
      * )
      */
-    private $imageFile;
+    private File|UploadedFile|null $imageFile = null;
 
     /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
     private EmbeddedFile $image;

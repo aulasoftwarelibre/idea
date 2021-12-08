@@ -37,18 +37,12 @@ final class GetIdeasByGroupQuery
         $this->page = $page;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getGroup()
+    public function getGroup(): mixed
     {
         return $this->group;
     }
 
-    /**
-     * @param mixed $group
-     */
-    public function setGroup($group): void
+    public function setGroup(mixed $group): void
     {
         $this->group = $group;
     }

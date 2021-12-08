@@ -32,7 +32,7 @@ class AliasValidator extends ConstraintValidator
     }
 
     /**
-     * @param User|string|null $value
+     * {@inheritDoc}
      */
     public function validate($value, Constraint $constraint): void
     {

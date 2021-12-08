@@ -1,18 +1,18 @@
 {
     "devDependencies": {
-        "@commitlint/cli": "^12.0.0",
-        "@commitlint/config-conventional": "^12.0.0",
-        "@symfony/webpack-encore": "^1.0.0",
-        "ckeditor4": "^4.16.0",
+        "@commitlint/cli": "^15.0.0",
+        "@commitlint/config-conventional": "^15.0.0",
+        "@symfony/webpack-encore": "^1.7.0",
+        "ckeditor4": "^4.17.1",
         "clipboard": "^2.0.4",
-        "core-js": "^3.0.0",
+        "core-js": "^3.19.3",
         "file-loader": "^6.0.0",
         "flatpickr": "^4.6.9",
         "fomantic-ui-css": "^2.8.4",
-        "husky": "^5.1.1",
+        "husky": "^7.0.4",
         "jquery": "^3.4.1",
         "regenerator-runtime": "^0.13.2",
-        "webpack-notifier": "^1.8.0"
+        "webpack-notifier": "^1.14.1"
     },
     "license": "AGPL-3.0-or-later",
     "private": true,

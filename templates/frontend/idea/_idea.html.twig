@@ -7,6 +7,9 @@
      {% endif %}
     >
         <div class="content">
+            {% if idea.highlight %}
+            <i class="right floated yellow star icon"></i>
+            {% endif %}
             <!-- vote box -->
             <div class="ui inverted vote basic compact floated left segment center aligned">
                 <div class="ui inverted top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
