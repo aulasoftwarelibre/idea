@@ -29,7 +29,7 @@ class QueryBus
     /**
      * @return mixed The handler returned value
      */
-    public function query(Envelope $query): mixed
+    public function query($query): mixed
     {
         return $this->handle($query);
     }
