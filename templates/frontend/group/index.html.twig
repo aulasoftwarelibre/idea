@@ -1,0 +1,46 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+    <div class="ui grid">
+        <div class="row">
+            <div class="ui inverted idea fluid card">
+                <div class="content">
+                    <div class="two column">
+                        {{ form_start(form, {attr: {id: 'group_form', class: 'inverted'}, method: 'POST', action: path('group_edit', {slug: group.slug})}) }}
+                        <h1 class="ui inverted header">
+                            Editar Grupo
+                        </h1>
+
+                        <div class="ui divider"></div>
+
+                        {{ form_widget(form, {attr: {class: 'inverted'}}) }}
+
+                        <div class="ui divider"></div>
+
+                        <div class="ui primary submit button">Actualizar</div>
+
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <h1 class="ui inverted header">Previsualización redes sociales</h1>
+            <div class="ui inverted fluid card">
+                <div class="image">
+                    {% if group.image.name is not empty %}
+                        <img src="{{ vich_uploader_asset(group, 'imageFile') | imagine_filter('opengraph_thumbnail') }}" alt="{{ group.name }}">
+                    {% else %}
+                    {% endif %}
+                </div>
+                <div class="content">
+                    <span class="header">{{ group.name }}</span>
+                    <div class="description">
+                        {{ group.description }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

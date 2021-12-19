@@ -1,0 +1,13 @@
+{% if is_granted('GROUP_MEMBER', group) %}
+    <div class="ui inverted vertical fluid menu">
+        <div class="header active item">{{ group.name }}</div>
+        <div class="item">
+            Eres miembro de este grupo. Puedes configurar las opciones de SEO desde aquí:
+
+        </div>
+        <a href="{{ path('group_edit', {slug: group.slug}) }}" class="item ui mini inverted basic button">
+            Editar
+        </a>
+
+    </div>
+{% endif %}

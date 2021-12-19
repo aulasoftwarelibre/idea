@@ -35,6 +35,26 @@ liip_imagine:
                     mode: outbound
                     allow_upscale: true
 
+        opengraph_thumbnail:
+
+            # set your image quality defaults
+            jpeg_quality: 85
+            png_compression_level: 8
+
+            # setup the filter steps to apply for this transformation
+            filters:
+
+                # auto rotate the image using EXIF metadata
+                auto_rotate: ~
+
+                # strip the image of all metadata
+                strip: ~
+
+                # scale and square the image to the given dimensions
+                thumbnail:
+                    size: [ 1200, 600 ]
+                    mode: outbound
+                    allow_upscale: true
     loaders:
         default:
             filesystem:

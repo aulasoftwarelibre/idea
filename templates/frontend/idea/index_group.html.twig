@@ -2,10 +2,17 @@
 
 {% extends "base.html.twig" %}
 
+{% block side_menu %}
+    {% include "/frontend/group/_edit_group_block.html.twig" with {group: group} %}
+    {{ parent() }}
+{% endblock %}
+
 {% block body %}
     <h1 class="ui inverted header">
         Actividades de Grupo
-        <div class="sub header">{{ group.name }}</div>
+        <div class="sub header">
+            {{ group.name }}
+        </div>
     </h1>
 
     <div class="ui divider"></div>
