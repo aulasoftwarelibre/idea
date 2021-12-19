@@ -23,6 +23,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use function strlen;
 
+/**
+ * @method Idea|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Idea|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Idea[]    findAll()
+ * @method Idea[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class IdeaRepository extends ServiceEntityRepository
 {
     public const NUM_ITEMS_PER_PAGE = 5;
