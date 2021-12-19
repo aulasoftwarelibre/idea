@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Services\Seo\OpenGraphItemInterface;
 use App\Utils\StringUtils;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -38,7 +39,7 @@ use const PHP_INT_MAX;
  * )
  * @Vich\Uploadable()
  */
-class Idea
+class Idea implements OpenGraphItemInterface
 {
     public const RELATIVE_STATE_NEW = 'new';
     public const STATE_PROPOSED     = 'proposed';

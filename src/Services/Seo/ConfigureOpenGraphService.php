@@ -2,50 +2,33 @@
 
 declare(strict_types=1);
 
-namespace App\MessageHandler\Seo;
+namespace App\Services\Seo;
 
-use App\Entity\Idea;
-use App\Message\Seo\ConfigureOpenGraphCommand;
-use App\Repository\IdeaRepository;
 use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
 use Leogout\Bundle\SeoBundle\Seo\AbstractSeoGenerator;
 use Leogout\Bundle\SeoBundle\Seo\Basic\BasicSeoGenerator;
 use Leogout\Bundle\SeoBundle\Seo\Og\OgSeoGenerator;
 use Leogout\Bundle\SeoBundle\Seo\Twitter\TwitterSeoGenerator;
 use Liip\ImagineBundle\Imagine\Cache\CacheManager;
-use Symfony\Component\HttpFoundation\RequestStack;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 use function mb_substr;
 use function strip_tags;
 
-class ConfigureOpenGraphCommandHandler
+final class ConfigureOpenGraphService
 {
     public function __construct(
         private CacheManager $cacheManager,
-        private IdeaRepository $ideaRepository,
-        private RequestStack $requestStack,
         private SeoGeneratorProvider $seoGeneratorProvider,
         private UploaderHelper $uploaderHelper,
     ) {
     }
 
-    public function __invoke(ConfigureOpenGraphCommand $command): void
+    public function configure(string $title, string $description, OpenGraphItemInterface $openGraphItem): void
     {
-        $ideaId = $command->getIdeaId();
-
-        $idea = $this->ideaRepository->find($ideaId);
-        if (! $idea instanceof Idea) {
-            return;
-        }
-
-        $request = $this->requestStack->getCurrentRequest();
-
-        $title       = $idea->getTitle();
-        $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
-        $asset       = $this->uploaderHelper->asset($idea, 'imageFile') ??
-                       $this->uploaderHelper->asset($idea->getGroup(), 'imageFile') ??
-                       '/assets/images/twitter.png';
+        $description = mb_substr(strip_tags($description), 0, 200);
+        $asset       = $this->uploaderHelper->asset($openGraphItem, 'imageFile') ??
+                       '/assets/images/seo.png';
         $path        = $this->cacheManager->getBrowserPath($asset, 'opengraph_thumbnail');
 
         $this->configureBasicSeo(

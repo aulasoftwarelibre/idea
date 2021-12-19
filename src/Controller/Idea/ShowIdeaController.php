@@ -14,8 +14,7 @@ declare(strict_types=1);
 namespace App\Controller\Idea;
 
 use App\Entity\Idea;
-use App\Message\Seo\ConfigureOpenGraphCommand;
-use App\MessageBus\CommandBus;
+use App\Services\Seo\ConfigureOpenGraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,14 +26,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class ShowIdeaController extends AbstractController
 {
     public function __construct(
-        private CommandBus $commandBus,
+        private ConfigureOpenGraphService $openGraphService
     ) {
     }
 
     public function __invoke(Idea $idea, Request $request): Response
     {
-        $this->commandBus->dispatch(
-            new ConfigureOpenGraphCommand($idea->getId())
+        $item = $idea->getImage()?->getName() ? $idea : $idea->getGroup();
+
+        $this->openGraphService->configure(
+            $idea->getTitle(),
+            $idea->getDescription(),
+            $item
         );
 
         return $this->render('frontend/idea/show.html.twig', [

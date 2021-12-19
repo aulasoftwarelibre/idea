@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\MessageBus;
 
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 

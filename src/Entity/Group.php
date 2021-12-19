@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Services\Seo\OpenGraphItemInterface;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -30,7 +31,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  *
  * @Vich\Uploadable()
  */
-class Group
+class Group implements OpenGraphItemInterface
 {
     /**
      * @ORM\Id
@@ -249,7 +250,7 @@ class Group
         return $this;
     }
 
-    public function getImage(): EmbeddedFile
+    public function getImage(): ?EmbeddedFile
     {
         return $this->image;
     }
