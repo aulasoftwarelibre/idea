@@ -76,21 +76,21 @@
     margin: 0;
 }
 
-.ui.basic.approved.label {
+.ui.basic.open.label {
     color: #21BA45 !important;
 }
 
-.ui.basic.approved.labels a.label:hover,
-a.ui.basic.approved.label:hover {
+.ui.basic.open.labels a.label:hover,
+a.ui.basic.open.label:hover {
     color: #16ab39 !important;
 }
 
-.ui.basic.rejected.label {
+.ui.basic.closed.label {
     color: #DB2828 !important;
 }
 
-.ui.basic.rejected.labels a.label:hover,
-a.ui.basic.rejected.label:hover {
+.ui.basic.closed.labels a.label:hover,
+a.ui.basic.closed.label:hover {
     color: #d01919 !important;
 }
 
@@ -103,12 +103,12 @@ a.ui.basic.new.label:hover {
     color: #eaae00 !important;
 }
 
-.ui.basic.proposed.label {
+.ui.basic.ended.label {
     color: #767676 !important;
 }
 
-.ui.basic.proposed.labels a.label:hover,
-a.ui.basic.proposed.label:hover {
+.ui.basic.ended.labels a.label:hover,
+a.ui.basic.ended.label:hover {
     color: #838383 !important;
 }
 

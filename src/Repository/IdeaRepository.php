@@ -90,26 +90,6 @@ class IdeaRepository extends ServiceEntityRepository
     /**
      * @return array<Idea>
      */
-    public function findFilteredByVotes(): array
-    {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT i, COUNT(v.id) as votes
-                FROM App:Idea i
-                JOIN i.votes v
-                WHERE i.state = :status
-                AND i.closed = FALSE
-                GROUP BY i.id
-                ORDER BY COUNT (v.id) DESC 
-            ')
-            ->setParameter('status', Idea::STATE_PROPOSED)
-            ->setMaxResults(5)
-            ->execute();
-    }
-
-    /**
-     * @return array<Idea>
-     */
     public function findNextScheduled(): array
     {
         return $this->getEntityManager()
@@ -118,11 +98,10 @@ class IdeaRepository extends ServiceEntityRepository
                 FROM App:Idea i
                 WHERE i.startsAt IS NOT NULL
                 AND i.startsAt > :now
-                AND i.state = :approved
+                AND i.closed = false
                 ORDER BY i.startsAt ASC
             ')
             ->setParameter('now', new DateTime())
-            ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();
     }

@@ -12,7 +12,15 @@
             {% endif %}
             <!-- vote box -->
             <div class="ui inverted vote basic compact floated left segment center aligned">
-                <div class="ui inverted top attached {{ idea.relativeState }} basic label">{{ idea.relativeState | trans | upper }}</div>
+                {% if idea.closed %}
+                    <div class="ui inverted top attached closed basic label">CERRADA</div>
+                {% elseif date('-2 days') < idea.createdAt %}
+                    <div class="ui inverted top attached new basic label">NUEVA</div>
+                {% elseif idea.endsAt and date() > idea.endsAt %}
+                    <div class="ui inverted top attached ended basic label">TERMINADA</div>
+                {% else %}
+                    <div class="ui inverted top attached open basic label">ABIERTA</div>
+                {% endif %}
                 <div class="ui inverted tiny statistic">
                     <div class="value">{{ idea.votes | length }}</div>
                     <div class="label">personas</div>

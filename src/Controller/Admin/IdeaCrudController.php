@@ -95,9 +95,6 @@ class IdeaCrudController extends AbstractCrudController
         yield BooleanField::new('closed');
         yield BooleanField::new('private');
         yield BooleanField::new('highlight');
-        yield ChoiceField::new('state')
-            ->setChoices(Idea::getStates())
-            ->setTemplatePath('/admin/idea/state.html.twig');
 
         yield AssociationField::new('owner');
 
@@ -114,6 +111,9 @@ class IdeaCrudController extends AbstractCrudController
         yield DateTimeField::new('startsAt');
         yield DateTimeField::new('endsAt');
 
+        yield FormField::addPanel('block.votes');
+        yield VoteField::new('votes');
+
         yield FormField::addPanel('block.format');
         yield ChoiceField::new('format')
             ->setChoices(Idea::getFormats())
@@ -128,8 +128,5 @@ class IdeaCrudController extends AbstractCrudController
         yield TextField::new('jitsiLocatorRoom')
             ->setHelp('form.help_jitsi_locator_room')
             ->hideOnForm();
-
-        yield FormField::addPanel('block.votes');
-        yield VoteField::new('votes');
     }
 }

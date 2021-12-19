@@ -48,7 +48,7 @@ class JoinIdeaVoter extends Voter
             return false;
         }
 
-        if ($subject->isClosed() || $subject->isRejected()) {
+        if ($subject->isClosed()) {
             return false;
         }
 
