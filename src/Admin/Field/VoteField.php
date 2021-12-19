@@ -20,6 +20,6 @@ final class VoteField implements FieldInterface
             ->setTemplatePath('admin/idea/votes.html.twig')
             ->setFormType(VoteType::class)
             ->setFormTypeOption('multiple', true)
-            ->setFormTypeOption('attr.data-widget', 'select2');
+            ->setFormTypeOption('attr.data-ea-widget', 'ea-autocomplete');
     }
 }
