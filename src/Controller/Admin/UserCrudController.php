@@ -51,6 +51,9 @@ class UserCrudController extends AbstractCrudController
             ])
             ->allowMultipleChoices();
 
+        yield AssociationField::new('groups')
+            ->hideOnIndex();
+
         yield AssociationField::new('versions')
             ->setLabel('Policies')
             ->setTemplatePath('admin/user/policies.html.twig')
@@ -83,15 +86,4 @@ class UserCrudController extends AbstractCrudController
             ->setCssClass('ea-vich-image')
             ->onlyOnDetail();
     }
-
-    /*
-    public function configureFields(string $pageName): iterable
-    {
-        return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
-        ];
-    }
-    */
 }

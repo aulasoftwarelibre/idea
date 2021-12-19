@@ -27,9 +27,9 @@ class CommandBus
     }
 
     /**
-     * @return Envelope The handler returned value
+     * @return mixed The handler returned value
      */
-    public function dispatch(Envelope $query): mixed
+    public function dispatch(object $query): mixed
     {
         return $this->handle($query);
     }

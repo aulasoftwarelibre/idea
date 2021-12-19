@@ -214,6 +214,12 @@ class Idea
      *     mimeType="image.mimeType",
      *     originalName="image.originalName"
      * )
+     * @Assert\Image(
+     *     minHeight=600,
+     *     minWidth=1200,
+     *     minRatio=2,
+     *     maxRatio=2,
+     * )
      */
     private File|UploadedFile|null $imageFile = null;
 

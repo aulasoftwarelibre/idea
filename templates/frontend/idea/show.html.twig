@@ -79,7 +79,7 @@
                     <div class="ui inverted fluid card">
                         {% if idea.image.name is not empty %}
                         <div class="ui image">
-                            <img src="{{ vich_uploader_asset(idea, 'imageFile') }}" alt="">
+                            <img src="{{ vich_uploader_asset(idea, 'imageFile') | imagine_filter('opengraph_thumbnail') }}">
                         </div>
                         {% endif %}
                         <div class="content">
