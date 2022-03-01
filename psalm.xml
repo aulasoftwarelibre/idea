@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="7"
-    totallyTyped="true"
     strictBinaryOperands="true"
     allowStringToStandInForClass="false">
     <issueHandlers>
