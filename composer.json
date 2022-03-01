@@ -67,6 +67,7 @@
         "wohali/oauth2-discord-new": "^1.1"
     },
     "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^0.7.2",
         "doctrine/coding-standard": "^9.0",
         "phpmd/phpmd": "^2.9",
         "phpunit/phpunit": "^9.5",
@@ -88,9 +89,10 @@
         },
         "sort-packages": true,
         "allow-plugins": {
-            "dealerdirect/phpcodesniffer-composer-installer": false,
             "composer/package-versions-deprecated": true,
-            "symfony/flex": true
+            "symfony/flex": true,
+            "symfony/runtime": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "autoload": {
