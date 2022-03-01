@@ -16,6 +16,7 @@ namespace App\Controller\Idea;
 use App\Entity\Group;
 use App\Message\Idea\GetIdeasByGroupQuery;
 use App\MessageBus\QueryBus;
+use App\Services\Seo\ConfigureOpenGraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,16 +29,20 @@ use function ceil;
  */
 class ListGroupIdeaController extends AbstractController
 {
-    private QueryBus $queryBus;
-
     public function __construct(
-        QueryBus $queryBus
+        private ConfigureOpenGraphService $openGraphService,
+        private QueryBus $queryBus
     ) {
-        $this->queryBus = $queryBus;
     }
 
     public function __invoke(Group $group, int $page): Response
     {
+        $this->openGraphService->configure(
+            $group->getName(),
+            $group->getDescription(),
+            $group
+        );
+
         $ideas = $this->queryBus->query(
             new GetIdeasByGroupQuery(
                 $page,

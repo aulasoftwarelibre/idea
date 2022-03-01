@@ -1,7 +1,6 @@
 <?xml version="1.0"?>
 <psalm
     errorLevel="7"
-    totallyTyped="true"
     strictBinaryOperands="true"
     allowStringToStandInForClass="false">
     <issueHandlers>
@@ -16,6 +15,7 @@
         <directory name="src"/>
         <ignoreFiles>
             <directory name="vendor"/>
+            <directory name="src/Repository"/>
             <file name="src/Kernel.php"/>
         </ignoreFiles>
     </projectFiles>

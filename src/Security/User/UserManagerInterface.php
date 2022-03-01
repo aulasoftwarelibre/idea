@@ -9,7 +9,7 @@ use App\Entity\User;
 interface UserManagerInterface
 {
     /**
-     * @param array<string, string> $criteria
+     * @param array<array-key, mixed> $criteria
      */
     public function findUserBy(array $criteria): ?User;
 

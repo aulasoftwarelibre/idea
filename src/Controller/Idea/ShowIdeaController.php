@@ -14,68 +14,35 @@ declare(strict_types=1);
 namespace App\Controller\Idea;
 
 use App\Entity\Idea;
-use Leogout\Bundle\SeoBundle\Provider\SeoGeneratorProvider;
-use Leogout\Bundle\SeoBundle\Seo\Og\OgSeoGenerator;
-use Leogout\Bundle\SeoBundle\Seo\Twitter\TwitterSeoGenerator;
+use App\Services\Seo\ConfigureOpenGraphService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
-
-use function mb_substr;
-use function strip_tags;
 
 /**
  * @Route("/idea/{slug}", name="idea_show")
  */
 class ShowIdeaController extends AbstractController
 {
-    private SeoGeneratorProvider $seoGeneratorProvider;
-    private UploaderHelper $uploaderHelper;
-
     public function __construct(
-        SeoGeneratorProvider $seoGeneratorProvider,
-        UploaderHelper $uploaderHelper
+        private ConfigureOpenGraphService $openGraphService
     ) {
-        $this->seoGeneratorProvider = $seoGeneratorProvider;
-        $this->uploaderHelper       = $uploaderHelper;
     }
 
     public function __invoke(Idea $idea, Request $request): Response
     {
-        $this->configureSeoProvider($request, $idea, 'basic');
-        $this->configureSeoProvider($request, $idea, 'og');
-        $this->configureSeoProvider($request, $idea, 'twitter');
+        $item = $idea->getImage()?->getName() ? $idea : $idea->getGroup();
+
+        $this->openGraphService->configure(
+            $idea->getTitle(),
+            $idea->getDescription(),
+            $item
+        );
 
         return $this->render('frontend/idea/show.html.twig', [
             'complete' => true,
             'idea' => $idea,
         ]);
-    }
-
-    private function configureSeoProvider(Request $request, Idea $idea, string $seo): void
-    {
-        $title       = $idea->getTitle();
-        $description = mb_substr(strip_tags($idea->getDescription()), 0, 200);
-
-        $basicSeoGenerator = $this->seoGeneratorProvider->get($seo);
-
-        $basicSeoGenerator
-            ->setTitle($title)
-            ->setDescription($description);
-
-        if (
-            ! ($basicSeoGenerator instanceof TwitterSeoGenerator)
-            && ! ($basicSeoGenerator instanceof OgSeoGenerator)
-        ) {
-            return;
-        }
-
-        $path = $this->uploaderHelper->asset($idea, 'imageFile') ?? '/assets/images/twitter.png';
-
-        $basicSeoGenerator->setImage(
-            $request->getUriForPath($path)
-        );
     }
 }

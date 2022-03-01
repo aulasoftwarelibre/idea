@@ -38,7 +38,7 @@ class LogPolicy
     private string $version;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="versions")
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private ?User $user = null;

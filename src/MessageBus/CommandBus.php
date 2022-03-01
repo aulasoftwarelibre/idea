@@ -13,7 +13,6 @@ declare(strict_types=1);
 
 namespace App\MessageBus;
 
-use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\HandleTrait;
 use Symfony\Component\Messenger\MessageBusInterface;
 
@@ -26,10 +25,7 @@ class CommandBus
         $this->messageBus = $messageBus;
     }
 
-    /**
-     * @return Envelope The handler returned value
-     */
-    public function dispatch(Envelope $query): mixed
+    public function dispatch(object $query): mixed
     {
         return $this->handle($query);
     }

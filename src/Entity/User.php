@@ -129,7 +129,7 @@ class User implements EquatableInterface, UserInterface
      *     orphanRemoval=true
      * )
      *
-     * @var Participation[]|Collection
+     * @var Collection<int,Participation>
      */
     private Collection $participations;
 
@@ -141,7 +141,7 @@ class User implements EquatableInterface, UserInterface
      *     orphanRemoval=true
      * )
      *
-     * @var Idea[]|Collection
+     * @var Collection<int,Idea>
      */
     private Collection $ideas;
 
@@ -153,7 +153,7 @@ class User implements EquatableInterface, UserInterface
      *     orphanRemoval=true
      * )
      *
-     * @var Vote[]|Collection
+     * @var Collection<int,Vote>
      */
     private Collection $votes;
 
@@ -163,7 +163,7 @@ class User implements EquatableInterface, UserInterface
      *     mappedBy="user"
      * )
      *
-     * @var LogPolicy[]|Collection
+     * @var Collection<int,LogPolicy>
      */
     private Collection $versions;
 
@@ -182,16 +182,12 @@ class User implements EquatableInterface, UserInterface
     private EmbeddedFile $image;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Group")
-     * @ORM\JoinTable(name="fos_user_user_group",
-     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="group_id", referencedColumnName="id")}
-     * )
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users", cascade={"all"})
+     * @ORM\JoinTable(name="fos_user_user_group")
      *
-     * @var Collection<int,Group>
-     * @inheritdoc
+     * @var Collection<int, Group>
      */
-    protected $groups;
+    private Collection $groups;
 
     /** @ORM\Column(type="datetime", nullable=true) */
     private ?DateTimeInterface $deletedAt = null;
@@ -256,6 +252,8 @@ class User implements EquatableInterface, UserInterface
         $this->votes          = new ArrayCollection();
         $this->participations = new ArrayCollection();
         $this->image          = new EmbeddedFile();
+        $this->versions       = new ArrayCollection();
+        $this->groups         = new ArrayCollection();
     }
 
     public function __toString(): string
@@ -667,6 +665,47 @@ class User implements EquatableInterface, UserInterface
     public function setLastLogin(?DateTimeInterface $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getIsExternal(): ?bool
+    {
+        return $this->isExternal;
+    }
+
+    public function removeVersion(LogPolicy $version): self
+    {
+        if ($this->versions->removeElement($version)) {
+            // set the owning side to null (unless already changed)
+            if ($version->getUser() === $this) {
+                $version->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int,Group>
+     */
+    public function getGroups(): Collection
+    {
+        return $this->groups;
+    }
+
+    public function addGroup(Group $group): self
+    {
+        if (! $this->groups->contains($group)) {
+            $this->groups[] = $group;
+        }
+
+        return $this;
+    }
+
+    public function removeGroup(Group $group): self
+    {
+        $this->groups->removeElement($group);
 
         return $this;
     }

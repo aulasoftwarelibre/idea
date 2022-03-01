@@ -23,6 +23,12 @@ use Doctrine\Persistence\ManagerRegistry;
 
 use function strlen;
 
+/**
+ * @method Idea|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Idea|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Idea[]    findAll()
+ * @method Idea[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
 class IdeaRepository extends ServiceEntityRepository
 {
     public const NUM_ITEMS_PER_PAGE = 5;
@@ -84,26 +90,6 @@ class IdeaRepository extends ServiceEntityRepository
     /**
      * @return array<Idea>
      */
-    public function findFilteredByVotes(): array
-    {
-        return $this->getEntityManager()
-            ->createQuery('
-                SELECT i, COUNT(v.id) as votes
-                FROM App:Idea i
-                JOIN i.votes v
-                WHERE i.state = :status
-                AND i.closed = FALSE
-                GROUP BY i.id
-                ORDER BY COUNT (v.id) DESC 
-            ')
-            ->setParameter('status', Idea::STATE_PROPOSED)
-            ->setMaxResults(5)
-            ->execute();
-    }
-
-    /**
-     * @return array<Idea>
-     */
     public function findNextScheduled(): array
     {
         return $this->getEntityManager()
@@ -112,11 +98,10 @@ class IdeaRepository extends ServiceEntityRepository
                 FROM App:Idea i
                 WHERE i.startsAt IS NOT NULL
                 AND i.startsAt > :now
-                AND i.state = :approved
+                AND i.closed = false
                 ORDER BY i.startsAt ASC
             ')
             ->setParameter('now', new DateTime())
-            ->setParameter('approved', Idea::STATE_APPROVED)
             ->setMaxResults(5)
             ->execute();
     }

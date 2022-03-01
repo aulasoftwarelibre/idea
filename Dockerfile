@@ -6,7 +6,7 @@
 
 
 # https://docs.docker.com/engine/reference/builder/#understand-how-arg-and-from-interact
-ARG PHP_VERSION=8.0
+ARG PHP_VERSION=8.1
 ARG APACHE_VERSION=2.4
 ARG NODE_VERSION=14
 

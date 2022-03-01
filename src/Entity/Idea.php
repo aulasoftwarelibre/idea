@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
+use App\Services\Seo\OpenGraphItemInterface;
 use App\Utils\StringUtils;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -38,14 +39,10 @@ use const PHP_INT_MAX;
  * )
  * @Vich\Uploadable()
  */
-class Idea
+class Idea implements OpenGraphItemInterface
 {
-    public const RELATIVE_STATE_NEW = 'new';
-    public const STATE_PROPOSED     = 'proposed';
-    public const STATE_REJECTED     = 'rejected';
-    public const STATE_APPROVED     = 'approved';
-    public const UNLIMITED_SEATS    = PHP_INT_MAX;
-    public const LIMITLESS          = 0;
+    public const UNLIMITED_SEATS = PHP_INT_MAX;
+    public const LIMITLESS       = 0;
     // Format consts
     public const FACE_TO_FACE = 'FACE_TO_FACE';
     public const ONLINE       = 'ONLINE';
@@ -88,14 +85,6 @@ class Idea
      * @Groups("read")
      */
     private bool $closed;
-
-    /**
-     * @ORM\Column(length=32)
-     *
-     * @Assert\Choice(callback="getStates")
-     * @Groups("read")
-     */
-    private string $state;
 
     /**
      * @ORM\Column(length=255, unique=true)
@@ -214,6 +203,12 @@ class Idea
      *     mimeType="image.mimeType",
      *     originalName="image.originalName"
      * )
+     * @Assert\Image(
+     *     minHeight=600,
+     *     minWidth=1200,
+     *     minRatio=2,
+     *     maxRatio=2,
+     * )
      */
     private File|UploadedFile|null $imageFile = null;
 
@@ -229,7 +224,6 @@ class Idea
         $this->closed           = false;
         $this->private          = false;
         $this->internal         = false;
-        $this->state            = self::STATE_PROPOSED;
         $this->numSeats         = self::LIMITLESS;
         $this->format           = self::FACE_TO_FACE;
         $this->externalNumSeats = 0;
@@ -249,18 +243,6 @@ class Idea
         $idea->group       = $group;
 
         return $idea;
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    public static function getStates(): array
-    {
-        return [
-            'Propuesta' => self::STATE_PROPOSED,
-            'Rechazada' => self::STATE_REJECTED,
-            'Aceptada' => self::STATE_APPROVED,
-        ];
     }
 
     /**
@@ -331,44 +313,6 @@ class Idea
         $this->closed = $closed;
 
         return $this;
-    }
-
-    public function getState(): string
-    {
-        return $this->state;
-    }
-
-    public function isApproved(): bool
-    {
-        return $this->state === self::STATE_APPROVED;
-    }
-
-    public function isProposed(): bool
-    {
-        return $this->state === self::STATE_PROPOSED;
-    }
-
-    public function isRejected(): bool
-    {
-        return $this->state === self::STATE_REJECTED;
-    }
-
-    public function setState(string $state): self
-    {
-        $this->state = $state;
-
-        return $this;
-    }
-
-    public function getRelativeState(): string
-    {
-        $diff = $this->createdAt->diff(new DateTime());
-
-        if ($diff->days <= 2) {
-            return self::RELATIVE_STATE_NEW;
-        }
-
-        return $this->state;
     }
 
     public function getSlug(): ?string
