@@ -29,6 +29,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use function array_unique;
+use function in_array;
 use function sprintf;
 
 /**
@@ -320,6 +321,11 @@ class User implements EquatableInterface, UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
     }
 
     /**

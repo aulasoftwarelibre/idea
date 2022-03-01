@@ -42,7 +42,7 @@ class EditIdeaVoter extends Voter
     protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
     {
         $user = $token->getUser();
-        assert($user instanceof User);
+        assert($subject instanceof Idea);
 
         if (! $user instanceof User) {
             return false;
