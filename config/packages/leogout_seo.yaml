@@ -14,6 +14,6 @@ leogout_seo:
         url: 'https://ideas.aulasoftwarelibre.uco.es/'
         image: 'https://ideas.aulasoftwarelibre.uco.es/assets/images/seo.png'
     twitter:
-        card: 'summary'
+        card: 'summary_large_image'
         site: '@aulasl'
         image: 'https://ideas.aulasoftwarelibre.uco.es/assets/images/seo.png'
