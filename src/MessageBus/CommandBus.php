@@ -25,9 +25,6 @@ class CommandBus
         $this->messageBus = $messageBus;
     }
 
-    /**
-     * @return mixed The handler returned value
-     */
     public function dispatch(object $query): mixed
     {
         return $this->handle($query);

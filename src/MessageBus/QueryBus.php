@@ -25,9 +25,6 @@ class QueryBus
         $this->messageBus = $queryBus;
     }
 
-    /**
-     * @return mixed The handler returned value
-     */
     public function query(object $query): mixed
     {
         return $this->handle($query);
