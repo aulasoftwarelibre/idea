@@ -110,6 +110,23 @@
                             {% endif %}
                         </div>
 
+                        {% if is_granted('GROUP_MEMBER', idea.group) %}
+                            <div class="extra content">
+                                <div class="row">
+                                    <div class="column">
+                                        <h4 class="ui inverted dividing header">Gestión de grupo</h4>
+
+                                        <div class="ui buttons">
+                                            {%  set idea_url =
+                                                url('idea_edit', {'slug': idea.slug})
+                                            %}
+                                            {{ buttons.icon_button('edit_idea', 'pencil', idea_url) }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         {% if is_granted('ROLE_ADMIN') %}
                             <div class="extra content">
                                 <div class="row">

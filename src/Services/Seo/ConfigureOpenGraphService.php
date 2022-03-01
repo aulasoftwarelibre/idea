@@ -85,6 +85,7 @@ final class ConfigureOpenGraphService
         $twitterSeoGenerator
             ->setTitle($title)
             ->setDescription($description)
-            ->setImage($uri);
+            ->setImage($uri)
+            ->setCard('summary_large_image');
     }
 }

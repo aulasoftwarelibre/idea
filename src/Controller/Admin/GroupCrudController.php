@@ -39,6 +39,7 @@ class GroupCrudController extends AbstractCrudController
             ->onlyOnIndex();
 
         yield TextField::new('name');
+        yield TextareaField::new('description')->setRequired(true);
         yield TextField::new('icon');
         yield TextField::new('slug')
             ->onlyOnDetail();
