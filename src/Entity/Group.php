@@ -47,7 +47,11 @@ class Group implements OpenGraphItemInterface
      */
     private string $slug;
 
-    /** @ORM\Column(type="string", length=180, unique=true) */
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\Length(max=180, min=3)
+     */
     private string $name;
 
     /** @ORM\Column(length=32) */
