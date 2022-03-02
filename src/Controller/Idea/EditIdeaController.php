@@ -25,7 +25,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 /**
  * @Route("/idea/{slug}/edit", name="idea_edit", methods={"GET", "POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY') and is_granted('EDIT', idea)")
+ * @Security("is_granted('GROUP_MEMBER', idea.getGroup()) or is_granted('EDIT', idea)")
  */
 class EditIdeaController extends AbstractController
 {

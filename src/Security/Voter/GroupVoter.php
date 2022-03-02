@@ -9,6 +9,7 @@ use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
 
+use function assert;
 use function in_array;
 
 class GroupVoter extends Voter
@@ -27,6 +28,7 @@ class GroupVoter extends Voter
      */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
+        assert($subject instanceof Group);
         $user = $token->getUser();
         // if the user is anonymous, do not grant access
         if (! $user instanceof User) {
@@ -38,7 +40,7 @@ class GroupVoter extends Voter
         }
 
         return match ($attribute) {
-            'GROUP_MEMBER' => $user->getGroups()->exists(static fn ($x) => $x === $subject->getId()),
+            'GROUP_MEMBER' => $user->getGroups()->contains($subject),
             default => false,
         };
     }
