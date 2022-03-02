@@ -183,7 +183,7 @@ class User implements EquatableInterface, UserInterface
     private EmbeddedFile $image;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users", cascade={"all"})
+     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users", cascade={"all"}, fetch="EAGER")
      * @ORM\JoinTable(name="fos_user_user_group")
      *
      * @var Collection<int, Group>
