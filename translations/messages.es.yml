@@ -120,6 +120,7 @@ User Fullname: Nombre completo
 Role: Rol
 Is Reported: Informe
 Image file: Imagen de cabecera
+Impersonate: Impersonar
 
 http_error.name: Error %status_code%
 http_error.description: Se ha producido un error desconocido (HTTP %status_code%) que ha impedido completar tu petición.

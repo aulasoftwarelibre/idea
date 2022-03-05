@@ -29,3 +29,30 @@
     {%- set attr = attr|merge({class: ('inverted ' ~ attr.class|default(''))|trim}) -%}
     {{- parent() -}}
 {%- endblock choice_widget_collapsed -%}
+
+{%- block datetime_widget -%}
+    {% apply spaceless %}
+        {% if widget == 'single_text' %}
+            {% set type = 'text' %}
+            <div class="ui inverted calendar" id="standard_calendar">
+                <div class="ui input left icon">
+                    <i class="calendar inverted icon"></i>
+                    {{ block('form_widget_simple') }}
+                </div>
+            </div>
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_errors(form.date) }}
+                {{ form_errors(form.time) }}
+                <div class="fields">
+                    <div class="field">
+                        {{ form_widget(form.date) }}
+                    </div>
+                    <div class="field">
+                        {{ form_widget(form.time) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{%- endblock datetime_widget -%}

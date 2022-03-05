@@ -15,18 +15,16 @@ namespace App\Form\Type;
 
 use App\Entity\Group;
 use App\Entity\Idea;
-use App\Entity\User;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Form\Type\VichImageType;
-
-use function assert;
 
 class IdeaType extends AbstractType
 {
@@ -52,28 +50,46 @@ class IdeaType extends AbstractType
                 'placeholder' => 'Seleccione un grupo donde publicar la idea',
                 'required' => true,
             ])
-            ->add('imageFile', VichImageType::class, []);
+            ->add('imageFile', VichImageType::class, ['required' => false])
+            ->add('startsAt', DateTimeType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy, HH:mm',
+                'html5' => false,
+                'label' => 'Starts At',
+            ])
+            ->add('endsAt', DateTimeType::class, [
+                'required' => false,
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy, HH:mm',
+                'html5' => false,
+                'label' => 'Ends At',
+            ])
+            ->add('location', null, ['required' => false])
+            ->add('numSeats', null, [
+                'required' => false,
+                'label' => 'Num Seats',
+                'help' => '0 para plazas ilimitadas',
+            ]);
 
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event): void {
             $form = $event->getForm();
-            $user = $this->security->getUser();
-            assert($user instanceof User);
             $data = $event->getData();
-            assert($data instanceof Idea);
+
             $isNew    = $data?->getId() === null;
             $isMember = $this->security->isGranted('GROUP_MEMBER', $data?->getGroup());
 
-            if ($isNew) {
-                unset($form['imageFile']);
-
-                return;
+            if (! $isNew) {
+                unset($form['group']);
             }
 
-            unset($form['group']);
             if ($isMember) {
                 return;
             }
 
+            unset($form['startsAt']);
+            unset($form['endsAt']);
+            unset($form['location']);
             unset($form['imageFile']);
         });
     }
