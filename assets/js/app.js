@@ -62,6 +62,36 @@ $(document).ready(function () {
         })
     ;
 
+    $('.ui.calendar')
+        .calendar({
+            firstDayOfWeek: 1,
+            ampm: false,
+            monthFirst: false,
+            text: {
+                days: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+                months: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+                    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'],
+            },
+            formatter: {
+                datetime: function (date, settings) {
+                    const options = { year: 'numeric', month: '2-digit', day: '2-digit',
+                        hour: '2-digit', minute: '2-digit' };
+
+                    if (!date) return '';
+
+                    return new Intl.DateTimeFormat('es-ES', options).format(date)
+
+                    let day = date.getDate();
+                    let month = date.getMonth() + 1;
+                    let year = date.getFullYear();
+                    let hour = date.getHours();
+                    let minutes = date.getMinutes();
+
+                    return `${day}/${month}/${year} ${hour}:${minutes}`;
+                }
+            }
+        })
+    ;
 
     $('#idea_form')
         .form({
