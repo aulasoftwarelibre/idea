@@ -8,25 +8,17 @@ use App\Entity\User;
 use App\Repository\GroupRepository;
 use Knp\Menu\FactoryInterface;
 use Knp\Menu\ItemInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Security;
 
-use function in_array;
 use function sprintf;
 
 final class MenuBuilder
 {
-    private FactoryInterface $factory;
-    private TokenStorageInterface $token;
-    private GroupRepository $groupRepository;
-
     public function __construct(
-        FactoryInterface $factory,
-        TokenStorageInterface $token,
-        GroupRepository $groupRepository
+        private FactoryInterface $factory,
+        private GroupRepository $groupRepository,
+        private Security $security,
     ) {
-        $this->factory         = $factory;
-        $this->token           = $token;
-        $this->groupRepository = $groupRepository;
     }
 
     /**
@@ -39,7 +31,7 @@ final class MenuBuilder
         $menu->addChild('<i class="home icon"></i> Inicio', ['route' => 'idea_index'])
         ->setExtra('safe_label', true);
 
-        $user = $this->token->getToken() ? $this->token->getToken()->getUser() : null;
+        $user = $this->security->getUser();
         if ($user instanceof User && ! $user->isExternal()) {
             $menu->addChild('<i class="lightbulb icon"></i> Añadir idea', ['route' => 'idea_new'])
                 ->setExtra('safe_label', true);
@@ -80,9 +72,16 @@ final class MenuBuilder
     {
         $menu = $this->factory->createItem('root');
 
-        $user = $this->token->getToken() ? $this->token->getToken()->getUser() : null;
-        if ($user instanceof User && in_array('ROLE_ADMIN', $user->getRoles())) {
+        if ($this->security->isGranted('ROLE_ADMIN')) {
             $menu->addChild('<i class="lock icon"></i> Administrar', ['route' => 'admin'])
+                ->setExtra('safe_label', true);
+        }
+
+        if ($this->security->isGranted('IS_IMPERSONATOR')) {
+            $menu->addChild('<i class="lock icon"></i> Volver a admin', [
+                'route' => 'admin',
+                'routeParameters' => [ '_switch_user' => '_exit'],
+            ])
                 ->setExtra('safe_label', true);
         }
 

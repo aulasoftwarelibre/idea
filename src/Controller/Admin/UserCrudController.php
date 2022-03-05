@@ -18,12 +18,14 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Security;
 use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
         private UrlGeneratorInterface $urlGenerator,
+        private Security $security,
     ) {
     }
 
@@ -39,7 +41,8 @@ class UserCrudController extends AbstractCrudController
                 return $this->urlGenerator->generate('homepage', [
                     '_switch_user' => $user->getUsername(),
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
-            });
+            })
+            ->displayIf(fn (User $user) => $this->security->isGranted('ROLE_ALLOWED_TO_SWITCH'));
 
         return $actions
             ->add(Crud::PAGE_INDEX, $impersonate);
