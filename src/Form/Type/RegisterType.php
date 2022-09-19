@@ -50,6 +50,11 @@ class RegisterType extends AbstractType
                 'label' => 'Apellidos',
                 'required' => true,
             ])
+            ->add('nic', null, [
+                'label' => 'DNI/NIE',
+                'required' => false,
+                'help' => 'form.help_nic',
+            ])
             ->add('imageFile', VichImageType::class, [
                 'label' => 'Imagen de perfil',
                 'required' => false,

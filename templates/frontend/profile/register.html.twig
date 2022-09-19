@@ -19,6 +19,7 @@
                                 {{ form_row(form.firstname) }}
                                 {{ form_row(form.lastname) }}
                             </div>
+                            {{ form_row(form.nic) }}
                             {{ form_row(form.imageFile) }}
                             {{ form_row(form.collective) }}
                             {% if not app.user.isExternal %}

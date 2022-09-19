@@ -87,6 +87,7 @@ form.help_alias: Selecciona un nombre de usuario para tu cuenta (máximo 16 cara
 form.help_jitsi_locator_room: Se genera un localizador nuevo al activar el evento online y se elimina al desactivarlo.
 form.help_location: Se ignora si el evento es online. Si es por streaming indicar el enlace de YouTube.
 form.help_jitsi_room_open: Para charlas online, si la sala de videoconferencia de Jitsi está abierta.
+form.help_nic: Este dato solo es necesario para estudiantes de la EPSC que quieran convalidar la asistencia con créditos ECTS del programa de formación extracurricular de la Escuela. Al final de cada curso académico se elimina.
 
 Activity: Actividad
 Alias: Alias
