@@ -19,7 +19,7 @@ jobs:
 
         strategy:
             matrix:
-                php: [ '8.0' ]
+                php: [ '8.1' ]
 
         steps:
             -   name: Checkout
@@ -32,7 +32,7 @@ jobs:
                     extensions: "json,openssl,mbstring,xml,ctype,iconv,intl"
                     ini-values: "memory_limit=-1"
                     php-version: "${{ matrix.php }}"
-                    tools: composer, prestissimo
+                    tools: composer:v2, prestissimo
 
             -   name: Determine composer cache directory
                 id: composer-cache
