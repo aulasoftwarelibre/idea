@@ -1,15 +1,15 @@
 <?php
 
-return array (
-  'APP_SECRET' => NULL,
-  'CLIENT_DISCORD_ID' => NULL,
-  'CLIENT_DISCORD_SECRET' => NULL,
-  'CLIENT_GITHUB_ID' => NULL,
-  'CLIENT_GITHUB_SECRET' => NULL,
-  'CLIENT_GOOGLE_ID' => NULL,
-  'CLIENT_GOOGLE_SECRET' => NULL,
-  'CLIENT_UCO_ID' => NULL,
-  'CLIENT_UCO_SECRET' => NULL,
-  'DATABASE_URL' => NULL,
-  'MAILER_DSN' => NULL,
-);
+return [
+    'APP_SECRET' => null,
+    'CLIENT_DISCORD_ID' => null,
+    'CLIENT_DISCORD_SECRET' => null,
+    'CLIENT_GITHUB_ID' => null,
+    'CLIENT_GITHUB_SECRET' => null,
+    'CLIENT_GOOGLE_ID' => null,
+    'CLIENT_GOOGLE_SECRET' => null,
+    'CLIENT_UCO_ID' => null,
+    'CLIENT_UCO_SECRET' => null,
+    'DATABASE_URL' => null,
+    'MAILER_DSN' => null,
+];
