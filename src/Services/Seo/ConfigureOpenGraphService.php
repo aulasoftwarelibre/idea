@@ -72,8 +72,8 @@ final class ConfigureOpenGraphService
             ->setTitle($title)
             ->setDescription($description)
             ->setImage($uri)
-            ->set('og:image:width', 1200)
-            ->set('og:image:height', 600);
+            ->set('og:image:width', '1200')
+            ->set('og:image:height', '600');
     }
 
     private function configureTwitterSeo(
