@@ -21,18 +21,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/idea/{slug}/close", name="idea_close", options={"expose"=true}, methods={"POST"})
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[Route(path: '/idea/{slug}/close', name: 'idea_close', options: ['expose' => true], methods: ['POST'])]
+#[Security("is_granted('ROLE_ADMIN')")]
 class CloseIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-
     public function __construct(
-        CommandBus $commandBus
+        private CommandBus $commandBus,
     ) {
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Idea $idea): Response
@@ -40,8 +35,8 @@ class CloseIdeaController extends AbstractController
         $this->commandBus->dispatch(
             new CloseIdeaCommand(
                 $idea,
-                true
-            )
+                true,
+            ),
         );
 
         $this->addFlash('positive', 'La idea se ha cerrado correctamente.');

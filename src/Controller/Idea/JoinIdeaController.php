@@ -28,21 +28,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/idea/{slug}/join", name="idea_join", options={"expose"=true}, methods={"POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/idea/{slug}/join', name: 'idea_join', options: ['expose' => true], methods: ['POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class JoinIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        CommandBus $commandBus,
-        EventDispatcherInterface $eventDispatcher
+        private CommandBus $commandBus,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->commandBus      = $commandBus;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Idea $idea): Response
@@ -56,19 +49,19 @@ class JoinIdeaController extends AbstractController
             $this->commandBus->dispatch(
                 new AddVoteCommand(
                     $idea,
-                    $user
-                )
+                    $user,
+                ),
             );
 
             $this->eventDispatcher->dispatch(
                 new IdeaWasVotedEvent(
                     $idea,
-                    $user
-                )
+                    $user,
+                ),
             );
 
             $this->addFlash('positive', 'Te has unido con éxito a la propuesta.');
-        } catch (NoMoreSeatsLeftException $e) {
+        } catch (NoMoreSeatsLeftException) {
             $this->addFlash('negative', 'No quedan plazas libres');
         }
 

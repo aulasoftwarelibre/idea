@@ -25,10 +25,7 @@ class JoinIdeaVoter extends Voter
 {
     public const JOIN = 'IDEA_JOIN';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $attribute === self::JOIN
             && $subject instanceof Idea;
@@ -39,7 +36,7 @@ class JoinIdeaVoter extends Voter
      *
      * @param Idea $subject
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token): bool
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         assert($user instanceof User);

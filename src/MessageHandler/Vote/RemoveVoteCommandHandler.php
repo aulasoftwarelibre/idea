@@ -19,11 +19,8 @@ use App\Repository\VoteRepository;
 
 class RemoveVoteCommandHandler
 {
-    private VoteRepository $repository;
-
-    public function __construct(VoteRepository $repository)
+    public function __construct(private VoteRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(RemoveVoteCommand $command): void

@@ -12,9 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/group/{slug}", name="group_edit")
- */
+#[Route(path: '/group/{slug}', name: 'group_edit')]
 class EditGroupController extends AbstractController
 {
     public function __invoke(Group $group, Request $request, EntityManagerInterface $manager): Response

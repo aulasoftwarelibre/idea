@@ -16,6 +16,7 @@ namespace App\Controller\Profile;
 use App\Entity\User;
 use App\Form\Type\ProfileType;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,12 +25,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/profile/edit", name="profile_edit", methods={"GET", "POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/profile/edit', name: 'profile_edit', methods: ['GET', 'POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class EditProfileController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $managerRegistry)
+    {
+    }
+
     public function __invoke(Request $request): Response
     {
         $user = $this->getUser();
@@ -38,7 +41,7 @@ class EditProfileController extends AbstractController
 
         $form->handleRequest($request);
 
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $this->managerRegistry->getManager();
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
@@ -49,7 +52,7 @@ class EditProfileController extends AbstractController
 
                 return $this->redirectToRoute('homepage');
             }
-        } catch (OptimisticLockException $e) {
+        } catch (OptimisticLockException) {
             $this->addFlash('error', 'Error al guardar. Intentelo de nuevo');
         }
 

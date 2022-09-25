@@ -18,6 +18,7 @@ use App\MessageBus\CommandBus;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -26,26 +27,15 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 
 use function sprintf;
 
+#[AsCommand(
+    name: 'idea:user:purge',
+    description: 'Purge all users who has been deleted more than one year ago.',
+)]
 class IdeaUserPurgeCommand extends Command
 {
-    private CommandBus $commandBus;
-    private EntityManagerInterface $manager;
-    private UserRepository $userRepository;
-
-    public function __construct(CommandBus $commandBus, EntityManagerInterface $manager, UserRepository $userRepository)
+    public function __construct(private CommandBus $commandBus, private EntityManagerInterface $manager, private UserRepository $userRepository)
     {
         parent::__construct();
-
-        $this->commandBus     = $commandBus;
-        $this->manager        = $manager;
-        $this->userRepository = $userRepository;
-    }
-
-    protected function configure(): void
-    {
-        $this
-            ->setName('idea:user:purge')
-            ->setDescription('Purge all users who has been deleted more than one year ago.');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -62,8 +52,8 @@ class IdeaUserPurgeCommand extends Command
                 $this->commandBus->dispatch(
                     new RemoveUserCommand(
                         $username,
-                        true
-                    )
+                        true,
+                    ),
                 );
             }
 

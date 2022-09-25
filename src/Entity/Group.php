@@ -25,91 +25,50 @@ use Symfony\Component\Validator\Constraints as Assert;
 use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\GroupRepository")
- * @ORM\Table(name="fos_group")
- *
- * @Vich\Uploadable()
- */
+#[ORM\Table(name: 'fos_group')]
+#[ORM\Entity]
+#[Vich\Uploadable]
 class Group implements OpenGraphItemInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int|null $id = null;
 
-    /**
-     * @ORM\Column(length=255, unique=true)
-     *
-     * @Gedmo\Slug(fields={"name"}, unique=true)
-     */
+    #[Gedmo\Slug(fields: ['name'], unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
     private string $slug;
 
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     *
-     * @Assert\Length(max=180, min=3)
-     */
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    #[Assert\Length(min: 3, max: 180)]
     private string $name;
 
-    /** @ORM\Column(length=32) */
+    #[ORM\Column(length: 32)]
     private string $icon;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Idea",
-     *     mappedBy="group",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @var Collection<int,Idea>
-     */
+    /** @var Collection<int,Idea> */
+    #[ORM\OneToMany(mappedBy: 'group', targetEntity: 'App\Entity\Idea', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $ideas;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="groups")
-     *
-     * @var Collection<int, User>
-     */
+    /** @var Collection<int, User> */
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'groups')]
     private Collection $users;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
-    private ?DateTime $updatedAt;
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    private DateTime|null $updatedAt;
 
-    /**
-     * @Vich\UploadableField(
-     *     mapping="groups",
-     *     fileNameProperty="image.name",
-     *     size="image.size",
-     *     mimeType="image.mimeType",
-     *     originalName="image.originalName"
-     * )
-     * @Assert\Image(
-     *     minHeight=600,
-     *     minWidth=1200,
-     *     minRatio=2,
-     *     maxRatio=2,
-     * )
-     */
+    #[Vich\UploadableField(mapping: 'groups', fileNameProperty: 'image.name', size: 'image.size', mimeType: 'image.mimeType', originalName: 'image.originalName')]
+    #[Assert\Image(minWidth: 1200, minHeight: 600, maxRatio: 2, minRatio: 2)]
     private File|UploadedFile|null $imageFile = null;
 
-    /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
+    #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private EmbeddedFile $image;
 
-    /**
-     * @ORM\Column(type="string", length=200, nullable=true)
-     *
-     * @Assert\Length(max=200)
-     * @Assert\NotBlank()
-     */
-    private ?string $description;
+    #[ORM\Column(type: 'string', length: 200, nullable: true)]
+    #[Assert\Length(max: 200)]
+    #[Assert\NotBlank]
+    private string|null $description;
 
     public function __construct()
     {
@@ -122,14 +81,12 @@ class Group implements OpenGraphItemInterface
         return (string) $this->name;
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
 
-    /**
-     * @return Idea[]|Collection
-     */
+    /** @return Idea[]|Collection */
     public function getIdeas(): Collection
     {
         return $this->ideas;
@@ -171,7 +128,7 @@ class Group implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getName(): ?string
+    public function getName(): string|null
     {
         return $this->name;
     }
@@ -183,9 +140,7 @@ class Group implements OpenGraphItemInterface
         return $this;
     }
 
-    /**
-     * @return Collection|User[]
-     */
+    /** @return Collection|User[] */
     public function getUsers(): Collection
     {
         return $this->users;
@@ -210,12 +165,12 @@ class Group implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTime
+    public function getUpdatedAt(): DateTime|null
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?DateTime $updatedAt): void
+    public function setUpdatedAt(DateTime|null $updatedAt): void
     {
         $this->updatedAt = $updatedAt;
     }
@@ -229,7 +184,7 @@ class Group implements OpenGraphItemInterface
      *
      * @param File|UploadedFile|null $image
      */
-    public function setImageFile(?File $image = null): void
+    public function setImageFile(File|null $image = null): void
     {
         $this->imageFile = $image;
 
@@ -242,7 +197,7 @@ class Group implements OpenGraphItemInterface
         $this->updatedAt = new DateTime();
     }
 
-    public function getImageFile(): ?File
+    public function getImageFile(): File|null
     {
         return $this->imageFile;
     }
@@ -254,17 +209,17 @@ class Group implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getImage(): ?EmbeddedFile
+    public function getImage(): EmbeddedFile|null
     {
         return $this->image;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string|null
     {
         return $this->description;
     }
 
-    public function setDescription(?string $description): self
+    public function setDescription(string|null $description): self
     {
         $this->description = $description;
 

@@ -13,13 +13,15 @@ declare(strict_types=1);
 
 namespace App\Validator;
 
+use Attribute;
 use Doctrine\Common\Annotations\Annotation\Target;
 use Symfony\Component\Validator\Constraint;
 
 /**
  * @Annotation
- * @Target({"CLASS", "ANNOTATION"})
+ * @Target({"PROPERTY", "CLASS", "ANNOTATION"})
  */
+#[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_CLASS)]
 class Alias extends Constraint
 {
     /** @var string message */

@@ -17,6 +17,7 @@ use App\Message\User\RemoveUserCommand;
 use App\MessageBus\CommandBus;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -27,23 +28,20 @@ use Symfony\Component\Messenger\Exception\HandlerFailedException;
 use function assert;
 use function is_string;
 
+#[AsCommand(
+    name: 'idea:user:remove',
+    description: 'Remove and purge an user by passing username.',
+)]
 class IdeaUserRemoveCommand extends Command
 {
-    private CommandBus $commandBus;
-    private EntityManagerInterface $manager;
-
-    public function __construct(CommandBus $commandBus, EntityManagerInterface $manager)
+    public function __construct(private CommandBus $commandBus, private EntityManagerInterface $manager)
     {
         parent::__construct();
-        $this->commandBus = $commandBus;
-        $this->manager    = $manager;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('idea:user:remove')
-            ->setDescription('Remove and purge an user by passing username')
             ->addArgument('username', InputArgument::REQUIRED, 'Username to search');
     }
 
@@ -59,8 +57,8 @@ class IdeaUserRemoveCommand extends Command
             $this->commandBus->dispatch(
                 new RemoveUserCommand(
                     $username,
-                    true
-                )
+                    true,
+                ),
             );
             $io->success('User was removed and purged.');
         } catch (HandlerFailedException $e) {

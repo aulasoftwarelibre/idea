@@ -24,18 +24,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/idea/{slug}/leave", name="idea_leave", options={"expose"=true}, methods={"POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/idea/{slug}/leave', name: 'idea_leave', options: ['expose' => true], methods: ['POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class LeaveIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-
     public function __construct(
-        CommandBus $commandBus
+        private CommandBus $commandBus,
     ) {
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Idea $idea): Response
@@ -46,8 +41,8 @@ class LeaveIdeaController extends AbstractController
         $this->commandBus->dispatch(
             new RemoveVoteCommand(
                 $idea,
-                $user
-            )
+                $user,
+            ),
         );
 
         $this->addFlash('positive', 'Te has salido con éxito de la propuesta.');

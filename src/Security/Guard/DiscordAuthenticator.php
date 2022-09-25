@@ -16,127 +16,94 @@ namespace App\Security\Guard;
 use App\Entity\User;
 use App\Security\User\UserManagerInterface;
 use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
-use KnpU\OAuth2ClientBundle\Client\OAuth2ClientInterface;
-use KnpU\OAuth2ClientBundle\Security\Authenticator\SocialAuthenticator;
+use KnpU\OAuth2ClientBundle\Client\Provider\DiscordClient;
+use KnpU\OAuth2ClientBundle\Security\Authenticator\OAuth2Authenticator;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use Wohali\OAuth2\Client\Provider\DiscordResourceOwner;
 
 use function assert;
 use function strtr;
 
-class DiscordAuthenticator extends SocialAuthenticator
+class DiscordAuthenticator extends OAuth2Authenticator implements AuthenticationEntryPointInterface
 {
-    private ClientRegistry $clientRegistry;
-    private UserManagerInterface $userManager;
-    private RouterInterface $router;
+    use TargetPathTrait;
 
     public function __construct(
-        ClientRegistry $clientRegistry,
-        UserManagerInterface $userManager,
-        RouterInterface $router
+        private readonly ClientRegistry $clientRegistry,
+        private readonly UserManagerInterface $userManager,
+        private readonly RouterInterface $router,
     ) {
-        $this->clientRegistry = $clientRegistry;
-        $this->userManager    = $userManager;
-        $this->router         = $router;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(Request $request)
+    public function start(Request $request, AuthenticationException|null $authException = null): RedirectResponse
+    {
+        return new RedirectResponse(
+            $this->router->generate('connect_discord_start'),
+            Response::HTTP_TEMPORARY_REDIRECT,
+        );
+    }
+
+    public function supports(Request $request): bool
     {
         return $request->attributes->get('_route') === 'connect_discord_check';
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getCredentials(Request $request)
+    public function authenticate(Request $request): Passport
     {
-        return $this->fetchAccessToken($this->getClient());
+        $client = $this->clientRegistry->getClient('discord');
+        assert($client instanceof DiscordClient);
+        $accessToken = $this->fetchAccessToken($client);
+
+        return new SelfValidatingPassport(
+            new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
+                $userFromToken = $client->fetchUserFromToken($accessToken);
+                assert($userFromToken instanceof DiscordResourceOwner);
+                $userResourceId = $userFromToken->getId() . '@discord.com';
+
+                $user = $this->userManager->findUserBy(['username' => $userResourceId]);
+                if (! $user) {
+                    $user = User::createExternalUser($userResourceId);
+                }
+
+                $email = $userFromToken->getEmail();
+                $user->setEmail($email);
+                $this->userManager->updateUser($user);
+
+                return $user;
+            }),
+        );
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getUser($credentials, UserProviderInterface $userProvider)
-    {
-        $userResource = $this
-            ->getClient()
-            ->fetchUserFromToken($credentials);
-        assert($userResource instanceof DiscordResourceOwner);
-        $userResourceId = $userResource->getId() . '@discord.com';
-
-        $user = $this->userManager->findUserBy(['username' => $userResourceId]);
-        if (! $user) {
-            $user = User::createExternalUser($userResourceId);
-        }
-
-        $email = $userResource->getEmail();
-        $user->setEmail($email);
-        $this->userManager->updateUser($user);
-
-        return $user;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): Response|null
     {
         $message = strtr($exception->getMessageKey(), $exception->getMessageData());
 
         return new Response($message, Response::HTTP_FORBIDDEN);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): Response|null
     {
-        $targetPath = $this->getTargetPath($request, $providerKey);
+        $homepagePath = $this->router->generate('homepage');
+        if (! $request->getSession() instanceof Session) {
+            return new RedirectResponse($homepagePath);
+        }
 
+        $targetPath = $this->getTargetPath($request->getSession(), $firewallName);
         if (! $targetPath) {
-            // Change it to your default target
-            $targetPath = $this->router->generate('homepage');
+            return new RedirectResponse($homepagePath);
         }
 
         return new RedirectResponse($targetPath);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function start(Request $request, ?AuthenticationException $authException = null)
-    {
-        return new RedirectResponse(
-            $this->router->generate('connect_discord_start'),
-            Response::HTTP_TEMPORARY_REDIRECT
-        );
-    }
-
-    private function getClient(): OAuth2ClientInterface
-    {
-        return $this
-            ->clientRegistry
-            ->getClient('discord');
-    }
-
-    /**
-     * Returns the URL (if any) the user visited that forced them to login.
-     */
-    protected function getTargetPath(Request $request, string $providerKey): ?string
-    {
-        if (! $request->hasSession()) {
-            return null;
-        }
-
-        return $request->getSession()->get('_security.' . $providerKey . '.target_path');
     }
 }

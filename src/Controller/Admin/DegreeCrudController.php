@@ -25,9 +25,7 @@ class DegreeCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Degree');
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');

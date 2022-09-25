@@ -20,14 +20,8 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserAcceptedLastPolicyVersionCommandHandler
 {
-    private EntityManagerInterface $manager;
-
-    private string $policyVersion;
-
-    public function __construct(EntityManagerInterface $manager, string $policyVersion)
+    public function __construct(private EntityManagerInterface $manager, private string $policyVersion)
     {
-        $this->manager       = $manager;
-        $this->policyVersion = $policyVersion;
     }
 
     public function __invoke(UserAcceptedLastPolicyVersionCommand $command): void

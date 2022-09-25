@@ -24,18 +24,12 @@ class AddIdeaVoter extends Voter
 {
     public const ADD = 'IDEA_ADD';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $attribute === self::ADD;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         assert($user instanceof User);

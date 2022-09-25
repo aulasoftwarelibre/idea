@@ -14,18 +14,14 @@ use function in_array;
 
 class GroupVoter extends Voter
 {
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     protected function supports(string $attribute, $subject): bool
     {
         return $attribute === 'GROUP_MEMBER'
             && $subject instanceof Group;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         assert($subject instanceof Group);

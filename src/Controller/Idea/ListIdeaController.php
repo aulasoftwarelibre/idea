@@ -27,9 +27,7 @@ use function sprintf;
 
 class ListIdeaController extends AbstractController
 {
-    /**
-     * @Route("/api/ideas", name="api_ideas_get", options={"expose"=true}, methods={"GET"})
-     */
+    #[Route(path: '/api/ideas', name: 'api_ideas_get', options: ['expose' => true], methods: ['GET'])]
     public function api(Request $request, QueryBus $queryBus): Response
     {
         $pattern = $request->query->getAlnum('q');
@@ -38,8 +36,8 @@ class ListIdeaController extends AbstractController
             new GetIdeasByPageQuery(
                 1,
                 $this->isGranted('ROLE_ADMIN'),
-                $pattern
-            )
+                $pattern,
+            ),
         );
         assert($ideas instanceof Paginator);
 
@@ -52,10 +50,8 @@ class ListIdeaController extends AbstractController
         ]);
     }
 
-    /**
-     * @Route("/idea", defaults={"page": "1"}, name="idea_index")
-     * @Route("/idea/page/{page}", requirements={"page": "[1-9]\d*"}, name="idea_index_paginated")
-     */
+    #[Route(path: '/idea', defaults: ['page' => 1], name: 'idea_index')]
+    #[Route(path: '/idea/page/{page}', requirements: ['page' => '[1-9]\d*'], name: 'idea_index_paginated')]
     public function __invoke(Request $request, int $page, QueryBus $queryBus): Response
     {
         $pattern = $request->query->getAlnum('q');
@@ -64,8 +60,8 @@ class ListIdeaController extends AbstractController
             new GetIdeasByPageQuery(
                 $page,
                 $this->isGranted('ROLE_ADMIN'),
-                $pattern
-            )
+                $pattern,
+            ),
         );
         assert($ideas instanceof Paginator);
 

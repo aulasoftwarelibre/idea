@@ -23,12 +23,9 @@ use Twig\TwigFunction;
 
 class IdeaExtension extends AbstractExtension
 {
-    private RouterInterface $router;
-
     public function __construct(
-        RouterInterface $router
+        private RouterInterface $router,
     ) {
-        $this->router = $router;
     }
 
     /**
@@ -51,7 +48,7 @@ class IdeaExtension extends AbstractExtension
         return (new Link(
             (string) $idea->getTitle(),
             $idea->getStartsAt() ?? new DateTimeImmutable(),
-            $idea->getEndsAt() ?? new DateTimeImmutable()
+            $idea->getEndsAt() ?? new DateTimeImmutable(),
         ))
             ->address((string) $address)
             ->google();

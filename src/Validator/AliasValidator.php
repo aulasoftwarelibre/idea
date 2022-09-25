@@ -21,14 +21,11 @@ use Symfony\Component\Validator\Exception\UnexpectedTypeException;
 
 class AliasValidator extends ConstraintValidator
 {
-    private UserRepository $userRepository;
-
     /**
      * {@inheritdoc}
      */
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     /**

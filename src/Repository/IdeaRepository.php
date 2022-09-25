@@ -48,7 +48,7 @@ class IdeaRepository extends ServiceEntityRepository
         $this->_em->remove($user);
     }
 
-    public function findLatest(int $page, bool $showPrivates, ?string $pattern): Paginator
+    public function findLatest(int $page, bool $showPrivates, string|null $pattern): Paginator
     {
         $qb = $this->createQueryBuilder('i')
             ->leftJoin('i.group', 'g')
@@ -81,15 +81,13 @@ class IdeaRepository extends ServiceEntityRepository
                 LEFT JOIN i.group g
                 LEFT JOIN i.owner o
                 WHERE i.group = :groupId
-                ORDER BY i.createdAt DESC'
+                ORDER BY i.createdAt DESC',
             )->setParameter('groupId', $group);
 
         return $this->createPaginator($query, $page);
     }
 
-    /**
-     * @return array<Idea>
-     */
+    /** @return array<Idea> */
     public function findNextScheduled(): array
     {
         return $this->getEntityManager()

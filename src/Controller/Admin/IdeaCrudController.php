@@ -54,9 +54,7 @@ class IdeaCrudController extends AbstractCrudController
             ->addFormTheme('@FOSCKEditor/Form/ckeditor_widget.html.twig');
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         if ($pageName === Crud::PAGE_INDEX) {

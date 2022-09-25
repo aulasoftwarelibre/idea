@@ -28,21 +28,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/idea/new", name="idea_new", methods={"GET", "POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/idea/new', name: 'idea_new', methods: ['GET', 'POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class NewIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-    private EventDispatcherInterface $eventDispatcher;
-
     public function __construct(
-        CommandBus $commandBus,
-        EventDispatcherInterface $eventDispatcher
+        private CommandBus $commandBus,
+        private EventDispatcherInterface $eventDispatcher,
     ) {
-        $this->commandBus      = $commandBus;
-        $this->eventDispatcher = $eventDispatcher;
     }
 
     public function __invoke(Request $request): Response
@@ -60,16 +53,16 @@ class NewIdeaController extends AbstractController
                     $form->getData()->getTitle(),
                     $form->getData()->getDescription(),
                     $user,
-                    $form->getData()->getGroup()
-                )
+                    $form->getData()->getGroup(),
+                ),
             );
 
             $this->addFlash('positive', 'Idea creada con éxito');
 
             $this->eventDispatcher->dispatch(
                 new IdeaWasCreatedEvent(
-                    $idea
-                )
+                    $idea,
+                ),
             );
 
             return $this->redirectToRoute('idea_show', ['slug' => $idea->getSlug()]);

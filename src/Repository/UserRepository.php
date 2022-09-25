@@ -43,9 +43,7 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->remove($user);
     }
 
-    /**
-     * @return array<string, int>
-     */
+    /** @return array<string, int> */
     public function getChoices(): array
     {
         $users = $this->createQueryBuilder('o')
@@ -62,7 +60,7 @@ class UserRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function getProfile(int $userId): ?User
+    public function getProfile(int $userId): User|null
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -79,7 +77,7 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    public function findUsedAliasOrUsername(string $find): ?User
+    public function findUsedAliasOrUsername(string $find): User|null
     {
         return $this->getEntityManager()
             ->createQuery('
@@ -93,9 +91,7 @@ class UserRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
-    /**
-     * @return array<User>
-     */
+    /** @return array<User> */
     public function findAllDeletedUsers(): array
     {
         $qb = $this->getEntityManager()

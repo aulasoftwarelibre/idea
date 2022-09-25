@@ -23,17 +23,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/profile", name="profile_show", methods={"GET"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/profile', name: 'profile_show', methods: ['GET'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class ShowProfileController extends AbstractController
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository)
     {
-        $this->userRepository = $userRepository;
     }
 
     public function __invoke(): Response

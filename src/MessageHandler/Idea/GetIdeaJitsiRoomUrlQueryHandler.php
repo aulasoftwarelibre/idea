@@ -19,14 +19,11 @@ use function sprintf;
 
 final class GetIdeaJitsiRoomUrlQueryHandler
 {
-    private string $jitsiPrefix;
-
-    public function __construct(string $jitsiPrefix)
+    public function __construct(private string $jitsiPrefix)
     {
-        $this->jitsiPrefix = $jitsiPrefix;
     }
 
-    public function __invoke(GetIdeaJitsiRoomUrlQuery $query): ?string
+    public function __invoke(GetIdeaJitsiRoomUrlQuery $query): string|null
     {
         $idea = $query->getIdea();
 

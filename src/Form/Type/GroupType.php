@@ -13,9 +13,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class GroupType extends AbstractType
 {
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder

@@ -16,48 +16,41 @@ namespace App\Entity;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\LogPolicyRepository")
- */
+#[ORM\Entity]
+#[ORM\Table]
 class LogPolicy
 {
-    /**
-     * @ORM\Id()
-     * @ORM\GeneratedValue()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private int $id;
 
-    /** @ORM\Column(type="datetime") */
+    #[ORM\Column(type: 'datetime')]
     private DateTimeInterface $createAt;
 
-    /** @ORM\Column(type="boolean") */
-    private bool $mandatory;
+    #[ORM\Column(type: 'boolean')]
+    private bool $mandatory = true;
 
-    /** @ORM\Column(type="string", length=255) */
+    #[ORM\Column(type: 'string', length: 255)]
     private string $version;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="versions")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
-    private ?User $user = null;
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'versions')]
+    #[ORM\JoinColumn(onDelete: 'CASCADE')]
+    private User|null $user = null;
 
-    /** @ORM\Column(type="string", length=255,) */
-    private string $tag;
+    #[ORM\Column(type: 'string', length: 255)]
+    private string $tag = 'general';
 
     public function __construct()
     {
-        $this->tag       = 'general';
-        $this->mandatory = true;
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
 
-    public function getTag(): ?string
+    public function getTag(): string|null
     {
         return $this->tag;
     }
@@ -69,7 +62,7 @@ class LogPolicy
         return $this;
     }
 
-    public function getCreateAt(): ?DateTimeInterface
+    public function getCreateAt(): DateTimeInterface|null
     {
         return $this->createAt;
     }
@@ -81,7 +74,7 @@ class LogPolicy
         return $this;
     }
 
-    public function getMandatory(): ?bool
+    public function getMandatory(): bool|null
     {
         return $this->mandatory;
     }
@@ -93,7 +86,7 @@ class LogPolicy
         return $this;
     }
 
-    public function getVersion(): ?string
+    public function getVersion(): string|null
     {
         return $this->version;
     }
@@ -105,12 +98,12 @@ class LogPolicy
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User|null
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User|null $user): self
     {
         $this->user = $user;
 

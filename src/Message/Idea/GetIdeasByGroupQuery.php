@@ -17,14 +17,8 @@ use App\Entity\Group;
 
 final class GetIdeasByGroupQuery
 {
-    private int $page;
-
-    private Group $group;
-
-    public function __construct(int $page, Group $group)
+    public function __construct(private int $page, private Group $group)
     {
-        $this->page  = $page;
-        $this->group = $group;
     }
 
     public function getPage(): int

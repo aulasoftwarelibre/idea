@@ -14,10 +14,8 @@ class PermissionsPolicySubscriber implements EventSubscriberInterface
         $event->getResponse()->headers->set('permissions-policy', 'interest-cohort=()');
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function getSubscribedEvents()
+    /** @inheritDoc */
+    public static function getSubscribedEvents(): array
     {
         return [ResponseEvent::class => 'addPermissionsPolicyHeader'];
     }

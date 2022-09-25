@@ -21,16 +21,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/idea/{slug}/jitsi", name="idea_jitsi", methods={"GET"})
- */
+#[Route(path: '/idea/{slug}/jitsi', name: 'idea_jitsi', methods: ['GET'])]
 class ShowIdeaJitsiRoomController extends AbstractController
 {
-    private QueryBus $queryBus;
-
-    public function __construct(QueryBus $queryBus)
+    public function __construct(private QueryBus $queryBus)
     {
-        $this->queryBus = $queryBus;
     }
 
     public function __invoke(Idea $idea): Response
@@ -44,7 +39,7 @@ class ShowIdeaJitsiRoomController extends AbstractController
         }
 
         $url = $this->queryBus->query(
-            new GetIdeaJitsiRoomUrlQuery($idea)
+            new GetIdeaJitsiRoomUrlQuery($idea),
         );
 
         if ($idea->isJitsiRoomOpen()) {

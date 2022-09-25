@@ -20,6 +20,7 @@ use App\Message\LogPolicy\UserAcceptedLastPolicyVersionCommand;
 use App\MessageBus\CommandBus;
 use App\MessageBus\QueryBus;
 use Doctrine\ORM\OptimisticLockException;
+use Doctrine\Persistence\ManagerRegistry;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,12 +29,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/profile/register", name="profile_register", methods={"GET", "POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/profile/register', name: 'profile_register', methods: ['GET', 'POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class RegisterProfileController extends AbstractController
 {
+    public function __construct(private ManagerRegistry $managerRegistry)
+    {
+    }
+
     public function __invoke(Request $request, CommandBus $commandBus, QueryBus $queryBus): Response
     {
         $user = $this->getUser();
@@ -44,12 +47,12 @@ class RegisterProfileController extends AbstractController
 
         $this->checkUserHasAcceptedTerms($queryBus, $user);
 
-        $manager = $this->getDoctrine()->getManager();
+        $manager = $this->managerRegistry->getManager();
 
         try {
             if ($form->isSubmitted() && $form->isValid()) {
                 $commandBus->dispatch(
-                    new UserAcceptedLastPolicyVersionCommand($user)
+                    new UserAcceptedLastPolicyVersionCommand($user),
                 );
 
                 $manager->persist($user);
@@ -59,7 +62,7 @@ class RegisterProfileController extends AbstractController
 
                 return $this->redirectToRoute('homepage');
             }
-        } catch (OptimisticLockException $e) {
+        } catch (OptimisticLockException) {
             $this->addFlash('error', 'Error al registrar. Intentelo de nuevo');
         }
 
@@ -71,7 +74,7 @@ class RegisterProfileController extends AbstractController
     private function checkUserHasAcceptedTerms(QueryBus $queryBus, User $user): void
     {
         $userHasAccepted = $queryBus->query(
-            new CheckUserAcceptLastPolicyVersionQuery($user)
+            new CheckUserAcceptLastPolicyVersionQuery($user),
         );
 
         if ($userHasAccepted) {

@@ -10,19 +10,12 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserManager implements UserManagerInterface
 {
-    private UserRepository $userRepository;
-    private EntityManagerInterface $manager;
-
-    public function __construct(UserRepository $userRepository, EntityManagerInterface $manager)
+    public function __construct(private UserRepository $userRepository, private EntityManagerInterface $manager)
     {
-        $this->userRepository = $userRepository;
-        $this->manager        = $manager;
     }
 
-    /**
-     * @inheritDoc
-     */
-    public function findUserBy(array $criteria): ?User
+    /** @inheritDoc */
+    public function findUserBy(array $criteria): User|null
     {
         return $this->userRepository->findOneBy($criteria);
     }

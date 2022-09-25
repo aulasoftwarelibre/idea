@@ -22,11 +22,8 @@ use function assert;
 
 class AddVoteCommandHandler
 {
-    private VoteRepository $repository;
-
-    public function __construct(VoteRepository $repository)
+    public function __construct(private VoteRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(AddVoteCommand $command): void

@@ -29,208 +29,127 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use const PHP_INT_MAX;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\IdeaRepository")
- * @ORM\Table()
- *
- * @Assert\Expression(
- *     "(this.getStartsAt() === this.getEndsAt()) or (this.getStartsAt() !== null and this.getEndsAt() > this.getStartsAt())",
- *     message="error.idea_end_date"
- * )
- * @Vich\Uploadable()
- */
+#[ORM\Table]
+#[ORM\Entity]
+#[Vich\Uploadable]
 class Idea implements OpenGraphItemInterface
 {
     public const UNLIMITED_SEATS = PHP_INT_MAX;
     public const LIMITLESS       = 0;
-    // Format consts
-    public const FACE_TO_FACE = 'FACE_TO_FACE';
-    public const ONLINE       = 'ONLINE';
-    public const STREAMING    = 'STREAMING';
+    public const FACE_TO_FACE    = 'FACE_TO_FACE';
+    public const ONLINE          = 'ONLINE';
+    public const STREAMING       = 'STREAMING';
 
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    private int|null $id = null;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false)
-     * @ORM\Version()
-     */
-    private int $version;
+    #[ORM\Column(type: 'integer', nullable: false)]
+    #[ORM\Version]
+    private int $version = 1;
 
-    /**
-     * @ORM\Column(length=255)
-     *
-     * @Assert\Length(min="10", max="255")
-     * @Assert\NotBlank()
-     * @Groups("read")
-     */
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 10, max: 255)]
+    #[Assert\NotBlank]
+    #[Groups('read')]
     private string $title;
 
-    /**
-     * @ORM\Column(type="text")
-     *
-     * @Assert\Length(min="10")
-     * @Assert\NotBlank()
-     * @Groups("read")
-     */
+    #[ORM\Column(type: 'text')]
+    #[Assert\Length(min: 10)]
+    #[Assert\NotBlank]
+    #[Groups('read')]
     private string $description;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     *
-     * @Groups("read")
-     */
-    private bool $closed;
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups('read')]
+    private bool $closed = false;
 
-    /**
-     * @ORM\Column(length=255, unique=true)
-     *
-     * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
-     * @Groups("read")
-     */
+    #[Gedmo\Slug(fields: ['title'], updatable: false, unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
+    #[Groups('read')]
     private string $slug;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     * @Groups("read")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
+    #[Groups('read')]
     private DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     * @Groups("read")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    #[Groups('read')]
     private DateTime $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="ideas")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'ideas')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private User $owner;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Vote", mappedBy="idea", cascade={"persist", "remove"}, orphanRemoval=true)
-     *
-     * @var Vote[]|Collection
-     */
+    /** @var Vote[]|Collection */
+    #[ORM\OneToMany(mappedBy: 'idea', targetEntity: 'App\Entity\Vote', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $votes;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Group", inversedBy="ideas")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     *
-     * @Groups("read")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Group', inversedBy: 'ideas')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
+    #[Groups('read')]
     private Group $group;
 
-    /**
-     * @ORM\Column(type="integer", name="num_seats")
-     *
-     * @Assert\Range(min="0")
-     * @Groups("read")
-     */
-    private int $numSeats;
+    #[ORM\Column(name: 'num_seats', type: 'integer')]
+    #[Assert\Range(min: 0)]
+    #[Groups('read')]
+    private int $numSeats = self::LIMITLESS;
 
-    /**
-     * @ORM\Column(type="integer", name="external_num_seats")
-     *
-     * @Assert\Range(min=0)
-     * @Groups("read")
-     */
-    private int $externalNumSeats;
+    #[ORM\Column(name: 'external_num_seats', type: 'integer')]
+    #[Assert\Range(min: 0)]
+    #[Groups('read')]
+    private int $externalNumSeats = 0;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups("read")
-     */
-    protected ?DateTime $startsAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups('read')]
+    protected DateTime|null $startsAt = null;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     *
-     * @Groups("read")
-     */
-    protected ?DateTime $endsAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    #[Groups('read')]
+    protected DateTime|null $endsAt = null;
 
-    /**
-     * @ORM\Column(length=255, nullable=true)
-     *
-     * @Assert\Length(max="255")
-     * @Groups("read")
-     */
-    protected ?string $location = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Assert\Length(max: 255)]
+    #[Groups('read')]
+    protected string|null $location = null;
 
-    /**
-     * @ORM\Column(type="string", options={"default"="FACE_TO_FACE"})
-     *
-     * @Assert\Choice(callback="getFormats")
-     * @Groups("read")
-     * @psalm-property Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING
-     */
-    private string $format;
+    /** @psalm-property Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING */
+    #[ORM\Column(type: 'string', options: ['default' => 'FACE_TO_FACE'])]
+    #[Assert\Choice(callback: 'getFormats')]
+    #[Groups('read')]
+    private string $format = self::FACE_TO_FACE;
 
-    /** @ORM\Column(type="string", nullable=true) */
-    protected ?string $jitsiLocatorRoom = null;
+    #[ORM\Column(type: 'string', nullable: true)]
+    protected string|null $jitsiLocatorRoom = null;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=false})
-     *
-     * @Groups("read")
-     */
-    protected bool $isJitsiRoomOpen;
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Groups('read')]
+    protected bool $isJitsiRoomOpen = false;
 
 
-    /** @ORM\Column(type="boolean") */
-    private bool $private;
+    #[ORM\Column(type: 'boolean')]
+    private bool $private = false;
 
-    /** @ORM\Column(type="boolean") */
-    private bool $internal;
+    #[ORM\Column(type: 'boolean')]
+    private bool $internal = false;
 
-    /**
-     * @Vich\UploadableField(
-     *     mapping="ideas",
-     *     fileNameProperty="image.name",
-     *     size="image.size",
-     *     mimeType="image.mimeType",
-     *     originalName="image.originalName"
-     * )
-     * @Assert\Image(
-     *     minHeight=600,
-     *     minWidth=1200,
-     *     minRatio=2,
-     *     maxRatio=2,
-     * )
-     */
+    #[Vich\UploadableField(mapping: 'ideas', fileNameProperty: 'image.name', size: 'image.size', mimeType: 'image.mimeType', originalName: 'image.originalName')]
+    #[Assert\Image(minWidth: 1200, minHeight: 600, maxRatio: 2, minRatio: 2)]
     private File|UploadedFile|null $imageFile = null;
 
-    /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
+    #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private EmbeddedFile $image;
 
-    /** @ORM\Column(type="boolean", options={"default"=false}) */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $highlight = false;
 
     public function __construct()
     {
-        $this->votes            = new ArrayCollection();
-        $this->closed           = false;
-        $this->private          = false;
-        $this->internal         = false;
-        $this->numSeats         = self::LIMITLESS;
-        $this->format           = self::FACE_TO_FACE;
-        $this->externalNumSeats = 0;
-        $this->jitsiLocatorRoom = null;
-        $this->isJitsiRoomOpen  = false;
-        $this->version          = 1;
-        $this->image            = new EmbeddedFile();
+        $this->votes = new ArrayCollection();
+        $this->image = new EmbeddedFile();
     }
 
     public static function with(string $title, string $description, User $owner, Group $group): self
@@ -245,9 +164,7 @@ class Idea implements OpenGraphItemInterface
         return $idea;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getFormats(): array
     {
         return [
@@ -262,7 +179,7 @@ class Idea implements OpenGraphItemInterface
         return $this->title;
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -279,7 +196,7 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getTitle(): ?string
+    public function getTitle(): string|null
     {
         return $this->title;
     }
@@ -291,7 +208,7 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getDescription(): ?string
+    public function getDescription(): string|null
     {
         return $this->description;
     }
@@ -315,7 +232,7 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getSlug(): ?string
+    public function getSlug(): string|null
     {
         return $this->slug;
     }
@@ -357,7 +274,7 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getGroup(): ?Group
+    public function getGroup(): Group|null
     {
         return $this->group;
     }
@@ -369,17 +286,13 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int,Vote>
-     */
+    /** @return Collection<int,Vote> */
     public function getVotes(): Collection
     {
         return $this->votes;
     }
 
-    /**
-     * @return Collection<int,Vote>
-     */
+    /** @return Collection<int,Vote> */
     public function getExternalVotes(): Collection
     {
         return $this->votes->filter(static function (Vote $vote) {
@@ -470,36 +383,36 @@ class Idea implements OpenGraphItemInterface
         return $maxAvailableExternalSeats < $remainingSeats ? $maxAvailableExternalSeats : $remainingSeats;
     }
 
-    public function getStartsAt(): ?DateTime
+    public function getStartsAt(): DateTime|null
     {
         return $this->startsAt;
     }
 
-    public function setStartsAt(?DateTime $startsAt): self
+    public function setStartsAt(DateTime|null $startsAt): self
     {
         $this->startsAt = $startsAt;
 
         return $this;
     }
 
-    public function getEndsAt(): ?DateTime
+    public function getEndsAt(): DateTime|null
     {
         return $this->endsAt;
     }
 
-    public function setEndsAt(?DateTime $endsAt): self
+    public function setEndsAt(DateTime|null $endsAt): self
     {
         $this->endsAt = $endsAt;
 
         return $this;
     }
 
-    public function getLocation(): ?string
+    public function getLocation(): string|null
     {
         return $this->location;
     }
 
-    public function setLocation(?string $location): self
+    public function setLocation(string|null $location): self
     {
         $this->location = $location;
 
@@ -521,17 +434,13 @@ class Idea implements OpenGraphItemInterface
         return $this->format === self::STREAMING;
     }
 
-    /**
-     * @psalm-return Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING
-     */
+    /** @psalm-return Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING */
     public function getFormat(): string
     {
         return $this->format;
     }
 
-    /**
-     * @psalm-param Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING $format
-     */
+    /** @psalm-param Idea::FACE_TO_FACE|Idea::ONLINE|Idea::STREAMING $format */
     public function setFormat(string $format): Idea
     {
         $this->format = $format;
@@ -547,12 +456,12 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getJitsiLocatorRoom(): ?string
+    public function getJitsiLocatorRoom(): string|null
     {
         return $this->jitsiLocatorRoom;
     }
 
-    public function setJitsiLocatorRoom(?string $jitsiLocatorRoom): self
+    public function setJitsiLocatorRoom(string|null $jitsiLocatorRoom): self
     {
         $this->jitsiLocatorRoom = $jitsiLocatorRoom;
 
@@ -604,7 +513,7 @@ class Idea implements OpenGraphItemInterface
      *
      * @param File|UploadedFile|null $image
      */
-    public function setImageFile(?File $image = null): void
+    public function setImageFile(File|null $image = null): void
     {
         $this->imageFile = $image;
 
@@ -617,7 +526,7 @@ class Idea implements OpenGraphItemInterface
         $this->updatedAt = new DateTime();
     }
 
-    public function getImageFile(): ?File
+    public function getImageFile(): File|null
     {
         return $this->imageFile;
     }
@@ -629,12 +538,12 @@ class Idea implements OpenGraphItemInterface
         return $this;
     }
 
-    public function getImage(): ?EmbeddedFile
+    public function getImage(): EmbeddedFile|null
     {
         return $this->image;
     }
 
-    public function getHighlight(): ?bool
+    public function getHighlight(): bool|null
     {
         return $this->highlight;
     }

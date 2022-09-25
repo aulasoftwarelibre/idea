@@ -21,76 +21,48 @@ use FOS\RestBundle\Validator\Constraints\Regex;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ActivityRepository")
- * @ORM\Table()
- */
+#[ORM\Table]
+#[ORM\Entity]
 class Activity
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue("AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue('AUTO')]
     private int $id;
 
-    /**
-     * @ORM\Column(length=255)
-     *
-     * @Assert\Length(min="3", max="255")
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 3, max: 255)]
+    #[Assert\NotBlank]
     private string $title;
 
-    /**
-     * @ORM\Column(type="date")
-     *
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'date')]
+    #[Assert\NotBlank]
     private DateTime $occurredOn;
 
-    /**
-     * @ORM\Column(length=32)
-     *
-     * @Assert\NotBlank()
-     * @Regex("/\d{4}\/\d{4}/")
-     */
+    /** @Regex("/\d{4}\/\d{4}/") */
+    #[ORM\Column(length: 32)]
+    #[Assert\NotBlank]
     private string $academicYear;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\NotBlank()
-     * @Assert\Range(min="1")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[Assert\NotBlank]
+    #[Assert\Range(min: 1)]
     private int $duration;
 
-    /**
-     * @ORM\Column(length=255, unique=true)
-     *
-     * @Gedmo\Slug(fields={"title"}, unique=true, updatable=false)
-     */
+    #[Gedmo\Slug(fields: ['title'], updatable: false, unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
     private string $slug;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Participation", mappedBy="activity", cascade={"persist", "remove"}, orphanRemoval=true)
-     *
-     * @var Participation[]|Collection
-     */
+    /** @var Participation[]|Collection */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Participation', mappedBy: 'activity', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $participations;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $updatedAt;
 
     public function __construct(string $title, DateTime $occurredOn, string $academicYear, int $duration)
@@ -132,9 +104,7 @@ class Activity
         return $this->title;
     }
 
-    /**
-     * @return Activity
-     */
+    /** @return Activity */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -147,9 +117,7 @@ class Activity
         return $this->occurredOn;
     }
 
-    /**
-     * @return Activity
-     */
+    /** @return Activity */
     public function setOccurredOn(DateTime $occurredOn): self
     {
         $this->occurredOn = $occurredOn;
@@ -157,14 +125,12 @@ class Activity
         return $this;
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): int|null
     {
         return $this->duration;
     }
 
-    /**
-     * @return Activity
-     */
+    /** @return Activity */
     public function setDuration(int $duration): self
     {
         $this->duration = $duration;
@@ -172,17 +138,13 @@ class Activity
         return $this;
     }
 
-    /**
-     * @return Participation[]|Collection
-     */
+    /** @return Participation[]|Collection */
     public function getParticipations(): Collection
     {
         return $this->participations;
     }
 
-    /**
-     * @return Activity
-     */
+    /** @return Activity */
     public function addParticipation(Participation $participant): self
     {
         $participant->setActivity($this);
@@ -201,9 +163,7 @@ class Activity
         return $this->academicYear;
     }
 
-    /**
-     * @return Activity
-     */
+    /** @return Activity */
     public function setAcademicYear(string $academicYear): self
     {
         $this->academicYear = $academicYear;

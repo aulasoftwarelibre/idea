@@ -23,15 +23,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function ceil;
 
-/**
- * @Route("/idea/group/{slug}", defaults={"page": "1"}, name="idea_group_index")
- * @Route("/idea/group/{slug}/page/{page}", requirements={"page": "[1-9]\d*"}, name="idea_group_index_paginated"))
- */
+#[Route(path: '/idea/group/{slug}', defaults: ['page' => 1], name: 'idea_group_index')]
+#[Route(path: '/idea/group/{slug}/page/{page}', requirements: ['page' => '[1-9]\d*'], name: 'idea_group_index_paginated')]
 class ListGroupIdeaController extends AbstractController
 {
     public function __construct(
         private ConfigureOpenGraphService $openGraphService,
-        private QueryBus $queryBus
+        private QueryBus $queryBus,
     ) {
     }
 
@@ -40,14 +38,14 @@ class ListGroupIdeaController extends AbstractController
         $this->openGraphService->configure(
             $group->getName(),
             $group->getDescription(),
-            $group
+            $group,
         );
 
         $ideas = $this->queryBus->query(
             new GetIdeasByGroupQuery(
                 $page,
-                $group
-            )
+                $group,
+            ),
         );
 
         $itemsPerPage = $ideas->getQuery()->getMaxResults();

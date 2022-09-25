@@ -19,12 +19,9 @@ use App\Event\Abstracts\AbstractIdeaEvent;
 
 final class IdeaWasVotedEvent extends AbstractIdeaEvent
 {
-    private User $voter;
-
-    public function __construct(Idea $idea, User $voter)
+    public function __construct(Idea $idea, private User $voter)
     {
         parent::__construct($idea);
-        $this->voter = $voter;
     }
 
     public function getVoter(): User

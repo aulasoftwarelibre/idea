@@ -16,27 +16,20 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\DegreeRepository")
- * @ORM\Table()
- */
+#[ORM\Table]
+#[ORM\Entity]
 class Degree
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id()
-     * @ORM\GeneratedValue("AUTO")
-     */
+    #[ORM\Column(type: 'integer')]
+    #[ORM\Id]
+    #[ORM\GeneratedValue('AUTO')]
     private int $id;
 
-    /** @ORM\Column(length=255, unique=true) */
+    #[ORM\Column(length: 255, unique: true)]
     private string $name;
 
-    /**
-     * @ORM\Column(length=255, unique=true)
-     *
-     * @Gedmo\Slug(fields={"name"}, unique=true)
-     */
+    #[Gedmo\Slug(fields: ['slug'], unique: true)]
+    #[ORM\Column(length: 255, unique: true)]
     private string $slug;
 
     public function __construct(string $name)
@@ -59,9 +52,7 @@ class Degree
         return $this->name;
     }
 
-    /**
-     * @return Degree
-     */
+    /** @return Degree */
     public function setName(string $name): self
     {
         $this->name = $name;

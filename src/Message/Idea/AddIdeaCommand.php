@@ -18,21 +18,12 @@ use App\Entity\User;
 
 final class AddIdeaCommand
 {
-    private string $title;
-    private string $description;
-    private User $user;
-    private Group $group;
-
     public function __construct(
-        string $title,
-        string $description,
-        User $user,
-        Group $group
+        private string $title,
+        private string $description,
+        private User $user,
+        private Group $group,
     ) {
-        $this->title       = $title;
-        $this->description = $description;
-        $this->user        = $user;
-        $this->group       = $group;
     }
 
     public function getTitle(): string

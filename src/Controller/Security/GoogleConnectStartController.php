@@ -21,9 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-/**
- * @Route("/connect/google", name="connect_google_start")
- */
+#[Route(path: '/connect/google', name: 'connect_google_start')]
 class GoogleConnectStartController extends AbstractController
 {
     use TargetPathTrait;

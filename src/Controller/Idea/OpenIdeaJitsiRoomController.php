@@ -24,23 +24,18 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function sprintf;
 
-/**
- * @Route("/idea/{slug}/jitsi", name="idea_open_jitsi", methods={"POST"})
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[Route(path: '/idea/{slug}/jitsi', name: 'idea_open_jitsi', methods: ['POST'])]
+#[Security("is_granted('ROLE_ADMIN')")]
 final class OpenIdeaJitsiRoomController extends AbstractController
 {
-    private CommandBus $commandBus;
-
-    public function __construct(CommandBus $commandBus)
+    public function __construct(private CommandBus $commandBus)
     {
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Idea $idea): Response
     {
         $this->commandBus->dispatch(
-            new OpenIdeaJitsiRoomCommand($idea)
+            new OpenIdeaJitsiRoomCommand($idea),
         );
 
         $ideaStartsAt = $idea->getStartsAt()->format('H:i');
@@ -53,8 +48,8 @@ final class OpenIdeaJitsiRoomController extends AbstractController
             new SendEmailCommand(
                 $idea->getId(),
                 $message,
-                false
-            )
+                false,
+            ),
         );
 
         return $this->redirectToRoute('idea_jitsi', [

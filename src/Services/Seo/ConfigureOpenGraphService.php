@@ -41,14 +41,14 @@ final class ConfigureOpenGraphService
             $this->seoGeneratorProvider->get('og'),
             $title,
             $description,
-            $path
+            $path,
         );
 
         $this->configureTwitterSeo(
             $this->seoGeneratorProvider->get('twitter'),
             $title,
             $description,
-            $path
+            $path,
         );
     }
 
@@ -66,7 +66,7 @@ final class ConfigureOpenGraphService
         OgSeoGenerator|AbstractSeoGenerator $ogSeoGenerator,
         string $title,
         string $description,
-        string $uri
+        string $uri,
     ): void {
         $ogSeoGenerator
             ->setTitle($title)
@@ -80,7 +80,7 @@ final class ConfigureOpenGraphService
         TwitterSeoGenerator|AbstractSeoGenerator $twitterSeoGenerator,
         string $title,
         string $description,
-        string $uri
+        string $uri,
     ): void {
         $twitterSeoGenerator
             ->setTitle($title)

@@ -22,11 +22,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VoteType extends AbstractType
 {
-    private UserRepository $repository;
-
-    public function __construct(UserRepository $repository)
+    public function __construct(private UserRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**
@@ -45,10 +42,7 @@ class VoteType extends AbstractType
             ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getParent()
+    public function getParent(): string|null
     {
         return ChoiceType::class;
     }

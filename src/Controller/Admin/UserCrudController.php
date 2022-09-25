@@ -55,9 +55,7 @@ class UserCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('User');
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');

@@ -17,9 +17,7 @@ use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/connect/github/check", name="connect_github_check")
- */
+#[Route(path: '/connect/github/check', name: 'connect_github_check')]
 class GithubConnectCheckController extends AbstractController
 {
     public function __invoke(): void

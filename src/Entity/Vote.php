@@ -20,48 +20,31 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use function assert;
 use function sprintf;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\VoteRepository")
- * @ORM\Table()
- */
+#[ORM\Table]
+#[ORM\Entity]
 class Vote
 {
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private int $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="votes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'votes')]
+    #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Idea", inversedBy="votes")
-     * @ORM\JoinColumn(nullable=false)
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Idea', inversedBy: 'votes')]
+    #[ORM\JoinColumn(nullable: false)]
     private Idea $idea;
 
-    /**
-     * @return Vote
-     */
     public static function create(Idea $idea, User $user): self
     {
         $vote = new self();
@@ -99,9 +82,6 @@ class Vote
         return $this->user;
     }
 
-    /**
-     * @return Vote
-     */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -114,9 +94,6 @@ class Vote
         return $this->idea;
     }
 
-    /**
-     * @return Vote
-     */
     public function setIdea(Idea $idea): self
     {
         $this->idea = $idea;

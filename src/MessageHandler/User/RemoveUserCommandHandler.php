@@ -21,11 +21,8 @@ use DateTime;
 
 class RemoveUserCommandHandler
 {
-    private UserManagerInterface $userManager;
-
-    public function __construct(UserManagerInterface $userManager)
+    public function __construct(private UserManagerInterface $userManager)
     {
-        $this->userManager = $userManager;
     }
 
     public function __invoke(RemoveUserCommand $command): void

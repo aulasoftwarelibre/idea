@@ -21,9 +21,7 @@ final class MenuBuilder
     ) {
     }
 
-    /**
-     * @param array<string,mixed> $options
-     */
+    /** @param array<string,mixed> $options */
     public function createMainMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
@@ -40,9 +38,7 @@ final class MenuBuilder
         return $menu;
     }
 
-    /**
-     * @param array<string,mixed> $options
-     */
+    /** @param array<string,mixed> $options */
     public function createGroupMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
@@ -53,7 +49,7 @@ final class MenuBuilder
             $name = sprintf(
                 '<i class="%s icon"></i><span class="name">%s</span>',
                 $group->getIcon(),
-                $group->getName()
+                $group->getName(),
             );
             $menu->addChild($name, [
                 'route' => 'idea_group_index',
@@ -65,9 +61,7 @@ final class MenuBuilder
         return $menu;
     }
 
-    /**
-     * @param array<string,mixed> $options
-     */
+    /** @param array<string,mixed> $options */
     public function profileMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');

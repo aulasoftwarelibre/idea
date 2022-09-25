@@ -18,11 +18,8 @@ use App\Repository\IdeaRepository;
 
 class CloseIdeaCommandHandler
 {
-    private IdeaRepository $ideaRepository;
-
-    public function __construct(IdeaRepository $ideaRepository)
+    public function __construct(private IdeaRepository $ideaRepository)
     {
-        $this->ideaRepository = $ideaRepository;
     }
 
     public function __invoke(CloseIdeaCommand $command): void

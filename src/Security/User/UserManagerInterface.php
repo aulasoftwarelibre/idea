@@ -8,10 +8,8 @@ use App\Entity\User;
 
 interface UserManagerInterface
 {
-    /**
-     * @param array<array-key, mixed> $criteria
-     */
-    public function findUserBy(array $criteria): ?User;
+    /** @param array<array-key, mixed> $criteria */
+    public function findUserBy(array $criteria): User|null;
 
     public function updateUser(User $user): void;
 

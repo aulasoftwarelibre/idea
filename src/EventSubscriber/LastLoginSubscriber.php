@@ -12,11 +12,8 @@ use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 
 class LastLoginSubscriber implements EventSubscriberInterface
 {
-    private UserManagerInterface $userManager;
-
-    public function __construct(UserManagerInterface $userManager)
+    public function __construct(private UserManagerInterface $userManager)
     {
-        $this->userManager = $userManager;
     }
 
     public function onSecurityInteractiveLogin(InteractiveLoginEvent $event): void
@@ -31,10 +28,8 @@ class LastLoginSubscriber implements EventSubscriberInterface
         $this->userManager->updateUser($user);
     }
 
-    /**
-     * @inheritDoc
-     */
-    public static function getSubscribedEvents()
+    /** @inheritDoc */
+    public static function getSubscribedEvents(): array
     {
         return ['security.interactive_login' => 'onSecurityInteractiveLogin'];
     }

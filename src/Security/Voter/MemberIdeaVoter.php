@@ -22,17 +22,12 @@ use Symfony\Component\Security\Core\User\UserInterface;
 class MemberIdeaVoter extends Voter
 {
     public const MEMBER = 'IDEA_MEMBER';
-    private VoteRepository $voteRepository;
 
-    public function __construct(VoteRepository $voteRepository)
+    public function __construct(private VoteRepository $voteRepository)
     {
-        $this->voteRepository = $voteRepository;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         return $attribute === self::MEMBER
             && $subject instanceof Idea;
@@ -45,7 +40,7 @@ class MemberIdeaVoter extends Voter
      *
      * @return bool
      */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 

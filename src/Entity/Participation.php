@@ -18,60 +18,43 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\ParticipationRepository")
- * @ORM\Table()
- */
+#[ORM\Table]
+#[ORM\Entity]
 class Participation
 {
     public const ATTENDEE  = 'attendee';
     public const PRESENTER = 'presenter';
     public const ORGANIZER = 'organizer';
 
-    /**
-     * @ORM\Id()
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue("AUTO")
-     */
-    private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue('AUTO')]
+    private int|null $id = null;
 
-    /**
-     * @ORM\Column(length=16)
-     *
-     * @Assert\Choice(callback="getRoles")
-     */
+    #[ORM\Column(length: 16)]
+    #[Assert\Choice(callback: 'getRoles')]
     private string $role = self::ATTENDEE;
 
-    /** @ORM\Column(type="boolean") */
+    #[ORM\Column(type: 'boolean')]
     private bool $isReported = false;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
     private DateTime $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="participations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\User', inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private User $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Activity", inversedBy="participations")
-     * @ORM\JoinColumn(nullable=false, onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Activity', inversedBy: 'participations')]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private Activity $activity;
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
     }
@@ -81,9 +64,7 @@ class Participation
         return $this->user;
     }
 
-    /**
-     * @return Participation
-     */
+    /** @return Participation */
     public function setUser(User $user): self
     {
         $this->user = $user;
@@ -96,9 +77,7 @@ class Participation
         return $this->activity;
     }
 
-    /**
-     * @return Participation
-     */
+    /** @return Participation */
     public function setActivity(Activity $activity): self
     {
         $this->activity = $activity;
@@ -106,9 +85,7 @@ class Participation
         return $this;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getRoles(): array
     {
         return [
@@ -123,9 +100,7 @@ class Participation
         return $this->role;
     }
 
-    /**
-     * @return Participation
-     */
+    /** @return Participation */
     public function setRole(string $role): self
     {
         $this->role = $role;
@@ -138,9 +113,7 @@ class Participation
         return $this->isReported;
     }
 
-    /**
-     * @return Participation
-     */
+    /** @return Participation */
     public function setIsReported(bool $isReported): self
     {
         $this->isReported = $isReported;
@@ -153,7 +126,7 @@ class Participation
         return $this->getActivity()->getTitle();
     }
 
-    public function getDuration(): ?int
+    public function getDuration(): int|null
     {
         return $this->getActivity()->getDuration();
     }

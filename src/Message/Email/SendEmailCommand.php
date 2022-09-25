@@ -15,15 +15,8 @@ namespace App\Message\Email;
 
 final class SendEmailCommand
 {
-    private int $ideaId;
-    private string $message;
-    private bool $isTest;
-
-    public function __construct(int $ideaId, string $message, bool $isTest)
+    public function __construct(private int $ideaId, private string $message, private bool $isTest)
     {
-        $this->ideaId  = $ideaId;
-        $this->message = $message;
-        $this->isTest  = $isTest;
     }
 
     public function getIdeaId(): int

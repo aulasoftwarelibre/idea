@@ -26,10 +26,7 @@ class EditIdeaCommandVoter extends Voter
 {
     public const HANDLE = 'handle';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         if ($attribute !== self::HANDLE) {
             return false;
@@ -38,10 +35,7 @@ class EditIdeaCommandVoter extends Voter
         return $subject instanceof CloseIdeaCommand || $subject instanceof UpdateIdeaCommand;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
 

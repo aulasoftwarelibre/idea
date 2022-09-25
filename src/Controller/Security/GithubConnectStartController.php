@@ -21,9 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-/**
- * @Route("/connect/github", name="connect_github_start")
- */
+#[Route(path: '/connect/github', name: 'connect_github_start')]
 class GithubConnectStartController extends AbstractController
 {
     use TargetPathTrait;

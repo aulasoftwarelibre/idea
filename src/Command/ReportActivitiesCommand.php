@@ -22,6 +22,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Border;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
@@ -37,31 +38,24 @@ use function iterator_to_array;
 use function mb_strtoupper;
 use function sprintf;
 
+#[AsCommand(
+    name: 'idea:report:activities',
+    description: 'Informe de todas las actividades',
+)]
 class ReportActivitiesCommand extends Command
 {
-    private ActivityRepository $activityRepository;
-    private SluggerInterface $slugger;
-
-    public function __construct(ActivityRepository $activityRepository, SluggerInterface $slugger)
+    public function __construct(private ActivityRepository $activityRepository, private SluggerInterface $slugger)
     {
         parent::__construct();
-
-        $this->activityRepository = $activityRepository;
-        $this->slugger            = $slugger;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('idea:report:activities')
-            ->setDescription('Informe de todas las actividades')
             ->addArgument('template', InputArgument::REQUIRED);
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io       = new SymfonyStyle($input, $output);
         $template = $this->getTemplate($input);

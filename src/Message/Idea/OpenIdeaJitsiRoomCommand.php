@@ -17,11 +17,8 @@ use App\Entity\Idea;
 
 final class OpenIdeaJitsiRoomCommand
 {
-    private Idea $idea;
-
-    public function __construct(Idea $idea)
+    public function __construct(private Idea $idea)
     {
-        $this->idea = $idea;
     }
 
     public function getIdea(): Idea

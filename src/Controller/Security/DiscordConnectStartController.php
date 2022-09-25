@@ -21,9 +21,7 @@ use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-/**
- * @Route("/connect/discord", name="connect_discord_start")
- */
+#[Route(path: '/connect/discord', name: 'connect_discord_start')]
 class DiscordConnectStartController extends AbstractController
 {
     use TargetPathTrait;

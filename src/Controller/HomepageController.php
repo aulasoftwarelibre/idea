@@ -19,9 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class HomepageController extends AbstractController
 {
-    /**
-     * @Route("/", name="homepage")
-     */
+    #[Route(path: '/', name: 'homepage')]
     public function __invoke(): Response
     {
         return $this->redirectToRoute('idea_index');

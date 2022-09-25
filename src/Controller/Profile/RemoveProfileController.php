@@ -25,16 +25,14 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 
 use function assert;
 
-/**
- * @Route("/profile/remove", name="profile_remove", methods={"POST"})
- * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
- */
+#[Route(path: '/profile/remove', name: 'profile_remove', methods: ['POST'])]
+#[Security("is_granted('IS_AUTHENTICATED_FULLY')")]
 class RemoveProfileController extends AbstractController
 {
     public function __invoke(
         CommandBus $commandBus,
         Request $request,
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
     ): Response {
         if (! $this->isCsrfTokenValid('delete', $request->request->get('token'))) {
             $this->addFlash('error', 'Token CSRF inválido');
@@ -48,8 +46,8 @@ class RemoveProfileController extends AbstractController
         $commandBus->dispatch(
             new RemoveUserCommand(
                 $user->getUsername(),
-                false
-            )
+                false,
+            ),
         );
 
         $tokenStorage->setToken(null);

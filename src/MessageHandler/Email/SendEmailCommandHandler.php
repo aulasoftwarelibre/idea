@@ -30,27 +30,14 @@ use function sprintf;
 
 class SendEmailCommandHandler
 {
-    private IdeaRepository $ideaRepository;
-    private LoggerInterface $logger;
-    private MailerInterface $mailer;
-    private string $assetsPath;
-    private string $mailFrom;
-    private TokenStorageInterface $token;
-
     public function __construct(
-        IdeaRepository $ideaRepository,
-        LoggerInterface $logger,
-        MailerInterface $mailer,
-        TokenStorageInterface $token,
-        string $assetsPath,
-        string $mailFrom
+        private IdeaRepository $ideaRepository,
+        private LoggerInterface $logger,
+        private MailerInterface $mailer,
+        private TokenStorageInterface $token,
+        private string $assetsPath,
+        private string $mailFrom,
     ) {
-        $this->ideaRepository = $ideaRepository;
-        $this->logger         = $logger;
-        $this->mailer         = $mailer;
-        $this->token          = $token;
-        $this->assetsPath     = $assetsPath;
-        $this->mailFrom       = $mailFrom;
     }
 
     public function __invoke(SendEmailCommand $command): void

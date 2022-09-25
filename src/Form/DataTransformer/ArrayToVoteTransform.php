@@ -22,11 +22,8 @@ use function assert;
 
 class ArrayToVoteTransform implements DataTransformerInterface
 {
-    private UserRepository $repository;
-
-    public function __construct(UserRepository $repository)
+    public function __construct(private UserRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     /**

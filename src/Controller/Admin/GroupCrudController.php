@@ -29,9 +29,7 @@ class GroupCrudController extends AbstractCrudController
             ->setEntityLabelInSingular('Group');
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');

@@ -23,7 +23,7 @@ final class StringUtils
 {
     public static function locator(
         int $length = 8,
-        string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+        string $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
     ): string {
         return implode(
             '',
@@ -31,8 +31,8 @@ final class StringUtils
                 static function ($i) use ($characters) {
                     return $characters[random_int(0, mb_strlen($characters) - 1)];
                 },
-                array_fill(0, $length, 0)
-            )
+                array_fill(0, $length, 0),
+            ),
         );
     }
 }

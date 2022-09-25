@@ -32,14 +32,13 @@ use function array_unique;
 use function in_array;
 use function sprintf;
 
-/**
- * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
- * @ORM\Table(name="fos_user", indexes={@ORM\Index(columns={"username"}), @ORM\Index(columns={"email"})})
- *
- * @Gedmo\SoftDeleteable()
- * @Vich\Uploadable()
- * @Validator\Alias()
- */
+#[ORM\Table(name: 'fos_user')]
+#[ORM\Entity]
+#[ORM\Index(columns: ['username'])]
+#[ORM\Index(columns: ['email'])]
+#[Vich\Uploadable]
+#[Validator\Alias]
+#[Gedmo\SoftDeleteable]
 class User implements EquatableInterface, UserInterface
 {
     public const STUDENT  = 'student';
@@ -47,180 +46,108 @@ class User implements EquatableInterface, UserInterface
     public const TEACHER  = 'teacher';
     public const EXTERNAL = 'external';
 
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
-    private ?int $id = null;
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private int|null $id = null;
 
-    /** @ORM\Column(type="boolean") */
+    #[ORM\Column(type: 'boolean')]
     protected bool $isExternal;
 
-    /**
-     * @ORM\Column(type="string", length=180)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=180)
-     */
-    private ?string $username = null;
+    #[ORM\Column(type: 'string', length: 180)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 180)]
+    private string|null $username = null;
 
-    /**
-     * @ORM\Column(type="string", length=180)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=1, max=180)
-     * @Assert\Email()
-     */
-    private ?string $email = null;
+    #[ORM\Column(type: 'string', length: 180)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 1, max: 180)]
+    #[Assert\Email]
+    private string|null $email = null;
 
-    /**
-     * @ORM\Column(type="array")
-     *
-     * @Assert\Choice({"ROLE_USER", "ROLE_ADMIN", "ROLE_SUPER_ADMIN"}, multiple=true)
-     *
-     * @var string[]
-     */
+    /** @var string[] */
+    #[ORM\Column(type: 'array')]
+    #[Assert\Choice(['ROLE_USER', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'], multiple: true)]
     private array $roles = [];
 
-    /**
-     * @ORM\Column(type="string", length=32)
-     *
-     * @Assert\NotBlank()
-     * @Assert\Length(min=3, max=16)
-     * @Assert\Regex("/[\w\d_]/u", message="form.label_alias_invalid")
-     */
-    protected ?string $alias = '';
+    #[ORM\Column(type: 'string', length: 32)]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 16)]
+    #[Assert\Regex('/[\w\d_]/u', message: 'form.label_alias_invalid')]
+    protected string|null $alias = '';
 
-    /**
-     * @ORM\Version()
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Version]
+    #[ORM\Column(type: 'integer')]
     private int $version = 1;
 
-    /**
-     * @ORM\Column(length=32, nullable=true)
-     *
-     * @Assert\Choice(callback="getCollectives")
-     * @Assert\NotBlank()
-     */
-    private ?string $collective = null;
+    #[ORM\Column(length: 32, nullable: true)]
+    #[Assert\Choice(callback: 'getCollectives')]
+    #[Assert\NotBlank]
+    private string|null $collective = null;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Degree")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     */
-    private ?Degree $degree = null;
+    #[ORM\ManyToOne(targetEntity: 'App\Entity\Degree')]
+    #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
+    private Degree|null $degree = null;
 
-    /**
-     * @ORM\Column(length=4, nullable=true)
-     *
-     * @Assert\Regex("/\d{4}/")
-     */
-    private ?string $year = null;
+    #[ORM\Column(length: 4, nullable: true)]
+    #[Assert\Regex('/\d{4}/')]
+    private string|null $year = null;
 
-    /** @ORM\Column(length=32, unique=false, nullable=true) */
-    private ?string $nic = null;
+    #[ORM\Column(length: 32, unique: false, nullable: true)]
+    private string|null $nic = null;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Participation",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @var Collection<int,Participation>
-     */
+    /** @var Collection<int,Participation> */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Participation', mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $participations;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Idea",
-     *     mappedBy="owner",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @var Collection<int,Idea>
-     */
+    /** @var Collection<int,Idea> */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Idea', mappedBy: 'owner', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $ideas;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\Vote",
-     *     mappedBy="user",
-     *     cascade={"persist", "remove"},
-     *     orphanRemoval=true
-     * )
-     *
-     * @var Collection<int,Vote>
-     */
+    /** @var Collection<int,Vote> */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\Vote', mappedBy: 'user', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $votes;
 
-    /**
-     * @ORM\OneToMany(
-     *     targetEntity="App\Entity\LogPolicy",
-     *     mappedBy="user"
-     * )
-     *
-     * @var Collection<int,LogPolicy>
-     */
+    /** @var Collection<int,LogPolicy> */
+    #[ORM\OneToMany(targetEntity: 'App\Entity\LogPolicy', mappedBy: 'user')]
     private Collection $versions;
 
-    /**
-     * @Vich\UploadableField(
-     *     mapping="avatars",
-     *     fileNameProperty="image.name",
-     *     size="image.size",
-     *     mimeType="image.mimeType",
-     *     originalName="image.originalName"
-     * )
-     */
+    #[Vich\UploadableField(mapping: 'avatars', fileNameProperty: 'image.name', size: 'image.size', mimeType: 'image.mimeType', originalName: 'image.originalName')]
     private File|UploadedFile|null $imageFile = null;
 
-    /** @ORM\Embedded(class="Vich\UploaderBundle\Entity\File") */
+    #[ORM\Embedded(class: 'Vich\UploaderBundle\Entity\File')]
     private EmbeddedFile $image;
 
-    /**
-     * @ORM\ManyToMany(targetEntity=Group::class, inversedBy="users", cascade={"all"}, fetch="EAGER")
-     * @ORM\JoinTable(name="fos_user_user_group")
-     *
-     * @var Collection<int, Group>
-     */
+    /** @var Collection<int, Group> */
+    #[ORM\ManyToMany(targetEntity: Group::class, inversedBy: 'users', cascade: ['all'], fetch: 'EAGER')]
+    #[ORM\JoinTable(name: 'fos_user_user_group')]
     private Collection $groups;
 
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private ?DateTimeInterface $deletedAt = null;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private DateTimeInterface|null $deletedAt = null;
 
-    /** @ORM\Column(type="boolean") */
+    #[ORM\Column(type: 'boolean')]
     private bool $enabled = true;
 
-    /** @ORM\Column(type="string", length=64, nullable=true) */
-    private ?string $firstname;
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private string|null $firstname;
 
-    /** @ORM\Column(type="string", length=64, nullable=true) */
-    private ?string $lastname;
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    private string|null $lastname;
 
-    /** @ORM\Column(type="string", length=1000, nullable=true) */
-    private ?string $biography;
+    #[ORM\Column(type: 'string', length: 1000, nullable: true)]
+    private string|null $biography;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="create")
-     */
-    private ?DateTime $createdAt;
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
+    private DateTime|null $createdAt;
 
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Gedmo\Timestampable(on="update")
-     */
-    private ?DateTime $updatedAt;
+    #[Gedmo\Timestampable(on: 'update')]
+    #[ORM\Column(type: 'datetime')]
+    private DateTime|null $updatedAt;
 
-    /** @ORM\Column(type="datetime", nullable=true) */
-    private ?DateTime $lastLogin;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private DateTime|null $lastLogin;
 
     public static function createUcoUser(string $username): self
     {
@@ -263,13 +190,18 @@ class User implements EquatableInterface, UserInterface
             '%s %s [%s]',
             $this->getFirstname(),
             $this->getLastname(),
-            $this->getUsername()
+            $this->getUsername(),
         );
     }
 
-    public function getId(): ?int
+    public function getId(): int|null
     {
         return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
     }
 
     /**
@@ -289,7 +221,7 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string|null
     {
         return $this->email;
     }
@@ -301,9 +233,7 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    /**
-     * @return string[]
-     */
+    /** @return string[] */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -313,9 +243,7 @@ class User implements EquatableInterface, UserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param string[] $roles
-     */
+    /** @param string[] $roles */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -328,28 +256,22 @@ class User implements EquatableInterface, UserInterface
         return in_array($role, $this->roles, true);
     }
 
-    /**
-     * @see UserInterface
-     */
+    /** @see UserInterface */
     public function getPassword(): void
     {
     }
 
-    /**
-     * @see UserInterface
-     */
+    /** @see UserInterface */
     public function getSalt(): void
     {
     }
 
-    /**
-     * @see UserInterface
-     */
+    /** @see UserInterface */
     public function eraseCredentials(): void
     {
     }
 
-    public function equalsTo(?self $user): bool
+    public function equalsTo(self|null $user): bool
     {
         if (! $user instanceof self) {
             return false;
@@ -375,16 +297,14 @@ class User implements EquatableInterface, UserInterface
         return (string) $this->alias;
     }
 
-    public function setAlias(?string $alias): self
+    public function setAlias(string|null $alias): self
     {
         $this->alias = $alias;
 
         return $this;
     }
 
-    /**
-     * @return array<string, string>
-     */
+    /** @return array<string, string> */
     public static function getCollectives(): array
     {
         return [
@@ -395,21 +315,19 @@ class User implements EquatableInterface, UserInterface
         ];
     }
 
-    public function getCollective(): ?string
+    public function getCollective(): string|null
     {
         return $this->collective;
     }
 
-    public function setCollective(?string $collective): self
+    public function setCollective(string|null $collective): self
     {
         $this->collective = $collective;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int,Idea>
-     */
+    /** @return Collection<int,Idea> */
     public function getIdeas(): Collection
     {
         return $this->ideas;
@@ -427,9 +345,7 @@ class User implements EquatableInterface, UserInterface
         $this->ideas->removeElement($idea);
     }
 
-    /**
-     * @return Collection<int,Vote>
-     */
+    /** @return Collection<int,Vote> */
     public function getVotes(): Collection
     {
         return $this->votes;
@@ -448,9 +364,7 @@ class User implements EquatableInterface, UserInterface
         $this->votes->removeElement($vote);
     }
 
-    /**
-     * @return Collection<int,LogPolicy>
-     */
+    /** @return Collection<int,LogPolicy> */
     public function getVersions(): Collection
     {
         return $this->versions;
@@ -464,24 +378,24 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getDegree(): ?Degree
+    public function getDegree(): Degree|null
     {
         return $this->degree;
     }
 
-    public function setDegree(?Degree $degree): self
+    public function setDegree(Degree|null $degree): self
     {
         $this->degree = $degree;
 
         return $this;
     }
 
-    public function getYear(): ?string
+    public function getYear(): string|null
     {
         return $this->year;
     }
 
-    public function setYear(?string $year): self
+    public function setYear(string|null $year): self
     {
         $this->year = $year;
 
@@ -497,7 +411,7 @@ class User implements EquatableInterface, UserInterface
      *
      * @param File|UploadedFile|null $image
      */
-    public function setImageFile(?File $image = null): void
+    public function setImageFile(File|null $image = null): void
     {
         $this->imageFile = $image;
 
@@ -510,7 +424,7 @@ class User implements EquatableInterface, UserInterface
         $this->updatedAt = new DateTime();
     }
 
-    public function getImageFile(): ?File
+    public function getImageFile(): File|null
     {
         return $this->imageFile;
     }
@@ -527,21 +441,19 @@ class User implements EquatableInterface, UserInterface
         return $this->image;
     }
 
-    public function getNic(): ?string
+    public function getNic(): string|null
     {
         return $this->nic;
     }
 
-    public function setNic(?string $nic): self
+    public function setNic(string|null $nic): self
     {
         $this->nic = $nic;
 
         return $this;
     }
 
-    /**
-     * @return Collection<int,Participation>
-     */
+    /** @return Collection<int,Participation> */
     public function getParticipations(): Collection
     {
         return $this->participations;
@@ -566,12 +478,12 @@ class User implements EquatableInterface, UserInterface
             && $user->getId() === $this->getId();
     }
 
-    public function getDeletedAt(): ?DateTimeInterface
+    public function getDeletedAt(): DateTimeInterface|null
     {
         return $this->deletedAt;
     }
 
-    public function setDeletedAt(?DateTimeInterface $deletedAt): void
+    public function setDeletedAt(DateTimeInterface|null $deletedAt): void
     {
         $this->deletedAt = $deletedAt;
     }
@@ -586,7 +498,7 @@ class User implements EquatableInterface, UserInterface
         $this->version = $version;
     }
 
-    public function getEnabled(): ?bool
+    public function getEnabled(): bool|null
     {
         return $this->enabled;
     }
@@ -598,36 +510,36 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getFirstname(): ?string
+    public function getFirstname(): string|null
     {
         return $this->firstname;
     }
 
-    public function setFirstname(?string $firstname): self
+    public function setFirstname(string|null $firstname): self
     {
         $this->firstname = $firstname;
 
         return $this;
     }
 
-    public function getLastname(): ?string
+    public function getLastname(): string|null
     {
         return $this->lastname;
     }
 
-    public function setLastname(?string $lastname): self
+    public function setLastname(string|null $lastname): self
     {
         $this->lastname = $lastname;
 
         return $this;
     }
 
-    public function getFullname(): ?string
+    public function getFullname(): string|null
     {
         return $this->firstname . ' ' . $this->lastname;
     }
 
-    public function getBiography(): ?string
+    public function getBiography(): string|null
     {
         return $this->biography;
     }
@@ -639,7 +551,7 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getCreatedAt(): ?DateTimeInterface
+    public function getCreatedAt(): DateTimeInterface|null
     {
         return $this->createdAt;
     }
@@ -651,31 +563,31 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    public function getUpdatedAt(): ?DateTimeInterface
+    public function getUpdatedAt(): DateTimeInterface|null
     {
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(?DateTimeInterface $updatedAt): self
+    public function setUpdatedAt(DateTimeInterface|null $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
 
         return $this;
     }
 
-    public function getLastLogin(): ?DateTimeInterface
+    public function getLastLogin(): DateTimeInterface|null
     {
         return $this->lastLogin;
     }
 
-    public function setLastLogin(?DateTimeInterface $lastLogin): self
+    public function setLastLogin(DateTimeInterface|null $lastLogin): self
     {
         $this->lastLogin = $lastLogin;
 
         return $this;
     }
 
-    public function getIsExternal(): ?bool
+    public function getIsExternal(): bool|null
     {
         return $this->isExternal;
     }
@@ -692,9 +604,7 @@ class User implements EquatableInterface, UserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int,Group>
-     */
+    /** @return Collection<int,Group> */
     public function getGroups(): Collection
     {
         return $this->groups;

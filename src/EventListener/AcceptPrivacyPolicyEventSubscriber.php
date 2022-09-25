@@ -22,7 +22,7 @@ use App\MessageBus\QueryBus;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -34,27 +34,18 @@ use function method_exists;
 
 class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
 {
-    private RouterInterface $router;
-    private TokenStorageInterface $tokenStorage;
-    private QueryBus $queryBus;
-    private SessionInterface $session;
-
     public function __construct(
-        RouterInterface $router,
-        TokenStorageInterface $tokenStorage,
-        QueryBus $queryBus,
-        SessionInterface $session
+        private readonly RouterInterface $router,
+        private readonly TokenStorageInterface $tokenStorage,
+        private readonly QueryBus $queryBus,
+        private readonly RequestStack $requestStack,
     ) {
-        $this->router       = $router;
-        $this->tokenStorage = $tokenStorage;
-        $this->queryBus     = $queryBus;
-        $this->session      = $session;
     }
 
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [KernelEvents::REQUEST => 'onKernelRequest'];
     }
@@ -71,7 +62,7 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
         assert($user instanceof User);
 
         $userHasAccepted = $this->queryBus->query(
-            new CheckUserAcceptLastPolicyVersionQuery($user)
+            new CheckUserAcceptLastPolicyVersionQuery($user),
         );
 
         if (
@@ -87,13 +78,13 @@ class AcceptPrivacyPolicyEventSubscriber implements EventSubscriberInterface
 
         $event->setResponse(new RedirectResponse($this->router->generate('profile_register')));
 
-        if (! method_exists($this->session, 'getFlashBag')) {
+        if (! method_exists($this->requestStack->getSession(), 'getFlashBag')) {
             return;
         }
 
-        $this->session->getFlashBag()->add(
+        $this->requestStack->getSession()->getFlashBag()->add(
             'warning',
-            'Se debe aceptar la politica de privacidad'
+            'Se debe aceptar la politica de privacidad',
         );
     }
 }

@@ -11,9 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserChecker implements UserCheckerInterface
 {
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function checkPreAuth(UserInterface $user)
     {
         if (! $user instanceof User) {
@@ -21,9 +19,7 @@ final class UserChecker implements UserCheckerInterface
         }
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function checkPostAuth(UserInterface $user)
     {
         if (! $user instanceof User) {

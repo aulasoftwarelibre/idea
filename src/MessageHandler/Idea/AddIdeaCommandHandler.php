@@ -20,11 +20,8 @@ use App\Repository\IdeaRepository;
 
 class AddIdeaCommandHandler
 {
-    private IdeaRepository $repository;
-
-    public function __construct(IdeaRepository $repository)
+    public function __construct(private IdeaRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(AddIdeaCommand $command): Idea

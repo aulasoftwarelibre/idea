@@ -18,21 +18,12 @@ use App\Entity\Idea;
 
 final class UpdateIdeaCommand
 {
-    private Idea $idea;
-    private string $title;
-    private string $description;
-    private Group $group;
-
     public function __construct(
-        Idea $idea,
-        string $title,
-        string $description,
-        Group $group
+        private Idea $idea,
+        private string $title,
+        private string $description,
+        private Group $group,
     ) {
-        $this->idea        = $idea;
-        $this->title       = $title;
-        $this->description = $description;
-        $this->group       = $group;
     }
 
     public function getIdea(): Idea

@@ -24,16 +24,11 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-    private AdminUrlGenerator $adminUrlGenerator;
-
-    public function __construct(AdminUrlGenerator $adminUrlGenerator)
+    public function __construct(private AdminUrlGenerator $adminUrlGenerator)
     {
-        $this->adminUrlGenerator = $adminUrlGenerator;
     }
 
-    /**
-     * @Route("/admin", name="admin")
-     */
+    #[Route(path: '/admin', name: 'admin')]
     public function index(): Response
     {
         $ideaCrudControllerUrl = $this->adminUrlGenerator->setController(IdeaCrudController::class)->generateUrl();
@@ -53,9 +48,7 @@ class DashboardController extends AbstractDashboardController
             ->add(Crud::PAGE_INDEX, Action::DETAIL);
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');

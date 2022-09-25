@@ -25,9 +25,7 @@ class ParticipationCrudController extends AbstractCrudController
         return Participation::class;
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function createEntity(string $entityFqcn)
     {
         $entity = new Participation();
@@ -59,9 +57,7 @@ class ParticipationCrudController extends AbstractCrudController
             ->add('user');
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');

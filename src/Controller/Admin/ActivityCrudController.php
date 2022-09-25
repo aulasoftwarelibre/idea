@@ -29,9 +29,7 @@ class ActivityCrudController extends AbstractCrudController
             ->setDefaultSort(['occurredOn' => 'DESC']);
     }
 
-    /**
-     * @inheritDoc
-     */
+    /** @inheritDoc */
     public function configureFields(string $pageName): iterable
     {
         yield FormField::addPanel('General');

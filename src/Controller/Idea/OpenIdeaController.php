@@ -21,26 +21,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/idea/{slug}/open", name="idea_open", options={"expose"=true}, methods={"POST"})
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[Route(path: '/idea/{slug}/open', name: 'idea_open', options: ['expose' => true], methods: ['POST'])]
+#[Security("is_granted('ROLE_ADMIN')")]
 class OpenIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-
     public function __construct(
-        CommandBus $commandBus
+        private CommandBus $commandBus,
     ) {
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Idea $idea): Response
     {
         $this->commandBus->dispatch(
             new OpenIdeaCommand(
-                $idea
-            )
+                $idea,
+            ),
         );
 
         $this->addFlash('positive', 'La idea se ha abierto correctamente.');

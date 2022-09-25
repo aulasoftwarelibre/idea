@@ -18,13 +18,8 @@ use App\Entity\User;
 
 final class RemoveVoteCommand
 {
-    private Idea $idea;
-    private User $user;
-
-    public function __construct(Idea $idea, User $user)
+    public function __construct(private Idea $idea, private User $user)
     {
-        $this->idea = $idea;
-        $this->user = $user;
     }
 
     public function getIdea(): Idea

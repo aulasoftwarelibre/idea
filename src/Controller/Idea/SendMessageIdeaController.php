@@ -26,17 +26,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use function assert;
 
-/**
- * @Route("/idea/{slug}/message", name="idea_send_message", methods={"GET", "POST"})
- * @Security("is_granted('ROLE_ADMIN')")
- */
+#[Route(path: '/idea/{slug}/message', name: 'idea_send_message', methods: ['GET', 'POST'])]
+#[Security("is_granted('ROLE_ADMIN')")]
 class SendMessageIdeaController extends AbstractController
 {
-    private CommandBus $commandBus;
-
-    public function __construct(CommandBus $commandBus)
+    public function __construct(private CommandBus $commandBus)
     {
-        $this->commandBus = $commandBus;
     }
 
     public function __invoke(Idea $idea, Request $request): Response
@@ -52,8 +47,8 @@ class SendMessageIdeaController extends AbstractController
                 new SendEmailCommand(
                     $idea->getId(),
                     $message->getMessage(),
-                    $message->getIsTest()
-                )
+                    $message->getIsTest(),
+                ),
             );
 
             if ($message->getIsTest() === false) {

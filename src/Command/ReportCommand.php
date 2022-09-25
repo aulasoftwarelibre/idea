@@ -20,6 +20,7 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use RuntimeException;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -34,29 +35,24 @@ use function mkdir;
 use function sprintf;
 use function unlink;
 
+#[AsCommand(
+    name: 'idea:report:students',
+    description: 'Save Report',
+)]
 class ReportCommand extends Command
 {
-    private UserRepository $userRepository;
-
-    public function __construct(UserRepository $userRepository)
+    public function __construct(private UserRepository $userRepository)
     {
         parent::__construct();
-
-        $this->userRepository = $userRepository;
     }
 
     protected function configure(): void
     {
         $this
-            ->setName('idea:report:students')
-            ->setDescription('Save Report')
             ->addArgument('filename', InputArgument::OPTIONAL, 'Nombre del fichero', 'report');
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io       = new SymfonyStyle($input, $output);
         $filename = $this->getFilename($input);
@@ -82,7 +78,7 @@ class ReportCommand extends Command
                 '%s, %s - %s',
                 $user->getLastname(),
                 $user->getFirstname(),
-                $user->getNic()
+                $user->getNic(),
             );
 
             ++$row;

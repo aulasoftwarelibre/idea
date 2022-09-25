@@ -17,9 +17,7 @@ use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/connect/discord/check", name="connect_discord_check")
- */
+#[Route(path: '/connect/discord/check', name: 'connect_discord_check')]
 class DiscordConnectCheckController extends AbstractController
 {
     public function __invoke(): void

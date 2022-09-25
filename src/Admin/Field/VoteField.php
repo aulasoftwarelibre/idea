@@ -12,7 +12,7 @@ final class VoteField implements FieldInterface
 {
     use FieldTrait;
 
-    public static function new(string $propertyName, ?string $label = null): VoteField
+    public static function new(string $propertyName, string|null $label = null): VoteField
     {
         return (new self())
             ->setProperty($propertyName)

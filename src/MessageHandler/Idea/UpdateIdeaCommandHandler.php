@@ -19,11 +19,8 @@ use App\Repository\IdeaRepository;
 
 class UpdateIdeaCommandHandler
 {
-    private IdeaRepository $repository;
-
-    public function __construct(IdeaRepository $repository)
+    public function __construct(private IdeaRepository $repository)
     {
-        $this->repository = $repository;
     }
 
     public function __invoke(UpdateIdeaCommand $command): Idea

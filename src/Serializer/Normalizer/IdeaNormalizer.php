@@ -12,18 +12,11 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class IdeaNormalizer implements NormalizerInterface, CacheableSupportsMethodInterface
 {
-    private ObjectNormalizer $normalizer;
-    private RouterInterface $router;
-
-    public function __construct(ObjectNormalizer $normalizer, RouterInterface $router)
+    public function __construct(private ObjectNormalizer $normalizer, private RouterInterface $router)
     {
-        $this->normalizer = $normalizer;
-        $this->router     = $router;
     }
 
-    /**
-     * @{@inheritDoc}
-     */
+    /** @{@inheritDoc} */
     public function normalize($object, $format = null, array $context = []): array
     {
         if (! $object instanceof Idea) {
@@ -38,17 +31,13 @@ class IdeaNormalizer implements NormalizerInterface, CacheableSupportsMethodInte
         ];
     }
 
-    /**
-     * @{@inheritDoc}
-     */
+    /** @{@inheritDoc} */
     public function supportsNormalization($data, $format = null): bool
     {
         return $data instanceof Idea;
     }
 
-    /**
-     * @{@inheritDoc}
-     */
+    /** @{@inheritDoc} */
     public function hasCacheableSupportsMethod(): bool
     {
         return true;

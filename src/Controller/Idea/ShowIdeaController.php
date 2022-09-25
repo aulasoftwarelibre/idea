@@ -20,13 +20,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/idea/{slug}", name="idea_show")
- */
+#[Route(path: '/idea/{slug}', name: 'idea_show')]
 class ShowIdeaController extends AbstractController
 {
     public function __construct(
-        private ConfigureOpenGraphService $openGraphService
+        private ConfigureOpenGraphService $openGraphService,
     ) {
     }
 
@@ -37,7 +35,7 @@ class ShowIdeaController extends AbstractController
         $this->openGraphService->configure(
             $idea->getTitle(),
             $idea->getDescription(),
-            $item
+            $item,
         );
 
         return $this->render('frontend/idea/show.html.twig', [

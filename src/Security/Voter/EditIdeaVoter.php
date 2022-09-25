@@ -24,10 +24,7 @@ class EditIdeaVoter extends Voter
 {
     public const EDIT = 'EDIT';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         if ($attribute !== self::EDIT) {
             return false;
@@ -36,10 +33,7 @@ class EditIdeaVoter extends Voter
         return $subject instanceof Idea;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         assert($subject instanceof Idea);

@@ -29,7 +29,7 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class IdeaType extends AbstractType
 {
     public function __construct(
-        private Security $security
+        private Security $security,
     ) {
     }
 

@@ -24,10 +24,7 @@ class OwnerIdeaVoter extends Voter
 {
     public const OWNER = 'OWNER';
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function supports($attribute, $subject)
+    protected function supports(string $attribute, mixed $subject): bool
     {
         if ($attribute !== self::OWNER) {
             return false;
@@ -36,10 +33,7 @@ class OwnerIdeaVoter extends Voter
         return $subject instanceof Idea;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    protected function voteOnAttribute($attribute, $subject, TokenInterface $token)
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();
         assert($user instanceof User);

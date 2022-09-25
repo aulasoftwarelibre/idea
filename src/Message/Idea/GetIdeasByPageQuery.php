@@ -15,15 +15,8 @@ namespace App\Message\Idea;
 
 final class GetIdeasByPageQuery
 {
-    private int $page;
-    private bool $showPrivates;
-    private ?string $pattern;
-
-    public function __construct(int $page, bool $showPrivates, ?string $pattern)
+    public function __construct(private int $page, private bool $showPrivates, private string|null $pattern)
     {
-        $this->page         = $page;
-        $this->showPrivates = $showPrivates;
-        $this->pattern      = $pattern;
     }
 
     public function getPage(): int
@@ -36,7 +29,7 @@ final class GetIdeasByPageQuery
         return $this->showPrivates;
     }
 
-    public function getPattern(): ?string
+    public function getPattern(): string|null
     {
         return $this->pattern;
     }
