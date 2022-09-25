@@ -3,7 +3,7 @@ knpu_oauth2_client:
         # configure your clients as described here: https://github.com/knpuniversity/oauth2-client-bundle#configuration
         uco:
             type: generic
-            provider_class: Uco\OAuth2\Client\Provider\Uco
+            provider_class: AulaSoftwareLibre\OAuth2\Client\Provider\Uco
             client_id: '%env(CLIENT_UCO_ID)%'
             client_secret: '%env(CLIENT_UCO_SECRET)%'
             redirect_route: 'connect_uco_check'

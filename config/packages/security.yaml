@@ -1,6 +1,5 @@
 security:
-    encoders:
-        App\Entity\User: auto
+    enable_authenticator_manager: true
 
     role_hierarchy:
         ROLE_SUPER_ADMIN: ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH
@@ -17,17 +16,15 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
-            anonymous: true
             lazy: true
             provider: app_user_provider
             pattern: '^/'
-            guard:
-                authenticators:
-                    - 'uco_oauth2_client.security_guard.uco_authenticator'
-                    - 'App\Security\Guard\GoogleAuthenticator'
-                    - 'App\Security\Guard\GithubAuthenticator'
-                    - 'App\Security\Guard\DiscordAuthenticator'
-                entry_point: 'uco_oauth2_client.security_guard.uco_authenticator'
+            custom_authenticators:
+                - 'uco_oauth2_client.security_guard.uco_authenticator'
+                - 'App\Security\Guard\GoogleAuthenticator'
+                - 'App\Security\Guard\GithubAuthenticator'
+                - 'App\Security\Guard\DiscordAuthenticator'
+            entry_point: 'uco_oauth2_client.security_guard.uco_authenticator'
             logout:
                 path: '/logout'
                 target: '/'
@@ -37,9 +34,9 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: '^/login$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
-        - { path: '^/connect/(uco|google|discord|github)$', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
+        - { path: '^/login$', role: 'PUBLIC_ACCESS' }
+        - { path: '^/connect/(uco|google|discord|github)$', role: 'PUBLIC_ACCESS' }
         - { path: '^/connect/(uco|google|discord|github)/check', role: 'ROLE_USER' }
         - { path: '^/admin', role: 'ROLE_ADMIN' }
-        - { path: '^/api', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
-        - { path: '^/', role: 'IS_AUTHENTICATED_ANONYMOUSLY' }
+        - { path: '^/api', role: 'PUBLIC_ACCESS' }
+        - { path: '^/', role: 'PUBLIC_ACCESS' }
