@@ -1,3 +1,3 @@
 knp_menu:
     twig:
-        template: '@SemanticUi/menu/semantic_2_menu.html.twig'
+        template: '/menu/semantic_2_menu.html.twig'

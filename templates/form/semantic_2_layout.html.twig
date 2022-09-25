@@ -1,0 +1,184 @@
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_start -%}
+    {%- set attr = attr|merge({class: ('ui ' ~ attr.class|default(''))|trim}) -%}
+    {%- set attr = attr|merge({class: attr.class ~ ' form'}) -%}
+    {{- parent() -}}
+{%- endblock form_start -%}
+
+{# Widgets #}
+
+{%- block button_widget -%}
+    {%- set attr = attr|merge({class: ('ui ' ~ attr.class|default(''))|trim}) -%}
+    {%- set attr = attr|merge({class: attr.class ~ ' button'}) -%}
+    {{- parent() -}}
+{%- endblock %}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: ('ui ' ~ attr.class|default(''))|trim}) -%}
+    {%- set attr = attr|merge({class: (attr.class ~ ' dropdown')}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block choice_widget_expanded -%}
+    <div {{ block('widget_container_attributes') }}>
+        {%- for child in form -%}
+            <div class="field">
+                {{- form_widget(child) -}}
+            </div>
+        {%- endfor -%}
+    </div>
+{%- endblock choice_widget_expanded -%}
+
+{%- block datetime_widget -%}
+    {% apply spaceless %}
+        {% if widget == 'single_text' %}
+            {% set type = 'text' %}
+            {{ block('form_widget_simple') }}
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                {{ form_errors(form.date) }}
+                {{ form_errors(form.time) }}
+                <div class="fields">
+                    <div class="field">
+                        {{ form_widget(form.date) }}
+                    </div>
+                    <div class="field">
+                        {{ form_widget(form.time) }}
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{%- endblock datetime_widget -%}
+
+{%- block date_widget -%}
+    {% apply spaceless %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple') }}
+        {% else %}
+            <div {{ block('widget_container_attributes') }}>
+                <div class="fields">
+                    {{ date_pattern|replace({
+                        '{{ year }}':  '<div class="field">' ~ form_widget(form.year) ~ '</div>',
+                        '{{ month }}': '<div class="field">' ~ form_widget(form.month) ~ '</div>',
+                        '{{ day }}':   '<div class="field">' ~ form_widget(form.day) ~ '</div>',
+                    })|raw }}
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{%- endblock date_widget -%}
+
+{%- block time_widget -%}
+    {% apply spaceless %}
+        {% if widget == 'single_text' %}
+            {{ block('form_widget_simple') }}
+        {% else %}
+            {% set vars = widget == 'text' ? { 'attr': { 'size': 1 }} : {} %}
+            <div {{ block('widget_container_attributes') }}>
+                <div class="fields">
+                    <div class="field">
+                        {{ form_widget(form.hour, vars) }}
+                    </div>
+                    <div class="field">:</div>
+                    <div class="field">
+                        {{ form_widget(form.minute, vars) }}
+                    </div>
+                    {% if with_seconds %}
+                        <div class="field">:</div>
+                        <div class="field">
+                            {{ form_widget(form.second, vars) }}
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{%- endblock time_widget %}
+
+{%- block dateinterval_widget -%}
+    {{- block('form_widget_simple') -}}
+    {# todo create a valid dateinterval widget #}
+{%- endblock dateinterval_widget -%}
+
+{%- block checkbox_widget -%}
+    {% apply spaceless %}
+        <div class="ui checkbox">
+            {{ parent() }}
+            <label>{{ form.vars.label }}</label>
+        </div>
+    {% endapply %}
+{%- endblock checkbox_widget %}
+
+{%- block radio_widget -%}
+    {% apply spaceless %}
+        {% set attr = attr|merge({class: (attr.class|default('') ~ ' hidden')|trim}) %}
+        <div class="ui radio checkbox">
+            {{ parent() }}
+            <label>{{ form.vars.label }}</label>
+        </div>
+    {% endapply %}
+{%- endblock radio_widget %}
+
+{# Rows #}
+
+{%- block form_row -%}
+    <div {{ block('row_attributes') }}>
+        {{- form_label(form) -}}
+        {{- form_widget(form) -}}
+    </div>
+    {{- form_errors(form) -}}
+{%- endblock form_row -%}
+
+{%- block button_row -%}
+    <div {{ block('row_attributes') }}>
+        {{- form_widget(form) -}}
+    </div>
+{%- endblock button_row -%}
+
+{%- block checkbox_row -%}
+    <div {{ block('row_attributes') }}>
+        {{- form_widget(form) -}}
+    </div>
+    {{- form_errors(form) -}}
+{%- endblock checkbox_row -%}
+
+{%- block radio_row -%}
+    <div {{ block('row_attributes') }}>
+        {{- form_widget(form) -}}
+    </div>
+    {{- form_errors(form) -}}
+{%- endblock radio_row -%}
+
+{# Support #}
+
+{%- block form_errors -%}
+    {% apply spaceless %}
+        {% if errors|length > 0 %}
+            <div class="ui message">
+                <div class="ui list">
+                    {% for error in errors %}
+                        <div class="item">
+                            <i class="warning sign icon"></i>
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+    {% endapply %}
+{%- endblock form_errors -%}
+
+{%- block row_attributes -%}
+    {% apply spaceless %}
+        {% set attr = {'class': 'field'} %}
+        {% if required is defined and required %}
+            {% set attr = attr|merge({class: 'required ' ~ attr.class}) %}
+        {% endif %}
+        {% if valid is defined and not valid %}
+            {% set attr = attr|merge({class: attr.class ~ ' error'}) %}
+        {% endif %}
+        {{ block('attributes') }}
+    {% endapply %}
+{%- endblock row_attributes -%}

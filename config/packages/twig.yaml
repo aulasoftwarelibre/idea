@@ -6,6 +6,6 @@ twig:
     strict_variables: '%kernel.debug%'
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
-        - '@SemanticUi/form/semantic_2_layout.html.twig'
+#        - 'form/semantic_2_layout.html.twig'
         - 'form/vich_widget.html.twig'
         - 'form/semantic_ui.html.twig'

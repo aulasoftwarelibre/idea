@@ -1,0 +1,149 @@
+{% extends '@KnpMenu/menu.html.twig' %}
+
+{% block list %}
+    {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+        {% import 'knp_menu.html.twig' as knp_menu %}
+
+        {%- if options.bare is defined and options.bare %}
+            {%- set options = options|merge({'bare': false, 'root': false}) %}
+            {{ block('children') }}
+        {%- else %}
+            {# Add Semantic UI classes to the list element #}
+            {%- set classes = listAttributes['class'] is defined ? [listAttributes['class']] : [] %}
+            {%- set classes = classes|merge(['menu']) %}
+            {%- if options.root is not defined or options.root %}
+                {%- set classes = ['ui']|merge(classes) %}
+                {%- set options = options|merge({'root': false}) %}
+            {%- endif %}
+
+            {%- set listAttributes = listAttributes|merge({'class': classes|join(' ')}) %}
+            <div{{ knp_menu.attributes(listAttributes) }}>
+                {{ block('children') }}
+            </div>
+        {%- endif %}
+    {% endif %}
+{% endblock %}
+
+{% block item %}
+    {% if item.displayed %}
+        {# Build the class of the item #}
+        {%- set classes = item.attribute('class') is not empty ? [item.attribute('class')] : [] %}
+        {%- if matcher.isCurrent(item) %}
+            {%- set classes = classes|merge([options.currentClass, 'active']) %}
+        {%- elseif matcher.isAncestor(item, options.matchingDepth) %}
+            {%- set classes = classes|merge([options.ancestorClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeFirst %}
+            {%- set classes = classes|merge([options.firstClass]) %}
+        {%- endif %}
+        {%- if item.actsLikeLast %}
+            {%- set classes = classes|merge([options.lastClass]) %}
+        {%- endif %}
+
+        {# Mark item as "leaf" (no children) or as "branch" (has children that are displayed) #}
+        {%- if item.hasChildren and options.depth is not same as(0) %}
+            {%- if options.branch_class is not empty and item.displayChildren %}
+                {%- set classes = classes|merge([options.branch_class]) %}
+            {%- endif %}
+        {%- elseif options.leaf_class is not empty %}
+            {%- set classes = classes|merge([options.leaf_class]) %}
+        {%- endif %}
+
+        {%- set attributes = item.attributes %}
+        {%- if classes is not empty %}
+            {%- set attributes = attributes|merge({'class': classes|join(' ')}) %}
+        {%- endif %}
+
+        {# Display the item #}
+        {%- import 'knp_menu.html.twig' as knp_menu %}
+        {%- if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+            {%- if item.extras['submenu'] is defined and item.extras['submenu'] %}
+                {{ block('submenuElement') }}
+            {%- elseif item.extras['dropdown'] is defined and not item.extras['dropdown'] %}
+                {{ block('embeddedMenuElement') }}
+            {%- else %}
+                {{ block('dropdownElement') }}
+            {%- endif %}
+        {%- elseif item.uri is not empty and (not matcher.isCurrent(item) or options.currentAsLink) %}
+            {{ block('linkElement') }}
+        {%- else %}
+            {{ block('spanElement') }}
+        {%- endif %}
+    {% endif %}
+{% endblock %}
+
+{% block dropdownElement %}
+    {% apply spaceless %}
+        {% import 'knp_menu.html.twig' as knp_menu %}
+
+        {% set classes = attributes['class'] is defined ? [attributes['class']] : [] %}
+        {% set classes = ['ui']|merge(classes) %}
+        {% set classes = classes|merge(['dropdown item']) %}
+        {% set attributes = attributes|merge({'class': classes|join(' ')}) %}
+    {% endapply %}
+
+    <div{{ knp_menu.attributes(attributes) }}>
+        {{ block('label') }}
+        <i class="dropdown icon"></i>
+
+        {#- Render the list of children #}
+        {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+        {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+        {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+        {{ block('list') }}
+    </div>
+{% endblock %}
+
+{% block embeddedMenuElement %}
+    {% import 'knp_menu.html.twig' as knp_menu %}
+
+    {# Render the list of children #}
+    {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+    {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+    {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+    {{ block('list') }}
+{% endblock %}
+
+{% block linkElement %}
+    {% apply spaceless %}
+        {% import 'knp_menu.html.twig' as knp_menu %}
+
+        {% set classes = attributes['class'] is defined ? [attributes['class']] : [] %}
+        {% set classes = classes|merge(['item']) %}
+        {% set attributes = attributes|merge({'class': classes|join(' ')}) %}
+
+        <a href="{{ item.uri }}"{{ knp_menu.attributes(attributes) }}>{{ block('label') }}</a>
+    {% endapply %}
+{% endblock %}
+
+{% block spanElement %}
+    {% apply spaceless %}
+        {% import 'knp_menu.html.twig' as knp_menu %}
+
+        {% set classes = attributes['class'] is defined ? [attributes['class']] : [] %}
+        {% set classes = classes|merge(['item']) %}
+        {% set attributes = attributes|merge({'class': classes|join(' ')}) %}
+
+        <div{{ knp_menu.attributes(attributes) }}>{{ block('label') }}</div>
+    {% endapply %}
+{% endblock %}
+
+{% block submenuElement %}
+    {% apply spaceless %}
+        {% import 'knp_menu.html.twig' as knp_menu %}
+
+        {% set classes = attributes['class'] is defined ? [attributes['class']] : [] %}
+        {% set classes = classes|merge(['item']) %}
+        {% set attributes = attributes|merge({'class': classes|join(' ')}) %}
+    {% endapply %}
+
+    <div{{ knp_menu.attributes(attributes) }}>
+        {{ block('label') }}
+
+        {# Render the list of children #}
+        {%- set childrenClasses = item.childrenAttribute('class') is not empty ? [item.childrenAttribute('class')] : [] %}
+        {%- set childrenClasses = childrenClasses|merge(['menu_level_' ~ item.level]) %}
+        {%- set listAttributes = item.childrenAttributes|merge({'class': childrenClasses|join(' ') }) %}
+        {{ block('list') }}
+    </div>
+{% endblock %}
