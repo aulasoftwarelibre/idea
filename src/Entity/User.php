@@ -29,9 +29,7 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use function array_unique;
-use function get_object_vars;
 use function in_array;
-use function property_exists;
 use function sprintf;
 
 #[ORM\Table(name: 'fos_user')]
