@@ -625,4 +625,20 @@ class User implements EquatableInterface, UserInterface
 
         return $this;
     }
+
+    public function __serialize(): array
+    {
+        $vars = get_object_vars($this);
+        unset($vars['imageFile']);
+        return $vars;
+    }
+
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            if (property_exists($this, $key)) {
+                $this->$key = $value;
+            }
+        }
+    }
 }
