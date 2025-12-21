@@ -74,6 +74,7 @@ class Group implements OpenGraphItemInterface
     {
         $this->ideas = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->image = new EmbeddedFile();
     }
 
     public function __toString(): string
