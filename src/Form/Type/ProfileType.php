@@ -54,7 +54,7 @@ class ProfileType extends AbstractType
                 'help' => 'form.help_nic',
             ])
             ->add('imageFile', VichImageType::class, [
-                'label' => 'Imagen de perfil',
+                'label' => 'Imagen de perfil (Max 2MB)',
                 'required' => false,
                 'allow_delete' => true,
                 'delete_label' => '¿Borrar?',
