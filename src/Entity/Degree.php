@@ -28,11 +28,11 @@ class Degree
     #[ORM\Column(length: 255, unique: true)]
     private string $name;
 
-    #[Gedmo\Slug(fields: ['slug'], unique: true)]
+    #[Gedmo\Slug(fields: ['name'], unique: true)] 
     #[ORM\Column(length: 255, unique: true)]
     private string $slug;
 
-    public function __construct(string $name)
+    public function __construct(string $name = '')
     {
         $this->name = $name;
     }
