@@ -29,7 +29,9 @@ use Vich\UploaderBundle\Entity\File as EmbeddedFile;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 use function array_unique;
+use function get_object_vars;
 use function in_array;
+use function property_exists;
 use function sprintf;
 
 #[ORM\Table(name: 'fos_user')]
@@ -624,5 +626,26 @@ class User implements EquatableInterface, UserInterface
         $this->groups->removeElement($group);
 
         return $this;
+    }
+
+    /** @return array<string, mixed> */
+    public function __serialize(): array
+    {
+        $vars = get_object_vars($this);
+        unset($vars['imageFile']);
+
+        return $vars;
+    }
+
+    /** @param array<string, mixed> $data */
+    public function __unserialize(array $data): void
+    {
+        foreach ($data as $key => $value) {
+            if (! property_exists($this, $key)) {
+                continue;
+            }
+
+            $this->$key = $value;
+        }
     }
 }

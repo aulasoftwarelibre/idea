@@ -28,7 +28,7 @@ class Degree
     #[ORM\Column(length: 255, unique: true)]
     private string $name;
 
-    #[Gedmo\Slug(fields: ['name'], unique: true)] 
+    #[Gedmo\Slug(fields: ['name'], unique: true)]
     #[ORM\Column(length: 255, unique: true)]
     private string $slug;
 
