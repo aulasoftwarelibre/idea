@@ -1,7 +1,9 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
-    secret: '%env(APP_SECRET)%'
+    secret: "%env(APP_SECRET)%"
     csrf_protection: true
+    trusted_proxies: "10.0.0.0/8,172.16.0.0/12,192.168.0.0/16,127.0.0.1"
+    trusted_headers: ["x-forwarded-for", "x-forwarded-proto"]
     #http_method_override: true
 
     # Enables session support. Note that the session will ONLY be started if you read or write from it.
