@@ -633,6 +633,7 @@ class User implements EquatableInterface, UserInterface
     {
         $vars = get_object_vars($this);
         unset($vars['imageFile']);
+
         return $vars;
     }
 
@@ -643,6 +644,7 @@ class User implements EquatableInterface, UserInterface
             if (! property_exists($this, $key)) {
                 continue;
             }
+
             $this->$key = $value;
         }
     }
