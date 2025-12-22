@@ -80,6 +80,10 @@ RUN set -eux; \
 	\
 	apk del .build-deps
 
+RUN sed -i '/\[openssl_init\]/a ssl_conf = ssl_sect' /etc/ssl/openssl.cnf
+
+RUN printf "\n[ssl_sect]\nsystem_default = system_default_sect\n\n[system_default_sect]\nCipherString = DEFAULT@SECLEVEL=1\n" >> /etc/ssl/openssl.cnf
+
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 RUN ln -s $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
