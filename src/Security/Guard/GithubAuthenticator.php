@@ -64,7 +64,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
 
     public function authenticate(Request $request): Passport
     {
-        $client = $this->clientRegistry->getClient('google');
+        $client = $this->clientRegistry->getClient('github');
         assert($client instanceof GithubClient);
         $accessToken = $this->fetchAccessToken($client);
 
@@ -72,7 +72,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
             new UserBadge($accessToken->getToken(), function () use ($accessToken, $client) {
                 $userFromToken = $client->fetchUserFromToken($accessToken);
                 assert($userFromToken instanceof GithubResourceOwner);
-                $userResourceId = $userFromToken->getId() . '@google.com';
+                $userResourceId = $userFromToken->getId() . '@github.com';
 
                 $user = $this->userManager->findUserBy(['username' => $userResourceId]);
                 if (! $user) {
@@ -80,6 +80,10 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
                 }
 
                 $email = $userFromToken->getEmail();
+                if (empty($email)) {
+                    $email = $this->getEmailFromGithub($accessToken);
+                }
+
                 $user->setEmail($email);
                 $this->userManager->updateUser($user);
 
