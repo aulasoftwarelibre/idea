@@ -117,7 +117,7 @@ class GithubAuthenticator extends OAuth2Authenticator implements AuthenticationE
     /** @throws IdentityProviderException */
     private function getEmailFromGithub(AccessToken $credentials): string
     {
-        $provider = $this->getClient()->getOAuth2Provider();
+        $provider = $this->clientRegistry->getClient('github')->getOAuth2Provider();
         $request  = $provider->getAuthenticatedRequest(
             'GET',
             'https://api.github.com/user/emails',
